@@ -17,10 +17,10 @@ public:
   virtual unsigned int	getID() const = 0;
   virtual IMap*		getMap() const = 0;
   virtual IScore*	getScores() const = 0;
-  virtual IPlayer*	getPlayer(AUnit::Color) const = 0;
+  virtual IPlayer*	getPlayer(AUnit::color) const = 0;
 
-  virtual AUnit::Color	addPlayer(std::string name) = 0;
-  virtual bool		removePlayer(AUnit::Color) = 0;
+  virtual bool		addPlayer(std::string name) = 0;
+  virtual bool		removePlayer(AUnit::color) = 0;
 };
 
 #endif /* !IGAME_H_ */
