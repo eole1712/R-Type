@@ -15,7 +15,7 @@ include_directories(
 #Server sources files
 set(server_sources
 	srcs/server/main.cpp
-	srcs/server/server.cpp
+#	srcs/server/core/server.cpp
 )
 add_executable(RType_server server_sources)
 
@@ -24,4 +24,4 @@ set(client_sources
 	srcs/client/main.cpp
 	srcs/client/client.cpp
 )
-add_executable(RType_client client_sources)
+#add_executable(RType_client client_sources)
