@@ -14,56 +14,56 @@ namespace Unit {
     
     bool    AUnit::isAlive() const
     {
-        return (_hp > 0);
+						return (_hp > 0);
     }
     
     unsigned int    AUnit::getX() const
     {
-        return _x;
+						return _x;
     }
     
     unsigned int    AUnit::getY() const
     {
-        return _y;
+						return _y;
     }
     
     void        AUnit::setX(unsigned int x)
     {
-        _x = x;
+						_x = x;
     }
     
     void        AUnit::setY(unsigned int y)
     {
-        _y = y;
+						_y = y;
     }
     
     boxType     AUnit::getHitBox() const
     {
-        return _hitBox;
+						return _hitBox;
     }
     
     void        AUnit::setHitBox(boxType hitBox)
     {
-        _hitBox = hitBox;
+						_hitBox = hitBox;
     }
     
     team        AUnit::getTeam() const
     {
-        return _team;
+						return _team;
     }
     
     void        AUnit::setTeam(team t)
     {
-        _team = t;
+						_team = t;
     }
     
     bool        AUnit::isHitting(AUnit *unit) const
     {
-        if (((_x + _hitBox.first) > (unit->getX() - unit->getHitBox().first)
-             || (_x - _hitBox.first) < (unit->getX() + unit->getHitBox().first))
-            && ((_y + _hitBox.second) > (unit->getY() - unit->getHitBox().second)
-                || (_y - _hitBox.second) < (unit->getY() + unit->getHitBox().second)))
-            return true;
-        return false;
+						if (((_x + _hitBox.first) > (unit->getX() - unit->getHitBox().first)
+											|| (_x - _hitBox.first) < (unit->getX() + unit->getHitBox().first))
+										&& ((_y + _hitBox.second) > (unit->getY() - unit->getHitBox().second)
+														|| (_y - _hitBox.second) < (unit->getY() + unit->getHitBox().second)))
+								return true;
+						return false;
     }
 }
