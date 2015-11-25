@@ -3,6 +3,7 @@
 
 # include <list>
 # include "AUnit.hpp"
+# include "IMap.hpp"
 
 class Map
 {
@@ -12,7 +13,7 @@ public:
 
   virtual std::list<AUnit*> const&	getList(Unit::team) const;
 
-  virtual void				addUnit(AUnit*, Unit::team);
+  virtual void				addUnit(AUnit*);
   virtual AUnit*			checkInterractions(AUnit*) const;
 
 private:

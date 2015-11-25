@@ -19,10 +19,10 @@ public:
   virtual unsigned int	getID() const;
   virtual IMap*		getMap() const;
   virtual IScore*	getScores() const;
-  virtual IPlayer*	getPlayer(AUnit::color) const;
+  virtual IPlayer*	getPlayer(Unit::color) const;
 
-  virtual AUnit::color	addPlayer(std::string name);
-  virtual bool		removePlayer(AUnit::color);
+  virtual bool		addPlayer(std::string name);
+  virtual bool		removePlayer(Unit::color);
 
 private:
   unsigned int		_id;

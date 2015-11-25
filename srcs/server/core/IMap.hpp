@@ -10,7 +10,7 @@ public:
   virtual ~IMap() {}
 
   virtual std::list<AUnit*>	getList(Unit::team) const = 0;
-  virtual void			addUnit(AUnit*, Unit::team) = 0;
+  virtual void			addUnit(AUnit*) = 0;
   virtual AUnit*		checkInterractions(AUnit*) const = 0;
 };
 
