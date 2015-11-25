@@ -24,6 +24,11 @@ namespace Unit {
         RIGTH,
         LEFT
     };
+    
+    enum team = {
+        ALLY,
+        ENNEMY
+    };
 
     typedef std::pair<unsigned int, unsigned int> boxType;
     
