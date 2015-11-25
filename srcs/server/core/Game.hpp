@@ -14,19 +14,19 @@ class Game : public IGame
 public:
   Game(unsigned int id);
   virtual ~Game();
-  
-  virtual unsigned int      getID() const;
-  virtual IMap*             getMap() const;
-  virtual IScoreList*       getScores() const;
-  virtual Unit::Player*     getPlayer(Unit::color) const;
-  
+
+  virtual unsigned int	getID() const;
+  virtual IMap*		getMap() const;
+  virtual IScoreList*	getScores() const;
+  virtual Unit::Player*	getPlayer(Unit::color) const;
+
   virtual bool		addPlayer(std::string name);
   virtual bool		removePlayer(Unit::color);
-  
+
 private:
-  unsigned int                _id;
-  IMap*                       _map;
-  IScoreList*                 _scores;
+  unsigned int			_id;
+  IMap*				_map;
+  IScoreList*			_scores;
   std::vector<Unit::Player*>	_players;
 };
 

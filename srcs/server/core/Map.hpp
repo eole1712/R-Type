@@ -22,7 +22,7 @@ public:
 
 private:
   std::list<Unit::AUnit*>	_allies;
-  std::list<Unit::AUnit*>	_ennemies;
+  std::list<Unit::AUnit*>	_enemies;
 };
 
 #endif /* !MAP_H_ */
