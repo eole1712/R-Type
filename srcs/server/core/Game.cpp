@@ -69,7 +69,7 @@ bool	Game::removePlayer(AUnit::color color)
   unsigned int	i = 0;
 
   std::for_each(this->_players.begin(), this->_players.end(),
-		[&this->_players, color, &i](IPlayer* player)
+		[this, color, &i](IPlayer* player)
   {
     if (player->getColor() == color)
       {
