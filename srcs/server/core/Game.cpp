@@ -6,7 +6,7 @@
 #include "IScore.hpp"
 #include "Score.hpp"
 #include "AUnit.hpp"
-#include "APlayer.hpp"
+#include "Player.hpp"
 #include "Game.hpp"
 
 Game::Game(unsigned int id)
@@ -18,7 +18,7 @@ Game::Game(unsigned int id)
 
 Game::~Game()
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](APlayer* player)
+  std::for_each(this->_players.begin(), this->_players.end(), [color](Player* player)
   {
     if (player != nullptr)
       delete player;
@@ -42,9 +42,9 @@ IScore*	Game::getScores() const
   return (this->_scores);
 }
 
-APlayer*	Game::getPlayer(AUnit::color color) const
+Player*	Game::getPlayer(AUnit::color color) const
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](APlayer* player)
+  std::for_each(this->_players.begin(), this->_players.end(), [color](Player* player)
   {
     if (player->getColor() == color)
       return (player);
@@ -58,7 +58,7 @@ bool	Game::addPlayer(std::string name)
 
   if (ixPlayer < 4)
     {
-      this->_players[ixPlayer] = new Player(name, AUnit::color::BLUE + ixPlayer);
+      this->_players[ixPlayer] = new Player(Player::startX, Player::startY, Player::hitBox, AUnit::color::BLUE + ixPlayer, name);
       return (true);
     }
   return (false);

@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "IScore.hpp"
-#include "APlayer.hpp"
+#include "Player.hpp"
 #include "ScoreList.hpp"
 
 ScoreList::ScoreList()
@@ -20,7 +20,7 @@ IScore*	ScoreList::getScore(Unit::color color) const
   return (this->_scores[static_cast<unsigned int>(color)]);
 }
 
-void	ScoreList::setScore(APlayer* player)
+void	ScoreList::setScore(Player* player)
 {
   IScore*	score = this->_scores[static_cast<unsigned int>(player->getTeam())];
 

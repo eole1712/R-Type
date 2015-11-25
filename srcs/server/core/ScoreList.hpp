@@ -4,7 +4,7 @@
 # include "AUnit.hpp"
 # include "IScoreList.hpp"
 
-class APlayer;
+class Player;
 class IScore;
 
 class ScoreList
@@ -14,7 +14,7 @@ public:
   virtual ~ScoreList();
 
   virtual IScore*	getScore(Unit::color) const;
-  virtual void		setScore(APlayer*);
+  virtual void		setScore(Player*);
 
 private:
   std::vector<IScore*>	_scores;
