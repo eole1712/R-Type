@@ -9,9 +9,10 @@ public:
   IMap();
   virtual ~IMap() {}
 
-  virtual std::list<AUnit*>	getList(Unit::team) const = 0;
-  virtual void			addUnit(AUnit*) = 0;
-  virtual AUnit*		checkInterractions(AUnit*) const = 0;
+  virtual std::list<Unit::AUnit*>	getList(Unit::team) const = 0;
+
+  virtual void				addUnit(Unit::AUnit*) = 0;
+  virtual Unit::AUnit*			checkInterractions(Unit::AUnit*) const = 0;
 };
 
 #endif /* !IMAP_H_ */
