@@ -59,10 +59,10 @@ namespace Unit {
     
     bool        AUnit::isHitting(AUnit *unit) const
     {
-        if (((_posX + _hitBox.first) > (unit->getX() - unit->getHitBox().first)
-             || (_posX - _hitBox.first) < (unit->getX() + unit->getHitBox().first))
-            && ((_posY + _hitBox.second) > (unit->getY() - unit->getHitBox().second)
-                || (_posX - _hitBox.second) < (unit->getY() + unit->getHitBox().second)))
+        if (((_x + _hitBox.first) > (unit->getX() - unit->getHitBox().first)
+             || (_x - _hitBox.first) < (unit->getX() + unit->getHitBox().first))
+            && ((_y + _hitBox.second) > (unit->getY() - unit->getHitBox().second)
+                || (_y - _hitBox.second) < (unit->getY() + unit->getHitBox().second)))
             return true;
         return false;
     }

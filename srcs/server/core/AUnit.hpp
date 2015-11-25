@@ -1,9 +1,11 @@
 #ifndef AUnit_hpp
 #define AUnit_hpp
 
+#include <list>
+
 namespace Unit {
     
-    enum type = {
+    enum type {
         PLAYER,
         MONSTER,
         MISSILE,
@@ -11,21 +13,21 @@ namespace Unit {
         OBSTACLE
     };
 
-    enum color = {
+    enum color {
         BLUE,
         RED,
         YELLOW,
         GREEN
     };
 
-    enum dir = {
+    enum dir {
         UP,
         DOWN,
         RIGTH,
         LEFT
     };
     
-    enum team = {
+    enum team {
         ALLY,
         ENNEMY
     };
@@ -67,7 +69,7 @@ public:
 
 private:
     unsigned int                            _hp;
-    team                                    _team
+    team                                    _team;
     unsigned int                            _x;
     unsigned int                            _y;
     boxType                                 _hitBox;
