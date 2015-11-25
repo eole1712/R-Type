@@ -35,7 +35,7 @@ namespace Unit {
 class AUnit {
 
 public:
-    AUnit(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox);
+    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox);
     ~AUnit();
 private:
     AUnit(AUnit const &);
@@ -61,8 +61,13 @@ public:
 public:
     virtual type    getType() const = 0;
 
+public:
+    virtual team    getTeam() const;
+    virtual void    setTeam(team t);
+
 private:
     unsigned int                            _hp;
+    team                                    _team
     unsigned int                            _x;
     unsigned int                            _y;
     boxType                                 _hitBox;

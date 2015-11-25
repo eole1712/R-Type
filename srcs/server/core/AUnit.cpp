@@ -3,8 +3,8 @@
 
 namespace Unit {
 
-    AUnit::AUnit(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox)
-    : _hp(hp), _x(x), _y(y), _hitBox(hitBox)
+    AUnit::AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox)
+    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox)
     {
     }
     
@@ -45,6 +45,16 @@ namespace Unit {
     void        AUnit::setHitBox(boxType hitBox)
     {
         _hitBox = hitBox;
+    }
+    
+    team        AUnit::getTeam() const
+    {
+        return _team;
+    }
+    
+    void        AUnit::setTeam(team t)
+    {
+        _team = t;
     }
     
     bool        AUnit::isHitting(AUnit *unit) const
