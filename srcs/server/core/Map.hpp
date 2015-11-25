@@ -17,8 +17,8 @@ public:
   virtual Unit::AUnit*				checkInterractions(Unit::AUnit*) const;
 
 private:
-  std::list<AUnit*>	_allies;
-  std::list<AUnit*>	_ennemies;
+  std::list<Unit::AUnit*>	_allies;
+  std::list<Unit::AUnit*>	_ennemies;
 };
 
 #endif /* !MAP_H_ */

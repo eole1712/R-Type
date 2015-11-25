@@ -8,22 +8,22 @@ Score::Score(std::string name, unsigned int score)
 Score::~Score()
 {}
 
-std::string	getName() const
+std::string	Score::getName() const
 {
   return (this->_name);
 }
 
-unsigned int	getScore() const
+unsigned int	Score::getScore() const
 {
   return (this->_score);
 }
 
-void	setName(std::string name)
+void	Score::setName(std::string name)
 {
   this->_name = name;
 }
 
-void	setScore(unsigned int score)
+void	Score::setScore(unsigned int score)
 {
   this->_score = score;
 }

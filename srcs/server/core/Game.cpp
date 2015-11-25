@@ -5,8 +5,8 @@
 #include "Map.hpp"
 #include "IScore.hpp"
 #include "Score.hpp"
-#include "IPlayer.hpp"
 #include "AUnit.hpp"
+#include "APlayer.hpp"
 #include "Game.hpp"
 
 Game::Game(unsigned int id)
@@ -18,7 +18,7 @@ Game::Game(unsigned int id)
 
 Game::~Game()
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](IPlayer* player)
+  std::for_each(this->_players.begin(), this->_players.end(), [color](APlayer* player)
   {
     if (player != nullptr)
       delete player;
@@ -42,9 +42,9 @@ IScore*	Game::getScores() const
   return (this->_scores);
 }
 
-IPlayer*	Game::getPlayer(AUnit::color color) const
+APlayer*	Game::getPlayer(AUnit::color color) const
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](IPlayer* player)
+  std::for_each(this->_players.begin(), this->_players.end(), [color](APlayer* player)
   {
     if (player->getColor() == color)
       return (player);
@@ -69,7 +69,7 @@ bool	Game::removePlayer(AUnit::color color)
   unsigned int	i = 0;
 
   std::for_each(this->_players.begin(), this->_players.end(),
-		[this, color, &i](IPlayer* player)
+		[this, color, &i](APlayer* player)
   {
     if (player->getColor() == color)
       {
