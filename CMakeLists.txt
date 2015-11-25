@@ -10,14 +10,13 @@ include_directories(
 	includes/client
 )
 
-
-
 #Server sources files
 set(server_sources
 	srcs/server/main.cpp
 #	srcs/server/core/server.cpp
 )
-add_executable(RType_server server_sources)
+
+add_executable(RType_server ${server_sources})
 
 #Client sources files
 set(client_sources
