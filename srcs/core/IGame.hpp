@@ -6,6 +6,7 @@
 
 class IMap;
 class IScore;
+class IPlayer;
 
 class IGame
 {
@@ -16,6 +17,7 @@ public:
   virtual unsigned int	getID() const = 0;
   virtual IMap*		getMap() const = 0;
   virtual IScore*	getScores() const = 0;
+  virtual IPlayer*	getPlayer(AUnit::Color) const = 0;
 
   virtual AUnit::Color	addPlayer(std::string name) = 0;
   virtual bool		removePlayer(AUnit::Color) = 0;
