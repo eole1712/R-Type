@@ -24,11 +24,13 @@ namespace Unit {
         RIGTH,
         LEFT
     };
+
+    typedef std::pair<unsigned int, unsigned int> boxType;
     
 class AUnit {
 
 public:
-    AUnit();
+    AUnit(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox);
     ~AUnit();
 private:
     AUnit(AUnit const &);
@@ -45,8 +47,8 @@ public:
     virtual void            setY(unsigned int y);
 
 public:
-    virtual std::pair<unsigned int, unsigned int>   getHitBox() const;
-    virtual void    setHitBox(std::pair<unsigned int, unsigned int>);
+    virtual boxType   getHitBox() const;
+    virtual void    setHitBox(boxType);
     
 public:
     virtual bool    isHitting(AUnit*) const;
@@ -54,6 +56,11 @@ public:
 public:
     virtual type    getType() const = 0;
 
+private:
+    unsigned int                            _hp;
+    unsigned int                            _x;
+    unsigned int                            _y;
+    boxType                                 _hitBox;
 };
 
 }
