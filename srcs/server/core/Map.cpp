@@ -3,8 +3,8 @@
 #include "AUnit.hpp"
 #include "Map.hpp"
 
-const unsigned int width = 720;
-const unsigned int height = 480;
+const unsigned int Map::width = 720;
+const unsigned int Map::height = 480;
 
 Map::Map()
 {}

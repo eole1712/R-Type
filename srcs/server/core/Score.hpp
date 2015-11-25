@@ -3,7 +3,9 @@
 
 # include <string>
 
-class Score
+# include "IScore.hpp"
+
+class Score : public IScore
 {
 public:
   Score(std::string name, unsigned int score);

@@ -3,11 +3,12 @@
 
 
 #include "AUnit.hpp"
+#include "AMissile.hpp"
 
 #include <string>
 
 namespace Unit {
-    
+
 class Player : public AUnit {
 
 public:
@@ -16,16 +17,19 @@ public:
 
 public:
     static const unsigned int               defaultHP;
-    static const unsigned Missile::type     defaultMissile;
+    static const Missile::type              defaultMissile;
     static const unsigned int               startX;
     static const unsigned int               startY;
     static const boxType                    defaultHitBox;
     
 public:
     Missile::AMissile*      shoot();
-    Missile::type           getWeapon();
+    Missile::type           getWeapon() const;
     void                    setWeapon(Missile::type);
     
+public:
+    virtual void            getHit(AUnit*);
+
 public:
     unsigned int    getScore() const;
     void            incScore(unsigned int);
@@ -38,7 +42,7 @@ public:
     bool            move(dir);
 
 public:
-    type            getType() const;
+    virtual type            getType() const;
     
 private:
     color           _color;

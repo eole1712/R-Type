@@ -4,7 +4,7 @@
 #include "IMap.hpp"
 #include "Map.hpp"
 #include "IScore.hpp"
-#include "Score.hpp"
+#include "ScoreList.hpp"
 #include "AUnit.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
@@ -13,12 +13,12 @@ Game::Game(unsigned int id)
   : _id(id), _players(4, nullptr)
 {
   this->_map = new Map();
-  this->_scores = new Score();
+  this->_scores = new ScoreList();
 }
 
 Game::~Game()
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](Player* player)
+  std::for_each(this->_players.begin(), this->_players.end(), [](Unit::Player* player)
   {
     if (player != nullptr)
       delete player;
@@ -37,18 +37,20 @@ IMap*	Game::getMap() const
   return (this->_map);
 }
 
-IScore*	Game::getScores() const
+IScoreList*	Game::getScores() const
 {
   return (this->_scores);
 }
 
-Player*	Game::getPlayer(AUnit::color color) const
+Unit::Player*	Game::getPlayer(Unit::color color) const
 {
-  std::for_each(this->_players.begin(), this->_players.end(), [color](Player* player)
+  std::vector<Unit::Player*>::const_iterator it;
+  
+  for(it = _players.begin(); it != _players.end(); it++)
   {
-    if (player->getColor() == color)
-      return (player);
-  });
+    if ((*it)->getColor() == color)
+      return (*it);
+  }
   return (nullptr);
 }
 
@@ -58,18 +60,18 @@ bool	Game::addPlayer(std::string name)
 
   if (ixPlayer < 4)
     {
-      this->_players[ixPlayer] = new Player(Player::startX, Player::startY, Player::hitBox, AUnit::color::BLUE + ixPlayer, name);
+      this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name);
       return (true);
     }
   return (false);
 }
 
-bool	Game::removePlayer(AUnit::color color)
+bool	Game::removePlayer(Unit::color color)
 {
   unsigned int	i = 0;
 
   std::for_each(this->_players.begin(), this->_players.end(),
-		[this, color, &i](APlayer* player)
+                [this, color, &i](Unit::Player* player)
   {
     if (player->getColor() == color)
       {

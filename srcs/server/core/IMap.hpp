@@ -6,10 +6,9 @@
 class IMap
 {
 public:
-  IMap();
   virtual ~IMap() {}
 
-  virtual std::list<Unit::AUnit*>	getList(Unit::team) const = 0;
+  virtual std::list<Unit::AUnit*> const	&getList(Unit::team) const = 0;
 
   virtual void				addUnit(Unit::AUnit*) = 0;
   virtual Unit::AUnit*			checkInterractions(Unit::AUnit*) const = 0;

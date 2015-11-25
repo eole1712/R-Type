@@ -5,7 +5,7 @@
 # include "AUnit.hpp"
 # include "IMap.hpp"
 
-class Map
+class Map : public IMap
 {
 public:
   Map();

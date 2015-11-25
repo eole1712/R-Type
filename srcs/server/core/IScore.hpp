@@ -6,7 +6,6 @@
 class IScore
 {
 public:
-  IScore();
   virtual ~IScore() {}
 
   virtual std::string	getName() const = 0;
