@@ -18,16 +18,15 @@ ScoreList::~ScoreList()
 
 IScore*	ScoreList::getScore(Unit::color color) const
 {
-  return (this->_scores[static_cast<unsigned int>(color)]);
+  return (this->_scores[color]);
 }
 
 void	ScoreList::setScore(Unit::Player* player)
 {
-    IScore*	score = this->_scores[static_cast<unsigned int>(player->getTeam())];
+    IScore*	score = this->_scores[player->getTeam()];
 
   if (score == nullptr)
-    this->_scores[static_cast<unsigned int>(player->getTeam())] = new Score(player->getName(),
-									    player->getScore());
+    this->_scores[player->getTeam()] = new Score(player->getName(), player->getScore());
   else
     {
       score->setName(player->getName());

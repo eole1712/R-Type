@@ -8,7 +8,7 @@ namespace Bonus
 {
 
 ABonus::ABonus(unsigned int x, unsigned int y, Unit::boxType hitBox)
-  : AUnit(1, Unit::ENNEMY, x, y, hitBox)
+  : AUnit(1, Unit::ENEMY, x, y, hitBox)
 {}
 
 ABonus::~ABonus()

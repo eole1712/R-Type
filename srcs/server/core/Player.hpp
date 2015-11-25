@@ -16,17 +16,17 @@ public:
     virtual ~Player();
 
 public:
-    static const unsigned int               defaultHP;
-    static const Missile::type              defaultMissile;
-    static const unsigned int               startX;
-    static const unsigned int               startY;
-    static const boxType                    defaultHitBox;
-    
+    static const unsigned int               DEFAULTHP;
+    static const Missile::type              DEFAULTMISSILE;
+    static const unsigned int               STARTX;
+    static const unsigned int               STARTY;
+    static const boxType                    DEFAULTHITBOX;
+
 public:
     Missile::AMissile*      shoot();
     Missile::type           getWeapon() const;
     void                    setWeapon(Missile::type);
-    
+
 public:
     virtual void            getHit(AUnit*);
 
@@ -37,13 +37,13 @@ public:
 public:
     std::string     getName() const;
     color           getColor() const;
-    
+
 public:
     bool            move(dir);
 
 public:
     virtual type            getType() const;
-    
+
 private:
     color           _color;
     std::string     _name;
@@ -52,5 +52,5 @@ private:
 };
 
 }
-    
+
 #endif /* Player_hpp */

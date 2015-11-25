@@ -10,7 +10,7 @@ namespace Monster
 
 AMonster::AMonster(unsigned int hp, unsigned int x, unsigned int y,
 		   Unit::boxType hitBox, Missile::type weapon)
-  : AUnit(hp, Unit::ENNEMY, x, y, hitBox), _weapon(weapon)
+  : AUnit(hp, Unit::ENEMY, x, y, hitBox), _weapon(weapon)
 {}
 
 AMonster::~AMonster()
