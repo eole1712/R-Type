@@ -49,10 +49,11 @@ namespace Unit {
     
     bool        AUnit::isHitting(AUnit *unit) const
     {
-        //TODO isHitting
-        
-        return true;
+        if (((_posX + _hitBox.first) > (unit->getX() - unit->getHitBox().first)
+             || (_posX - _hitBox.first) < (unit->getX() + unit->getHitBox().first))
+            && ((_posY + _hitBox.second) > (unit->getY() - unit->getHitBox().second)
+                || (_posX - _hitBox.second) < (unit->getY() + unit->getHitBox().second)))
+            return true;
+        return false;
     }
-    
-    
 }
