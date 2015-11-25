@@ -3,7 +3,7 @@
 
 # include "AUnit.hpp"
 
-class APlayer;
+class Player;
 class IScore;
 
 class IScoreList
@@ -13,7 +13,7 @@ public:
   virtual ~IScoreList() {}
 
   virtual IScore*	getScore(Unit::color) const = 0;
-  virtual void		setScore(APlayer*) = 0;
+  virtual void		setScore(Player*) = 0;
 };
 
 #endif /* !ISCORELIST_H_ */

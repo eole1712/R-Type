@@ -3,6 +3,9 @@
 #include "AUnit.hpp"
 #include "Map.hpp"
 
+const unsigned int width = 720;
+const unsigned int height = 480;
+
 Map::Map()
 {}
 
@@ -18,14 +21,14 @@ Map::~Map()
   });
 }
 
-std::list<Unit::AUnit*> const&	getList(Unit::team team) const
+std::list<Unit::AUnit*> const&	Map::getList(Unit::team team) const
 {
   if (team == Unit::ALLY)
     return (this->_allies);
   return (this->_ennemies);
 }
 
-void	addUnit(Unit::AUnit* unit)
+void	Map::addUnit(Unit::AUnit* unit)
 {
   if (unit->getTeam() == Unit::ALLY)
     this->_allies.push_back(unit);
@@ -33,15 +36,13 @@ void	addUnit(Unit::AUnit* unit)
     this->_ennemies.push_back(unit);
 }
 
-Unit::AUnit*	checkInterractions(Unit::AUnit* unit) const
+Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
 {
   Unit::team	team = unit->getTeam();
   auto&	list = ((team == Unit::ALLY) ? (this->_allies) : (this->_ennemies));
 
-  std::for_each(list.begin(), list.end(), [unit](Unit::AUnit* other)
-  {
+  for (auto& other : list)
     if (unit->isHitting(other))
       return (other);
-  });
   return (nullptr);
 }

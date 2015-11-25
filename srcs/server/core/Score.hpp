@@ -12,8 +12,8 @@ public:
   virtual std::string	getName() const;
   virtual unsigned int	getScore() const;
 
-  virtual void		setName(std::string) const;
-  virtual void		setScore(unsigned int) const;
+  virtual void		setName(std::string);
+  virtual void		setScore(unsigned int);
 
 private:
   std::string	_name;

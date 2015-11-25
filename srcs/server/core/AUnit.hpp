@@ -4,7 +4,7 @@
 #include <list>
 
 namespace Unit {
-    
+
     enum type {
         PLAYER,
         MONSTER,
@@ -26,27 +26,27 @@ namespace Unit {
         RIGTH,
         LEFT
     };
-    
+
     enum team {
         ALLY,
         ENNEMY
     };
 
     typedef std::pair<unsigned int, unsigned int> boxType;
-    
+
 class AUnit {
 
 public:
     AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox);
-    ~AUnit();
+    virtual ~AUnit();
 private:
     AUnit(AUnit const &);
     AUnit &operator=(AUnit const &);
-    
+
 public:
     virtual bool    isAlive() const;
     virtual void    getHit(AUnit*) = 0;
-    
+
 public:
     virtual unsigned int    getX() const;
     virtual unsigned int    getY() const;
@@ -56,10 +56,10 @@ public:
 public:
     virtual boxType   getHitBox() const;
     virtual void    setHitBox(boxType);
-    
+
 public:
     virtual bool    isHitting(AUnit*) const;
-    
+
 public:
     virtual type    getType() const = 0;
 

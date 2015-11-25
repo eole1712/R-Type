@@ -12,8 +12,8 @@ public:
   virtual std::string	getName() const = 0;
   virtual unsigned int	getScore() const = 0;
 
-  virtual void		setName(std::string) const = 0;
-  virtual void		setScore(unsigned int) const = 0;
+  virtual void		setName(std::string) = 0;
+  virtual void		setScore(unsigned int) = 0;
 };
 
 #endif /* !ISCORE_H_ */
