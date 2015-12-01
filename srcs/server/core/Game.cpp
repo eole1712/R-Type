@@ -14,6 +14,7 @@ Game::Game(unsigned int id)
 {
   this->_map = new Map();
   this->_scores = new ScoreList();
+  this->_monsterFactory = new MonsterFactory();
 }
 
 Game::~Game()
@@ -23,6 +24,7 @@ Game::~Game()
     if (player != nullptr)
       delete player;
   });
+  delete this->_monsterFactory;
   delete this->_scores;
   delete this->_map;
 }
@@ -45,7 +47,7 @@ IScoreList*	Game::getScores() const
 Unit::Player*	Game::getPlayer(Unit::color color) const
 {
   std::vector<Unit::Player*>::const_iterator it;
-  
+
   for(it = _players.begin(); it != _players.end(); it++)
   {
     if ((*it)->getColor() == color)
