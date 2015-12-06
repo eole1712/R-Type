@@ -45,7 +45,7 @@ namespace Unit {
             return std::string("BasicMissile");
         }
         
-        void            BasicMissile::getHit(AUnit* unit)
+        void            BasicMissile::getHit(AUnit*)
         {
             //TODO: get hit missile
         }
