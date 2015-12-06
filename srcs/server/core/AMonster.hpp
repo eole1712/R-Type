@@ -11,8 +11,7 @@ namespace Monster
 {
 
 enum type {
-  MONSTER1,
-  MONSTER2
+  MONSTERTEST
 };
 
 class AMonster : public AUnit
