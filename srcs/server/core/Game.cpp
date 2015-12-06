@@ -56,7 +56,7 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
 
 bool	Game::addPlayer(std::string name)
 {
-  unsigned int	ixPlayer = this->_players.size();
+  unsigned long	ixPlayer = this->_players.size();
 
   if (ixPlayer < 4)
     {
