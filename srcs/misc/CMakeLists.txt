@@ -13,4 +13,6 @@ set(etape1_sources
 
 add_executable(test_thread ${etape1_sources})
 target_compile_features(test_thread PRIVATE cxx_range_for)
-target_link_libraries(test_thread -lpthread)
+if (UNIX)
+	target_link_libraries(test_thread -lpthread)
+endif (UNIX)	
