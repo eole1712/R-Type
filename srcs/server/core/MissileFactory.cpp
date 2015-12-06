@@ -23,7 +23,7 @@ namespace Unit
 
         void     Factory::init()
         {
-          _map[BASIC] = new BasicMissile;
+          _map[BASIC] = new BasicMissile();
         }
         
         Factory* Factory::getInstance()
