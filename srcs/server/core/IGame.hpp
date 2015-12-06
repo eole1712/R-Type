@@ -4,9 +4,9 @@
 # include <string>
 # include "AUnit.hpp"
 # include "IMap.hpp"
+# include "Player.hpp"
 
 class IScoreList;
-class Player;
 class MonsterFactory;
 
 class IGame
