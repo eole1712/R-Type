@@ -1,13 +1,3 @@
-##
-## Makefile for  in /home/gamain_j/rendu/cpp_nibbler
-##
-## Made by gamain_j gamain_j
-## Login   <gamain_j@epitech.net>
-##
-## Started on  Mon Mar 23 17:22:46 2015 gamain_j gamain_j
-## Last update Sun Dec  6 23:42:52 2015 Adrien HARNAY
-##
-
 CC	=	g++
 
 RM	=	rm -rf

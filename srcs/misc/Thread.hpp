@@ -28,7 +28,7 @@ public:
 		pairdata->first = func;
 		pairdata->second = data;
 #if defined(__linux__)
-		if ((ret = pthread_create(&_thread, NULL, &Thread::_runFunc, pairdata)) != 0)
+		if (pthread_create(&_thread, NULL, &Thread::_runFunc, pairdata) != 0)
 			throw std::exception("");;
 #elif defined(_WIN32)	
 		if ((_handle = CreateThread(NULL, 0, _runFunc, pairdata, 0, NULL)) == NULL)
@@ -43,7 +43,7 @@ public:
 	void		join()
 	{
 #if defined(__linux__)
-		if (pthread_join(_thread, &tmpRetValue) != 0)
+		if (pthread_join(_thread, NULL) != 0)
 			throw std::exception("");;
 #elif defined(_WIN32)	
 	if (WaitForSingleObject(_handle, INFINITE) == WAIT_FAILED)
