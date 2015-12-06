@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.1)
 
 project(R-Type)
 
@@ -12,4 +12,5 @@ set(etape1_sources
 )
 
 add_executable(test_thread ${etape1_sources})
-set_property(TARGET test_thread PROPERTY CXX_STANDARD 11)
+target_compile_features(test_thread PRIVATE cxx_range_for)
+target_link_libraries(test_thread -lpthread)
