@@ -8,10 +8,13 @@ namespace Unit
 {
     namespace Missile
     {
+
+        Factory*	Factory::_instance = NULL;
+
         Factory::Factory()
         {
         }
-        
+
         Factory::~Factory()
         {
             for (std::map<Missile::type, AMissile*>::iterator it = _map.begin(); it != _map.end(); it++)
@@ -25,7 +28,7 @@ namespace Unit
         {
           _map[BASIC] = new BasicMissile();
         }
-        
+
         Factory* Factory::getInstance()
         {
             if (_instance == NULL)
@@ -35,12 +38,12 @@ namespace Unit
             }
             return (_instance);
         }
-      
+
         AMissile*   Factory::getObject(Missile::type t)
         {
           return (_map[t])->clone();
         }
-      
+
         AMissile*   Factory::getObject(Missile::type t, unsigned int x, unsigned int y, AUnit *unit)
         {
           return (_map[t])->clone(x, y, unit);

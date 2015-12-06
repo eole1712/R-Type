@@ -13,23 +13,24 @@ namespace Unit
         public:
             Factory();
             ~Factory();
-            
+
         public:
             static Factory	*getInstance();
             static void     destroy();
             void            init();
             AMissile*       getObject(Missile::type);
             AMissile*       getObject(Missile::type, unsigned int x, unsigned int y, AUnit*);
-            
+
         private:
             Factory(Factory const& other);
             Factory&	operator=(Factory const& other);
-        
+
         protected:
             std::map<Missile::type, AMissile*> _map;
-        };
-        
-        static Factory *_instance = NULL;
+
+	public:
+	    static Factory *_instance;
+	};
     }
 }
 

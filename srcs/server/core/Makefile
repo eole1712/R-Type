@@ -5,7 +5,7 @@
 ## Login   <gamain_j@epitech.net>
 ##
 ## Started on  Mon Mar 23 17:22:46 2015 gamain_j gamain_j
-## Last update Sun Dec  6 23:16:19 2015 Adrien HARNAY
+## Last update Sun Dec  6 23:42:35 2015 Grisha GHUKASYAN
 ##
 
 CC	=	g++
@@ -13,7 +13,7 @@ CC	=	g++
 RM	=	rm -rf
 
 CXXFLAGS+=	-W -Wall -Wextra -Werror -std=c++11
-CXXFLAGS+=	-fPIC -I./ -I./$(LIB1DIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX)
+CXXFLAGS+=	-fPIC -I./ -I./$(LIB1DIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX) -I./$(MISSILEDIR)
 
 LDFLAGS +=
 
