@@ -48,7 +48,6 @@ namespace Unit {
         void            BasicMissile::getHit(AUnit*)
         {
             //TODO: get hit missile
-	  (void)unit;
         }
 
         AMissile*            BasicMissile::clone() const
