@@ -5,10 +5,10 @@
 # include <map>
 # include "AMonster.hpp"
 
-class LibLoader;
-
 typedef Unit::Monster::AMonster*	(*fptrNewMonster)();
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
+
+class ILibLoader;
 
 class MonsterFactory
 {
@@ -23,7 +23,7 @@ public:
   bool				removeMonsterType(Unit::Monster::type);
 
 private:
-  std::list<std::pair<Unit::Monster::type, LibLoader*> >	_libs;
+  std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
 };
 
 #endif /* !MONSTERFACTORY_HPP_ */
