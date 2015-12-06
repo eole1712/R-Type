@@ -7,6 +7,14 @@
 MonsterFactory::MonsterFactory()
 {}
 
+MonsterFactory::MonsterFactory(std::map<Monster::type, std::string> list)
+{
+  std::for_each(list.begin(), list.end(), [this](std::pair<Monster::type, std::string> elem)
+  {
+    this->addMonsterType(elem.first(), elem.second());
+  });
+}
+
 MonsterFactory::~MonsterFactory()
 {
   std::for_each(this->_libs.begin(), this->_libs.end(), [](std::pair<Monster::type, LibLoader*> lib)

@@ -12,6 +12,7 @@ class MonsterFactory
 {
 public:
   MonsterFactory();
+  MonsterFactory(std::map<Monster::type, std::string libName>);
   ~MonsterFactory();
 
   IMonster*	createMonster(Monster::type);
