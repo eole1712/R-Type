@@ -5,7 +5,7 @@
 ## Login   <gamain_j@epitech.net>
 ##
 ## Started on  Mon Mar 23 17:22:46 2015 gamain_j gamain_j
-## Last update Sun Dec  6 22:48:11 2015 Adrien HARNAY
+## Last update Sun Dec  6 23:16:19 2015 Adrien HARNAY
 ##
 
 CC	=	g++
@@ -16,6 +16,8 @@ CXXFLAGS+=	-W -Wall -Wextra -Werror -std=c++11
 CXXFLAGS+=	-fPIC -I./ -I./$(LIB1DIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX)
 
 LDFLAGS +=
+
+MISSILEDIR	=	missiles/
 
 MISCDIR	=	../misc/
 
@@ -40,6 +42,7 @@ SRC	=	main_test.cpp \
 		Player.cpp \
 		AMonster.cpp \
 		AMissile.cpp \
+		$(MISSILEDIR)BasicMissile.cpp \
 		ABonus.cpp \
 		AObstacle.cpp \
 		$(MISCDIR)Timer.cpp \
