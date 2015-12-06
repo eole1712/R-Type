@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include "MissileFactory.hpp"
 #include "AMissile.hpp"
@@ -26,11 +25,11 @@ namespace Unit {
     {
         if (!_time.isFinished())
             return NULL;
-        
+
         Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this);
-        
+
         _time.reset(m->getTime());
-        
+
         return m;
     }
 
