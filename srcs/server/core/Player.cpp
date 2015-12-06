@@ -1,5 +1,7 @@
 
 #include <algorithm>
+#include "MissileFactory.hpp"
+#include "AMissile.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
 
@@ -12,7 +14,7 @@ namespace Unit {
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, std::string name)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0)
     {
     }
 
@@ -22,8 +24,14 @@ namespace Unit {
 
     Missile::AMissile*          Player::shoot()
     {
-        //TODO shoot player
-        return NULL;
+        if (!_time.isFinished())
+            return NULL;
+        
+        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this);
+        
+        _time.reset(m->getTime());
+        
+        return m;
     }
 
     Missile::type               Player::getWeapon() const
