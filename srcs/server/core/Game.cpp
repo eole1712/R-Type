@@ -73,7 +73,7 @@ bool	Game::addPlayer(std::string name)
   return (false);
 }
 
-bool	Game::removePlayer(Unit::color color)
+void	Game::removePlayer(Unit::color color)
 {
   unsigned int	i = 0;
 
@@ -87,5 +87,4 @@ bool	Game::removePlayer(Unit::color color)
       }
     ++i;
   });
-  return (nullptr);
 }

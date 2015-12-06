@@ -24,7 +24,7 @@ public:
   virtual MonsterFactory*	getMonsterFactory() const;
 
   virtual bool			addPlayer(std::string name);
-  virtual bool			removePlayer(Unit::color);
+  virtual void			removePlayer(Unit::color);
 
 private:
   unsigned int			_id;
