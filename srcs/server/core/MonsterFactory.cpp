@@ -52,7 +52,7 @@ Unit::Monster::AMonster*	MonsterFactory::createMonster(Unit::Monster::type type)
   return (NULL);
 }
 
-bool	MonsterFactory::addMonsterType(Unit::Monster::type type, std::string)
+bool	MonsterFactory::addMonsterType(Unit::Monster::type type, std::string libName)
 {
   ILibLoader*	libLoader;
 
