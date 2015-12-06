@@ -43,7 +43,7 @@ public:
 	void		join()
 	{
 #if defined(__linux__)
-		if (pthread_join(_thread, &tmpRetValue) != 0)
+		if (pthread_join(_thread, NULL) != 0)
 			throw std::exception("");;
 #elif defined(_WIN32)	
 	if (WaitForSingleObject(_handle, INFINITE) == WAIT_FAILED)
