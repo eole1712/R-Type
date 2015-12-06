@@ -1,39 +1,43 @@
 #include <list>
+#include <map>
 #include <algorithm>
 #include <utility>
-#include "IMonster.hpp"
+#include "AMonster.hpp"
+#include "LibLoader.hpp"
 #include "MonsterFactory.hpp"
 
 MonsterFactory::MonsterFactory()
 {}
 
-MonsterFactory::MonsterFactory(std::map<Monster::type, std::string> list)
+MonsterFactory::MonsterFactory(std::map<Unit::Monster::type, std::string> list)
 {
-  std::for_each(list.begin(), list.end(), [this](std::pair<Monster::type, std::string> elem)
+  std::for_each(list.begin(), list.end(),
+		[this](std::pair<Unit::Monster::type, std::string> elem)
   {
-    this->addMonsterType(elem.first(), elem.second());
+    this->addMonsterType(elem.first, elem.second);
   });
 }
 
 MonsterFactory::~MonsterFactory()
 {
-  std::for_each(this->_libs.begin(), this->_libs.end(), [](std::pair<Monster::type, LibLoader*> lib)
+  std::for_each(this->_libs.begin(), this->_libs.end(),
+		[](std::pair<Unit::Monster::type, LibLoader*> lib)
   {
-    delete lib.second();
+    delete lib.second;
   });
 }
 
-IMonster*	MonsterFactory::createMonster(Monster::type type)
+Unit::Monster::AMonster*	MonsterFactory::createMonster(Unit::Monster::type type)
 {
-  fptrNewMonster	ptr;
-  IMonster*		newMonster;
+  fptrNewMonster		ptr;
+  Unit::Monster::AMonster*	newMonster;
 
-  for(std::list<std::pair<Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
-      if (*it.first() == type)
+      if ((*it).first == type)
 	{
-	  ptr = reinterpret_cast<fptrNewMonster>(*it.second()->getExternalCreator());
+	  ptr = reinterpret_cast<fptrNewMonster>((*it).second->getExternalCreator());
 	  newMonster = ptr();
 	  return (newMonster);
 	}
@@ -41,26 +45,26 @@ IMonster*	MonsterFactory::createMonster(Monster::type type)
   return (NULL);
 }
 
-bool	addMonsterType(Monster::type type, std::string libName)
+bool	MonsterFactory::addMonsterType(Unit::Monster::type type, std::string libName)
 {
-  for(std::list<std::pair<Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
-      if (*it.first() == type)
+      if ((*it).first == type)
 	return (false);
     }
   this->_libs.push_back(std::make_pair(type, new LibLoader(libName, "NewMonster", "DeleteMonster")));
   return (true);
 }
 
-bool	removeMonsterType(Monster::type type)
+bool	MonsterFactory::removeMonsterType(Unit::Monster::type type)
 {
-  for(std::list<std::pair<Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::Monster::type, LibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
-      if (*it.first() == type)
+      if ((*it).first == type)
 	{
-	  delete *it.second();
+	  delete (*it).second;
 	  this->_libs.erase(it);
 	  return (true);
 	}

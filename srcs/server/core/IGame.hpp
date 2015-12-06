@@ -3,9 +3,11 @@
 
 # include <string>
 # include "AUnit.hpp"
-# include "IScoreList.hpp"
-# include "Player.hpp"
 # include "IMap.hpp"
+
+class IScoreList;
+class Player;
+class MonsterFactory;
 
 class IGame
 {

@@ -5,11 +5,11 @@
 # include <vector>
 # include "IGame.hpp"
 # include "AUnit.hpp"
+# include "Player.hpp"
 # include "MonsterFactory.hpp"
 
 class IMap;
 class IScoreList;
-class Unit::Player;
 
 class Game : public IGame
 {

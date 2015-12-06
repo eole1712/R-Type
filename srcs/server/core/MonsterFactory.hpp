@@ -2,26 +2,28 @@
 # define MONSTERFACTORY_HPP_
 
 # include <list>
-# include "IMonster.hpp"
-# include "LibLoader.hpp"
+# include <map>
+# include "AMonster.hpp"
 
-# typedef IMonster*	(*fptrNewMonster)();
-# typedef void		(*fptrDeleteMonster)(IMonster*);
+class LibLoader;
+
+typedef Unit::Monster::AMonster*	(*fptrNewMonster)();
+typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class MonsterFactory
 {
 public:
   MonsterFactory();
-  MonsterFactory(std::map<Monster::type, std::string libName>);
+  MonsterFactory(std::map<Unit::Monster::type, std::string>);
   ~MonsterFactory();
 
-  IMonster*	createMonster(Monster::type);
+  Unit::Monster::AMonster*	createMonster(Unit::Monster::type);
 
-  bool		addMonsterType(Monster::type, std::string libName);
-  bool		removeMonsterType(Monster::type);
+  bool				addMonsterType(Unit::Monster::type, std::string libName);
+  bool				removeMonsterType(Unit::Monster::type);
 
 private:
-  std::list<std::pair<Monster::type, LibLoader*> >	_libs;
+  std::list<std::pair<Unit::Monster::type, LibLoader*> >	_libs;
 };
 
 #endif /* !MONSTERFACTORY_HPP_ */

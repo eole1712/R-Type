@@ -56,6 +56,11 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
   return (nullptr);
 }
 
+MonsterFactory*	Game::getMonsterFactory() const
+{
+  return (this->_monsterFactory);
+}
+
 bool	Game::addPlayer(std::string name)
 {
   unsigned long	ixPlayer = this->_players.size();
