@@ -1,19 +1,10 @@
-##
-## Makefile for  in /home/gamain_j/rendu/cpp_nibbler
-##
-## Made by gamain_j gamain_j
-## Login   <gamain_j@epitech.net>
-##
-## Started on  Mon Mar 23 17:22:46 2015 gamain_j gamain_j
-## Last update Sun Dec  6 23:42:35 2015 Grisha GHUKASYAN
-##
-
 CC	=	g++
 
 RM	=	rm -rf
 
 CXXFLAGS+=	-W -Wall -Wextra -Werror -std=c++11
-CXXFLAGS+=	-fPIC -I./ -I./$(LIB1DIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX) -I./$(MISSILEDIR)
+CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-I./ -I./$(LIB1DIR) -I./$(MISSILEDIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX)
 
 LDFLAGS +=
 
@@ -25,11 +16,13 @@ MISCDIRLINUX	=	../misc/linux_specific/
 
 MISCDIRWINDOWS	=	../misc/windows_specific/
 
+LIBSDIR	=	libs/
+
 LIB1DIR	=	monsters/
 
 NAME	=	test
 
-LIB1	=	$(LIB1DIR)MonsterTest.so
+LIB1	=	$(LIBSDIR)MonsterTest.so
 
 SRC	=	main_test.cpp \
 		Game.cpp \
@@ -48,7 +41,9 @@ SRC	=	main_test.cpp \
 		$(MISCDIR)Timer.cpp \
 		$(MISCDIRLINUX)CULibLoader.cpp
 
-LIB1SRC	=	$(LIB1DIR)MonsterTest.cpp
+LIB1SRC	=	AUnit.cpp \
+		AMonster.cpp \
+		$(LIB1DIR)MonsterTest.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

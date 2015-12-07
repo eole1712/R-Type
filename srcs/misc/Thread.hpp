@@ -29,10 +29,10 @@ public:
 		pairdata->second = data;
 #if defined(__linux__)
 		if (pthread_create(&_thread, NULL, &Thread::_runFunc, pairdata) != 0)
-			throw std::exception("");;
+			throw std::exception();
 #elif defined(_WIN32)	
 		if ((_handle = CreateThread(NULL, 0, _runFunc, pairdata, 0, NULL)) == NULL)
-			throw std::exception("");;
+			throw std::exception();
 #endif
 	}
 
@@ -43,11 +43,11 @@ public:
 	void		join()
 	{
 #if defined(__linux__)
-		if (pthread_join(_thread, &tmpRetValue) != 0)
-			throw std::exception("");;
-#elif defined(_WIN32)	
+		if (pthread_join(_thread, NULL) != 0)
+			throw std::exception();
+#elif defined(_WIN32)
 	if (WaitForSingleObject(_handle, INFINITE) == WAIT_FAILED)
-			throw std::exception("");;
+			throw std::exception();
 #endif
 }
 
