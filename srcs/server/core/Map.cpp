@@ -39,7 +39,7 @@ void	Map::addUnit(Unit::AUnit* unit)
 Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
 {
   Unit::team	team = unit->getTeam();
-  auto&	list = ((team == Unit::ALLY) ? (this->_allies) : (this->_enemies));
+  auto&	list = ((team != Unit::ALLY) ? (this->_allies) : (this->_enemies));
 
   for (auto& other : list)
     if (unit->isHitting(other))

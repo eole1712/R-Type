@@ -94,10 +94,9 @@ void	Game::removePlayer(Unit::color color)
 
 void        Game::checkMouvements(Timer &t)
 {
+    std::list<Unit::AUnit*>::iterator it;
     
-    
-    for (std::list<Unit::AUnit*>::iterator it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++)
-    {
+    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         switch ((*it)->getType()) {
             case Unit::PLAYER:
                 Unit::Player::checkMouvement(*it);
@@ -109,8 +108,7 @@ void        Game::checkMouvements(Timer &t)
         }
     }
     
-    for (std::list<Unit::AUnit*>::iterator it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++)
-    {
+    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
         switch ((*it)->getType()) {
             case Unit::MONSTER:
                 ObjectCast::getObject<Unit::Monster::AMonster*>(*it)->move();
@@ -121,7 +119,21 @@ void        Game::checkMouvements(Timer &t)
         }
     }
     
+    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
+        Unit::AUnit *unit = _map->checkInterractions(*it);
+        if (unit) {
+            (*it)->getHit(unit);
+            unit->getHit(*it);
+        }
+    }
     
+    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
+        Unit::AUnit *unit = _map->checkInterractions(*it);
+        if (unit) {
+            (*it)->getHit(unit);
+            unit->getHit(*it);
+        }
+    }
     
     t.reset(60);
     t.start();
