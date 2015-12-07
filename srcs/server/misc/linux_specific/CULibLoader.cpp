@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <dlfcn.h>
-#include "LibLoader.hpp"
+#include "CULibLoader.hpp"
 
-LibLoader::LibLoader(std::string libName, std::string creatorName, std::string destructorName)
+CULibLoader::CULibLoader(std::string libName, std::string creatorName, std::string destructorName)
 {
   if ((this->_libHandle = dlopen(libName.c_str(), RTLD_LAZY)) == NULL)
     {
@@ -22,18 +22,18 @@ LibLoader::LibLoader(std::string libName, std::string creatorName, std::string d
     }
 }
 
-LibLoader::~LibLoader()
+CULibLoader::~CULibLoader()
 {
   if (dlclose(this->_libHandle) != 0)
     std::cerr << dlerror() << std::endl;
 }
 
-LibLoader::LibLoader(LibLoader const& other)
+CULibLoader::CULibLoader(CULibLoader const& other)
   : _libHandle(other._libHandle), _externalCreator(other._externalCreator),
     _externalDestructor(other._externalDestructor)
 {}
 
-LibLoader&	LibLoader::operator=(LibLoader const& other)
+CULibLoader&	CULibLoader::operator=(CULibLoader const& other)
 {
   if (this != &other)
     {
@@ -44,17 +44,17 @@ LibLoader&	LibLoader::operator=(LibLoader const& other)
   return (*this);
 }
 
-void*	LibLoader::getLibHandle() const
+void*	CULibLoader::getLibHandle() const
 {
   return (this->_libHandle);
 }
 
-void*	LibLoader::getExternalCreator() const
+void*	CULibLoader::getExternalCreator() const
 {
   return (this->_externalCreator);
 }
 
-void*	LibLoader::getExternalDestructor() const
+void*	CULibLoader::getExternalDestructor() const
 {
   return (this->_externalDestructor);
 }

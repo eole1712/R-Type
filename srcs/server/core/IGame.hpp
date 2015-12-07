@@ -3,9 +3,11 @@
 
 # include <string>
 # include "AUnit.hpp"
-# include "IScoreList.hpp"
-# include "Player.hpp"
 # include "IMap.hpp"
+# include "Player.hpp"
+
+class IScoreList;
+class MonsterFactory;
 
 class IGame
 {
@@ -19,7 +21,7 @@ public:
   virtual MonsterFactory*	getMonsterFactory() const = 0;
 
   virtual bool			addPlayer(std::string name) = 0;
-  virtual bool			removePlayer(Unit::color) = 0;
+  virtual void			removePlayer(Unit::color) = 0;
 };
 
 #endif /* !IGAME_H_ */

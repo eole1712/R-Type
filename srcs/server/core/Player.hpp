@@ -4,6 +4,7 @@
 
 #include "AUnit.hpp"
 #include "AMissile.hpp"
+#include "Timer.hpp"
 
 #include <string>
 
@@ -42,13 +43,14 @@ public:
     bool            move(dir);
 
 public:
-    virtual type            getType() const;
+    virtual type    getType() const;
 
 private:
     color           _color;
     std::string     _name;
     unsigned int    _score;
     Missile::type   _weapon;
+    Timer           _time;
 };
 
 }

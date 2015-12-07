@@ -5,11 +5,11 @@
 # include <vector>
 # include "IGame.hpp"
 # include "AUnit.hpp"
+# include "Player.hpp"
 # include "MonsterFactory.hpp"
 
 class IMap;
 class IScoreList;
-class Unit::Player;
 
 class Game : public IGame
 {
@@ -24,7 +24,7 @@ public:
   virtual MonsterFactory*	getMonsterFactory() const;
 
   virtual bool			addPlayer(std::string name);
-  virtual bool			removePlayer(Unit::color);
+  virtual void			removePlayer(Unit::color);
 
 private:
   unsigned int			_id;

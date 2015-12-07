@@ -56,9 +56,14 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
   return (nullptr);
 }
 
+MonsterFactory*	Game::getMonsterFactory() const
+{
+  return (this->_monsterFactory);
+}
+
 bool	Game::addPlayer(std::string name)
 {
-  unsigned int	ixPlayer = this->_players.size();
+  unsigned long	ixPlayer = this->_players.size();
 
   if (ixPlayer < 4)
     {
@@ -68,7 +73,7 @@ bool	Game::addPlayer(std::string name)
   return (false);
 }
 
-bool	Game::removePlayer(Unit::color color)
+void	Game::removePlayer(Unit::color color)
 {
   unsigned int	i = 0;
 
@@ -82,5 +87,4 @@ bool	Game::removePlayer(Unit::color color)
       }
     ++i;
   });
-  return (nullptr);
 }
