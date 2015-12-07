@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(rtype)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${HelloCMake_SOURCE_DIR}..)
 
 # Enable debug symbols by default
@@ -17,7 +19,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "rtype")
-add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp)
+add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
