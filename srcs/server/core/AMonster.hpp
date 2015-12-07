@@ -3,6 +3,7 @@
 
 # include "AUnit.hpp"
 # include "AMissile.hpp"
+# include "Timer.hpp"
 
 namespace Unit
 {
@@ -23,11 +24,12 @@ public:
   virtual Unit::type		getType() const;
   virtual Monster::type		getMonsterType() const = 0;
 
-  virtual Missile::AMissile*	shoot() const = 0;
+  virtual Missile::AMissile*	shoot();
   virtual bool			move() = 0;
 
 protected:
-  Missile::type	_weapon;
+  Missile::type     _weapon;
+  Timer             _time;
 };
 
 }
