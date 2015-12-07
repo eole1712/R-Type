@@ -3,6 +3,7 @@
 #include "AMissile.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
+#include "ObjectCast.hpp"
 
 namespace Unit {
 
@@ -13,8 +14,10 @@ namespace Unit {
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, std::string name)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
     {
+        for (int i = 0; i < 4; i++)
+            _isMoving[i] = false;
     }
 
     Player::~Player()
@@ -88,5 +91,30 @@ namespace Unit {
     type                        Player::getType() const
     {
         return PLAYER;
+    }
+    
+    bool                        Player::isMoving(Unit::dir d) const
+    {
+        return _isMoving[d];
+    }
+    
+    bool                        Player::isShooting() const
+    {
+        return _isShooting;
+    }
+    
+    void                        Player::checkMouvement(AUnit *unit)
+    {
+        Unit::Player *player = ObjectCast::getObject<Unit::Player*>(unit);
+        
+        for (Unit::dir i = Unit::UP; i <= Unit::LEFT; i = static_cast<Unit::dir>(static_cast<int>(i) + 1))
+        {
+            if (player->isMoving(i))
+            {
+                player->move(i);
+                if (i == Unit::UP || i == Unit::RIGTH)
+                    i = static_cast<Unit::dir>(static_cast<int>(i) + 1);
+            }
+        }
     }
 }

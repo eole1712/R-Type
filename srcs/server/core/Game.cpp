@@ -8,6 +8,9 @@
 #include "AUnit.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
+#include "Timer.hpp"
+#include "ObjectCast.hpp"
+#include "AMonster.hpp"
 
 Game::Game(unsigned int id)
   : _id(id), _players(4, nullptr)
@@ -87,4 +90,56 @@ void	Game::removePlayer(Unit::color color)
       }
     ++i;
   });
+}
+
+void        Game::checkMouvements(Timer &t)
+{
+    
+    
+    for (std::list<Unit::AUnit*>::iterator it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++)
+    {
+        switch ((*it)->getType()) {
+            case Unit::PLAYER:
+                Unit::Player::checkMouvement(*it);
+                break;
+            case Unit::MISSILE:
+                ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();
+            default:
+                break;
+        }
+    }
+    
+    for (std::list<Unit::AUnit*>::iterator it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++)
+    {
+        switch ((*it)->getType()) {
+            case Unit::MONSTER:
+                ObjectCast::getObject<Unit::Monster::AMonster*>(*it)->move();
+            case Unit::MISSILE:
+                ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();
+            default:
+                break;
+        }
+    }
+    
+    
+    
+    t.reset(60);
+    t.start();
+}
+
+
+void        Game::start()
+{
+    Timer    t(0);
+  
+    while (_players.size() > 0)
+    {
+        if (t.isFinished())
+            checkMouvements(t);
+        std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
+                if (player->isShooting())
+                    player->shoot();
+            });
+        
+    }
 }

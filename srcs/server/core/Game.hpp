@@ -25,6 +25,8 @@ public:
 
   virtual bool			addPlayer(std::string name);
   virtual void			removePlayer(Unit::color);
+  virtual void        start();
+    virtual void        checkMouvements(Timer &);
 
 private:
   unsigned int			_id;

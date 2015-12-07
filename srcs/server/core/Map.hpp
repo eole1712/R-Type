@@ -11,7 +11,7 @@ public:
   Map();
   virtual ~Map();
 
-  virtual std::list<Unit::AUnit*> const&	getList(Unit::team) const;
+  virtual std::list<Unit::AUnit*> &	getList(Unit::team);
 
   virtual void					addUnit(Unit::AUnit*);
   virtual Unit::AUnit*				checkInterractions(Unit::AUnit*) const;

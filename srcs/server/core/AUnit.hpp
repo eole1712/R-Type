@@ -20,7 +20,7 @@ namespace Unit {
     GREEN
   };
 
-  enum dir {
+  enum dir : int {
     UP,
     DOWN,
     RIGTH,

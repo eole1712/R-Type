@@ -40,6 +40,10 @@ public:
     color           getColor() const;
 
 public:
+    bool            isMoving(Unit::dir) const;
+    bool            isShooting() const;
+
+public:
     bool            move(dir);
 
 public:
@@ -51,6 +55,14 @@ private:
     unsigned int    _score;
     Missile::type   _weapon;
     Timer           _time;
+    
+private:
+    bool            _isMoving[4];
+    bool            _isShooting;
+    
+public:
+    static void     checkMouvement(AUnit *player);
+
 };
 
 }

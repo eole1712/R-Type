@@ -21,7 +21,7 @@ Map::~Map()
   });
 }
 
-std::list<Unit::AUnit*> const&	Map::getList(Unit::team team) const
+std::list<Unit::AUnit*> &	Map::getList(Unit::team team)
 {
   if (team == Unit::ALLY)
     return (this->_allies);
