@@ -180,7 +180,7 @@ size_t UdpSocket::receive(std::string &data)
   unsigned int max_size = bufferSize;
   socklen_t fromAddrLen = sizeof(_lastAddr);
 
-  if ((ret = recvfrom(_sd, cdata, max_size, 0, reinterpret_cast<sockaddr*>(&_lastAddr), &fromAddrLen)) <= 0)
+  if ((ret = recvfrom(_sd, reinterpret_cast<char*>(cdata), max_size, 0, reinterpret_cast<sockaddr*>(&_lastAddr), &fromAddrLen)) <= 0)
     return ret;
   data.assign(reinterpret_cast<char*>(cdata), ret);
   return ret;
