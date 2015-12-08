@@ -120,7 +120,7 @@ void UdpSocket::closeSocket()
 bool UdpSocket::setPort(int port)
 {
   #ifdef _WIN32
-  typedef uint32_t in_addr_t
+  typedef uint32_t in_addr_t;
   #endif
   closeSocket();
   _manager->deleteSocket(_sd);
