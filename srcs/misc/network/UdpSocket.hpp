@@ -2,8 +2,8 @@
 # define SOCKET_H_
 
 #ifdef _WIN32
-#pragma comment(lib, "winsock32.lib")
-#include <winsock2.h>
+#pragma comment(lib, "Ws2_32.lib")
+#include "Winsock2.h"
 #else
 #include <sys/socket.h>
 #include <netinet/in.h>
