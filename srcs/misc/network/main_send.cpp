@@ -1,3 +1,6 @@
+#ifdef _WIN32
+#include "windows.h"
+#endif
 #include "ISocket.hpp"
 #include "UdpSocket.hpp"
 #include "NetManager.hpp"

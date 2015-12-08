@@ -18,7 +18,7 @@ UdpSocket::UdpSocket(int port)
 {
   #ifdef _WIN32
   WSADATA WsaData;
-  if (WSAStartup(MAKEWORD(2, 2), &WsData) == false)
+  if (WSAStartup(MAKEWORD(2, 2), &WsaData) == false)
     throw std::runtime_error("Winsock init failed");
   #endif
   _sd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -40,7 +40,7 @@ UdpSocket::UdpSocket(int rcvPort, std::string netAddr)
 {
   #ifdef _WIN32
   WSADATA WsaData;
-  if (WSAStartup(MAKEWORD(2, 2), &WsData) == false)
+  if (WSAStartup(MAKEWORD(2, 2), &WsaData) == false)
     throw std::runtime_error("Winsock init failed");
   #endif
   _sd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -64,7 +64,7 @@ UdpSocket::UdpSocket(int rcvPort, std::string netAddr, NetManager* manager)
 {
   #ifdef _WIN32
   WSADATA WsaData;
-  if (WSAStartup(MAKEWORD(2, 2), &WsData) == false)
+  if (WSAStartup(MAKEWORD(2, 2), &WsaData) == false)
     throw std::runtime_error("Winsock init failed");
   #endif
   _sd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -119,6 +119,9 @@ void UdpSocket::closeSocket()
 
 bool UdpSocket::setPort(int port)
 {
+  #ifdef _WIN32
+  typedef uint32_t in_addr_t
+  #endif
   closeSocket();
   _manager->deleteSocket(_sd);
   _sd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

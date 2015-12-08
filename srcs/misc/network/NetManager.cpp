@@ -183,9 +183,14 @@ void NetManager::loop()
     setFds<sendList>(maxFd, writeFds);
     setFds<receiveList>(maxFd, readFds);
     if (select(maxFd + 1, &readFds, &writeFds, NULL, &tVal) < 0)
+      #ifdef _WIN32
+      if (WSAGetLastError() == WSAENOTSOCK)
+	_ret = ISocket::Fail;
+#else
       if (errno != EBADFD)
 	_ret = ISocket::Fail;
-    //timeout = _timeout - tVal.tv_usec;
+      #endif
+      //timeout = _timeout - tVal.tv_usec;
     doAction<sendList>(writeFds, 0);
     doAction<receiveList>(readFds, 0);
   }
