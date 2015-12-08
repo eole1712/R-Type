@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
       });
       ++id;
       os << "id : " << id << std::endl;
-      sleep(0.005);
+      Sleep(5);
     }
   t.join();
 }
