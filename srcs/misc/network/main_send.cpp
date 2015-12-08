@@ -1,6 +1,6 @@
-#ifdef _WIN32
-#include "windows.h"
-#endif
+// #ifdef _WIN32
+// #include "windows.h"
+// #endif
 #include "ISocket.hpp"
 #include "UdpSocket.hpp"
 #include "NetManager.hpp"
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
       });
       ++id;
       os << "id : " << id << std::endl;
-      usleep(5000);
+      sleep(0.005);
     }
   t.join();
 }
