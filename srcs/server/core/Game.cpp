@@ -139,6 +139,18 @@ void        Game::checkMouvements(Timer &t)
     t.start();
 }
 
+void        Game::shootThemAll()
+{
+    std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
+        if (player->isShooting())
+            player->shoot();
+    });
+    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [](Unit::AUnit* unit){
+        if (unit->getType() == Unit::MONSTER) {
+            ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot();
+        }
+    });
+}
 
 void        Game::start()
 {
@@ -148,10 +160,6 @@ void        Game::start()
     {
         if (t.isFinished())
             checkMouvements(t);
-        std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
-                if (player->isShooting())
-                    player->shoot();
-            });
-        
+        shootThemAll();
     }
 }

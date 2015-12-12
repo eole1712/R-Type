@@ -46,9 +46,12 @@ namespace Unit {
         _weapon = w;
     }
 
-    void                        Player::getHit(AUnit *)
+    void                        Player::getHit(AUnit *unit)
     {
-        //TODO what must do
+        if (unit->getType() == MISSILE || unit->getType() == MONSTER) {
+            if (_hp > 0)
+                _hp--;
+        }
     }
 
     unsigned int                Player::getScore() const
@@ -71,7 +74,7 @@ namespace Unit {
         return _color;
     }
 
-    bool                        Player::move(dir to)
+    bool                        Player::move(dir to, Map &map)
     {
         static int              tab[4][2] =
         {
@@ -80,11 +83,20 @@ namespace Unit {
             {1, 0},
             {-1, 0}
         };
-
+        unsigned int            x = _x, y = _y;
+        
         if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == Map::HEIGHT))
             return false;
         _x += tab[to][0];
         _y += tab[to][1];
+        
+        AUnit *unit = map.checkInterractions(this);
+        if (unit && unit->getType() == OBSTACLE)
+        {
+            _x = x;
+            _y = y;
+            return false;
+        }
         return true;
     }
 
@@ -103,7 +115,7 @@ namespace Unit {
         return _isShooting;
     }
     
-    void                        Player::checkMouvement(AUnit *unit)
+    void                        Player::checkMouvement(AUnit *unit, Map &map)
     {
         Unit::Player *player = ObjectCast::getObject<Unit::Player*>(unit);
         
@@ -111,7 +123,7 @@ namespace Unit {
         {
             if (player->isMoving(i))
             {
-                player->move(i);
+                player->move(i, map);
                 if (i == Unit::UP || i == Unit::RIGTH)
                     i = static_cast<Unit::dir>(static_cast<int>(i) + 1);
             }
