@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 #include "IMap.hpp"
 #include "Map.hpp"
 #include "IScore.hpp"
@@ -190,4 +191,17 @@ void        Game::start()
                   {
                       this->_scores->setScore(player);
                   });
+}
+
+unsigned int             Game::getNewID(unsigned int gameID)
+{
+  static std::map<unsigned int, unsigned int>   tab;
+  std::map<unsigned int, unsigned int>::iterator it;
+ 
+  it = tab.find(gameID);
+  if (it == tab.end())
+    tab[gameID] = 5;
+  else
+    tab[gameID]++;
+  return tab[gameID];
 }
