@@ -1,69 +1,59 @@
 #include <algorithm>
 #include <string>
 #include "BasicMissile.hpp"
+#include "Game.hpp"
 #include "Map.hpp"
 
 namespace Unit {
-
-    namespace Missile {
-
-        BasicMissile::BasicMissile(unsigned int x, unsigned int y, AUnit *origin, dir d, unsigned int id)
-        : AMissile(x, y, std::make_pair(2, 2), 5, origin, d, id)
-        {
-        }
-
-        BasicMissile::~BasicMissile()
-        {
-        }
-
-        bool    BasicMissile::isKillable() const
-        {
-            return true;
-        }
-
-        Missile::type   BasicMissile::getMissileType() const
-        {
-            return BASIC;
-        }
-
-        void            BasicMissile::move()
-        {
-          static int              tab[4][2] =
-          {
-            {0, 1},
-            {0, -1},
-            {1, 0},
-            {-1, 0}
-          };
-          
-          if ((tab[_dir][0] == -1 && !_x) || (tab[_dir][0] == 1 && _x == Map::WIDTH) || (tab[_dir][1] == -1 && !_y) || (tab[_dir][1] == 1 && _y == Map::HEIGHT))
-            _hp = 0;
-          else
-          {
-            _x += tab[_dir][0];
-            _y += tab[_dir][1];
-          }
-        }
-
-        double    BasicMissile::getTime() const
-        {
-            return 1.0;
-        }
-
-        std::string     BasicMissile::getClassName() const
-        {
-            return std::string("BasicMissile");
-        }
-        
-        void            BasicMissile::getHit(AUnit*)
-        {
-          _hp = 0;
-        }
-
-        AMissile*            BasicMissile::clone(unsigned int x, unsigned int y, AUnit *unit, dir d, unsigned int id) const
-        {
-            return new BasicMissile(x, y, unit, d, id);
-        }
+  
+  namespace Missile {
+    
+    BasicMissile::BasicMissile(AUnit *origin, unsigned int id)
+    : AMissile(std::make_pair(2, 2), 5, origin, id)
+    {
     }
-
+    
+    BasicMissile::~BasicMissile()
+    {
+    }
+    
+    bool    BasicMissile::isKillable() const
+    {
+      return true;
+    }
+    
+    Missile::type   BasicMissile::getMissileType() const
+    {
+      return BASIC;
+    }
+    
+    Unit::pos            BasicMissile::move() const
+    {
+      uintmax_t diff = Game::now(_gameID) - _creationTime;
+      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
+      
+      return p;
+    }
+    
+    double    BasicMissile::getTime() const
+    {
+      return 1.0;
+    }
+    
+    std::string     BasicMissile::getClassName() const
+    {
+      return std::string("BasicMissile");
+    }
+    
+    void            BasicMissile::getHit(AUnit*)
+    {
+      _hp = 0;
+    }
+    
+    AMissile*            BasicMissile::clone(AUnit *unit, unsigned int id) const
+    {
+      return new BasicMissile(unit, id);
+    }
+  }
+  
 }

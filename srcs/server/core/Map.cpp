@@ -54,3 +54,10 @@ void            Map::removeUnit(Unit::AUnit* unit)
     else
         _enemies.remove(unit);
 }
+
+bool            Map::isIn(int x, int y)
+{
+  if (x < 0 || y < 0 || x > WIDTH || y > HEIGHT)
+    return false;
+  return true;
+}

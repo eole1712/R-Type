@@ -14,7 +14,7 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-    Player(color, std::string name, unsigned int id);
+    Player(color, std::string name, unsigned int id, unsigned int gameID);
     virtual ~Player();
 
 public:
@@ -45,6 +45,7 @@ public:
     bool            isShooting() const;
 
 public:
+    pos             move() const;
     bool            move(dir, IMap*);
 
 public:
@@ -62,7 +63,7 @@ private:
     bool            _isShooting;
     
 public:
-    static void     checkMouvement(AUnit *player, IMap *map);
+    static void     checkMouvement(Player *player, IMap *map);
 
 };
 

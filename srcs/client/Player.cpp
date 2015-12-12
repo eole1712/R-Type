@@ -12,7 +12,7 @@ namespace Unit {
   const boxType		Player::DEFAULTHITBOX = std::make_pair(10, 10);
   
   Player::Player(color c, std::string name, unsigned int id)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, RIGHT, id),
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, 0),
       _color(c), _name(name), _shooting(0), _weapon(DEFAULTMISSILE), _score(0),
       _anim(std::string("../../ressources/sprites/red ship2.fly.33x36x8.png"), 8, 100, Time::getTimeStamp())
   {
@@ -99,6 +99,11 @@ namespace Unit {
   type			Player::getType() const
   {
     return PLAYER;
+  }
+
+  pos			Player::move() const 
+  {
+
   }
 
   void			Player::render(sf::RenderWindow & window)

@@ -5,16 +5,17 @@
 #include "MonsterTest.hpp"
 #include "MissileFactory.hpp"
 #include "Timer.hpp"
+#include "Game.hpp"
 
 // ébauche de classe pour test
 
 extern "C"
 {
-  Unit::Monster::AMonster*	NewMonster(unsigned int x, unsigned int y, unsigned int id)
+  Unit::Monster::AMonster*	NewMonster(int x, int y, unsigned int id, unsigned int gameID)
   {
-    return (new Unit::Monster::MonsterTest(x, y, id));
+    return (new Unit::Monster::MonsterTest(x, y, id, gameID));
   }
-
+  
   void	DeleteMonster(Unit::Monster::AMonster* monster)
   {
     delete monster;
@@ -23,48 +24,47 @@ extern "C"
 
 namespace Unit
 {
-
-namespace Monster
-{
-
-MonsterTest::MonsterTest(unsigned int x, unsigned int y, unsigned int id)
-  : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, LEFT, id)
-{}
-
-MonsterTest::~MonsterTest()
-{}
-
-Monster::type	MonsterTest::getMonsterType() const
-{
-  return (Monster::MONSTERTEST);
-}
-
-Missile::AMissile*	MonsterTest::shoot()
-{
-    if (!_time.isFinished())
+  
+  namespace Monster
+  {
+    
+    MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID)
+    : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, id, gameID)
+    {}
+    
+    MonsterTest::~MonsterTest()
+    {}
+    
+    Monster::type	MonsterTest::getMonsterType() const
+    {
+      return (Monster::MONSTERTEST);
+    }
+    
+    Missile::AMissile*	MonsterTest::shoot()
+    {
+      if (!_time.isFinished())
         return NULL;
+      
+      Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, this, Game::getNewID(_gameID));
+      
+      _time.reset(m->getTime());
+      return m;
+    }
     
-    Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir, 0);
+    Unit::pos            MonsterTest::move() const
+    {
+      uintmax_t diff = Game::now(_gameID) - _creationTime;
+      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
+      
+      return p;
+    }
     
-    _time.reset(m->getTime());
-    return m;
-}
-
-bool    MonsterTest::move()
-{
-  if (_x == 0)
-    _hp = 0;
-  else
-    this->_x -= 1;
-  return true;
-}
-
-void	MonsterTest::getHit(AUnit*)
-{
-    if (this->_hp > 0)
+    void	MonsterTest::getHit(AUnit*)
+    {
+      if (this->_hp > 0)
         this->_hp -= 1;
-}
-
-}
-
+    }
+    
+  }
+  
 }

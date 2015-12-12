@@ -42,6 +42,7 @@ public:
   virtual void	  render(sf::RenderWindow & window);
   virtual void    getHit(AUnit*);
   virtual type    getType() const;
+  virtual pos     move() const;
     
 private:
   color           _color;

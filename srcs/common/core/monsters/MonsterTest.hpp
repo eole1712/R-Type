@@ -6,25 +6,25 @@
 
 namespace Unit
 {
-
-namespace Monster
-{
-
-class MonsterTest : public AMonster
-{
-public:
-  MonsterTest(unsigned int x, unsigned int y, unsigned int id);
-  virtual ~MonsterTest();
-
-  virtual Monster::type		getMonsterType() const;
-
-  virtual Missile::AMissile*	shoot();
-  virtual bool			move();
-  virtual void			getHit(AUnit*);
-};
-
-}
-
+  
+  namespace Monster
+  {
+    
+    class MonsterTest : public AMonster
+    {
+    public:
+      MonsterTest(int x, int y, unsigned int id, unsigned int gameID);
+      virtual ~MonsterTest();
+      
+      virtual Monster::type		getMonsterType() const;
+      
+      virtual Missile::AMissile*	shoot();
+      virtual pos     move() const;
+      virtual void    getHit(AUnit*);
+    };
+    
+  }
+  
 }
 
 #endif /* !MONSTERTEST_H_ */

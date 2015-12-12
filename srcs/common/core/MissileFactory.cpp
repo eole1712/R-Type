@@ -26,7 +26,7 @@ namespace Unit
 
         void     Factory::init()
         {
-            _map[BASIC] = new BasicMissile(0, 0, NULL, Unit::UP, 0);
+          _map[BASIC] = new BasicMissile(NULL, 0);
         }
 
         Factory* Factory::getInstance()
@@ -39,9 +39,9 @@ namespace Unit
             return (_instance);
         }
 
-        AMissile*   Factory::getObject(Missile::type t, unsigned int x, unsigned int y, AUnit *unit, dir d, unsigned int id)
+        AMissile*   Factory::getObject(Missile::type t, AUnit *unit, unsigned int id)
         {
-          return (_map[t])->clone(x, y, unit, d, id);
+          return (_map[t])->clone(unit, id);
         }
 
         void Factory::destroy()
