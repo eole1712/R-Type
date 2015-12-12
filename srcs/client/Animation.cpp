@@ -2,10 +2,8 @@
 #include "Time.hpp"
 #include "Animation.hpp"
 
-namespace RType
-{
 
-  Animation::Animation(std::string const & image, unsigned int frame, float speed, Time::stamp initTime)
+Animation::Animation(std::string const & image, unsigned int frame, float speed, Time::stamp initTime)
   : _frame(frame), _initTime(initTime), _speed(speed)
 {
   _texture.loadFromFile(image.c_str());
@@ -26,6 +24,4 @@ sf::Sprite const & Animation::getFrame()
   curFrame %= _frame;
   setTextureRect(sf::IntRect(_frameWidth * curFrame, 0, _frameWidth,_frameHeight));
   return *this;
-}
-
 }

@@ -5,9 +5,6 @@
 #include <vector>
 #include "Time.hpp"
 
-namespace RType
-{
-
 class Animation : public sf::Sprite
 {
 public:
@@ -25,8 +22,6 @@ private:
 public:
 
   sf::Sprite const &	getFrame();
-};
-
 };
 
 #endif /* !ANIMATION_HPP_ */
