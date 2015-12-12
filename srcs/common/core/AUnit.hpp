@@ -63,7 +63,7 @@ namespace Unit {
   public:
     virtual type    getType() const = 0;
     virtual dir     getDir() const;
-
+    
   public:
     virtual team    getTeam() const;
     virtual void    setTeam(team t);
