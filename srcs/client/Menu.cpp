@@ -218,7 +218,7 @@ void	Menu::handleLoginEdition(sf::RenderWindow& window, sf::Event& event)
 	_maxLoginSize = true;
       if (event.text.unicode == 8)
 	{
-	  _login.setString(_login.getString().substring(0, _login.getString().getSize()-1));
+	  _login.setString(std::string(_login.getString()).substr(0, _login.getString().getSize()-1));
 	  _maxLoginSize = false;
 	}
     }
