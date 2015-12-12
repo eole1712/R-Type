@@ -7,9 +7,8 @@ namespace Unit {
     
     AMissile::AMissile(unsigned int x, unsigned int y, boxType hitBox,
                        unsigned int dammage, AUnit *unit, dir d, unsigned int id)
-    : AUnit(1, unit->getTeam(), x, y, hitBox, d, id), _dammage(dammage), _origin(unit)
+    : AUnit(1, unit->getTeam(), x, y, hitBox, d, id, unit->getGameID()), _dammage(dammage), _origin(unit)
     {
-      
     }
     
     AMissile::~AMissile()

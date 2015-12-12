@@ -71,7 +71,7 @@ bool	Game::addPlayer(std::string name)
 
   if (ixPlayer < 4)
     {
-      this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name,ixPlayer + 1);
+      this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name,ixPlayer + 1, _id);
       return (true);
     }
   return (false);

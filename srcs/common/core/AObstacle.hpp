@@ -16,7 +16,7 @@ enum type {
 class AObstacle : public AUnit
 {
 public:
-  AObstacle(unsigned int x, unsigned int y, Unit::boxType hitbox, unsigned int id);
+  AObstacle(unsigned int x, unsigned int y, Unit::boxType hitbox, unsigned int id, unsigned int gameID);
   virtual ~AObstacle();
 
   virtual Unit::type		getType() const;

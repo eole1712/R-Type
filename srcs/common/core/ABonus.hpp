@@ -16,7 +16,7 @@ enum type {
 class ABonus : public AUnit
 {
 public:
-  ABonus(unsigned int x, unsigned int y, Unit::boxType hitbox, unsigned int id);
+  ABonus(unsigned int x, unsigned int y, Unit::boxType hitbox, unsigned int id, unsigned int gameID);
   virtual ~ABonus();
 
   virtual Unit::type	getType() const;

@@ -5,14 +5,15 @@
 #include "MonsterTest.hpp"
 #include "MissileFactory.hpp"
 #include "Timer.hpp"
+#include "Game.hpp"
 
 // ébauche de classe pour test
 
 extern "C"
 {
-  Unit::Monster::AMonster*	NewMonster(unsigned int x, unsigned int y, unsigned int id)
+  Unit::Monster::AMonster*	NewMonster(unsigned int x, unsigned int y, unsigned int id, unsigned int gameID)
   {
-    return (new Unit::Monster::MonsterTest(x, y, id));
+    return (new Unit::Monster::MonsterTest(x, y, id, gameID));
   }
 
   void	DeleteMonster(Unit::Monster::AMonster* monster)
@@ -27,8 +28,8 @@ namespace Unit
 namespace Monster
 {
 
-MonsterTest::MonsterTest(unsigned int x, unsigned int y, unsigned int id)
-  : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, LEFT, id)
+MonsterTest::MonsterTest(unsigned int x, unsigned int y, unsigned int id, unsigned int gameID)
+  : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, LEFT, id, gameID)
 {}
 
 MonsterTest::~MonsterTest()
@@ -44,7 +45,7 @@ Missile::AMissile*	MonsterTest::shoot()
     if (!_time.isFinished())
         return NULL;
     
-    Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir, 0);
+  Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir, Game::getNewID(_gameID));
     
     _time.reset(m->getTime());
     return m;

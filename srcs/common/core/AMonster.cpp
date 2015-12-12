@@ -10,8 +10,8 @@ namespace Unit
   {
     
     AMonster::AMonster(unsigned int hp, unsigned int x, unsigned int y,
-                       Unit::boxType hitBox, Missile::type weapon, dir d, unsigned int id)
-    : AUnit(hp, Unit::ENEMY, x, y, hitBox, d, id), _weapon(weapon), _time(0)
+                       Unit::boxType hitBox, Missile::type weapon, dir d, unsigned int id, unsigned int idGame)
+    : AUnit(hp, Unit::ENEMY, x, y, hitBox, d, id, idGame), _weapon(weapon), _time(0)
     {}
     
     AMonster::~AMonster()

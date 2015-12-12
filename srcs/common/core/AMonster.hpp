@@ -18,7 +18,7 @@ enum type {
 class AMonster : public AUnit
 {
 public:
-  AMonster(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox, Missile::type weapon, dir, unsigned int id);
+  AMonster(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox, Missile::type weapon, dir, unsigned int id, unsigned int gameID);
   virtual ~AMonster();
 
   virtual Unit::type		getType() const;

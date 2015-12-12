@@ -37,7 +37,7 @@ namespace Unit {
   class AUnit {
 
   public:
-    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir, unsigned int id);
+    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir, unsigned int id, unsigned int gameID);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);
@@ -69,7 +69,8 @@ namespace Unit {
     virtual void    setTeam(team t);
 
   public:
-    virtual unsigned int getID() const;
+    virtual unsigned int  getID() const;
+    virtual unsigned int  getGameID() const;
 
   protected:
     unsigned int                            _hp;
@@ -79,6 +80,7 @@ namespace Unit {
     boxType                                 _hitBox;
     dir                                     _dir;
     unsigned int                            _id;
+    unsigned int                            _gameID;
   };
 
 }
