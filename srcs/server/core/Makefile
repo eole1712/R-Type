@@ -3,22 +3,27 @@ CC	=	g++
 RM	=	rm -rf
 
 CXXFLAGS+=	-W -Wall -Wextra -Werror -std=c++11
-CXXFLAGS+=	-fPIC
-CXXFLAGS+=	-I./ -I./$(LIB1DIR) -I./$(MISSILEDIR) -I./$(MISCDIR) -I./$(MISCDIRLINUX)
+CXXFLAGS+=	-fPIC -I./ -I./$(MISCDIR) -I./$(COMMONDIR)
+CXXFLAGS+=	-I./$(MONSTERDIR) -I./$(MISSILEDIR)
+CXXFLAGS+=	-I./$(COMMONMISCDIR) -I./$(MISCDIRLINUX)
 
 LDFLAGS +=
 
-MISSILEDIR	=	missiles/
+MISCDIR		=	../misc/
 
-MISCDIR	=	../misc/
+COMMONDIR	=	../../common/core/
 
-MISCDIRLINUX	=	../misc/linux_specific/
+MONSTERDIR	=	$(COMMONDIR)monsters/
 
-MISCDIRWINDOWS	=	../misc/windows_specific/
+MISSILEDIR	=	$(COMMONDIR)missiles/
 
-LIBSDIR	=	libs/
+LIBSDIR		=	$(COMMONDIR)libs/
 
-LIB1DIR	=	monsters/
+COMMONMISCDIR	=	../../common/misc/
+
+MISCDIRLINUX	=	$(COMMONMISCDIR)linux_specific/
+
+MISCDIRWINDOWS	=	$(COMMONMISCDIR)windows_specific/
 
 NAME	=	test
 
@@ -29,21 +34,21 @@ SRC	=	main_test.cpp \
 		Map.cpp \
 		ScoreList.cpp \
 		Score.cpp \
-		MonsterFactory.cpp \
-		MissileFactory.cpp \
-		AUnit.cpp \
 		Player.cpp \
-		AMonster.cpp \
-		AMissile.cpp \
+		$(COMMONDIR)MonsterFactory.cpp \
+		$(COMMONDIR)MissileFactory.cpp \
+		$(COMMONDIR)AUnit.cpp \
+		$(COMMONDIR)AMonster.cpp \
+		$(COMMONDIR)AMissile.cpp \
 		$(MISSILEDIR)BasicMissile.cpp \
-		ABonus.cpp \
-		AObstacle.cpp \
-		$(MISCDIR)Timer.cpp \
-		$(MISCDIRLINUX)CULibLoader.cpp
+		$(COMMONDIR)ABonus.cpp \
+		$(COMMONDIR)AObstacle.cpp \
+		$(MISCDIRLINUX)CULibLoader.cpp \
+		$(MISCDIR)Timer.cpp
 
-LIB1SRC	=	AUnit.cpp \
-		AMonster.cpp \
-		$(LIB1DIR)MonsterTest.cpp
+LIB1SRC	=	$(COMMONDIR)AUnit.cpp \
+		$(COMMONDIR)AMonster.cpp \
+		$(MONSTERDIR)MonsterTest.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
