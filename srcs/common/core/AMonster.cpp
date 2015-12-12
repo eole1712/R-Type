@@ -9,9 +9,9 @@ namespace Unit
   namespace Monster
   {
     
-    AMonster::AMonster(unsigned int hp, unsigned int x, unsigned int y,
-                       Unit::boxType hitBox, Missile::type weapon, dir d, unsigned int id, unsigned int idGame)
-    : AUnit(hp, Unit::ENEMY, x, y, hitBox, d, id, idGame), _weapon(weapon), _time(0)
+    AMonster::AMonster(unsigned int hp, int x, int y,
+                       Unit::boxType hitBox, Missile::type weapon, unsigned int id, unsigned int gameID)
+    : AUnit(hp, Unit::ENEMY, x, y, hitBox, id, gameID), _weapon(weapon), _time(0)
     {}
     
     AMonster::~AMonster()
@@ -27,7 +27,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
       
-      Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir, 0);
+      Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, this, 0);
       
       _time.reset(m->getTime());
       

@@ -2,87 +2,94 @@
 #define AUnit_hpp
 
 #include <list>
+#include "Timer.hpp"
 
 namespace Unit {
-
+  
   enum type {
     PLAYER,
     MONSTER,
     MISSILE,
-    BONUS,
-    OBSTACLE
+    BONUS
   };
-
+  
   enum color : unsigned int {
     BLUE,
     RED,
     YELLOW,
     GREEN
   };
-
+  
   enum dir : int {
     UP,
     DOWN,
     RIGTH,
     LEFT
   };
-
+  
   enum team {
     ALLY,
     ENEMY
   };
-
+  
   typedef std::pair<unsigned int, unsigned int> boxType;
-
+  typedef std::pair<int, int> pos;
+  
   class AUnit {
-
+    
   public:
-    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir, unsigned int id, unsigned int gameID);
+    AUnit(unsigned int hp, team, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);
     AUnit &operator=(AUnit const &);
-
+    
   public:
     virtual bool    isAlive() const;
     virtual void    getHit(AUnit*) = 0;
-
+    
   public:
-    virtual unsigned int    getX() const;
-    virtual unsigned int    getY() const;
-    virtual void            setX(unsigned int x);
-    virtual void            setY(unsigned int y);
-
+    virtual int     getX() const;
+    virtual int     getY() const;
+      
   public:
-    virtual boxType   getHitBox() const;
+    virtual pos     move() const = 0;
+    
+  public:
+    virtual boxType getHitBox() const;
     virtual void    setHitBox(boxType);
-
+    
   public:
     virtual bool    isHitting(AUnit*) const;
-
+    
   public:
     virtual type    getType() const = 0;
-    virtual dir     getDir() const;
     
   public:
     virtual team    getTeam() const;
     virtual void    setTeam(team t);
-
+    
+  public:
+    Timer::time     getCreationTime() const;
+    
   public:
     virtual unsigned int  getID() const;
     virtual unsigned int  getGameID() const;
-
+    
   protected:
     unsigned int                            _hp;
     team                                    _team;
-    unsigned int                            _x;
-    unsigned int                            _y;
+    
+  protected:
+    int                                     _x;
+    int                                     _y;
+    
+  protected:
     boxType                                 _hitBox;
-    dir                                     _dir;
     unsigned int                            _id;
     unsigned int                            _gameID;
+    Timer::time                             _creationTime;
   };
-
 }
 
 #endif /* AUnit_hpp */

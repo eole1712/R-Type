@@ -3,22 +3,22 @@
 
 namespace Unit
 {
-
-namespace Bonus
-{
-
-ABonus::ABonus(unsigned int x, unsigned int y, Unit::boxType hitBox, unsigned int id, unsigned int gameID)
-  : AUnit(1, Unit::ENEMY, x, y, hitBox, UP, id, gameID)
-{}
-
-ABonus::~ABonus()
-{}
-
-Unit::type	ABonus::getType() const
-{
-  return (Unit::MISSILE);
-}
-
-}
-
+  
+  namespace Bonus
+  {
+    
+    ABonus::ABonus(int x, int y, Unit::boxType hitBox, unsigned int id, unsigned int gameID)
+    : AUnit(1, Unit::ENEMY, x, y, hitBox, id, gameID)
+    {}
+    
+    ABonus::~ABonus()
+    {}
+    
+    Unit::type	ABonus::getType() const
+    {
+      return (Unit::MISSILE);
+    }
+    
+  }
+  
 }

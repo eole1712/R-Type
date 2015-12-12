@@ -3,7 +3,7 @@
 #include "Timer.hpp"
 
 Timer::Timer(uintmax_t time)
-  :_time(std::chrono::microseconds(time)),
+  :_time(std::chrono::milliseconds(time)),
    _saveTime(0),
    _clock(std::chrono::system_clock::now()), _freeze(false)
 {
@@ -28,14 +28,14 @@ void	Timer::stop()
 void	Timer::reset()
 {
   _clock = std::chrono::system_clock::now();
-  _saveTime = std::chrono::microseconds(0);
+  _saveTime = std::chrono::milliseconds(0);
 }
 
 void	Timer::reset(uintmax_t time)
 {
   _clock = std::chrono::system_clock::now();
-  _time = std::chrono::microseconds(time);
-  _saveTime = std::chrono::microseconds(0);
+  _time = std::chrono::milliseconds(time);
+  _saveTime = std::chrono::milliseconds(0);
 }
 
 bool	Timer::isFinished()
@@ -48,7 +48,7 @@ uintmax_t			Timer::getElapsedTime() const
   return (getCurTime().count());
 }
 
-std::chrono::microseconds	Timer::getCurTime() const
+std::chrono::milliseconds	Timer::getCurTime() const
 {
   std::chrono::time_point<std::chrono::system_clock> newTime;
 
@@ -58,5 +58,6 @@ std::chrono::microseconds	Timer::getCurTime() const
     }
   else
     newTime = std::chrono::system_clock::now();
-  return (_saveTime + std::chrono::duration_cast<std::chrono::microseconds>((newTime - _clock)));
+  return (_saveTime + std::chrono::duration_cast<std::chrono::milliseconds>((newTime - _clock)));
 }
+

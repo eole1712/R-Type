@@ -16,12 +16,12 @@ public:
   MonsterFactory();
   MonsterFactory(std::map<Unit::Monster::type, std::string>);
   ~MonsterFactory();
-
+  
   Unit::Monster::AMonster*	createMonster(Unit::Monster::type);
-
+  
   bool				addMonsterType(Unit::Monster::type, std::string libName);
   bool				removeMonsterType(Unit::Monster::type);
-
+  
 private:
   std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
 };

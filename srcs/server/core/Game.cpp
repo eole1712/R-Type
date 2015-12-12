@@ -96,29 +96,12 @@ void	Game::removePlayer(Unit::color color)
 void        Game::checkMouvements(Timer &t)
 {
     std::list<Unit::AUnit*>::iterator it;
-    
-    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        switch ((*it)->getType()) {
-            case Unit::PLAYER:
-                Unit::Player::checkMouvement(*it, _map);
-                break;
-            case Unit::MISSILE:
-                ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();
-            default:
-                break;
-        }
-    }
-    
-    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
-        switch ((*it)->getType()) {
-            case Unit::MONSTER:
-                ObjectCast::getObject<Unit::Monster::AMonster*>(*it)->move();
-            case Unit::MISSILE:
-                ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();
-            default:
-                break;
-        }
-    }
+
+  std::for_each(_players.begin(), _players.end(), [&t, this](Unit::Player *player)
+                {
+                  if (t.isFinished())
+                    Unit::Player::checkMouvement(player, _map);
+                });
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         Unit::AUnit *unit = _map->checkInterractions(*it);
@@ -183,8 +166,7 @@ void        Game::start()
   
     while (checkIfAlive())
     {
-        if (t.isFinished())
-            checkMouvements(t);
+        checkMouvements(t);
         shootThemAll();
     }
     std::for_each(_players.begin(), _players.end(), [this](Unit::Player* player)
@@ -204,4 +186,17 @@ unsigned int             Game::getNewID(unsigned int gameID)
   else
     tab[gameID]++;
   return tab[gameID];
+}
+
+Timer::time             Game::now(unsigned int gameID)
+{
+  static std::map<unsigned int, Timer*>   tab;
+  std::map<unsigned int, Timer*>::iterator it;
+  
+  it = tab.find(gameID);
+  if (it == tab.end())
+  {
+    tab[gameID] = new Timer(0);
+  }
+  return tab[gameID]->getElapsedTime();
 }

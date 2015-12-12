@@ -16,14 +16,19 @@ public:
   bool				isFinished();
   uintmax_t			getElapsedTime() const;
 
+public:
+    typedef uintmax_t time;
+    
 private:
   Timer(const Timer &);
   Timer &operator=(const Timer &);
-  std::chrono::microseconds	getCurTime() const;
+  std::chrono::milliseconds	getCurTime() const;
+  
+  
 
 private:
-  std::chrono::microseconds				_time;
-  std::chrono::microseconds				_saveTime;
+  std::chrono::milliseconds				_time;
+  std::chrono::milliseconds				_saveTime;
   std::chrono::time_point<std::chrono::system_clock>	_clock;
   bool							_freeze;
 };

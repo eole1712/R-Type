@@ -1,9 +1,11 @@
+#include "Timer.hpp"
 #include "AUnit.hpp"
+#include "Game.hpp"
 
 namespace Unit {
 
-  AUnit::AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir d, unsigned int id, unsigned int gameID)
-  : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _dir(d), _id(id), _gameID(gameID)
+  AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID)
+  : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(Game::now(gameID))
   {
   }
 
@@ -14,26 +16,6 @@ namespace Unit {
   bool    AUnit::isAlive() const
   {
     return (_hp > 0);
-  }
-
-  unsigned int    AUnit::getX() const
-  {
-    return _x;
-  }
-
-  unsigned int    AUnit::getY() const
-  {
-    return _y;
-  }
-
-  void        AUnit::setX(unsigned int x)
-  {
-    _x = x;
-  }
-
-  void        AUnit::setY(unsigned int y)
-  {
-    _y = y;
   }
 
   boxType     AUnit::getHitBox() const
@@ -50,6 +32,11 @@ namespace Unit {
   {
     return _team;
   }
+
+  void        AUnit::setTeam(team t)
+  {
+    _team = t;
+  }
   
   unsigned int  AUnit::getID() const
   {
@@ -61,22 +48,27 @@ namespace Unit {
     return _gameID;
   }
 
-  void        AUnit::setTeam(team t)
+  Timer::time AUnit::getCreationTime() const
   {
-    _team = t;
+    return _creationTime;
   }
   
-  Unit::dir   AUnit::getDir() const
+  int    AUnit::getX() const
   {
-    return _dir;
+    return move().first;
   }
-
+  
+  int    AUnit::getY() const
+  {
+    return move().second;
+  }
+  
   bool        AUnit::isHitting(AUnit *unit) const
   {
-    if ((((_x + _hitBox.first) > (unit->getX() - unit->getHitBox().first))
-	 || ((_x - _hitBox.first) < (unit->getX() + unit->getHitBox().first)))
-	&& (((_y + _hitBox.second) > (unit->getY() - unit->getHitBox().second))
-	    || ((_y - _hitBox.second) < (unit->getY() + unit->getHitBox().second))))
+    if ((((getX() + _hitBox.first) > (unit->getX() - unit->getHitBox().first))
+	 || ((getX() - _hitBox.first) < (unit->getX() + unit->getHitBox().first)))
+	&& (((getY() + _hitBox.second) > (unit->getY() - unit->getHitBox().second))
+	    || ((getY() - _hitBox.second) < (unit->getY() + unit->getHitBox().second))))
       return true;
     return false;
   }
