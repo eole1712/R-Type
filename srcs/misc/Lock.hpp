@@ -4,6 +4,8 @@
 
 #if defined(__linux__)
 # include <pthread.h>
+# include <stdexcept>
+# include <cerrno>
 #elif defined(_WIN32)
 # include <Windows.h>
 #endif
@@ -20,7 +22,7 @@ public:
 private:
 	#if defined(__linux__)
 	pthread_mutex_t _lock;
-	#elif defined(_WIN32)	
+	#elif defined(_WIN32)
 	CRITICAL_SECTION _lock;
 	#endif
 };
