@@ -1,9 +1,10 @@
-
 #ifndef LOCK_H_
 # define LOCK_H_
 
 #if defined(__linux__)
 # include <pthread.h>
+# include <cerrno>
+# include <stdexcept>
 #elif defined(_WIN32)
 # include <Windows.h>
 #endif
@@ -20,7 +21,7 @@ public:
 private:
 	#if defined(__linux__)
 	pthread_mutex_t _lock;
-	#elif defined(_WIN32)	
+	#elif defined(_WIN32)
 	CRITICAL_SECTION _lock;
 	#endif
 };
