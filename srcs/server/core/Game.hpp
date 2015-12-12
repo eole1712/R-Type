@@ -28,6 +28,7 @@ public:
     virtual void        start();
     virtual void        checkMouvements(Timer &);
     virtual void        shootThemAll();
+    virtual bool        checkIfAlive();
     
 private:
     unsigned int			_id;

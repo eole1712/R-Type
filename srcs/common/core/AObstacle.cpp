@@ -7,8 +7,8 @@ namespace Unit
 namespace Obstacle
 {
 
-AObstacle::AObstacle(unsigned int x, unsigned int y, Unit::boxType hitBox)
-  : AUnit(0, Unit::ENEMY, x, y, hitBox)
+AObstacle::AObstacle(unsigned int x, unsigned int y, Unit::boxType hitBox, unsigned int id)
+    : AUnit(0, Unit::ENEMY, x, y, hitBox, UP, id)
 {}
 
 AObstacle::~AObstacle()
