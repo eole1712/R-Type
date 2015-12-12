@@ -40,39 +40,33 @@ public:
 
 public:
 
-	void		join()
-	{
+	void		join() {
 #if defined(__linux__)
 		if (pthread_join(_thread, NULL) != 0)
 			throw std::exception();
 #elif defined(_WIN32)
-	if (WaitForSingleObject(_handle, INFINITE) == WAIT_FAILED)
+		if (WaitForSingleObject(_handle, INFINITE) == WAIT_FAILED)
 			throw std::exception();
 #endif
-}
+	}
 
 private:
 #if defined(__linux__)
-	static void*	_runFunc(void* data)
-	{
-		std::pair<ThreadFunc, T>*	tmp;
-
-		tmp = static_cast<std::pair<ThreadFunc, T>* >(data);
-		(tmp->first)(tmp->second);
-		delete tmp;
-		pthread_exit(NULL);
-	}
+	static void*	_runFunc(void* data) {
 #elif defined(_WIN32)	
-	static DWORD WINAPI	_runFunc(void* data)
-	{
+	static DWORD WINAPI	_runFunc(void* data) {
+#endif
 		std::pair<ThreadFunc, T>*	tmp;
 
 		tmp = static_cast<std::pair<ThreadFunc, T>* >(data);
 		(tmp->first)(tmp->second);
 		delete tmp;
+#if defined(__linux__)
+		pthread_exit(NULL);
+#elif defined(_WIN32)	
 		ExitThread(0);
-	}
 #endif
+	}
 
 private:
 #if defined(__linux__)
@@ -80,7 +74,6 @@ private:
 #elif defined(_WIN32)	
 	HANDLE _handle;
 #endif
-
 };
 
 #endif /* !THREAD_H_ */
