@@ -9,6 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 #Etape1 sources files
 set(etape1_sources
 	main.cpp
+	Lock.cpp
 )
 
 add_executable(test_thread ${etape1_sources})
