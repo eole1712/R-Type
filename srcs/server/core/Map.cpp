@@ -46,3 +46,11 @@ Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
       return (other);
   return (nullptr);
 }
+
+void            Map::removeUnit(Unit::AUnit* unit)
+{
+    if (unit->getTeam() == Unit::ALLY)
+        _allies.remove(unit);
+    else
+        _enemies.remove(unit);
+}
