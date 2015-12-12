@@ -61,6 +61,7 @@ private:
   void			initColors();
   void			initPlayerColorSelection();
   void			handleMouseClick(sf::RenderWindow&, sf::Event&);
+  void			handleMouseMoved(sf::RenderWindow&, sf::Event&);
   void			handleLoginEdition(sf::RenderWindow&, sf::Event&);
   void			eventHandler(sf::RenderWindow&);
   void			drawFields(sf::RenderWindow &);

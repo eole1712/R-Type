@@ -7,13 +7,8 @@ namespace Unit {
 
     namespace Missile {
 
-        BasicMissile::BasicMissile(unsigned int x, unsigned int y, AUnit *origin, dir d)
-        : AMissile(x, y, std::make_pair(2, 2), 5, origin, d)
-        {
-        }
-
-        BasicMissile::BasicMissile()
-        : AMissile(0, 0, std::make_pair(2, 2), 5, NULL, LEFT)
+        BasicMissile::BasicMissile(unsigned int x, unsigned int y, AUnit *origin, dir d, unsigned int id)
+        : AMissile(x, y, std::make_pair(2, 2), 5, origin, d, id)
         {
         }
 
@@ -64,15 +59,10 @@ namespace Unit {
         {
           _hp = 0;
         }
-      
-        AMissile*            BasicMissile::clone() const
-        {
-            return new BasicMissile;
-        }
 
-        AMissile*            BasicMissile::clone(unsigned int x, unsigned int y, AUnit *unit, dir d) const
+        AMissile*            BasicMissile::clone(unsigned int x, unsigned int y, AUnit *unit, dir d, unsigned int id) const
         {
-            return new BasicMissile(x, y, unit, d);
+            return new BasicMissile(x, y, unit, d, id);
         }
     }
 

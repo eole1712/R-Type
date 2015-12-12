@@ -13,12 +13,12 @@ namespace Monster
 class MonsterTest : public AMonster
 {
 public:
-  MonsterTest(unsigned int x, unsigned int y);
+  MonsterTest(unsigned int x, unsigned int y, unsigned int id);
   virtual ~MonsterTest();
 
   virtual Monster::type		getMonsterType() const;
 
-  virtual Missile::AMissile*	shoot() const;
+  virtual Missile::AMissile*	shoot();
   virtual bool			move();
   virtual void			getHit(AUnit*);
 };

@@ -19,12 +19,12 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "rtype")
-add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp Animation.cpp Time.cpp Menu.cpp)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
-find_package(SFML 2 REQUIRED system window graphics network audio)
+find_package(SFML 2.1 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})

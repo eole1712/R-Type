@@ -14,7 +14,7 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-    Player(color, std::string name);
+    Player(color, std::string name, unsigned int id);
     virtual ~Player();
 
 public:

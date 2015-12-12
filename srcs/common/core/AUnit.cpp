@@ -2,8 +2,8 @@
 
 namespace Unit {
 
-  AUnit::AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir d)
-  : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _dir(d)
+  AUnit::AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir d, unsigned int id)
+  : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _dir(d), _id(id)
   {
   }
 
@@ -49,6 +49,11 @@ namespace Unit {
   team        AUnit::getTeam() const
   {
     return _team;
+  }
+  
+  unsigned int  AUnit::getID() const
+  {
+    return _id;
   }
 
   void        AUnit::setTeam(team t)

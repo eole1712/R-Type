@@ -13,8 +13,8 @@ namespace Unit {
     const unsigned int          Player::STARTY = Map::HEIGHT / 2;
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
-    Player::Player(color c, std::string name)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, RIGTH), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
+    Player::Player(color c, std::string name, unsigned int id)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, RIGTH, id), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
@@ -29,7 +29,8 @@ namespace Unit {
         if (!_time.isFinished())
             return NULL;
 
-        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir);
+      //TODO: FIND A WAY TO GET A ID
+        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir, 0);
 
         _time.reset(m->getTime());
 

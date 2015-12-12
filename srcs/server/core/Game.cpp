@@ -66,11 +66,11 @@ MonsterFactory*	Game::getMonsterFactory() const
 
 bool	Game::addPlayer(std::string name)
 {
-  unsigned long	ixPlayer = this->_players.size();
+  unsigned int	ixPlayer = static_cast<unsigned int>(this->_players.size());
 
   if (ixPlayer < 4)
     {
-      this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name);
+      this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name,ixPlayer + 1);
       return (true);
     }
   return (false);
