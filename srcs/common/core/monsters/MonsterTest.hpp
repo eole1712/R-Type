@@ -18,7 +18,7 @@ public:
 
   virtual Monster::type		getMonsterType() const;
 
-  virtual Missile::AMissile*	shoot() const;
+  virtual Missile::AMissile*	shoot();
   virtual bool			move();
   virtual void			getHit(AUnit*);
 };
