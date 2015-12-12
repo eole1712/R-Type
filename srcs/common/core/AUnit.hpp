@@ -1,6 +1,7 @@
 #ifndef AUnit_hpp
 #define AUnit_hpp
 
+#include <SFML/Graphics.hpp>
 #include <list>
 
 namespace Unit {
@@ -23,7 +24,7 @@ namespace Unit {
   enum dir : int {
     UP,
     DOWN,
-    RIGTH,
+    RIGHT,
     LEFT
   };
 
@@ -70,6 +71,8 @@ namespace Unit {
 
   public:
     virtual unsigned int getID() const;
+
+   virtual   void	 render(sf::RenderWindow & window) = 0;
 
   protected:
     unsigned int                            _hp;

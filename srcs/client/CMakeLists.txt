@@ -1,17 +1,14 @@
 cmake_minimum_required(VERSION 2.6)
-project(rtype)
+project(RType)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${HelloCMake_SOURCE_DIR}..)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 
-# Enable debug symbols by default
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE Debug)
 endif()
-# (you can also set it on the command line: -D CMAKE_BUILD_TYPE=Release)
 
-# Set version information in a config.h file
 set(rtype_VERSION_MAJOR 1)
 set(rtype_VERSION_MINOR 0)
 
@@ -19,7 +16,18 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "rtype")
-add_executable(${EXECUTABLE_NAME} main.cpp Animation.cpp Time.cpp Menu.cpp)
+include_directories(BEFORE ../common/core)
+include_directories(BEFORE ../common/core/missiles)
+include_directories(BEFORE ../common/misc)
+
+add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp Player.cpp Game.cpp ../common/core/ABonus.cpp ../common/core/AMonster.cpp ../common/core/AUnit.cpp ../common/core/MonsterFactory.cpp ../common/core/AMissile.cpp ../common/misc/Timer.cpp ../common/misc/linux_specific/CULibLoader.cpp ../common/core/AObstacle.cpp ../common/core/MissileFactory.cpp ../common/core/missiles/BasicMissile.cpp)
+
+if (WIN32)
+   include_directories(BEFORE ../common/misc/windows_specific)
+else()
+   target_link_libraries(${EXECUTABLE_NAME} -ldl)
+   include_directories(BEFORE ../common/misc/linux_specific)
+endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 

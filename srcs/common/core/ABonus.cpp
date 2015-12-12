@@ -19,6 +19,11 @@ Unit::type	ABonus::getType() const
   return (Unit::MISSILE);
 }
 
+void		ABonus::render(sf::RenderWindow & window)
+{
+  
+}
+
 }
 
 }

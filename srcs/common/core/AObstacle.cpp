@@ -19,6 +19,11 @@ Unit::type	AObstacle::getType() const
   return (Unit::OBSTACLE);
 }
 
+void		AObstacle::render(sf::RenderWindow & window)
+{
+
+}
+
 }
 
 }

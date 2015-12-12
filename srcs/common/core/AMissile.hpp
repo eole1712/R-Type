@@ -27,6 +27,7 @@ namespace Unit {
       virtual void            move() = 0;
 
     public:
+      virtual void	      render(sf::RenderWindow & window);
       virtual Unit::type      getType() const;
       virtual double          getTime() const = 0;
 

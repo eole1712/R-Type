@@ -21,6 +21,7 @@ public:
   AMonster(unsigned int hp, unsigned int x, unsigned int y, boxType hitBox, Missile::type weapon, dir, unsigned int id);
   virtual ~AMonster();
 
+  virtual void			render(sf::RenderWindow & window);
   virtual Unit::type		getType() const;
   virtual Monster::type		getMonsterType() const = 0;
 
