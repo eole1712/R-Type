@@ -9,8 +9,7 @@ namespace Unit {
     
         class BasicMissile : public AMissile{
         public:
-            BasicMissile(unsigned int x, unsigned int y, AUnit *origin, dir);
-            BasicMissile();
+            BasicMissile(unsigned int x, unsigned int y, AUnit *origin, dir, unsigned int id);
             virtual ~BasicMissile();
             
         public:
@@ -25,8 +24,7 @@ namespace Unit {
             virtual void                getHit(AUnit*);
             
         public:
-            virtual AMissile*	clone() const;
-            virtual AMissile*	clone(unsigned int x, unsigned int y, AUnit*, dir) const;
+            virtual AMissile*	clone(unsigned int x, unsigned int y, AUnit*, dir, unsigned int id) const;
             virtual std::string	getClassName() const;
         };
     }

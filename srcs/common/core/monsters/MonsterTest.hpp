@@ -13,7 +13,7 @@ namespace Monster
 class MonsterTest : public AMonster
 {
 public:
-  MonsterTest(unsigned int x, unsigned int y);
+  MonsterTest(unsigned int x, unsigned int y, unsigned int id);
   virtual ~MonsterTest();
 
   virtual Monster::type		getMonsterType() const;

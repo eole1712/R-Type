@@ -14,7 +14,7 @@ namespace Unit {
 
     class AMissile : public AUnit {
     public:
-      AMissile(unsigned int x, unsigned int y, boxType hitBox, unsigned int dammage, AUnit* origin, dir);
+      AMissile(unsigned int x, unsigned int y, boxType hitBox, unsigned int dammage, AUnit* origin, dir, unsigned int id);
       virtual ~AMissile();
 
     public:
@@ -31,8 +31,7 @@ namespace Unit {
       virtual double          getTime() const = 0;
 
     public:
-        virtual AMissile*	clone() const = 0;
-        virtual AMissile*	clone(unsigned int x, unsigned int y, AUnit*, dir) const = 0;
+        virtual AMissile*	clone(unsigned int x, unsigned int y, AUnit*, dir, unsigned int id) const = 0;
         virtual std::string	getClassName() const = 0;
 
     protected:
