@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <thread>
+#include "../Thread.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -25,9 +25,10 @@ int main(int argc, char *argv[])
   std::ofstream os;
 
   os.open("send.txt");
-  std::thread t([nm] {
+  std::function<void(std::nullptr_t)> fptr = [nm] (std::nullptr_t) {
     nm->loop();
-  });
+  };
+  Thread<std::nullptr_t> t(fptr, nullptr);
   while (42)
     {
       std::stringstream ss;
@@ -41,7 +42,11 @@ int main(int argc, char *argv[])
       });
       ++id;
       os << "id : " << id << std::endl;
+      #ifdef _WIN32
       Sleep(5);
+      #else
+      usleep(5000);
+      #endif
     }
   t.join();
 }

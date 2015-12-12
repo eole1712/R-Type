@@ -5,8 +5,10 @@
 #include <list>
 // TODO use our threads
 #include <mutex>
-#include <thread>
-// end TODO
+// #include <thread>
+// end TOD
+
+#include "../Lock.hpp"
 #include "ISocket.hpp"
 
 class NetManager
@@ -16,7 +18,7 @@ private:
 
   typedef std::list<std::pair<std::string&, ISocket::receiveHandler > > receiveList;
 
-  typedef std::mutex Mutex;
+  typedef Lock Mutex;
 public:
   NetManager();
   virtual ~NetManager();

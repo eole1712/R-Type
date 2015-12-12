@@ -2,6 +2,7 @@
 #include <list>
 #include <unistd.h>
 #include "Menu.hpp"
+#include "Time.hpp"
 #include "Animation.hpp"
 
 Menu::Menu(int width, int height)
@@ -19,8 +20,7 @@ Menu::~Menu()
 
 void Menu::initMainView()
 {
-  Animation background(std::string("../../ressources/menu/Background Menu.360x240x4.png"), 4, 4, std::time(NULL));
-  //star.setPosition(50, 50);
+  Animation background(std::string("../../ressources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
   background.scale(2, 2);
   this->initFields();
   sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
@@ -71,14 +71,14 @@ void		Menu::initFields()
   _loginSizeErr.setFont(_loginFont);
   _loginSizeErr.setColor(_loginSizeErrColor);
   _loginSizeErr.setString("16 chars max");
-  _loginSizeErr.setPosition(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1));
+  _loginSizeErr.setPosition(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8);
   _loginSizeErr.scale(0.7, 0.7);
 
   _startButton.setFont(_fieldsFont);
   _startButton.setColor(_startColor);
   _startButton.setString("START");
+  _startButton.setCharacterSize(50);
   _startButton.setPosition(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7);
-  _startButton.scale(1.5, 1.5);
   initPlayerColorSelection();
 }
 
@@ -161,6 +161,9 @@ void	Menu::eventHandler(sf::RenderWindow& window)
 	case sf::Event::Closed:
 	  window.close();
 	  break;
+	case sf::Event::MouseMoved:
+	  this->handleMouseMoved(window, event);
+	  break;
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick(window, event);
 	  break;
@@ -182,7 +185,23 @@ void	Menu::eventHandler(sf::RenderWindow& window)
 
 void	Menu::handleMouseClick(sf::RenderWindow& window, sf::Event& event)
 {
+  if (sf::Mouse::getPosition(window).x >= (_width / 2.3) && sf::Mouse::getPosition(window).x <= (_width / 2.3) + 93 &&
+      sf::Mouse::getPosition(window).y >= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) && sf::Mouse::getPosition(window).y <= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
+    std::cout << "START" << std::endl;
+  std::cout << "origin x pos: " << (_width / 2.3)  << std::endl;
+  std::cout << "origin y pos: " << (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) << std::endl;
   std::cout << "mouse click, posx : " <<  sf::Mouse::getPosition(window).x << std::endl;
+  
+}
+
+void	Menu::handleMouseMoved(sf::RenderWindow& window, sf::Event& event)
+{
+  if (sf::Mouse::getPosition(window).x >= (_width / 2.3) && sf::Mouse::getPosition(window).x <= (_width / 2.3) + 93 &&
+      sf::Mouse::getPosition(window).y >= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) && sf::Mouse::getPosition(window).y <= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
+    _startButton.setColor(_highlightColor);
+  if (sf::Mouse::getPosition(window).x < (_width / 2.3) || sf::Mouse::getPosition(window).x > (_width / 2.3) + 93 &&
+      sf::Mouse::getPosition(window).y < (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) || sf::Mouse::getPosition(window).y > (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
+    _startButton.setColor(_startColor);
 }
 
 void	Menu::handleLoginEdition(sf::RenderWindow& window, sf::Event& event)
