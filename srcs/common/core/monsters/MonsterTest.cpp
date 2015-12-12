@@ -26,7 +26,7 @@ namespace Monster
 {
 
 MonsterTest::MonsterTest(unsigned int x, unsigned int y)
-  : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC)
+  : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, LEFT)
 {}
 
 MonsterTest::~MonsterTest()
@@ -49,9 +49,8 @@ bool	MonsterTest::move()
   return (1);
 }
 
-void	MonsterTest::getHit(AUnit* other)
+void	MonsterTest::getHit(AUnit*)
 {
-  (void)other;
   if (this->_hp > 0)
     this->_hp -= 1;
 }

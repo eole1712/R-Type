@@ -37,7 +37,7 @@ namespace Unit {
   class AUnit {
 
   public:
-    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox);
+    AUnit(unsigned int hp, team t, unsigned int x, unsigned int y, boxType hitBox, dir);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);
@@ -62,6 +62,7 @@ namespace Unit {
 
   public:
     virtual type    getType() const = 0;
+    virtual dir     getDir() const;
 
   public:
     virtual team    getTeam() const;
@@ -73,6 +74,7 @@ namespace Unit {
     unsigned int                            _x;
     unsigned int                            _y;
     boxType                                 _hitBox;
+    dir                                     _dir;
   };
 
 }

@@ -45,7 +45,7 @@ public:
     bool            isShooting() const;
 
 public:
-    bool            move(dir, Map&);
+    bool            move(dir, IMap*);
 
 public:
     virtual type    getType() const;
@@ -62,7 +62,7 @@ private:
     bool            _isShooting;
     
 public:
-    static void     checkMouvement(AUnit *player, Map &map);
+    static void     checkMouvement(AUnit *player, IMap *map);
 
 };
 

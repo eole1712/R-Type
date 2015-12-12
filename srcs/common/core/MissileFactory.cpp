@@ -44,9 +44,9 @@ namespace Unit
           return (_map[t])->clone();
         }
 
-        AMissile*   Factory::getObject(Missile::type t, unsigned int x, unsigned int y, AUnit *unit)
+        AMissile*   Factory::getObject(Missile::type t, unsigned int x, unsigned int y, AUnit *unit, dir d)
         {
-          return (_map[t])->clone(x, y, unit);
+          return (_map[t])->clone(x, y, unit, d);
         }
 
         void Factory::destroy()

@@ -14,7 +14,7 @@ namespace Unit {
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, std::string name)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, RIGTH), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
@@ -29,7 +29,7 @@ namespace Unit {
         if (!_time.isFinished())
             return NULL;
 
-        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this);
+        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this, _dir);
 
         _time.reset(m->getTime());
 
@@ -74,7 +74,7 @@ namespace Unit {
         return _color;
     }
 
-    bool                        Player::move(dir to, Map &map)
+    bool                        Player::move(dir to, IMap *map)
     {
         static int              tab[4][2] =
         {
@@ -90,7 +90,7 @@ namespace Unit {
         _x += tab[to][0];
         _y += tab[to][1];
         
-        AUnit *unit = map.checkInterractions(this);
+        AUnit *unit = map->checkInterractions(this);
         if (unit && unit->getType() == OBSTACLE)
         {
             _x = x;
@@ -115,7 +115,7 @@ namespace Unit {
         return _isShooting;
     }
     
-    void                        Player::checkMouvement(AUnit *unit, Map &map)
+    void                        Player::checkMouvement(AUnit *unit, IMap *map)
     {
         Unit::Player *player = ObjectCast::getObject<Unit::Player*>(unit);
         

@@ -99,7 +99,7 @@ void        Game::checkMouvements(Timer &t)
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         switch ((*it)->getType()) {
             case Unit::PLAYER:
-                Unit::Player::checkMouvement(*it);
+                Unit::Player::checkMouvement(*it, _map);
                 break;
             case Unit::MISSILE:
                 ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();

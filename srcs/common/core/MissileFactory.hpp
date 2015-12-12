@@ -19,7 +19,7 @@ namespace Unit
             static void     destroy();
             void            init();
             AMissile*       getObject(Missile::type);
-            AMissile*       getObject(Missile::type, unsigned int x, unsigned int y, AUnit*);
+            AMissile*       getObject(Missile::type, unsigned int x, unsigned int y, AUnit*, dir);
 
         private:
             Factory(Factory const& other);
