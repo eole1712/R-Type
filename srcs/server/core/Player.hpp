@@ -4,6 +4,7 @@
 
 #include "AUnit.hpp"
 #include "AMissile.hpp"
+#include "Map.hpp"
 #include "Timer.hpp"
 
 #include <string>
@@ -44,7 +45,7 @@ public:
     bool            isShooting() const;
 
 public:
-    bool            move(dir);
+    bool            move(dir, IMap*);
 
 public:
     virtual type    getType() const;
@@ -61,7 +62,7 @@ private:
     bool            _isShooting;
     
 public:
-    static void     checkMouvement(AUnit *player);
+    static void     checkMouvement(AUnit *player, IMap *map);
 
 };
 

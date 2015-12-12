@@ -99,7 +99,7 @@ void        Game::checkMouvements(Timer &t)
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         switch ((*it)->getType()) {
             case Unit::PLAYER:
-                Unit::Player::checkMouvement(*it);
+                Unit::Player::checkMouvement(*it, _map);
                 break;
             case Unit::MISSILE:
                 ObjectCast::getObject<Unit::Missile::AMissile*>(*it)->move();
@@ -127,7 +127,7 @@ void        Game::checkMouvements(Timer &t)
         }
     }
     
-    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
+     for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
         Unit::AUnit *unit = _map->checkInterractions(*it);
         if (unit) {
             (*it)->getHit(unit);
@@ -139,19 +139,55 @@ void        Game::checkMouvements(Timer &t)
     t.start();
 }
 
+void        Game::shootThemAll()
+{
+    std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
+        if (player->isShooting())
+            player->shoot();
+    });
+    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [](Unit::AUnit* unit){
+        if (unit->getType() == Unit::MONSTER) {
+            ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot();
+        }
+    });
+}
+
+bool        Game::checkIfAlive()
+{
+    int     i = 0;
+    std::list<Unit::AUnit*>::iterator it;
+
+    std::for_each(_players.begin(), _players.end(), [&i](Unit::Player *player) {
+        if (player->isAlive())
+            i++;
+    });
+    if (i == 0)
+        return false;
+
+    
+    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
+        if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
+            _map->removeUnit(*it);
+    }
+    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
+        if (((*it)->getType() == Unit::MISSILE || (*it)->getType() == Unit::MONSTER) && (*it)->isAlive() == false)
+            _map->removeUnit(*it);
+    }
+    return true;
+}
 
 void        Game::start()
 {
     Timer    t(0);
   
-    while (_players.size() > 0)
+    while (checkIfAlive())
     {
         if (t.isFinished())
             checkMouvements(t);
-        std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
-                if (player->isShooting())
-                    player->shoot();
-            });
-        
+        shootThemAll();
     }
+    std::for_each(_players.begin(), _players.end(), [this](Unit::Player* player)
+                  {
+                      this->_scores->setScore(player);
+                  });
 }
