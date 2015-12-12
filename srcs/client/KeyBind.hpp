@@ -4,9 +4,6 @@
 #include <map>
 #include "Time.hpp"
 
-namespace RType
-{
-
 template <typename T, typename U>
 class KeyBind
 {
@@ -37,7 +34,7 @@ public:
     for (typename bind::const_iterator b = _bind.begin(); b != _bind.end(); b++)
       {
 	if ((ks = _keyState.find(b->first)) != _keyState.end() && ks->second)
-	  b->second(RType::Time::getTimeStamp() - tick, _keyState, param);
+	  b->second(Time::getTimeStamp() - tick, _keyState, param);
       }
   }
 
@@ -46,7 +43,5 @@ public:
     return _keyState[key];
   }
 };
-
-}
 
 #endif /* !KEYBIND_HPP_ */
