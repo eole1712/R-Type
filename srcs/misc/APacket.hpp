@@ -1,6 +1,9 @@
 #ifndef APACKET_H_
 # define APACKET_H_
 
+# include <cstdint>
+# include <string>
+
 class APacket {
 public:
 	typedef uint16_t idSize;
