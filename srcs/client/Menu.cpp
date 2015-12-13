@@ -11,8 +11,6 @@ Menu::Menu(int width, int height):
   _BRYGColor({sf::Color(0, 0, 255), sf::Color(187, 11, 11), sf::Color(243, 214, 23), sf::Color(20, 148, 5)}),
   _BRYGhighlight({sf::Color(0, 191, 255), sf::Color(255, 48, 48), sf::Color(255, 255, 5), sf::Color(0, 255, 0)})
 {
-  _width = width;
-  _height = height;
   _currentRow = LOGIN;
   _currentPlayerColor = BLUE;
   _maxLoginSize = false;
@@ -50,66 +48,52 @@ void		Menu::initFields()
     std::cout << "error loading Font" << std::endl;
   if (!_loginFont.loadFromFile("../../ressources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
-  
-  _menuFields[0].setFont(_fieldsFont);
+
+  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
   _menuFields[0].setColor(_fieldsColor);
-  _menuFields[0].setString("Login");
   _menuFields[0].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
 
-  _menuFields[1].setFont(_fieldsFont);
+  
+   _menuFields[1] = sf::Text("Color", _fieldsFont, 30);
   _menuFields[1].setColor(_fieldsColor);
-  _menuFields[1].setString("Color");
   _menuFields[1].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5);
 
-  _menuFields[2].setFont(_fieldsFont);
+  _menuFields[2] = sf::Text("Game", _fieldsFont, 30);
   _menuFields[2].setColor(_fieldsColor);
-  _menuFields[2].setString("Game");
   _menuFields[2].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3);
-  
-  _login.setFont(_loginFont);
+
+  _login = sf::Text("Player", _loginFont, 30);
   _login.setColor(_loginColor);
-  _login.setString("Player");
   _login.setPosition(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
 
-  _loginSizeErr.setFont(_loginFont);
+  _loginSizeErr = sf::Text("16 chars max", _loginFont, 30);
   _loginSizeErr.setColor(_loginSizeErrColor);
-  _loginSizeErr.setString("16 chars max");
   _loginSizeErr.setPosition(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8);
   _loginSizeErr.scale(0.7, 0.7);
 
-  _startButton.setFont(_fieldsFont);
+  _startButton = sf::Text("START", _fieldsFont, 50);
   _startButton.setColor(_startColor);
-  _startButton.setString("START");
-  _startButton.setCharacterSize(50);
   _startButton.setPosition(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7);
   initPlayerColorSelection();
 }
 
 void	Menu::initPlayerColorSelection()
 {
-  _playerColor[0].setFont(_fieldsFont);
+  _playerColor[0] = sf::Text("BLUE", _fieldsFont, 21);
   _playerColor[0].setColor(_BRYGColor[0]);
-  _playerColor[0].setString("BLUE");
   _playerColor[0].setPosition(_width / 2, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-  _playerColor[0].scale(0.7, 0.7);
 
-  _playerColor[1].setFont(_fieldsFont);
+  _playerColor[1] = sf::Text("RED", _fieldsFont, 21);
   _playerColor[1].setColor(_BRYGColor[1]);
-  _playerColor[1].setString("RED");
   _playerColor[1].setPosition(_width / 1.78, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-  _playerColor[1].scale(0.7, 0.7);
 
-  _playerColor[2].setFont(_fieldsFont);
+  _playerColor[2] = sf::Text("YELLOW", _fieldsFont, 21);
   _playerColor[2].setColor(_BRYGColor[2]);
-  _playerColor[2].setString("YELLOW");
   _playerColor[2].setPosition(_width / 1.65, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-  _playerColor[2].scale(0.7, 0.7);
 
-  _playerColor[3].setFont(_fieldsFont);
+  _playerColor[3] = sf::Text("GREEN", _fieldsFont, 21);
   _playerColor[3].setColor(_BRYGColor[3]);
-  _playerColor[3].setString("GREEN");
   _playerColor[3].setPosition(_width / 1.45, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-  _playerColor[3].scale(0.7, 0.7);
 }
 
 void	Menu::eventHandler(sf::RenderWindow& window)
