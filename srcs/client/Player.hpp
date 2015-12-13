@@ -39,6 +39,7 @@ public:
 
   void            move(dir, Time::stamp);
 
+  void		  renderUI(sf::RenderWindow & window);  
   virtual void	  render(sf::RenderWindow & window);
   virtual void    getHit(AUnit*);
   virtual type    getType() const;
