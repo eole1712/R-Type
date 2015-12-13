@@ -20,7 +20,9 @@ include_directories(BEFORE ../common/core)
 include_directories(BEFORE ../common/core/missiles)
 include_directories(BEFORE ../common/misc)
 
-add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp Player.cpp Game.cpp ../common/core/ABonus.cpp ../common/core/AMonster.cpp ../common/core/AUnit.cpp ../common/core/MonsterFactory.cpp ../common/core/AMissile.cpp ../common/misc/Timer.cpp ../common/misc/linux_specific/CULibLoader.cpp  ../common/core/MissileFactory.cpp ../common/core/missiles/BasicMissile.cpp)
+# ../common/misc/linux_specific/CULibLoader.cpp
+
+add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp Player.cpp Game.cpp ../common/core/AUnit.cpp ../common/misc/Timer.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/misc/windows_specific)

@@ -1,7 +1,7 @@
 # include "Game.hpp"
 
 Game::Game(std::string host, Unit::color color, std::string name)
-  : _host(host), _localPlayer(color, name, 0), _map({{0, &_localPlayer}}),
+  : _host(host), _localPlayer(color, name, 0), _map({{_localPlayer.getID(), &_localPlayer}}),
     _input({
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->getLocalPlayer()->move(Unit::UP, tick); }},
@@ -56,17 +56,17 @@ void			Game::pollEvent(sf::RenderWindow & window, Time::stamp tick)
       if (event.type == sf::Event::Closed ||
 	  (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 	window.close();
-      
+
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
 	  _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
-      
+
       /*
       else if (event.type == sf::Event::TextEntered)
 	{
 	  if (event.text.unicode < 128)
 	    std::cout << "typed: " << static_cast<char>(event.text.unicode) << std::endl;
-	
+
        }*/
     }
   _input.process(tick, this);
