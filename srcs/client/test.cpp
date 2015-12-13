@@ -10,17 +10,17 @@ int main()
   window.setTitle("R-type");
   window.setVerticalSyncEnabled(true);
   window.setKeyRepeatEnabled(false);
-  
+
  Time::stamp	tick = Time::getTimeStamp();
   int i = 0;
 
   while (window.isOpen())
     {
       bra.pollEvent(window, tick);
-      bra.render(window);
-      window.clear();
-      window.display();
       tick = Time::getTimeStamp();
+      window.clear();
+      bra.render(window);
+      window.display();
     }
 
   return 0;

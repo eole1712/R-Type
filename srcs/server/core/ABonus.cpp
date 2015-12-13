@@ -18,11 +18,7 @@ namespace Unit
     {
       return (Unit::MISSILE);
     }
-
-    void		ABonus::render(sf::RenderWindow & window)
-	{
-  
-	}
+    
   }
   
 }

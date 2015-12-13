@@ -20,8 +20,6 @@ namespace Unit
             virtual ~ABonus();
           
         public:
-
-			virtual void			render(sf::RenderWindow & window);
             virtual Unit::type      getType() const;
             virtual Bonus::type     getBonusType() const = 0;          
             virtual pos             move() const = 0;

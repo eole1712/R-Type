@@ -22,12 +22,12 @@ Menu::~Menu()
 
 void Menu::initMainView()
 {
-  Animation background(std::string("../../ressources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
+  Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
   background.scale(2, 2);
   this->initFields();
   sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
   window.setVerticalSyncEnabled(true);
-  
+
   while (window.isOpen())
     {
       eventHandler(window);
@@ -44,16 +44,16 @@ void Menu::initMainView()
 
 void		Menu::initFields()
 {
-  if (!_fieldsFont.loadFromFile("../../ressources/menu/fonts/BebasNeue Bold.ttf"))
+  if (!_fieldsFont.loadFromFile("../../resources/menu/fonts/BebasNeue Bold.ttf"))
     std::cout << "error loading Font" << std::endl;
-  if (!_loginFont.loadFromFile("../../ressources/menu/fonts/BebasNeue Book.ttf"))
+  if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
   _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
   _menuFields[0].setColor(_fieldsColor);
   _menuFields[0].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
 
-  
+
    _menuFields[1] = sf::Text("Color", _fieldsFont, 30);
   _menuFields[1].setColor(_fieldsColor);
   _menuFields[1].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5);
@@ -136,7 +136,7 @@ void	Menu::handleMouseClick(sf::RenderWindow& window, sf::Event& event)
   std::cout << "origin x pos: " << (_width / 2.3)  << std::endl;
   std::cout << "origin y pos: " << (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) << std::endl;
   std::cout << "mouse click, posx : " <<  sf::Mouse::getPosition(window).x << std::endl;
-  
+
 }
 
 void	Menu::handleMouseMoved(sf::RenderWindow& window, sf::Event& event)
@@ -215,7 +215,7 @@ void	Menu::changeCurrentRow()
       break;
     }
 }
- 
+
 void	Menu::changeCurrentColor(sf::Event& event)
 {
   switch (event.key.code)

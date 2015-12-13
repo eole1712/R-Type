@@ -33,12 +33,6 @@ namespace Unit
       
       return m;
     }
-
-    void		AMonster::render(sf::RenderWindow & window)
-    {
-      
-    }
-
   }
   
 }

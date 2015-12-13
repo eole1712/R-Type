@@ -44,7 +44,7 @@ SRC	=	main_test.cpp \
 		$(COMMONDIR)ABonus.cpp \
 		$(COMMONDIR)AObstacle.cpp \
 		$(MISCDIRLINUX)CULibLoader.cpp \
-		$(COMMONMISCDIR)Timer.cpp
+		$(MISCDIR)Timer.cpp
 
 LIB1SRC	=	$(COMMONDIR)AUnit.cpp \
 		$(COMMONDIR)AMonster.cpp \

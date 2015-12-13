@@ -2,7 +2,6 @@
 #define AUnit_hpp
 
 #include <list>
-#include <SFML/Graphics.hpp>
 #include "Timer.hpp"
 
 namespace Unit {
@@ -23,8 +22,8 @@ namespace Unit {
   
   enum dir : int {
     UP,
-      DOWN,
-      RIGHT,
+    DOWN,
+    RIGTH,
     LEFT
   };
   
@@ -65,7 +64,6 @@ namespace Unit {
     
   public:
     virtual type    getType() const = 0;
-    virtual void    render(sf::RenderWindow & window) = 0;
     
   public:
     virtual team    getTeam() const;
