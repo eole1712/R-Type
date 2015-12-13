@@ -28,9 +28,5 @@ namespace Unit {
     {
       return MISSILE;
     }
-    void	    AMissile::render(sf::RenderWindow & window)
-    {
-      
-    }
- }
+  }
 }
