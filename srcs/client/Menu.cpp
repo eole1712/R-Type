@@ -5,7 +5,11 @@
 #include "Time.hpp"
 #include "Animation.hpp"
 
-Menu::Menu(int width, int height)
+Menu::Menu(int width, int height):
+  _width(width), _height(height), _fieldsColor(102,78,255), _loginColor(178,102,255),
+  _loginSizeErrColor(204, 0, 0), _highlightColor(255, 255, 255), _startColor(121, 248, 248),
+  _BRYGColor({sf::Color(0, 0, 255), sf::Color(187, 11, 11), sf::Color(243, 214, 23), sf::Color(20, 148, 5)}),
+  _BRYGhighlight({sf::Color(0, 191, 255), sf::Color(255, 48, 48), sf::Color(255, 255, 5), sf::Color(0, 255, 0)})
 {
   _width = width;
   _height = height;
@@ -42,7 +46,6 @@ void Menu::initMainView()
 
 void		Menu::initFields()
 {
-  this->initColors();
   if (!_fieldsFont.loadFromFile("../../ressources/menu/fonts/BebasNeue Bold.ttf"))
     std::cout << "error loading Font" << std::endl;
   if (!_loginFont.loadFromFile("../../ressources/menu/fonts/BebasNeue Book.ttf"))
@@ -107,48 +110,6 @@ void	Menu::initPlayerColorSelection()
   _playerColor[3].setString("GREEN");
   _playerColor[3].setPosition(_width / 1.45, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
   _playerColor[3].scale(0.7, 0.7);
-}
-
-void	Menu::initColors()
-{
-  _fieldsColor.r = 102;
-  _fieldsColor.g = 78;
-  _fieldsColor.b = 255;
-
-  _loginColor.r = 178;
-  _loginColor.g = 102;
-  _loginColor.b = 255;
-
-  _loginSizeErrColor.r = 204;
-
-  _highlightColor.r = 255;
-  _highlightColor.g = 255;
-  _highlightColor.b = 255;
-
-  _BRYGColor[0].b = 255;
-  _BRYGColor[1].r = 187;
-  _BRYGColor[1].g = 11;
-  _BRYGColor[1].b = 11;
-  _BRYGColor[2].r = 243;
-  _BRYGColor[2].g = 214;
-  _BRYGColor[2].b = 23;
-  _BRYGColor[3].r = 20;
-  _BRYGColor[3].g = 148;
-  _BRYGColor[3] .b = 5;
-  
-  _BRYGhighlight[0].g = 191;
-  _BRYGhighlight[0].b = 255;
-  _BRYGhighlight[1].r = 255;
-  _BRYGhighlight[1].g = 48;
-  _BRYGhighlight[1].b = 48;
-  _BRYGhighlight[2].r = 255;
-  _BRYGhighlight[2].g = 255;
-  _BRYGhighlight[2].b = 5;
-  _BRYGhighlight[3].g = 255;
-
-  _startColor.r = 121;
-  _startColor.g = 248;
-  _startColor.b = 248;
 }
 
 void	Menu::eventHandler(sf::RenderWindow& window)
