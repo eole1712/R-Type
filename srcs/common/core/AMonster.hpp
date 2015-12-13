@@ -21,6 +21,7 @@ namespace Unit
             AMonster(unsigned int hp, int x, int y, boxType hitBox, Missile::type weapon, unsigned int id, unsigned int gameID);
             virtual ~AMonster();
             
+  			virtual void				render(sf::RenderWindow & window);
             virtual Unit::type          getType() const;
             virtual Monster::type       getMonsterType() const = 0;
             
