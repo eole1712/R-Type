@@ -16,17 +16,17 @@ namespace Unit {
   
   enum color : unsigned int {
     BLUE,
-      RED,
-      YELLOW,
+    RED,
+    YELLOW,
     GREEN
-      };
+  };
   
   enum dir : int {
     UP,
       DOWN,
       RIGHT,
     LEFT
-      };
+  };
   
   enum team {
     ALLY,
