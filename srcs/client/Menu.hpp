@@ -12,12 +12,20 @@
 
 class Menu
 {
-
+private:
   enum Row : unsigned int{
     LOGIN,
     HOST,
     SERVER
   };
+
+public:
+  typedef struct	t_gameData
+  {
+    std::string		_gameName;
+    unsigned int	_playerNumber;
+    std::string		_daySentence;
+  }			s_gameData;
   
 private:
   int			_width;
@@ -33,10 +41,12 @@ private:
   Editable		_host;
   ClickableBtn		_loginSizeErr;
   ClickableBtn		_startButton;
+  ClickableBtn		_connectButton;
   sf::Font		_fieldsFont;
   sf::Font		_loginFont;
   Row			_currentRow;
   bool			_maxLoginSize;
+  std::list<s_gameData>	_gamesData;
   
 public:
   Menu(int width, int height);
@@ -51,11 +61,13 @@ private:
   void			handleMouseClick(sf::Event&);
   void			handleMouseMoved(sf::Event&);
   void			handleLoginEdition(sf::Event&);
+  void			handleHostEdition(sf::Event&);
   void			eventHandler();
   void			drawFields();
   void			drawEditable();
   void			drawLoginSizeErr();
   void			changeCurrentRow();
+  void			addGame(std::string, unsigned int, std::string);
   //  void			changeCurrentColor(sf::Event&);
   /*std::list<Animation>	addRandomStars();
     void			starDrawer(std::list<Animation>, sf::RenderWindow &);*/
