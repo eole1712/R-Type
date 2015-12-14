@@ -4,6 +4,7 @@
 #include "Menu.hpp"
 #include "Time.hpp"
 #include "Animation.hpp"
+#include "ClickableBtn.hpp"
 
 Menu::Menu(int width, int height):
   _width(width), _height(height), _fieldsColor(102,78,255), _loginColor(178,102,255),
@@ -33,7 +34,6 @@ void Menu::initMainView()
       eventHandler(window);
       window.clear();
       window.draw(background.getFrame());
-      usleep(50000);
       this->drawFields(window);
       this->drawLogin(window);
       this->drawLoginSizeErr(window);
@@ -49,10 +49,11 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
+  /*  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
   _menuFields[0].setColor(_fieldsColor);
   _menuFields[0].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
-
+  */
+  //_menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsColor);
 
    _menuFields[1] = sf::Text("Color", _fieldsFont, 30);
   _menuFields[1].setColor(_fieldsColor);
@@ -62,14 +63,15 @@ void		Menu::initFields()
   _menuFields[2].setColor(_fieldsColor);
   _menuFields[2].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3);
 
+  /*
   _login = sf::Text("Player", _loginFont, 30);
   _login.setColor(_loginColor);
-  _login.setPosition(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
-
-  _loginSizeErr = sf::Text("16 chars max", _loginFont, 30);
+  _login.setPosition(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);*/
+  _login = ClickableBtn(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "16 chars max", _loginFont, _loginColor);
+  
+  _loginSizeErr = sf::Text("16 chars max", _loginFont, 21);
   _loginSizeErr.setColor(_loginSizeErrColor);
   _loginSizeErr.setPosition(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8);
-  _loginSizeErr.scale(0.7, 0.7);
 
   _startButton = sf::Text("START", _fieldsFont, 50);
   _startButton.setColor(_startColor);
@@ -153,17 +155,17 @@ void	Menu::handleLoginEdition(sf::RenderWindow& window, sf::Event& event)
 {
   if (_currentRow == LOGIN)
     {
-      if (_login.getString().getSize() <= 16)
+      if (_login.getClickableBtn().getString().getSize() <= 16)
 	{
 	  _maxLoginSize = false;
 	  if (event.text.unicode >= 32 && event.text.unicode <= 126)
-	    _login.setString(_login.getString() + static_cast<char>(event.text.unicode));
+	    _login.getClickableBtn().setString(_login.getClickableBtn().getString() + static_cast<char>(event.text.unicode));
 	}
       else
 	_maxLoginSize = true;
       if (event.text.unicode == 8)
 	{
-	  _login.setString(std::string(_login.getString()).substr(0, _login.getString().getSize()-1));
+	  _login.getClickableBtn().setString(std::string(_login.getClickableBtn().getString()).substr(0, _login.getClickableBtn().getString().getSize()-1));
 	  _maxLoginSize = false;
 	}
     }
@@ -191,7 +193,11 @@ void Menu::drawFields(sf::RenderWindow &window)
 
 void	Menu::drawLogin(sf::RenderWindow& window)
 {
-  window.draw(_login);
+  std::string login =  _login.getClickableBtn().getString();
+  std::cout << "before draw login" << std::endl;
+  std::cout << "_login text = " << login << std::endl;
+  window.draw(_login.getClickableBtn());
+  std::cout << "after draw login" << std::endl;
 }
 
 void	Menu::drawLoginSizeErr(sf::RenderWindow& window)
