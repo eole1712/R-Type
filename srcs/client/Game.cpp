@@ -1,8 +1,11 @@
 # include "Game.hpp"
 
-Game::Game(std::string host, Unit::color color, std::string name)
-  : _host(host), _localPlayer(color, name, 0), _map({{_localPlayer.getID(), &_localPlayer}}),
+Game::Game(sf::RenderWindow & window, Unit::Player & player)
+  : _window(window), /* _thread(&thread, this),*/ _tick(Time::getTimeStamp()), _localPlayer(player),
+    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false),
     _input({
+      {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->setFinish(); }},
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->getLocalPlayer()->move(Unit::UP, tick); }},
       {{sf::Keyboard::Down, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
@@ -11,27 +14,59 @@ Game::Game(std::string host, Unit::color color, std::string name)
 	{ param->getLocalPlayer()->move(Unit::RIGHT, tick); }},
       {{sf::Keyboard::Left, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->getLocalPlayer()->move(Unit::LEFT, tick); }},
-      {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+      {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{
 	  param->getLocalPlayer()->shootLoad();
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}},
-      {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+      {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{
 	  param->getLocalPlayer()->shootSend();
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
       })
 {
+  //_thread.join();
+  loop();
 }
 
 Game::~Game()
 {
+  
+}
+
+bool			Game::getFinish() const
+{
+  return _finish;
+}
+
+void			Game::setFinish()
+{
+  _finish = true;
 }
 
 Unit::Player*		Game::getLocalPlayer()
 {
   return &_localPlayer;
+}
+
+/*
+void			Game::thread(Game * _this)
+{
+  this = _this;
+  loop();
+}*/
+
+void			Game::loop()
+{
+  while (!_finish)
+    {
+      pollEvent();
+      _tick = Time::getTimeStamp();
+      _window.clear();
+      render();
+      _window.display();
+    }
 }
 
 void			Game::connectUnit(Unit::AUnit & unit)
@@ -47,15 +82,25 @@ void			Game::disconnectUnit(unsigned int id)
     _map.erase(i);
 }
 
-void			Game::pollEvent(sf::RenderWindow & window, Time::stamp tick)
+void			Game::pollEvent()
 {
   sf::Event event;
 
-  while (window.pollEvent(event))
+  if (!_window.isOpen())
+    {
+      _finish = true;
+      return ;
+    }
+
+  // network :
+  // connect / disconnect Unit
+  // send player move event to game
+  
+  while (_window.pollEvent(event))
     {
       if (event.type == sf::Event::Closed ||
 	  (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
-	window.close();
+	_window.close();
 
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
@@ -69,11 +114,11 @@ void			Game::pollEvent(sf::RenderWindow & window, Time::stamp tick)
 
        }*/
     }
-  _input.process(tick, this);
+  _input.process(_tick, this);
 }
 
-void			Game::render(sf::RenderWindow & window)
+void			Game::render()
 {
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
-    i->second->render(window);
+    i->second->render(_window);
 }

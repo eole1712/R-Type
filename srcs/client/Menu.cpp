@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "Menu.hpp"
 #include "Time.hpp"
+#include "Game.hpp"
 #include "Animation.hpp"
 #include "ClickableBtn.hpp"
 
@@ -28,6 +29,7 @@ void Menu::initMainView()
   this->initFields();
   sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
   window.setVerticalSyncEnabled(true);
+  window.setKeyRepeatEnabled(false);
 
   while (window.isOpen())
     {
@@ -134,7 +136,14 @@ void	Menu::handleMouseClick(sf::RenderWindow& window, sf::Event& event)
 {
   if (sf::Mouse::getPosition(window).x >= (_width / 2.3) && sf::Mouse::getPosition(window).x <= (_width / 2.3) + 93 &&
       sf::Mouse::getPosition(window).y >= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) && sf::Mouse::getPosition(window).y <= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
-    std::cout << "START" << std::endl;
+    {
+      Unit::Player	player(Unit::RED, _login.getClickableBtn().getString(), 0);
+      Game		game(window, player);
+
+      while (!game.getFinish())
+	{ 
+	}
+    }
   std::cout << "origin x pos: " << (_width / 2.3)  << std::endl;
   std::cout << "origin y pos: " << (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) << std::endl;
   std::cout << "mouse click, posx : " <<  sf::Mouse::getPosition(window).x << std::endl;

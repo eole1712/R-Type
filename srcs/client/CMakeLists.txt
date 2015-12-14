@@ -19,14 +19,16 @@ set(EXECUTABLE_NAME "rtype")
 include_directories(BEFORE ../common/core)
 include_directories(BEFORE ../common/core/missiles)
 include_directories(BEFORE ../common/misc)
+include_directories(BEFORE ../misc)
 
 # ../common/misc/linux_specific/CULibLoader.cpp
 
-add_executable(${EXECUTABLE_NAME} test.cpp Animation.cpp Time.cpp Player.cpp Game.cpp ../common/core/AUnit.cpp ../common/misc/Timer.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp Menu.cpp Animation.cpp ClickableBtn.cpp Time.cpp Timer.cpp Player.cpp Game.cpp AUnit.cpp  ../misc/Lock.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/misc/windows_specific)
 else()
+   target_link_libraries(${EXECUTABLE_NAME} -lpthread)
    target_link_libraries(${EXECUTABLE_NAME} -ldl)
    include_directories(BEFORE ../common/misc/linux_specific)
 endif()

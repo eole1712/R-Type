@@ -3,6 +3,8 @@
 
 # include <list>
 # include <SFML/Graphics.hpp>
+//# include "Thread.hpp"
+//# include "Lock.hpp"
 # include "Time.hpp" 
 # include "Key.hpp"
 # include "AUnit.hpp"
@@ -14,25 +16,31 @@ class IScoreList;
 class Game
 {
 public:
-  Game(std::string host, Unit::color color, std::string name);
+  Game(sf::RenderWindow & window, Unit::Player & player);
   virtual ~Game();
 
 public:  
   Unit::Player*		getLocalPlayer();
-
+  void			setFinish();
+  bool			getFinish() const;
   void			connectUnit(Unit::AUnit &);
   void			disconnectUnit(unsigned int);
 
-  void			pollEvent(sf::RenderWindow &, Time::stamp);
-  void			render(sf::RenderWindow &);
+private:
+  //void			thread(Game * _this);
+  void			loop();
+  void			pollEvent();
+  void			render();
 
   typedef std::map<unsigned int, Unit::AUnit *> RemoteMap;
 
 private:
-  const std::string		_host;
-  Unit::Player			_localPlayer;
+  sf::RenderWindow &		_window;
+  //Thread<Game *>		_thread;
+  Time::stamp			_tick;
+  Unit::Player &		_localPlayer;
   RemoteMap			_map;
-  
+  bool				_finish;  
   Key::Bind<Game *>		_input;
   // std::list<Unit::Player *>	_player;
 };

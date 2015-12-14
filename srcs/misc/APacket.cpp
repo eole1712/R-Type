@@ -1,7 +1,7 @@
 #include "APacket.hpp"
 
 	APacket::APacket(uint8_t type) {
-		_data.resize(kMaxSize);
+		_data.resize(kMaxPacketSize);
 		_data.replace(sizeof(APacket::idSize),
 			sizeof(APacket::packetTypeSize),
 			reinterpret_cast<const char*>(&type),
