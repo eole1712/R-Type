@@ -14,7 +14,7 @@
 #include "AMonster.hpp"
 
 Game::Game(unsigned int id)
-: _id(id), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map)
+: _id(id), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id)
 {
 }
 
@@ -158,10 +158,7 @@ void        Game::start()
   
   while (checkIfAlive())
   {
-    if ((t.getElapsedTime() % 10000) == 0)
-    {
-      _waveManager.addWave(Monster::WaveManager::ClassicWave(_id));
-    }
+    _waveManager.execConfig(t);
     checkMouvements(t);
     shootThemAll();
     _waveManager.nextAction();
