@@ -16,6 +16,7 @@ public:
   virtual ~Networker();
   APacket* getLastPacket();
   void start();
+  void answer(APacket* pack, int id);
 protected:
   void send(APacket*, int id);
 protected:
