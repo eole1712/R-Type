@@ -6,49 +6,36 @@
 #include <iostream>
 #include "Animation.hpp"
 #include "ClickableBtn.hpp"
+#include "Editable.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 3
-#define NUMBER_OF_PLAYER_COLOR 4
 
 class Menu
 {
 
-  enum Row {
+  enum Row : unsigned int{
     LOGIN,
-    COLOR,
-    GAME
-  };
-
-  enum PlayerColor {
-    BLUE,
-    RED,
-    YELLOW,
-    GREEN
+    HOST,
+    SERVER
   };
   
 private:
   int			_width;
   int			_height;
+  sf::RenderWindow	_window;
   sf::Color		_fieldsColor;
   sf::Color		_loginColor;
   sf::Color		_loginSizeErrColor;
   sf::Color		_highlightColor;
   sf::Color		_startColor;
-  sf::Color		_BRYGColor[NUMBER_OF_PLAYER_COLOR];
-  sf::Color		_BRYGhighlight[NUMBER_OF_PLAYER_COLOR];
-  sf::Text		_menuFields[MAX_NUMBER_OF_FIELDS];
-  ClickableBtn		_login;
-  sf::Text		_loginSizeErr;
-  sf::Text		_playerColor[NUMBER_OF_PLAYER_COLOR];
-  sf::Text		_startButton;
+  ClickableBtn		_menuFields[MAX_NUMBER_OF_FIELDS];
+  Editable		_login;
+  Editable		_host;
+  ClickableBtn		_loginSizeErr;
+  ClickableBtn		_startButton;
   sf::Font		_fieldsFont;
   sf::Font		_loginFont;
-  sf::Color		_blueColor;
-  sf::Color		_redColor;
-  sf::Color		_yellowColor;
-  sf::Color		_greenColor;
   Row			_currentRow;
-  PlayerColor		_currentPlayerColor;
   bool			_maxLoginSize;
   
 public:
@@ -61,15 +48,15 @@ private:
   void			initFields();
   void			initColors();
   void			initPlayerColorSelection();
-  void			handleMouseClick(sf::RenderWindow&, sf::Event&);
-  void			handleMouseMoved(sf::RenderWindow&, sf::Event&);
-  void			handleLoginEdition(sf::RenderWindow&, sf::Event&);
-  void			eventHandler(sf::RenderWindow&);
-  void			drawFields(sf::RenderWindow &);
-  void			drawLogin(sf::RenderWindow&);
-  void			drawLoginSizeErr(sf::RenderWindow&);
+  void			handleMouseClick(sf::Event&);
+  void			handleMouseMoved(sf::Event&);
+  void			handleLoginEdition(sf::Event&);
+  void			eventHandler();
+  void			drawFields();
+  void			drawEditable();
+  void			drawLoginSizeErr();
   void			changeCurrentRow();
-  void			changeCurrentColor(sf::Event&);
+  //  void			changeCurrentColor(sf::Event&);
   /*std::list<Animation>	addRandomStars();
     void			starDrawer(std::list<Animation>, sf::RenderWindow &);*/
 };
