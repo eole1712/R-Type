@@ -30,6 +30,6 @@ bool	ServerConnexionPacket::getStatus() {
 }
 
 std::string	ServerConnexionPacket::getServerString() {
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(bool), sizeof(kServerStringSize)).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(bool), kServerStringSize).c_str()));
 }
 

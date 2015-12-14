@@ -16,7 +16,7 @@ uint32_t	ClientGameConnectPacket::getRoomId() {
 }
 
 std::string ClientGameConnectPacket::getRoomName() {
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t), sizeof(kRoomNameSize)).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t), kRoomNameSize).c_str()));
 }
 
 void ClientGameConnectPacket::setRoomId(uint32_t id) {

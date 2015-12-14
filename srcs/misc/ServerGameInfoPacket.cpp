@@ -20,7 +20,7 @@ uint8_t ServerGameInfoPacket::getRoomSlots() {
 }
 
 std::string ServerGameInfoPacket::getRoomName() {
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), sizeof(kRoomNameSize)).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), kRoomNameSize).c_str()));
 }
 
 void ServerGameInfoPacket::setRoomId(uint32_t id) {

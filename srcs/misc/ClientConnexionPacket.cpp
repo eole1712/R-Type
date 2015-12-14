@@ -19,5 +19,5 @@ void	ClientConnexionPacket::setClientName(std::string const& str) {
 }
 
 std::string	ClientConnexionPacket::getClientName() {
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize, sizeof(kPlayerNameSize)).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize, kPlayerNameSize).c_str()));
 }
