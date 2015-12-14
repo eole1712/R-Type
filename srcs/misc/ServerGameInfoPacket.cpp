@@ -1,7 +1,7 @@
 
 #include "ServerGameInfoPacket.hpp"
 
-ServerGameInfoPacket::ServerGameInfoPacket() : APacket(APacket::SERVERCONNEXION) {
+ServerGameInfoPacket::ServerGameInfoPacket() : APacket(APacket::SERVERGAMEINFO) {
 
 }
 
