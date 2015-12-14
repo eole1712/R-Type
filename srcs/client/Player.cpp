@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <algorithm>
 #include "MissileFactory.hpp"
@@ -15,10 +16,12 @@ namespace Unit {
   Player::Player(color c, std::string name, unsigned int id)
     : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, 0),
       _color(c), _name(name), _shooting(0), _weapon(DEFAULTMISSILE), _score(0),
-      _anim(std::string("../../resources/sprites/test.png"), 1, 100, Time::getTimeStamp())
+      _anim(std::string("../../resources/sprites/NyanCat bonnus.run.53x21x5.png"), 5, 100, Time::getTimeStamp())
   {
     static sf::Color colors[4] =
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
+    
+    _anim.scale(2.5, 2.5);
     _colorShader.loadFromFile("../../resources/shader/basic.vert", sf::Shader::Vertex);
     _colorShader.loadFromFile("../../resources/shader/basic.frag", sf::Shader::Fragment);
     _colorShader.setParameter("color", colors[c]);
