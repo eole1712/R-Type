@@ -9,8 +9,10 @@ include_directories(../)
 
 set(network_sources
   ../Lock.cpp
+  ../APacket.cpp
   NetManager.cpp
   UdpSocket.cpp
+  Networker.cpp
   )
 
 set(sender_sources

@@ -34,3 +34,7 @@ void APacket::setId(APacket::idSize id) {
 		reinterpret_cast<const char*>(&id),
 		sizeof(APacket::idSize));
 }
+
+uint8_t APacket::sGetType(const std::string &data) {
+  return *reinterpret_cast<const APacket::packetTypeSize*>(data.substr(sizeof(APacket::idSize), sizeof(APacket::packetTypeSize)).c_str());
+}

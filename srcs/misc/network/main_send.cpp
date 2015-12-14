@@ -8,7 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../Thread.hpp"
+#include "Thread.hpp"
+#include "APacket.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -22,18 +23,14 @@ int main(int argc, char *argv[])
   nm = new NetManager();
   sock = new UdpSocket(std::atoi(argv[2]), argv[1], nm);
   sock->setSendPort(atoi(argv[3]));
-  std::ofstream os;
-
-  os.open("send.txt");
   std::function<void(std::nullptr_t)> fptr = [nm] (std::nullptr_t) {
     nm->loop();
   };
   Thread<std::nullptr_t> t(fptr, nullptr);
   while (42)
     {
-      std::stringstream ss;
-      ss << id;
-      std::string msg = std::string(reinterpret_cast<char*>(&id), 2) + "Coucou" + ss.str();
+      APacket pack(id % 4);
+      std::string msg = pack.getData();
       sock->async_send(msg, [] (ISocket::returnCode ret, size_t ret_size) {
 	if (ret == ISocket::Fail)
 	  std::cout << "send failed" << std::endl;
@@ -41,7 +38,6 @@ int main(int argc, char *argv[])
 	  std::cout << "msg sent with size : " << ret_size << std::endl;
       });
       ++id;
-      os << "id : " << id << std::endl;
       #ifdef _WIN32
       Sleep(5);
       #else

@@ -15,15 +15,15 @@ namespace Unit {
 
   Player::Player(color c, std::string name, unsigned int id)
     : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, 0),
-      _color(c), _name(name), _shooting(0), _weapon(DEFAULTMISSILE), _score(0),
-      _anim(std::string("../../resources/sprites/NyanCat bonnus.run.53x21x5.png"), 5, 100, Time::getTimeStamp())
+      _color(c), _name(name), _shooting(0), _weapon(DEFAULTMISSILE), _score(0), _lastVerticalMove(0),
+      _anim(std::string("../../resources/sprites/ship.fly.91x47x3.png"), 3)
   {
     static sf::Color colors[4] =
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
     
-    _anim.scale(2.5, 2.5);
-    _colorShader.loadFromFile("../../resources/shader/basic.vert", sf::Shader::Vertex);
-    _colorShader.loadFromFile("../../resources/shader/basic.frag", sf::Shader::Fragment);
+    _anim.pause();
+    _colorShader.loadFromFile("../../resources/shaders/basic.frag",
+			      "../../resources/shaders/basic.vert");
     _colorShader.setParameter("color", colors[c]);
   }
 
@@ -89,6 +89,12 @@ namespace Unit {
   {
     static int              tab[4][2] =
       { {0, -1}, {0, 1}, {1, 0}, {-1, 0} };
+
+    if (to == UP)
+      _lastVerticalMove = 1;
+    else if (to == DOWN)
+      _lastVerticalMove = 2;
+      
     if (tick != 0)
       {
 	_x += tab[to][0] * (100 / tick);
@@ -113,13 +119,13 @@ namespace Unit {
 
   void			Player::render(sf::RenderWindow & window)
   {
+    _colorShader.setParameter("texture", sf::Shader::CurrentTexture);
+    _anim.setFrameIndex(_lastVerticalMove);
     _anim.setPosition(_x, _y);
-    window.draw(_anim.getFrame());
+    window.draw(_anim.getFrame(), &_colorShader);
   }
 
   void			Player::renderUI(sf::RenderWindow & window)
   {
-    _anim.setPosition(_x, _y);
-    window.draw(_anim.getFrame());
   }
 }
