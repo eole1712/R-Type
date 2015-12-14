@@ -3,18 +3,13 @@
 
 namespace Unit {
 
-AUnit::AUnit(team t, int x, int y, unsigned int id, Timer::time creationTime)
-  : _team(t), _x(x), _y(y), _id(id), _creationTime(creationTime)
+AUnit::AUnit(int x, int y, unsigned int id, Timer::time creationTime)
+  : _x(x), _y(y), _id(id), _creationTime(creationTime)
   {
   }
 
   AUnit::~AUnit()
   {
-  }
-
-  team        AUnit::getTeam() const
-  {
-    return _team;
   }
 
   unsigned int  AUnit::getID() const

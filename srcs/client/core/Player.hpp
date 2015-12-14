@@ -14,7 +14,7 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-  Player(color, std::string name, unsigned int id);
+  Player(int x, int y, unsigned int id, Timer::time creationTime, std::string name);
   virtual ~Player();
   
 public:
@@ -27,9 +27,6 @@ public:
 
   Missile::type   getWeapon() const;
   void            setWeapon(Missile::type);
-
-  unsigned int    getScore() const;
-  void            incScore(unsigned int);
 
   void            move(dir, Time::stamp);
   virtual void	  render(sf::RenderWindow & window);
@@ -45,7 +42,6 @@ private:
   bool		  _shooting;
   Time::stamp	  _shootTime;	
   Missile::type   _weapon;
-  unsigned int    _score;
 
   int		  _lastVerticalMove;
   Animation	  _anim;

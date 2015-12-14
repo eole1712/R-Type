@@ -24,7 +24,7 @@ namespace Unit {
   enum dir : int {
     UP,
     DOWN,
-    RIGTH,
+    RIGHT,
     LEFT
   };
 
@@ -39,7 +39,7 @@ namespace Unit {
   class AUnit  {
 
   public:
-    AUnit(int x, int y, unsigned int id, unsigned int gameID, Timer::time creationTime);
+    AUnit(int x, int y, unsigned int id, Timer::time creationTime);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);

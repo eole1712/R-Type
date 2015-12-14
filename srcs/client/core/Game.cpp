@@ -125,5 +125,5 @@ void			Game::render()
 
 Unit::AUnit &		Game::operator[](unsigned int id)
 {
-  return _map[id];
+  return *_map[id];
 }

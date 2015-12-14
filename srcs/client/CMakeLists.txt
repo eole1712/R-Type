@@ -16,25 +16,25 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "rtype")
-include_directories(BEFORE ../common/core)
-include_directories(BEFORE ../common/core/missiles)
-include_directories(BEFORE ../common/misc)
-
+include_directories(BEFORE core)
+include_directories(BEFORE graphics)
+include_directories(BEFORE unit)
+include_directories(BEFORE misc)
 include_directories(BEFORE ../misc)
 
 # ../common/misc/linux_specific/CULibLoader.cpp
 
-add_executable(${EXECUTABLE_NAME} \
-	core/main.cpp \
-	core/Menu.cpp \
-	core/Player.cpp \
-	core/Game.cpp \
-	core/AUnit.cpp \
-	graphics/Animation.cpp \
-	graphics/ClickableBtn.cpp \
-	graphics/Editable.cpp \
-	misc/Time.cpp \
-	misc/Timer.cpp \
+add_executable(${EXECUTABLE_NAME}
+	core/main.cpp 
+	core/Menu.cpp 
+	core/Player.cpp 
+	core/Game.cpp 
+	unit/AUnit.cpp 
+	graphics/Animation.cpp 
+	graphics/ClickableBtn.cpp 
+	graphics/Editable.cpp 
+	misc/Time.cpp 
+	misc/Timer.cpp 
 	../misc/Lock.cpp)
 
 if (WIN32)

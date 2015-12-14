@@ -91,7 +91,7 @@ void		Menu::handleMouseClick(sf::Event& event)
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
-       Unit::Player	player(Unit::RED, _login.getEditable().getString(), 0);
+       Unit::Player	player(100, 270, 0, 0, _login.getEditable().getString());
        Game		game(_window, player);
 	
       	while (!game.getFinish())
