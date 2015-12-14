@@ -10,8 +10,10 @@ namespace Unit
     {
         class Factory
         {
-        public:
+        private:
             Factory();
+
+        public:
             ~Factory();
 
         public:
@@ -27,8 +29,8 @@ namespace Unit
         protected:
             std::map<Missile::type, AMissile*> _map;
 
-	public:
-	    static Factory *_instance;
+        private:
+            static Factory *_instance;
 	};
     }
 }

@@ -4,24 +4,36 @@
 # include <cstdint>
 # include <string>
 
+// ||||||||||||||PACKETSIZE||||||||||||||||||
+// IDPACKET||TYPEPACKET||||||||||||||||||||||
+
 class APacket {
 public:
-	typedef uint16_t idSize;
-	typedef uint8_t packetTypeSize;
+  typedef uint16_t idSize;
+  typedef uint8_t packetTypeSize;
 
-	static constexpr uint32_t kMaxSize = 512;
+  enum eType
+    {
+      SERVERCONNEXION,
+      CLIENTCONNEXION,
+      SERVERGAMEINFO,
+      CLIENTGAMEINFO
+    };
 
-	APacket(uint8_t type);
-	APacket(std::string const& other);
-	virtual ~APacket();
+  static constexpr uint32_t kMaxPacketSize = 512;
 
-	uint16_t getId() const;
-	uint8_t	getType() const;
-	virtual std::string const& getData() const;
+  APacket(uint8_t type);
+  APacket(std::string const& other);
+  virtual ~APacket();
 
-	void setId(uint16_t id);
-private:
-	std::string _data;
+  uint16_t getId() const;
+  uint8_t	getType() const;
+  virtual std::string const& getData() const;
+  static uint8_t sGetType(std::string const&);
+
+  void setId(uint16_t id);
+protected:
+  std::string _data;
 };
 
 #endif /* !APACKET_H_ */

@@ -7,6 +7,7 @@
 # include "AUnit.hpp"
 # include "Player.hpp"
 # include "MonsterFactory.hpp"
+# include "MonsterWaveManager.hpp"
 
 class IMap;
 class IScoreList;
@@ -21,7 +22,6 @@ public:
     virtual IMap*			getMap() const;
     virtual IScoreList*		getScores() const;
     virtual Unit::Player*		getPlayer(Unit::color) const;
-    virtual MonsterFactory*	getMonsterFactory() const;
     
     virtual bool			addPlayer(std::string name);
     virtual void			removePlayer(Unit::color);
@@ -35,11 +35,11 @@ public:
     static Timer::time      now(unsigned int id);
     
 private:
-    unsigned int			_id;
+    unsigned int		_id;
     IMap*				_map;
     IScoreList*			_scores;
     std::vector<Unit::Player*>	_players;
-    MonsterFactory*		_monsterFactory;
+    Monster::WaveManager    _waveManager;
 };
 
 #endif /* !GAME_H_ */
