@@ -5,6 +5,7 @@
 #include <list>
 #include <iostream>
 #include "Animation.hpp"
+#include "ClickableBtn.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 3
 #define NUMBER_OF_PLAYER_COLOR 4
@@ -28,24 +29,24 @@ class Menu
 private:
   int			_width;
   int			_height;
+  sf::Color		_fieldsColor;
+  sf::Color		_loginColor;
+  sf::Color		_loginSizeErrColor;
+  sf::Color		_highlightColor;
+  sf::Color		_startColor;
+  sf::Color		_BRYGColor[NUMBER_OF_PLAYER_COLOR];
+  sf::Color		_BRYGhighlight[NUMBER_OF_PLAYER_COLOR];
   sf::Text		_menuFields[MAX_NUMBER_OF_FIELDS];
-  sf::Text		_login;
+  ClickableBtn		_login;
   sf::Text		_loginSizeErr;
   sf::Text		_playerColor[NUMBER_OF_PLAYER_COLOR];
   sf::Text		_startButton;
   sf::Font		_fieldsFont;
   sf::Font		_loginFont;
-  sf::Color		_fieldsColor;
-  sf::Color		_loginColor;
-  sf::Color		_loginSizeErrColor;
-  sf::Color		_highlightColor;
   sf::Color		_blueColor;
   sf::Color		_redColor;
   sf::Color		_yellowColor;
   sf::Color		_greenColor;
-  sf::Color		_startColor;
-  sf::Color		_BRYGColor[NUMBER_OF_PLAYER_COLOR];
-  sf::Color		_BRYGhighlight[NUMBER_OF_PLAYER_COLOR];
   Row			_currentRow;
   PlayerColor		_currentPlayerColor;
   bool			_maxLoginSize;

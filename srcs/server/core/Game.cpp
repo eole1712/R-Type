@@ -18,7 +18,6 @@ Game::Game(unsigned int id)
 {
   this->_map = new Map();
   this->_scores = new ScoreList();
-  this->_monsterFactory = new MonsterFactory();
 }
 
 Game::~Game()
@@ -28,7 +27,6 @@ Game::~Game()
     if (player != nullptr)
       delete player;
   });
-  delete this->_monsterFactory;
   delete this->_scores;
   delete this->_map;
 }
@@ -58,11 +56,6 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
       return (*it);
   }
   return (nullptr);
-}
-
-MonsterFactory*	Game::getMonsterFactory() const
-{
-  return (this->_monsterFactory);
 }
 
 bool	Game::addPlayer(std::string name)
