@@ -20,8 +20,9 @@ public:
 		CLIENTGAMEINFO
 	};
 
-	static constexpr uint32_t kMaxPacketSize = 512;
-
+	static constexpr int kMaxPacketSize = 512;
+	static constexpr int kHeaderSize = sizeof(idSize) + sizeof(packetTypeSize);
+	
 	APacket(uint8_t type);
 	APacket(std::string const& other);
 	virtual ~APacket();

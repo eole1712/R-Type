@@ -10,7 +10,7 @@
 class ClientConnexionPacket : public APacket {
 public:
 
-	static constexpr int kPlayerNameSize = 100;
+	static constexpr int kPlayerNameSize = 16;
 
 	ClientConnexionPacket();
 	ClientConnexionPacket(std::string const& data);
