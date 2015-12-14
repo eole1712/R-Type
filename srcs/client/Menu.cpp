@@ -49,10 +49,10 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  /*  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
+  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
   _menuFields[0].setColor(_fieldsColor);
   _menuFields[0].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
-  */
+  
   //_menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsColor);
 
    _menuFields[1] = sf::Text("Color", _fieldsFont, 30);
@@ -67,7 +67,7 @@ void		Menu::initFields()
   _login = sf::Text("Player", _loginFont, 30);
   _login.setColor(_loginColor);
   _login.setPosition(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);*/
-  _login = ClickableBtn(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "16 chars max", _loginFont, _loginColor);
+  _login = ClickableBtn(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Player", _loginFont, _loginColor);
   
   _loginSizeErr = sf::Text("16 chars max", _loginFont, 21);
   _loginSizeErr.setColor(_loginSizeErrColor);
