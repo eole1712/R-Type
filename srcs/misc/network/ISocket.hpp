@@ -13,7 +13,7 @@ class ISocket
 {
 public:
   enum returnCode {
-    Timeout,
+    Timeout = 0,
     Fail,
     Incomplete,
     UndefFD,

@@ -48,12 +48,13 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  _menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsFont, _fieldsColor);
-  _menuFields[1] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _fieldsFont, _fieldsColor);
-  _menuFields[2] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3, "Server", _fieldsFont, _fieldsColor);
-  _login = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Player", _loginFont, _loginColor);
-  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
-  _host = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _loginFont, _loginColor);
+  _menuFields[0] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor);
+  _menuFields[1] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _fieldsFont, _fieldsColor);
+  _menuFields[2] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Games", _fieldsFont, _fieldsColor);
+  _login = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Player", _loginFont, _loginColor);
+  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.1, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
+  _host = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _loginFont, _loginColor);
+  _connectButton = ClickableBtn(_width / 1.3, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.7, "Connect", _fieldsFont, _startColor, 21);
   _startButton = ClickableBtn(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7, "START", _fieldsFont, _startColor, 50);
 }
 
@@ -74,7 +75,10 @@ void		Menu::eventHandler()
 	  this->handleMouseClick(event);
 	  break;
 	case sf::Event::TextEntered:
-	  this->handleLoginEdition(event);
+	  if (_currentRow == LOGIN)
+	    this->handleLoginEdition(event);
+	  else if (_currentRow == HOST)
+	    this->handleHostEdition(event);
 	  break;
 	  case sf::Event::KeyPressed:
 	  if (event.key.code == sf::Keyboard::Tab)
@@ -92,13 +96,17 @@ void		Menu::handleMouseClick(sf::Event& event)
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "START" << std::endl;
+   if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+     std::cout << "Connect" << std::endl;
 }
 
 void		Menu::handleMouseMoved(sf::Event& event)
 {
   sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
-  if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+  if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+    _connectButton.getClickableBtn().setColor(_highlightColor);
+  else if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _startButton.getClickableBtn().setColor(_highlightColor);
   else
     {
@@ -112,26 +120,37 @@ void		Menu::handleMouseMoved(sf::Event& event)
 	    }
 	}
       _startButton.getClickableBtn().setColor(_startColor);
+      _connectButton.getClickableBtn().setColor(_startColor);
     }
 }
 
 void		Menu::handleLoginEdition(sf::Event& event)
 {
-  if (_currentRow == LOGIN)
+  if (_login.getEditable().getString().getSize() <= 16)
     {
-      if (_login.getEditable().getString().getSize() <= 16)
-	{
-	  _maxLoginSize = false;
-	  if (event.text.unicode >= 32 && event.text.unicode <= 126)
-	    _login.getEditable().setString(_login.getEditable().getString() + static_cast<char>(event.text.unicode));
-	}
-      else
-	_maxLoginSize = true;
-      if (event.text.unicode == 8)
-	{
-	  _login.getEditable().setString(std::string(_login.getEditable().getString()).substr(0, _login.getEditable().getString().getSize()-1));
-	  _maxLoginSize = false;
-	}
+      _maxLoginSize = false;
+      if (event.text.unicode >= 32 && event.text.unicode <= 126)
+	_login.getEditable().setString(_login.getEditable().getString() + static_cast<char>(event.text.unicode));
+    }
+  else
+    _maxLoginSize = true;
+  if (event.text.unicode == 8)
+    {
+      _login.getEditable().setString(std::string(_login.getEditable().getString()).substr(0, _login.getEditable().getString().getSize()-1));
+      _maxLoginSize = false;
+    }
+}
+
+void		Menu::handleHostEdition(sf::Event& event)
+{
+  if (_host.getEditable().getString().getSize() <= 20)
+    {
+      if (event.text.unicode >= 32 && event.text.unicode <= 126)
+	_host.getEditable().setString(_host.getEditable().getString() + static_cast<char>(event.text.unicode));
+    }
+  if (event.text.unicode == 8)
+    {
+      _host.getEditable().setString(std::string(_host.getEditable().getString()).substr(0, _host.getEditable().getString().getSize()-1));
     }
 }
 
@@ -144,6 +163,7 @@ void		Menu::drawFields()
 	_menuFields[_currentRow].setColor(_highlightColor);
       _window.draw(_menuFields[i].getClickableBtn());
     }
+  _window.draw(_connectButton.getClickableBtn());
   _window.draw(_startButton.getClickableBtn());
 }
 
@@ -173,4 +193,14 @@ void		Menu::changeCurrentRow()
       _currentRow = LOGIN;
       break;
     }
+}
+
+void		Menu::addGame(std::string gameName, unsigned int playerNumber, std::string daySentence)
+{
+  s_gameData	newGame;
+
+  newGame._gameName = gameName;
+  newGame._playerNumber = playerNumber;
+  newGame._daySentence = daySentence;
+  _gamesData.push_back(newGame);
 }
