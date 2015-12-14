@@ -6,8 +6,8 @@
 
 namespace Unit {
 
-  Player::Player(color c, std::string name, unsigned int id)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, 0),
+  Player::Player(std::string name, unsigned int id, color c, int x, int y, )
+    : AUnit(ALLY, x, y, id, 0),
       _color(c), _name(name), _shooting(0), _weapon(DEFAULTMISSILE), _score(0), _lastVerticalMove(0),
       _anim(std::string("../../resources/sprites/ship.fly.91x47x3.png"), 3)
   {
