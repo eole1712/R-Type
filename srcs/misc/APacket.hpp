@@ -27,9 +27,11 @@ public:
 	APacket(std::string const& other);
 	virtual ~APacket();
 
+
 	uint16_t getId() const;
 	uint8_t	getType() const;
 	virtual std::string const& getData() const;
+	static uint8_t sGetType(std::string const&);
 
 	void setId(uint16_t id);
 protected:

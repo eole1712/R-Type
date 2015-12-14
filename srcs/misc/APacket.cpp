@@ -1,6 +1,7 @@
 #include "APacket.hpp"
 
 APacket::APacket(uint8_t type) {
+
 	_data.resize(kMaxPacketSize);
 	_data.replace(sizeof(APacket::idSize),
 		sizeof(APacket::packetTypeSize),
@@ -21,7 +22,7 @@ APacket::idSize APacket::getId() const {
 }
 
 uint8_t	APacket::getType() const {
-	return *reinterpret_cast<const APacket::packetTypeSize*>(_data.substr(sizeof(APacket::idSize), sizeof(APacket::packetTypeSize)).c_str());
+	return sGetType(_data);
 }
 
 std::string const& APacket::getData() const {
@@ -36,5 +37,5 @@ void APacket::setId(APacket::idSize id) {
 }
 
 uint8_t APacket::sGetType(const std::string &data) {
-  return *reinterpret_cast<const APacket::packetTypeSize*>(data.substr(sizeof(APacket::idSize), sizeof(APacket::packetTypeSize)).c_str());
+	return *reinterpret_cast<const APacket::packetTypeSize*>(data.substr(sizeof(APacket::idSize), sizeof(APacket::packetTypeSize)).c_str());
 }

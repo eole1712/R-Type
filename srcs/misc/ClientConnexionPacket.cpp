@@ -13,9 +13,9 @@ ClientConnexionPacket::~ClientConnexionPacket() {};
 
 void	ClientConnexionPacket::setClientName(std::string const& str) {
 	_data.replace(sizeof(APacket::idSize) + sizeof(APacket::packetTypeSize),
-			kPlayerNameSize,
-			str.c_str(),
-			kPlayerNameSize);
+		kPlayerNameSize,
+		str.c_str(),
+		kPlayerNameSize);
 }
 
 std::string	ClientConnexionPacket::getClientName() {

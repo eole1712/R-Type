@@ -16,7 +16,7 @@ namespace Monster {
   {
     if (_started)
       return false;
-    _list.push_front(Label(type, x, y, _time));
+    _list.push_back(Label(type, x, y, _time));
     return true;
   }
   
@@ -36,6 +36,11 @@ namespace Monster {
     return true;
   }
   
+  bool        Wave::isEmpty() const
+  {
+    return _list.empty();
+  }
+  
   Unit::AUnit*      Wave::getNextMonster()
   {
     if (_list.empty())
@@ -43,8 +48,9 @@ namespace Monster {
     
     Label    label = _list.front();
     Unit::AUnit*  monster = Monster::Factory::getInstance()->createMonster(label.getType(), label.getX(), label.getY(), _gameID);
-    reset(label.getTime());
+    
+    _list.pop_front();
+    reset(_list.empty() ? 0 : _list.front().getTime());
     return monster;
   }
-  
 }

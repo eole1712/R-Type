@@ -13,16 +13,16 @@ ServerConnexionPacket::~ServerConnexionPacket() {};
 
 void	ServerConnexionPacket::setStatus(bool status) {
 	_data.replace(kHeaderSize,
-			sizeof(bool),
-			reinterpret_cast<const char*>(&status),
-			sizeof(bool));
+		sizeof(bool),
+		reinterpret_cast<const char*>(&status),
+		sizeof(bool));
 }
 
 void	ServerConnexionPacket::setServerString(std::string const& str) {
 	_data.replace(kHeaderSize + sizeof(bool),
-			kServerStringSize,
-			str.c_str(),
-			kServerStringSize);
+		kServerStringSize,
+		str.c_str(),
+		kServerStringSize);
 }
 
 bool	ServerConnexionPacket::getStatus() {

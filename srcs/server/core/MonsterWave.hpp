@@ -22,6 +22,9 @@ namespace Monster {
         bool            start();
         Unit::AUnit     *getNextMonster();
         
+    public:
+        bool            isEmpty() const;
+        
     private:
         bool                        _started;
         Timer::time                 _time;
