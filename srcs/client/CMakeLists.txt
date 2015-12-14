@@ -23,7 +23,7 @@ include_directories(BEFORE ../misc)
 
 # ../common/misc/linux_specific/CULibLoader.cpp
 
-add_executable(${EXECUTABLE_NAME} main.cpp Menu.cpp Animation.cpp ClickableBtn.cpp Time.cpp Timer.cpp Player.cpp Game.cpp AUnit.cpp  ../misc/Lock.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp Menu.cpp Animation.cpp ClickableBtn.cpp Time.cpp Timer.cpp Player.cpp Game.cpp AUnit.cpp Editable.cpp ../misc/Lock.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/misc/windows_specific)
