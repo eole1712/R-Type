@@ -30,9 +30,9 @@ public:
 
   void			pause();
   void			play();
-
   void			setState(state s);
   state			getState() const;
+
   void			setFrameIndex(unsigned int idx);
   unsigned int		getFrameIndex() const;
   sf::Sprite const &	getFrame();

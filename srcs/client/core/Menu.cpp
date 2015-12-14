@@ -1,11 +1,7 @@
-#include <iostream>
-#include <list>
 #include <unistd.h>
 #include "Menu.hpp"
-#include "Time.hpp"
-#include "Animation.hpp"
-#include "ClickableBtn.hpp"
-#include "Editable.hpp"
+#include "Game.hpp"
+#include "Player.hpp"
 
 Menu::Menu(int width, int height):
   _width(width), _height(height), _window(sf::VideoMode(_width, _height), "R-Type"),
@@ -48,13 +44,12 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  _menuFields[0] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor);
-  _menuFields[1] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _fieldsFont, _fieldsColor);
-  _menuFields[2] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Games", _fieldsFont, _fieldsColor);
-  _login = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Player", _loginFont, _loginColor);
-  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.1, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
-  _host = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _loginFont, _loginColor);
-  _connectButton = ClickableBtn(_width / 1.3, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.7, "Connect", _fieldsFont, _startColor, 21);
+  _menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsFont, _fieldsColor);
+  _menuFields[1] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _fieldsFont, _fieldsColor);
+  _menuFields[2] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3, "Server", _fieldsFont, _fieldsColor);
+  _login = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Player", _loginFont, _loginColor);
+  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
+  _host = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _loginFont, _loginColor);
   _startButton = ClickableBtn(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7, "START", _fieldsFont, _startColor, 50);
 }
 
@@ -95,7 +90,14 @@ void		Menu::handleMouseClick(sf::Event& event)
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     std::cout << "START" << std::endl;
+     {
+       Unit::Player	player(Unit::RED, _login.getEditable().getString(), 0);
+       Game		game(_window, player);
+	
+      	while (!game.getFinish())
+	  { 
+	  }
+     }
    if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "Connect" << std::endl;
 }

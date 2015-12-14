@@ -122,3 +122,8 @@ void			Game::render()
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
     i->second->render(_window);
 }
+
+Unit::AUnit &		Game::operator[](unsigned int id)
+{
+  return _map[id];
+}
