@@ -3,18 +3,16 @@
 #include <unistd.h>
 #include "Menu.hpp"
 #include "Time.hpp"
-#include "Game.hpp"
 #include "Animation.hpp"
 #include "ClickableBtn.hpp"
+#include "Editable.hpp"
 
 Menu::Menu(int width, int height):
-  _width(width), _height(height), _fieldsColor(102,78,255), _loginColor(178,102,255),
-  _loginSizeErrColor(204, 0, 0), _highlightColor(255, 255, 255), _startColor(121, 248, 248),
-  _BRYGColor({sf::Color(0, 0, 255), sf::Color(187, 11, 11), sf::Color(243, 214, 23), sf::Color(20, 148, 5)}),
-  _BRYGhighlight({sf::Color(0, 191, 255), sf::Color(255, 48, 48), sf::Color(255, 255, 5), sf::Color(0, 255, 0)})
+  _width(width), _height(height), _window(sf::VideoMode(_width, _height), "R-Type"),
+  _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
+  _highlightColor(255, 255, 255), _startColor(121, 248, 248)
 {
   _currentRow = LOGIN;
-  _currentPlayerColor = BLUE;
   _maxLoginSize = false;
 }
 
@@ -22,24 +20,23 @@ Menu::~Menu()
 {
 }
 
-void Menu::initMainView()
+void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
   background.scale(2, 2);
   this->initFields();
-  sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
-  window.setVerticalSyncEnabled(true);
-  window.setKeyRepeatEnabled(false);
+  //  sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
+  _window.setVerticalSyncEnabled(true);
 
-  while (window.isOpen())
+  while (_window.isOpen())
     {
-      eventHandler(window);
-      window.clear();
-      window.draw(background.getFrame());
-      this->drawFields(window);
-      this->drawLogin(window);
-      this->drawLoginSizeErr(window);
-      window.display();
+      eventHandler();
+      _window.clear();
+      _window.draw(background.getFrame());
+      this->drawFields();
+      this->drawEditable();
+      this->drawLoginSizeErr();
+      _window.display();
     }
 }
 
@@ -51,80 +48,37 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  /*  _menuFields[0] = sf::Text("Login", _fieldsFont, 30);
-  _menuFields[0].setColor(_fieldsColor);
-  _menuFields[0].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);
-  */
-  //_menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsColor);
-
-   _menuFields[1] = sf::Text("Color", _fieldsFont, 30);
-  _menuFields[1].setColor(_fieldsColor);
-  _menuFields[1].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5);
-
-  _menuFields[2] = sf::Text("Game", _fieldsFont, 30);
-  _menuFields[2].setColor(_fieldsColor);
-  _menuFields[2].setPosition(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3);
-
-  /*
-  _login = sf::Text("Player", _loginFont, 30);
-  _login.setColor(_loginColor);
-  _login.setPosition(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2);*/
-  _login = ClickableBtn(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "16 chars max", _loginFont, _loginColor);
-  
-  _loginSizeErr = sf::Text("16 chars max", _loginFont, 21);
-  _loginSizeErr.setColor(_loginSizeErrColor);
-  _loginSizeErr.setPosition(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8);
-
-  _startButton = sf::Text("START", _fieldsFont, 50);
-  _startButton.setColor(_startColor);
-  _startButton.setPosition(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7);
-  initPlayerColorSelection();
+  _menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsFont, _fieldsColor);
+  _menuFields[1] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _fieldsFont, _fieldsColor);
+  _menuFields[2] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3, "Server", _fieldsFont, _fieldsColor);
+  _login = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Player", _loginFont, _loginColor);
+  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
+  _host = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _loginFont, _loginColor);
+  _startButton = ClickableBtn(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7, "START", _fieldsFont, _startColor, 50);
 }
 
-void	Menu::initPlayerColorSelection()
-{
-  _playerColor[0] = sf::Text("BLUE", _fieldsFont, 21);
-  _playerColor[0].setColor(_BRYGColor[0]);
-  _playerColor[0].setPosition(_width / 2, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-
-  _playerColor[1] = sf::Text("RED", _fieldsFont, 21);
-  _playerColor[1].setColor(_BRYGColor[1]);
-  _playerColor[1].setPosition(_width / 1.78, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-
-  _playerColor[2] = sf::Text("YELLOW", _fieldsFont, 21);
-  _playerColor[2].setColor(_BRYGColor[2]);
-  _playerColor[2].setPosition(_width / 1.65, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-
-  _playerColor[3] = sf::Text("GREEN", _fieldsFont, 21);
-  _playerColor[3].setColor(_BRYGColor[3]);
-  _playerColor[3].setPosition(_width / 1.45, (_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5) + 10);
-}
-
-void	Menu::eventHandler(sf::RenderWindow& window)
+void		Menu::eventHandler()
 {
   sf::Event event;
-  while (window.pollEvent(event))
+  while (_window.pollEvent(event))
     {
       switch (event.type)
 	{
 	case sf::Event::Closed:
-	  window.close();
+	  _window.close();
 	  break;
 	case sf::Event::MouseMoved:
-	  this->handleMouseMoved(window, event);
+	  this->handleMouseMoved(event);
 	  break;
 	case sf::Event::MouseButtonReleased:
-	  this->handleMouseClick(window, event);
+	  this->handleMouseClick(event);
 	  break;
 	case sf::Event::TextEntered:
-	  this->handleLoginEdition(window, event);
+	  this->handleLoginEdition(event);
 	  break;
-	case sf::Event::KeyPressed:
+	  case sf::Event::KeyPressed:
 	  if (event.key.code == sf::Keyboard::Tab)
 	    this->changeCurrentRow();
-	  if (_currentRow == COLOR && (event.key.code == sf::Keyboard::Left ||
-				       event.key.code == sf::Keyboard::Right))
-	    this->changeCurrentColor(event);
 	  break;
 	default:
 	  break;
@@ -132,123 +86,91 @@ void	Menu::eventHandler(sf::RenderWindow& window)
     }
 }
 
-void	Menu::handleMouseClick(sf::RenderWindow& window, sf::Event& event)
+void		Menu::handleMouseClick(sf::Event& event)
 {
-  if (sf::Mouse::getPosition(window).x >= (_width / 2.3) && sf::Mouse::getPosition(window).x <= (_width / 2.3) + 93 &&
-      sf::Mouse::getPosition(window).y >= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) && sf::Mouse::getPosition(window).y <= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
+   sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
+
+   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+     std::cout << "START" << std::endl;
+}
+
+void		Menu::handleMouseMoved(sf::Event& event)
+{
+  sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
+
+  if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+    _startButton.getClickableBtn().setColor(_highlightColor);
+  else
     {
-      Unit::Player	player(Unit::RED, _login.getClickableBtn().getString(), 0);
-      Game		game(window, player);
-
-      while (!game.getFinish())
-	{ 
+      for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
+	{
+	  _menuFields[i].getClickableBtn().setColor(_fieldsColor);
+	  if (_menuFields[i].getClickableBtn().getGlobalBounds().contains(mousePosition))
+	    {
+	      _menuFields[i].getClickableBtn().setColor(_highlightColor);
+	      _currentRow = static_cast<Row>(i);
+	    }
 	}
+      _startButton.getClickableBtn().setColor(_startColor);
     }
-  std::cout << "origin x pos: " << (_width / 2.3)  << std::endl;
-  std::cout << "origin y pos: " << (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) << std::endl;
-  std::cout << "mouse click, posx : " <<  sf::Mouse::getPosition(window).x << std::endl;
-
 }
 
-void	Menu::handleMouseMoved(sf::RenderWindow& window, sf::Event& event)
-{
-  if (sf::Mouse::getPosition(window).x >= (_width / 2.3) && sf::Mouse::getPosition(window).x <= (_width / 2.3) + 93 &&
-      sf::Mouse::getPosition(window).y >= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) && sf::Mouse::getPosition(window).y <= (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
-    _startButton.setColor(_highlightColor);
-  if (sf::Mouse::getPosition(window).x < (_width / 2.3) || sf::Mouse::getPosition(window).x > (_width / 2.3) + 93 &&
-      sf::Mouse::getPosition(window).y < (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) || sf::Mouse::getPosition(window).y > (_height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7) + 67)
-    _startButton.setColor(_startColor);
-}
-
-void	Menu::handleLoginEdition(sf::RenderWindow& window, sf::Event& event)
+void		Menu::handleLoginEdition(sf::Event& event)
 {
   if (_currentRow == LOGIN)
     {
-      if (_login.getClickableBtn().getString().getSize() <= 16)
+      if (_login.getEditable().getString().getSize() <= 16)
 	{
 	  _maxLoginSize = false;
 	  if (event.text.unicode >= 32 && event.text.unicode <= 126)
-	    _login.getClickableBtn().setString(_login.getClickableBtn().getString() + static_cast<char>(event.text.unicode));
+	    _login.getEditable().setString(_login.getEditable().getString() + static_cast<char>(event.text.unicode));
 	}
       else
 	_maxLoginSize = true;
       if (event.text.unicode == 8)
 	{
-	  _login.getClickableBtn().setString(std::string(_login.getClickableBtn().getString()).substr(0, _login.getClickableBtn().getString().getSize()-1));
+	  _login.getEditable().setString(std::string(_login.getEditable().getString()).substr(0, _login.getEditable().getString().getSize()-1));
 	  _maxLoginSize = false;
 	}
     }
-  //std::cout << "login : " << (std::string) _login.getString() << std::endl;
 }
 
-void Menu::drawFields(sf::RenderWindow &window)
+void		Menu::drawFields()
 {
   for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
     {
-      _menuFields[i].setColor(_fieldsColor);
+      _menuFields[i].getClickableBtn().setColor(_fieldsColor);
       if (i == _currentRow)
 	_menuFields[_currentRow].setColor(_highlightColor);
-      window.draw(_menuFields[i]);
+      _window.draw(_menuFields[i].getClickableBtn());
     }
-  for (int i = 0; i < NUMBER_OF_PLAYER_COLOR; i++)
-    {
-      _playerColor[i].setColor(_BRYGColor[i]);
-      if (i == _currentPlayerColor)
-	_playerColor[_currentPlayerColor].setColor(_BRYGhighlight[i]);
-      window.draw(_playerColor[i]);
-    }
-  window.draw(_startButton);
+  _window.draw(_startButton.getClickableBtn());
 }
 
-void	Menu::drawLogin(sf::RenderWindow& window)
+void		Menu::drawEditable()
 {
-  std::string login =  _login.getClickableBtn().getString();
-  std::cout << "before draw login" << std::endl;
-  std::cout << "_login text = " << login << std::endl;
-  window.draw(_login.getClickableBtn());
-  std::cout << "after draw login" << std::endl;
+  _window.draw(_login.getEditable());
+  _window.draw(_host.getEditable());
 }
 
-void	Menu::drawLoginSizeErr(sf::RenderWindow& window)
+void		Menu::drawLoginSizeErr()
 {
   if (_maxLoginSize == true)
-    window.draw(_loginSizeErr);
+    _window.draw(_loginSizeErr.getClickableBtn());
 }
 
-void	Menu::changeCurrentRow()
+void		Menu::changeCurrentRow()
 {
   switch (_currentRow)
     {
     case LOGIN:
-      _currentRow = COLOR;
+      _currentRow = HOST;
       break;
-    case COLOR:
-      _currentRow = GAME;
+    case HOST:
+      _currentRow = SERVER;
       break;
-    case GAME:
+    case SERVER:
       _currentRow = LOGIN;
-      break;
-    }
-}
-
-void	Menu::changeCurrentColor(sf::Event& event)
-{
-  switch (event.key.code)
-    {
-    case sf::Keyboard::Left:
-      std::cout << "left" << std::endl;
-      if (_currentPlayerColor > 0)
-	_currentPlayerColor = static_cast<PlayerColor>(_currentPlayerColor - 1);
-      else
-	_currentPlayerColor = static_cast<PlayerColor>(_currentPlayerColor + 3);
-      break;
-    case sf::Keyboard::Right:
-      if (_currentPlayerColor < 3)
-	_currentPlayerColor = static_cast<PlayerColor>(_currentPlayerColor + 1);
-      else
-	_currentPlayerColor = static_cast<PlayerColor>(_currentPlayerColor - 3);
-      break;
-    default:
       break;
     }
 }
