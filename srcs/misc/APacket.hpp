@@ -4,12 +4,23 @@
 # include <cstdint>
 # include <string>
 
+// ||||||||||||||PACKETSIZE||||||||||||||||||
+// IDPACKET||TYPEPACKET||||||||||||||||||||||
+
 class APacket {
 public:
 	typedef uint16_t idSize;
 	typedef uint8_t packetTypeSize;
 
-	static constexpr uint32_t kMaxSize = 512;
+	enum eType
+	{
+		SERVERCONNEXION,
+		CLIENTCONNEXION,
+		SERVERGAMEINFO,
+		CLIENTGAMEINFO
+	};
+
+	static constexpr uint32_t kMaxPacketSize = 512;
 
 	APacket(uint8_t type);
 	APacket(std::string const& other);
@@ -20,7 +31,7 @@ public:
 	virtual std::string const& getData() const;
 
 	void setId(uint16_t id);
-private:
+protected:
 	std::string _data;
 };
 
