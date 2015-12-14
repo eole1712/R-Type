@@ -53,7 +53,7 @@ private:
   Missile::type   _weapon;
   unsigned int    _score;
 
-  
+  int		  _lastVerticalMove;
   Animation	  _anim;
   sf::Shader	  _colorShader;
  };
