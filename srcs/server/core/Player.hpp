@@ -25,6 +25,7 @@ public:
     static const boxType                    DEFAULTHITBOX;
 
 public:
+    //ok
     Missile::AMissile*      shoot();
     Missile::type           getWeapon() const;
     void                    setWeapon(Missile::type);
