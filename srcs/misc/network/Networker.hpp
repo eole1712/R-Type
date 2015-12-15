@@ -26,6 +26,7 @@ protected:
   std::list<APacket*> _packList;
   ISocket::receiveHandler _handle;
   std::string _buffer;
+  std::vector<std::function<void(APacket*, int)> > _packInterp;
   static std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> _asyncRec;
   static const std::vector<std::function<APacket*(std::string const&) > > _packHandlers;
 };

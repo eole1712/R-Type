@@ -8,7 +8,7 @@ class NetServer : public Networker
 public:
   NetServer(int port, NetManager*);
   virtual ~NetServer();
-
+  void sendAll(APacket*);
 };
 
 #endif /* !NETSERVER_H_ */

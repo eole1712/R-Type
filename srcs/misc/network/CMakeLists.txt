@@ -15,6 +15,10 @@ set(network_sources
   ../APacket.cpp
   ../ClientConnexionPacket.cpp
   ../ServerConnexionPacket.cpp
+  ../ClientGameConnectPacket.cpp
+  ../ClientGameInfoPacket.cpp
+  ../ServerGameConnectPacket.cpp
+  ../ServerGameInfoPacket.cpp
   NetManager.cpp
   UdpSocket.cpp
   Networker.cpp

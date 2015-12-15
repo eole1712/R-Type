@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
   Thread<std::nullptr_t> t(fptr, nullptr);
   rec = new NetClient(std::atoi(argv[1]), nm);
   rec->connect(argv[2], std::atoi(argv[3]), "toto");
-  rec->send(packet);
   t.join();
   return 0;
 }
