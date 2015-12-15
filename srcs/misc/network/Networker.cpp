@@ -48,10 +48,10 @@ Networker::Networker(int port)
   _asyncRec(_sock, _buffer, _handle);
 }
 
-Networker::Networker(int port, NetManager* manager)
+Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
 : _sock(new UdpSocket(port, "", manager))
 {
-  _PacketHandler = new PacketHandler;
+  _PacketHandler = handler;
   _buffer.resize(APacket::kMaxPacketSize);
   _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
     APacket* pack;

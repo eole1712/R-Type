@@ -1,7 +1,7 @@
 #include "NetServer.hpp"
 
-NetServer::NetServer(int port, NetManager* manager)
-  : Networker(port, manager)
+NetServer::NetServer(int port, NetManager* manager, IPacketHandler* handler)
+  : Networker(port, manager, handler)
 {}
 
 NetServer::~NetServer()

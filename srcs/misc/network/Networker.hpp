@@ -4,6 +4,7 @@
 #include "APacket.hpp"
 #include "ISocket.hpp"
 #include "NetManager.hpp"
+#include "IPacketHandler.hpp"
 #include <functional>
 #include <vector>
 #include <list>
@@ -12,7 +13,7 @@ class Networker
 {
 public:
   Networker(int port);
-  Networker(int port, NetManager*);
+  Networker(int port, NetManager*, IPacketHandler*);
   virtual ~Networker();
   APacket* getLastPacket();
   void start();
