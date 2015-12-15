@@ -14,7 +14,7 @@
 #include "AMonster.hpp"
 
 Game::Game(unsigned int id, std::string name)
-: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0), _inGame(false)
 {
 }
 
@@ -70,10 +70,17 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
     return (nullptr);
 }
 
+bool    Game::isInGame() const
+{
+    return _inGame;
+}
+
 bool	Game::addPlayer(User* user)
 {
     unsigned int	ixPlayer = static_cast<unsigned int>(this->_players.size());
     
+    if (_inGame)
+        return false;
     if (ixPlayer < 4)
     {
         this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id);
@@ -177,6 +184,7 @@ bool        Game::checkIfAlive()
 
 void        Game::start()
 {
+    _inGame = true;
     _t.start();
 }
 

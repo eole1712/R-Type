@@ -33,6 +33,7 @@ public:
     virtual void        start();
     virtual bool        nextAction();
     virtual bool        end();
+    virtual bool        isInGame() const;
 
 protected:
     virtual void        checkMouvements(Timer &);
@@ -52,6 +53,7 @@ private:
     Monster::WaveManager    _waveManager;
     Timer               _t;
     User*               _user;
+    bool                _inGame;
 };
 
 #endif /* !GAME_H_ */
