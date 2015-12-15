@@ -22,27 +22,29 @@ public:
   color           getColor() const;
 
   /*
+  void		  getHit(AUnit *);
   Missile::type   getWeapon() const;
   void            setWeapon(Missile::type);
   */
 
   void            move(dir, Time::stamp);
-  virtual void	  render(sf::RenderWindow & window);
 
   //void		  renderUI(sf::RenderWindow & window);  
-  virtual void    getHit(AUnit*);
-  virtual pos     move() const;
+  virtual void	  render(Time::stamp tick, sf::RenderWindow & window);
+  virtual pos     move(Time::stamp tick) const;
     
 private:
-  color           _color;
-  std::string     _name;
-  bool		  _shooting;
-  Time::stamp	  _shootTime;	
-  Missile::type   _weapon;
+  color         _color;
+  std::string   _name;
+  bool		_shooting;
+  Time::stamp	_shootTime;	
+  Missile::type _weapon;
+  int		_trueX;
+  int		_trueY;
 
-  int		  _lastVerticalMove;
-  Animation	  _anim;
-  sf::Shader	  _colorShader;
+  int		_lastVerticalMove;
+  Animation	_anim;
+  sf::Shader	_colorShader;
  };
 }
 
