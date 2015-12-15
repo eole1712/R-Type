@@ -35,7 +35,8 @@ add_executable(${EXECUTABLE_NAME}
 	core/Menu.cpp 
 	core/Player.cpp 
 	core/Game.cpp
-	unit/AUnit.cpp 
+	core/Client.cpp
+	unit/AUnit.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 

@@ -1,7 +1,7 @@
 #include "GameListItem.hpp"
 
 
-GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string& gameName, std::string& playerNumber, std::string& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
+GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
   :_gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _posX(posX), _posY(posY), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false)
 {
   _gameName.setPosition(posX, posY);
@@ -52,7 +52,7 @@ void			GameListItem::handleMouseClick(sf::RenderWindow& window)
 void			GameListItem::updatePosition()
 {
   sf::Vector2f		newPosition(_posX, _posY);
-  
+
   _gameName.setPosition(sf::Vector2f(_posX, _posY));
   _playerNumber.setPosition(sf::Vector2f(_posX + 120, _posY));
 }

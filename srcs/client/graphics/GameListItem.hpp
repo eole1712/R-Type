@@ -17,10 +17,10 @@ private:
   sf::Color		_highlightColor;
   bool			_isHighlighted;
   bool			_isSelected;
-  
+
 public:
   GameListItem(){};
-  GameListItem(unsigned int, unsigned int, std::string&, std::string&, std::string&, sf::Font&, sf::Color&, sf::Color& highlightColor);
+  GameListItem(unsigned int, unsigned int, std::string const&, std::string&, std::string const&, sf::Font&, sf::Color&, sf::Color& highlightColor);
   ~GameListItem(){};
 
   sf::Text		getName() const;

@@ -19,7 +19,7 @@ Menu::~Menu()
 void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
-  
+
   background.scale(2, 2);
   this->initFields();
   _window.setVerticalSyncEnabled(true);
@@ -54,7 +54,7 @@ void		Menu::initFields()
   _gameListUp = ClickableBtn(_width / 1.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "/\\", _fieldsFont, _fieldsColor, 21);
   _gameListDown = ClickableBtn(_width / 1.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3.4, "\\/", _fieldsFont, _fieldsColor, 21);
   _startButton = ClickableBtn(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7, "START", _fieldsFont, _startColor, 50);
-  
+
 }
 
 void		Menu::eventHandler()
@@ -187,7 +187,7 @@ void		Menu::handleHostEdition(sf::Event& event)
 void		Menu::handleGameListItem(sf::Event& event)
 {
   int		i = 5;
-  
+
   switch (event.type)
     {
     case sf::Event::MouseMoved:
@@ -310,7 +310,7 @@ void		Menu::changeCurrentRow()
     }
 }
 
-void		Menu::addGame(std::string& gameName, unsigned int playerNumber, std::string& daySentence)
+void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const& daySentence)
 {
   std::string	playerNumberToString;
 
@@ -319,7 +319,7 @@ void		Menu::addGame(std::string& gameName, unsigned int playerNumber, std::strin
   _gamesData.push_back(gameListItem);
   if (_gamesData.size() == 1)
     _gameListIt = _gamesData.begin();
-  _currentGameNumber += 1;  
+  _currentGameNumber += 1;
 }
 
 void		Menu::setConnected()
