@@ -36,8 +36,9 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
 };
 
 Networker::Networker(int port)
-  : _sock(new UdpSocket(port))
+: _sock(new UdpSocket(port))
 {
+
   _buffer.resize(APacket::kMaxPacketSize);
   _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
     std::cout << "Message received from : " << addr << ":" << port << " ==> " << _buffer << std::endl;
@@ -48,8 +49,9 @@ Networker::Networker(int port)
 }
 
 Networker::Networker(int port, NetManager* manager)
-  : _sock(new UdpSocket(port, "", manager))
+: _sock(new UdpSocket(port, "", manager))
 {
+  _PacketHandler = new PacketHandler;
   _buffer.resize(APacket::kMaxPacketSize);
   _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
     APacket* pack;
@@ -61,18 +63,19 @@ Networker::Networker(int port, NetManager* manager)
     _packList.push_front(pack);
     for (auto elem : _peers) {
       if (elem.second == port && elem.first == addr)
-	{
-	  found = true;
-	  break;
-	}
-      ++id;
-    }
-    if (!found)
-      _peers.push_back(std::make_pair(addr, port));
-    answer(pack, id);
-    _asyncRec(_sock, _buffer, _handle);
-  };
+      {
+       found = true;
+       break;
+     }
+     ++id;
+   }
+   if (!found)
+    _peers.push_back(std::make_pair(addr, port));
+  //answer(pack, id);
+  _PacketHandler->handlePacket(pack, id);
   _asyncRec(_sock, _buffer, _handle);
+};
+_asyncRec(_sock, _buffer, _handle);
 }
 
 Networker::~Networker()
