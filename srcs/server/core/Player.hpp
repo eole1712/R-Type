@@ -8,7 +8,10 @@
 #include "User.hpp"
 #include "Timer.hpp"
 
+#include <mutex>
 #include <string>
+
+#include "Lock.hpp"
 
 namespace Unit {
 
@@ -44,8 +47,8 @@ public:
     User*           getUser() const;
 
 public:
-    bool            isMoving(Unit::dir) const;
-    bool            isShooting() const;
+    bool            isMoving(Unit::dir);
+    bool            isShooting();
 
     void            setMoving(Unit::dir dir, bool isMoving);
     void            setShooting(bool isShooting);
@@ -68,7 +71,9 @@ private:
     
 private:
     User*           _user;
-    
+
+public:
+    Lock            _lock;
 public:
     static void     checkMouvement(Player *player, IMap *map);
 

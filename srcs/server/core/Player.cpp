@@ -16,7 +16,7 @@ namespace Unit {
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
@@ -111,21 +111,26 @@ namespace Unit {
         return PLAYER;
     }
     
-    bool                        Player::isMoving(Unit::dir d) const
+    bool                        Player::isMoving(Unit::dir d)
     {
+        std::lock_guard<Lock>   lock(_lock);
         return _isMoving[d];
     }
 
     void                        Player::setMoving(Unit::dir dir, bool isMoving) {
+        std::lock_guard<Lock>   lock(_lock);
         _isMoving[dir] = isMoving;
     }
     
-    bool                        Player::isShooting() const
+    bool                        Player::isShooting()
     {
+        std::lock_guard<Lock>   lock(_lock);
+
         return _isShooting;
     }
 
     void                        Player::setShooting(bool isShooting) {
+        std::lock_guard<Lock>   lock(_lock);
         _isShooting = isShooting;
     }
     
