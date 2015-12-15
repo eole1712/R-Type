@@ -19,11 +19,12 @@ namespace Unit
         public:
 	  ABonus(int x, int y, unsigned int id, unsigned int gameID, Timer::time creationTime);
 	  virtual ~ABonus();
-
+	  
         public:
-            virtual Unit::type      getType() const;
-            virtual Bonus::type     getBonusType() const = 0;
-            virtual pos             move() const;
+	  virtual Unit::type      getType() const;
+	  virtual Bonus::type     getBonusType() const = 0;
+	  virtual pos             move() const;
+	  virtual void	  render(sf::RenderWindow & window) = 0;
         };
 
     }

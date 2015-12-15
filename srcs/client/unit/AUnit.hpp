@@ -35,8 +35,8 @@ namespace Unit {
 
   typedef std::pair<int, int> pos;
 
-  // : public UnitRender
-  class AUnit  {
+  class AUnit
+  {
 
   public:
     AUnit(int x, int y, unsigned int id, Timer::time creationTime);
