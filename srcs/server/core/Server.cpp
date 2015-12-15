@@ -1,7 +1,10 @@
-
+#include "ClientConnexionPacket.hpp"
+#include "ClientGameInfoPacket.hpp"
+#include "ClientGameConnectPacket.hpp"
+#include "Thread.hpp"
 #include "Server.hpp"
 
-std::vector<std::function<void(APacket* packet, playerId id) > > Server::_packetHandlerFuncs = {
+std::vector<std::function<void(APacket* packet, unsigned int id) > > Server::_packetHandlerFuncs = {
 	[] (APacket* packet, unsigned int id) {
 		ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 		if (pack == NULL)
@@ -31,8 +34,8 @@ Server::~Server() {
 }
 
 void	Server::start() {
-	std::function<void(std::nullptr_t)> fptr = [nm] (std::nullptr_t) {
-		nm->loop();
+	std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
+		_netManager->loop();
 	};
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }

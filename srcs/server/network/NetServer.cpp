@@ -11,6 +11,7 @@ void NetServer::sendAll(APacket * pack)
 {
   int id = 0;
   for (auto& peer : _peers) {
+      (void)peer;
     send(pack, id);
     ++id;
   }

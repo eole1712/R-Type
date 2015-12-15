@@ -2,23 +2,31 @@
 #define SERVER_H_
 
 #include "Game.hpp"
+#include "APacket.hpp"
+#include "IPacketHandler.hpp"
+#include "NetManager.hpp"
+#include "NetServer.hpp"
+#include "User.hpp"
 #include <map>
 
 class Server : public IPacketHandler {
 public:
 
-	static constexpr kPort = 6524;
+	static constexpr int kPort = 6524;
 
 	Server();
 	~Server();
 
-	virtual void handlePacket(APacket* packet, playerId id);
+	virtual void handlePacket(APacket* packet, unsigned int id);
+    virtual void start();
+    
+    
 private:
-	std::vector<std::function<void(APacket* packet, playerId id) > > _packetHandlerFuncs
+    static std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
 private:
 	NetManager *_netManager;
 	NetServer *_netServer;
-	std::map<int, User*> > _players;
+	std::map<int, User*> _players;
 };
 
-#endif SERVER_H_
+#endif // SERVER_H_
