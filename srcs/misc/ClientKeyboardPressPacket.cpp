@@ -12,6 +12,10 @@ ClientKeyboardPressPacket::ClientKeyboardPressPacket(std::string const& data)
 
 }
 
+ClientKeyboardPressPacket::~ClientKeyboardPressPacket()
+{
+}
+
 void ClientKeyboardPressPacket::setKey(ClientKeyboardPressPacket::keyEvent event)
 {
   _data.replace(kHeaderSize, sizeof(keyEvent), reinterpret_cast<const char*>(&event), sizeof(keyEvent));
