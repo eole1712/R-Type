@@ -1,5 +1,6 @@
 #include "Client.hpp"
-#include "Thread.hpp"
+#include "Thread.hpp" // ??
+
 #include "ServerUnitDiePacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ServerConnexionPacket.hpp"
@@ -10,10 +11,10 @@
 #include "ServerPingPacket.hpp"
 
 Client::Client(int port)
-{
-  _nm = new NetManager;
-  _nc = new NetClient(port, _nm, this);
-  _packetHandlerFuncs = {
+  :
+  _netManager(new NetManager),
+  _netClient(new NetClient(port, _netManager, this),
+  _packetHandlerFuncs{
     [this] (APacket* packet, unsigned int id) {
       ServerConnexionPacket* pack = dynamic_cast<ServerConnexionPacket*>(packet);
       if (pack == NULL)
@@ -53,20 +54,20 @@ Client::Client(int port)
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
       if (pack == NULL)
 	return;
-    }
-  };
+    }};
+{
 }
 
 Client::~Client()
 {
-  delete _nm;
-  delete _nc;
+  delete _netManager;
+  delete _netClient;
 }
 
 void Client::start()
 {
   std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
-    _nm->loop();
+    _netManager->loop();
   };
   Thread<std::nullptr_t> t(fptr, nullptr);
 }

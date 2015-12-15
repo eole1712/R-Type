@@ -3,16 +3,9 @@
 
 #include <list>
 #include <SFML/Graphics.hpp>
-#include "Timer.hpp"
+#include "Time.hpp"
 
 namespace Unit {
-
-  enum type {
-    PLAYER,
-    MONSTER,
-    MISSILE,
-    BONUS
-  };
 
   enum color : unsigned int {
     BLUE,
@@ -39,36 +32,29 @@ namespace Unit {
   {
 
   public:
-    AUnit(int x, int y, unsigned int id, Timer::time creationTime);
+    AUnit(int x, int y, unsigned int id, Time::stamp creationTime);
     virtual ~AUnit();
+
   private:
     AUnit(AUnit const &);
     AUnit &operator=(AUnit const &);
 
   public:
-    virtual int     getX() const;
-    virtual int     getY() const;
 
-  public:
+  
+    virtual Time::stamp		getCreationTime() const;
+    virtual unsigned int	getID() const;
+    virtual int			getX() const;
+    virtual int			getY() const;
+
     virtual pos     move() const = 0;
-
-  public:
-    virtual type    getType() const = 0;
-
-  public:
-    Timer::time     getCreationTime() const;
-
-  public:
-    virtual unsigned int  getID() const;
-    virtual void	  render(sf::RenderWindow & window) = 0;
+    virtual void    render(sf::RenderWindow & window) = 0;
 
   protected:
     int                                     _x;
     int                                     _y;
-
-  protected:
     unsigned int                            _id;
-    Timer::time                             _creationTime;
+    Time::stamp                             _creationTime;
   };
 }
 

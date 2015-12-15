@@ -6,7 +6,7 @@
 
 namespace Unit {
 
-  Player::Player(int x, int y, unsigned int id, Timer::time creationTime, std::string name)
+  Player::Player(int x, int y, unsigned int id, Time::stamp creationTime, std::string name)
     : AUnit(x, y, id, creationTime),
       _color(static_cast<Unit::color>(id % 4)), _name(name), _shooting(false), _weapon(Missile::BASIC),
       _lastVerticalMove(0), _anim(std::string("../../resources/sprites/ship.fly.247x47x3.png"), 3)
@@ -35,29 +35,7 @@ namespace Unit {
     return _color;
   }
 
-  bool			Player::isShooting() const
-  {
-    return _shooting;
-  }
-
-  void			Player::shootSend()
-  {
-    if (_shootTime > 1500)
-      _shootTime = 1500;
-	/*
-        if (!_time.isFinished())
-            return NULL;
-        Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, _x, _y, this);
-        _time.reset(m->getTime());
-        return m;
-	 */
-  }
-
-  void			Player::shootLoad()
-  {
-
-  }
-
+  /*
   Missile::type		Player::getWeapon() const
   {
     return _weapon;
@@ -67,6 +45,7 @@ namespace Unit {
   {
     _weapon = w;
   }
+  */
 
   /* // localPlayer -> scoring, infoBarRender...
   unsigned int    getScore() const;
@@ -108,11 +87,6 @@ public:
   void			Player::getHit(AUnit *)
   {
     //TODO what must do
-  }
-
-  type			Player::getType() const
-  {
-    return PLAYER;
   }
 
   pos			Player::move() const

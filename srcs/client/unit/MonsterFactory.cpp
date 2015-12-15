@@ -40,7 +40,7 @@ namespace Monster {
     }
 
     Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y,
-						       unsigned int id, Timer::time creationTime)
+						       unsigned int id, Time::stamp creationTime)
     {
         fptrNewMonster		ptr;
         Unit::Monster::AMonster*	newMonster;
