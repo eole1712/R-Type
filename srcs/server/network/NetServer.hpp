@@ -6,7 +6,7 @@
 class NetServer : public Networker
 {
 public:
-  NetServer(int port, NetManager*);
+  NetServer(int port, NetManager*, IPacketHandler*);
   virtual ~NetServer();
   void sendAll(APacket*);
 };
