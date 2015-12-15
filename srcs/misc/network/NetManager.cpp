@@ -187,7 +187,11 @@ void NetManager::loop()
       if (WSAGetLastError() == WSAENOTSOCK)
 	_ret = ISocket::Fail;
 #else
+#if (defined __APPLE__)
+      if (errno != EBADF)
+#else
       if (errno != EBADFD)
+#endif
 	_ret = ISocket::Fail;
       #endif
       //timeout = _timeout - tVal.tv_usec;

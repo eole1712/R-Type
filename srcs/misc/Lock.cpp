@@ -2,7 +2,7 @@
 #include "Lock.hpp"
 
 Lock::Lock() {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	int ret;
 		
 	ret = pthread_mutex_init(&_lock, NULL);
@@ -14,7 +14,7 @@ Lock::Lock() {
 }
 
 Lock::~Lock() {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	int	ret;
 	ret = pthread_mutex_destroy(&_lock);
 	if (ret == EBUSY || ret == EINVAL)
@@ -25,7 +25,7 @@ Lock::~Lock() {
 }
 
 void	Lock::lock() {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	int	ret;
 
 	ret = pthread_mutex_lock(&_lock);
@@ -38,7 +38,7 @@ void	Lock::lock() {
 
 void	Lock::unlock()
 {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	int	ret;
 
 	ret = pthread_mutex_unlock(&_lock);
@@ -51,7 +51,7 @@ void	Lock::unlock()
 
 bool	Lock::try_lock()
 {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
  	int	ret;
 
 	if ((ret = pthread_mutex_trylock(&_lock)) == EBUSY)

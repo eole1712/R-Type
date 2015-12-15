@@ -2,7 +2,7 @@
 #ifndef THREAD_H_
 # define THREAD_H_
 
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 # include <pthread.h>
 #elif defined(_WIN32)
 # include <windows.h>
@@ -27,7 +27,7 @@ public:
 		pairdata = new std::pair<ThreadFunc, T>;
 		pairdata->first = func;
 		pairdata->second = data;
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 		if (pthread_create(&_thread, NULL, &Thread::_runFunc, pairdata) != 0)
 			throw std::exception();
 #elif defined(_WIN32)	
@@ -41,7 +41,7 @@ public:
 public:
 
 	void		join() {
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 		if (pthread_join(_thread, NULL) != 0)
 			throw std::exception();
 #elif defined(_WIN32)
@@ -51,7 +51,7 @@ public:
 	}
 
 private:
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	static void*	_runFunc(void* data) {
 #elif defined(_WIN32)	
 	static DWORD WINAPI	_runFunc(void* data) {
@@ -61,7 +61,7 @@ private:
 		tmp = static_cast<std::pair<ThreadFunc, T>* >(data);
 		(tmp->first)(tmp->second);
 		delete tmp;
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 		pthread_exit(NULL);
 #elif defined(_WIN32)	
 		ExitThread(0);
@@ -69,7 +69,7 @@ private:
 	}
 
 private:
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 	pthread_t	_thread;
 #elif defined(_WIN32)	
 	HANDLE _handle;

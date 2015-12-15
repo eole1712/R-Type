@@ -16,7 +16,7 @@ public:
 
 	uint32_t getPlayerID();
 	uint32_t getX();
-    uint32_t getX();
+    uint32_t getY();
 
 	void setPlayerID(uint32_t id);
     void setX(uint32_t id);
