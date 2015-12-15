@@ -44,6 +44,11 @@ IMap*	Game::getMap() const
     return (this->_map);
 }
 
+unsigned long    Game::getNbPlayers() const
+{
+    return _players.size();
+}
+
 IScoreList*	Game::getScores() const
 {
     std::for_each(_players.begin(), _players.end(), [this](Unit::Player* player)

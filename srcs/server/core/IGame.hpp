@@ -27,6 +27,7 @@ public:
 public:
     virtual bool			addPlayer(std::string name) = 0;
     virtual void			removePlayer(Unit::color) = 0;
+    virtual unsigned long   getNbPlayers() const = 0;
 };
 
 #endif /* !IGAME_H_ */

@@ -26,6 +26,7 @@ public:
     
     virtual bool			addPlayer(std::string name);
     virtual void			removePlayer(Unit::color);
+    virtual unsigned long   getNbPlayers() const;
     
 public:
     virtual void        start();
