@@ -22,11 +22,12 @@ public:
     
     
 private:
-    static std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
+  std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
 private:
 	NetManager *_netManager;
 	NetServer *_netServer;
-	std::map<int, User*> _players;
+	std::map<int, User*> _users;
+	std::map<int, IGame*> _games;
 };
 
 #endif // SERVER_H_
