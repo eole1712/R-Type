@@ -34,6 +34,11 @@ unsigned int	Game::getID() const
     return (this->_id);
 }
 
+std::string     Game::getName() const
+{
+    return _name;
+}
+
 IMap*	Game::getMap() const
 {
     return (this->_map);
