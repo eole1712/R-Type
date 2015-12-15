@@ -1,8 +1,8 @@
 #include "ClientConnexionPacket.hpp"
 #include "NetClient.hpp"
 
-NetClient::NetClient(int port, NetManager* manager)
-  : Networker(port, manager)
+NetClient::NetClient(int port, NetManager* manager, IPacketHandler* handler)
+  : Networker(port, manager, handler)
 {
 
 }
