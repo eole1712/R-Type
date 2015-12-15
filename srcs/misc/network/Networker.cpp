@@ -6,6 +6,11 @@
 #include "ClientGameConnectPacket.hpp"
 #include "ClientConnexionPacket.hpp"
 #include "ServerConnexionPacket.hpp"
+#include "ServerPlayerMovePacket.hpp"
+#include "ServerTimerRefreshPacket.hpp"
+#include "ServerUnitDiePacket.hpp"
+#include "ServerUnitSpawnPacket.hpp"
+#include "ServerPingPacket.hpp"
 #include <iostream>
 
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);

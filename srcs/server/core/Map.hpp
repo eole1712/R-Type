@@ -18,8 +18,8 @@ public:
   virtual Unit::AUnit*				checkInterractions(Unit::AUnit*) const;
   
 public:
-  static const unsigned int	WIDTH;
-  static const unsigned int	HEIGHT;
+  static const int	WIDTH;
+  static const int	HEIGHT;
   
 public:
   static bool       isIn(int x, int y);

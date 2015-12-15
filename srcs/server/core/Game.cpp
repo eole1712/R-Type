@@ -13,8 +13,8 @@
 #include "ObjectCast.hpp"
 #include "AMonster.hpp"
 
-Game::Game(unsigned int id)
-: _id(id), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0)
+Game::Game(unsigned int id, std::string name)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0)
 {
 }
 
@@ -34,9 +34,19 @@ unsigned int	Game::getID() const
     return (this->_id);
 }
 
+std::string     Game::getName() const
+{
+    return _name;
+}
+
 IMap*	Game::getMap() const
 {
     return (this->_map);
+}
+
+unsigned long    Game::getNbPlayers() const
+{
+    return _players.size();
 }
 
 IScoreList*	Game::getScores() const

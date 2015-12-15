@@ -15,22 +15,24 @@ class IScoreList;
 class Game : public IGame
 {
 public:
-    Game(unsigned int id);
+    Game(unsigned int id, std::string name);
     virtual ~Game();
     
-    virtual unsigned int		getID() const;
+    virtual unsigned int	getID() const;
     virtual IMap*			getMap() const;
     virtual IScoreList*		getScores() const;
-    virtual Unit::Player*		getPlayer(Unit::color) const;
+    virtual Unit::Player*	getPlayer(Unit::color) const;
+    virtual std::string     getName() const;
     
     virtual bool			addPlayer(std::string name);
     virtual void			removePlayer(Unit::color);
+    virtual unsigned long   getNbPlayers() const;
     
 public:
     virtual void        start();
     virtual bool        nextAction();
 
-public:
+protected:
     virtual void        checkMouvements(Timer &);
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
@@ -41,6 +43,7 @@ public:
     
 private:
     unsigned int		_id;
+    std::string         _name;
     IMap*				_map;
     IScoreList*			_scores;
     std::vector<Unit::Player*>	_players;
