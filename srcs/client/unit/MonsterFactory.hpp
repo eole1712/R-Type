@@ -4,10 +4,10 @@
 # include <list>
 # include <map>
 # include "AMonster.hpp"
-# include "Timer.hpp"
+# include "Time.hpp"
 
 typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y, unsigned int id,
-							  Timer::time creationTime);
+							  Time::stamp creationTime);
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
@@ -24,7 +24,7 @@ namespace Monster {
         ~Factory();
 
         Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
-						      unsigned int id, Timer::time creationTime);
+						      unsigned int id, Time::stamp creationTime);
 
         bool				addMonsterType(Unit::Monster::type, std::string libName);
         bool				removeMonsterType(Unit::Monster::type);

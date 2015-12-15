@@ -1,12 +1,23 @@
 #include "User.hpp"
+#include "Player.hpp"
 
 User::User(std::string const &name, unsigned int clientID)
-: _clientID(clientID), _name(name), _gameID(0), _player(nullptr), _color(Unit::BLUE), _score(0)
+: _clientID(clientID), _name(name), _gameID(0), _player(nullptr), _score(0)
 {
 }
 
 User::~User()
 {
+}
+
+unsigned int      User::getClientID() const
+{
+    return _clientID;
+}
+
+std::string       User::getName() const
+{
+    return _name;
 }
 
 Unit::Player*     User::getPlayer() const
@@ -25,15 +36,14 @@ void              User::startGame(unsigned int gameID, Unit::Player *player)
     {
         _gameID = gameID;
         _player = player;
-        _color = player->getColor();
     }
 }
 
-void              User::endGame(ScoreList *list)
+void              User::endGame(unsigned int score)
 {
     if (_gameID > 0)
     {
-        _score += list->getScore(_color)->getScore();
+        _score += score;
         _gameID = 0;
         _player = nullptr;
     }

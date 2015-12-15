@@ -2,8 +2,6 @@
 # define AMONSTER_H_
 
 # include "AUnit.hpp"
-# include "AMissile.hpp"
-# include "Timer.hpp"
 
 namespace Unit
 {
@@ -18,14 +16,14 @@ namespace Unit
         class AMonster : public AUnit
         {
         public:
-	  AMonster(int x, int y, unsigned int id, unsigned int gameID, Timer::time creationTime);
+	  AMonster(int x, int y, unsigned int id, unsigned int gameID, Time::stamp creationTime);
 	  virtual ~AMonster();
 
 	  virtual Unit::type          getType() const;
 	  virtual Monster::type       getMonsterType() const = 0;
 
 	  virtual pos                 move() const = 0;
-	  virtual void	  render(sf::RenderWindow & window) = 0;
+	  virtual void		      render(sf::RenderWindow & window) = 0;
         };
 
     }

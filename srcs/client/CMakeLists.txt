@@ -34,7 +34,6 @@ add_executable(${EXECUTABLE_NAME}
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
 	misc/Time.cpp 
-	misc/Timer.cpp 
 	../misc/Lock.cpp)
 
 if (WIN32)

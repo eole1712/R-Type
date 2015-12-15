@@ -15,11 +15,13 @@ namespace Unit {
     const unsigned int          Player::STARTY = Map::HEIGHT / 2;
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
-    Player::Player(color c, std::string name, unsigned int id, unsigned int gameID)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID), _color(c), _name(name), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0)
+    Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user)
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
+        
+        user->startGame(gameID, this);
     }
 
     Player::~Player()
@@ -68,9 +70,14 @@ namespace Unit {
 
     std::string                 Player::getName() const
     {
-        return _name;
+        return _user->getName();
     }
 
+    User*                       Player::getUser() const
+    {
+        return _user;
+    }
+    
     color                       Player::getColor() const
     {
         return _color;

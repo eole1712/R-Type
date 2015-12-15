@@ -8,7 +8,7 @@
 class Client : public IPacketHandler
 {
 public:
-  Client(int port);
+  Client(int port = 6524);
   virtual ~Client();
   void handlePacket(APacket*, unsigned int id);
   void selectGame(std::string const& name);
