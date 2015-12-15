@@ -7,7 +7,7 @@
 class NetClient : public Networker
 {
 public:
-  NetClient(int port, NetManager*);
+  NetClient(int port, NetManager*, IPacketHandler*);
   virtual ~NetClient();
   void connect(std::string const& addr, int port, std::string const& name);
   /*!
