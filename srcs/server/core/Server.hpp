@@ -20,6 +20,9 @@ public:
 	virtual void handlePacket(APacket* packet, unsigned int id);
     virtual void start();
     
+private:
+    void startGame(IGame*);
+    
     
 private:
   std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
