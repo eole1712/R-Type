@@ -4,6 +4,8 @@
 GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string& gameName, std::string& playerNumber, std::string& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
   :_gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _posX(posX), _posY(posY), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false)
 {
+  std::cout << _posX << std::endl;
+  std::cout << _posY << std::endl;
   _gameName.setPosition(posX, posY);
   _gameName.setColor(_color);
   _playerNumber.setPosition(posX + 120, posY);
@@ -26,7 +28,9 @@ void			GameListItem::handleMouseMoved(sf::RenderWindow& window)
 {
   sf::Vector2f	mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
-  if (sf::Mouse::getPosition(window).x >= _posX && sf::Mouse::getPosition(window).x <= _posX + 140  && sf::Mouse::getPosition(window).y >= _posY && sf::Mouse::getPosition(window).y <= _posY + 21 && _isSelected == false)
+  std::cout << _posX << std::endl;
+  if (sf::Mouse::getPosition(window).x >= _posX && sf::Mouse::getPosition(window).x <= _posX + 140 &&
+      sf::Mouse::getPosition(window).y >= _posY && sf::Mouse::getPosition(window).y <= _posY + 21 && _isSelected == false)
     {
       _gameName.setColor(_highlightColor);
       _playerNumber.setColor(_highlightColor);
