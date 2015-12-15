@@ -147,13 +147,18 @@ void        Game::checkMouvements(Timer &t)
 
 void        Game::shootThemAll()
 {
-    std::for_each(_players.begin(), _players.end(), [](Unit::Player *player) {
-        if (player->isShooting())
-            player->shoot();
+    std::for_each(_players.begin(), _players.end(), [this](Unit::Player *player) {
+        if (player->isShooting()) {
+            Unit::AUnit* m = player->shoot();
+            if (m)
+                _map->addUnit(m);
+        }
     });
-    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [](Unit::AUnit* unit){
+    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this](Unit::AUnit* unit){
         if (unit->getType() == Unit::MONSTER) {
-            ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot();
+            Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot();
+            if (m)
+                _map->addUnit(m);
         }
     });
 }

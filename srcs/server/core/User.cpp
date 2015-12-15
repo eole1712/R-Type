@@ -68,3 +68,13 @@ void            User::setReady(bool ready)
 {
     _ready = ready;
 }
+
+bool            User::needRefresh() const
+{
+    return _needRefresh;
+}
+
+void            User::setRefresh(bool state)
+{
+    _needRefresh = state;
+}

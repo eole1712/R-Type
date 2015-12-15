@@ -5,6 +5,7 @@
 #include "ServerGameConnectPacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
+#include "ServerPlayerMovePacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
 
@@ -30,6 +31,7 @@ Server::Server() {
 			ret->setServerString("Welcome to R-Type Server");
 			ret->setStatus(true);
 			_netServer->send(ret, id);
+			delete ret;
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
@@ -43,6 +45,7 @@ Server::Server() {
 				ret->setRoomSlots(4 - game.second->getNbPlayers());
 				ret->setRoomName(game.second->getName());
 				_netServer->send(ret, id);
+				delete ret;
 			}
 		},
 		[this] (APacket* packet, unsigned int id) {
@@ -68,9 +71,10 @@ Server::Server() {
 			}
 			else {
 				ret->setStatus(true);
-				ret->setPlayerId(_users[id]->getPlayer()->getColor());
+				ret->setPlayerId(_users[id]->getPlayer()->getID());
 			}
 			_netServer->send(ret, id);
+			delete ret;
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
@@ -116,8 +120,24 @@ void	Server::start() {
 }
 
 void Server::startGame(IGame* game) {
-	std::function<void(std::nullptr_t)> fptr = [game] (std::nullptr_t) {
-		while (game->nextAction());
+	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
+		while (game->nextAction()) {
+			std::vector<User*> v = game->getUsers();
+			for (auto& user : v) {
+				if (user->needRefresh()) {
+					ServerPlayerMovePacket* packet = new ServerPlayerMovePacket();
+					packet->setPlayerID(user->getPlayer()->getID());
+					packet->setX(user->getPlayer()->getX());
+					packet->setY(user->getPlayer()->getY());
+					for (auto& aUser : v) {
+						_netServer->send(packet, aUser->getClientID());
+					}
+					delete packet;
+					user->setRefresh(false);
+				}
+
+			}
+		}
 	};
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
