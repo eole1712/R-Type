@@ -18,8 +18,7 @@ public:
   APacket* getLastPacket();
   void start();
   void answer(APacket* pack, int id);
-protected:
-  void send(APacket*, int id);
+  void send(APacket* pack, int id);
 protected:
   IPacketHandler* _PacketHandler;
   ISocket* _sock;
