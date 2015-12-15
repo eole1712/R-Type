@@ -16,12 +16,12 @@ Game::Game(sf::RenderWindow & window, Unit::Player & player)
 	{ param->getLocalPlayer()->move(Unit::LEFT, tick); }},
       {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{
-	  param->getLocalPlayer()->shootLoad();
+
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}},
       {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{
-	  param->getLocalPlayer()->shootSend();
+
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
       })

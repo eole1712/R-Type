@@ -1,7 +1,5 @@
 #include <utility>
-#include "AUnit.hpp"
 #include "ABonus.hpp"
-#include "Timer.hpp"
 
 namespace Unit
 {
@@ -9,23 +7,18 @@ namespace Unit
   namespace Bonus
   {
 
-  ABonus::ABonus(int x, int y, unsigned int id, unsigned int gameID, Timer::time creationTime)
+  ABonus::ABonus(int x, int y, unsigned int id, unsigned int gameID, Time::stamp creationTime)
     : AUnit(Unit::ENEMY, x, y, id, gameID, creationTime)
     {}
 
     ABonus::~ABonus()
     {}
 
-    Unit::type	ABonus::getType() const
+    pos	ABonus::move() const
     {
-      return (Unit::MISSILE);
+      // todo
+      return (std::make_pair(0, 0));
     }
-
-  pos	ABonus::move() const
-  {
-    // todo
-    return (std::make_pair(0, 0));
-  }
 
   }
 
