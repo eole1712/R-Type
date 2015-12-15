@@ -27,7 +27,7 @@ std::pair<unsigned int, bool>      ClientKeyboardPressPacket::getStatus()
     std::pair<unsigned int, bool>  pair;
     
     pair.first = getKey() / 2;
-    pair.second = getKey() % 2;
+    pair.second = !(static_cast<bool>(getKey() % 2));
     
     return pair;
 }
