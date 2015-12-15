@@ -5,7 +5,9 @@
 #include <list>
 // TODO use our threads
 #include <mutex>
+#if defined(_WIN32)
 #include "Winsock2.h"
+#endif
 // #include <thread>
 // end TOD
 
