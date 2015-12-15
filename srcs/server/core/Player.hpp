@@ -44,6 +44,8 @@ public:
     bool            isMoving(Unit::dir) const;
     bool            isShooting() const;
 
+    void            setMoving(Unit::dir dir, bool isMoving);
+    void            setShooting(bool isShooting);
 public:
     pos             move() const;
     bool            move(dir, IMap*);

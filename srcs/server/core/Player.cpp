@@ -108,10 +108,18 @@ namespace Unit {
     {
         return _isMoving[d];
     }
+
+    void                        Player::setMoving(Unit::dir dir, bool isMoving) {
+        _isMoving[dir] = isMoving;
+    }
     
     bool                        Player::isShooting() const
     {
         return _isShooting;
+    }
+
+    void                        Player::setShooting(bool isShooting) {
+        _isShooting = isShooting;
     }
     
     void                        Player::checkMouvement(Player *player, IMap *map)
