@@ -10,14 +10,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 if (UNIX)
 set(etape1_sources
 	main.cpp
-	linux_specific/CULibLoader.cpp
-)
+	linux_specific/CULibLoader.cpp)
+include_directories(./
+  linux_specific/)
 endif (UNIX)
 if (WIN32)
 set(etape1_sources
 	main.cpp
-	windows_specific/CWLibLoader.cpp
-)
+	windows_specific/CWLibLoader.cpp)
+include_directories(./
+  windows_specific/)
 endif (WIN32)
 
 add_executable(test_libloader ${etape1_sources})

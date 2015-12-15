@@ -1,21 +1,21 @@
 #include "ILibLoader.hpp"
 
 #if defined(__linux__)
-#include "CULibLoader.hpp"
+#include "linux_specific/CULibLoader.hpp"
 #elif defined(_WIN32)
-#include "CWLibLoader.hpp"
+#include "windows_specific/CWLibLoader.hpp"
 #endif
 
 int	main()
 {
-  ILibLoader*	loader;
+  ILibLoader*	libLoader;
 
 #if defined(__linux__)
-  libLoader = new CULibLoader(libName, "NewMonster", "DeleteMonster");
+  libLoader = new CULibLoader("MonsterTest", "NewMonster", "DeleteMonster");
 #elif defined(_WIN32)
-  libLoader = new CWLibLoader(libName, "NewMonster", "DeleteMonster");
+  libLoader = new CWLibLoader("MonsterTest", "NewMonster", "DeleteMonster");
 #endif
 
-  (void)loader;
+  (void)libLoader;
   return (0);
 }
