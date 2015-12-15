@@ -5,6 +5,7 @@
 #include "ServerGameConnectPacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
+#include "ServerPlayerMovePacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
 
@@ -119,17 +120,17 @@ void	Server::start() {
 }
 
 void Server::startGame(IGame* game) {
-	std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
+	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
 			for (auto& user : v) {
 				if (user->needRefresh()) {
-					ServerPlayerMovePacket packet = new ServerPlayerMovePacket();
+					ServerPlayerMovePacket* packet = new ServerPlayerMovePacket();
 					packet->setPlayerID(user->getPlayer()->getID());
-					packet->setPlayerX(user->getPlayer()->getX());
-					packet->setPlayerY(user->getPlayer()->getY());
+					packet->setX(user->getPlayer()->getX());
+					packet->setY(user->getPlayer()->getY());
 					for (auto& aUser : v) {
-						_netServer->send(packet, aUser->getID());
+						_netServer->send(packet, aUser->getClientID());
 					}
 					delete packet;
 					user->setRefresh(false);
