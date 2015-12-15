@@ -12,11 +12,13 @@ public:
   virtual ~Client();
   void handlePacket(APacket*, unsigned int id);
   void selectGame(std::string const& name);
+  void connect(std::string const& ip, std::string const& name);
   void start();
 protected:
   NetManager* _nm;
   NetClient*  _nc;
   std::vector<std::function<void(APacket*, unsigned int)> > _packetHandlerFuncs;
+  std::map<std::string, uint32_t> _rooms;
   Menu* _menu;
   int _playerId;
 };
