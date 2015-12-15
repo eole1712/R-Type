@@ -5,6 +5,7 @@
 #include "APacket.hpp"
 
 class IPacketHandler {
+public:
 	virtual ~IPacketHandler() {};
 
 	virtual void handlePacket(APacket* packet, playerId id) = 0;
