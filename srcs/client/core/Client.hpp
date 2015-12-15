@@ -10,7 +10,7 @@ public:
   Client(int port);
   virtual ~Client();
   void handlePacket(APacket*, unsigned int id);
-
+  void start();
 protected:
   NetManager* _nm;
   NetClient*  _nc;
