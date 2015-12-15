@@ -14,26 +14,23 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-  Player(int x, int y, unsigned int id, Timer::time creationTime, std::string name);
+  Player(int x, int y, unsigned int id, Time::time creationTime, std::string name);
   virtual ~Player();
   
 public:
   std::string     getName() const;
   color           getColor() const;
 
-  bool            isShooting() const;
-  void		  shootSend();
-  void		  shootLoad();
-
+  /*
   Missile::type   getWeapon() const;
   void            setWeapon(Missile::type);
+  */
 
   void            move(dir, Time::stamp);
   virtual void	  render(sf::RenderWindow & window);
 
   //void		  renderUI(sf::RenderWindow & window);  
   virtual void    getHit(AUnit*);
-  virtual type    getType() const;
   virtual pos     move() const;
     
 private:
