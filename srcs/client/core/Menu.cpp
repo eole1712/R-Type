@@ -1,12 +1,12 @@
 #include <unistd.h>
 #include "Menu.hpp"
-#include "Game.hpp"
 #include "Player.hpp"
+#include "Game.hpp"
 
 Menu::Menu(int width, int height):
   _width(width), _height(height), _window(sf::VideoMode(_width, _height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
-  _highlightColor(255, 255, 255), _startColor(121, 248, 248)
+  _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5), _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), _currentGameNumber(0), _isConnected(false)
 {
   _currentRow = LOGIN;
   _maxLoginSize = false;
@@ -19,11 +19,10 @@ Menu::~Menu()
 void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
+  
   background.scale(2, 2);
   this->initFields();
-  //  sf::RenderWindow window(sf::VideoMode(_width, _height), "R-Type");
   _window.setVerticalSyncEnabled(true);
-
   while (_window.isOpen())
     {
       eventHandler();
@@ -32,10 +31,10 @@ void		Menu::initMainView()
       this->drawFields();
       this->drawEditable();
       this->drawLoginSizeErr();
+      this->drawGameList();
       _window.display();
     }
 }
-
 
 void		Menu::initFields()
 {
@@ -44,18 +43,24 @@ void		Menu::initFields()
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  _menuFields[0] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Login", _fieldsFont, _fieldsColor);
-  _menuFields[1] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _fieldsFont, _fieldsColor);
-  _menuFields[2] = ClickableBtn(_width / 4, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3, "Server", _fieldsFont, _fieldsColor);
-  _login = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2, "Player", _loginFont, _loginColor);
-  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.8, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
-  _host = Editable(_width / 2, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.5, "Host", _loginFont, _loginColor);
+  _menuFields[0] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor);
+  _menuFields[1] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _fieldsFont, _fieldsColor);
+  _menuFields[2] = ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Games", _fieldsFont, _fieldsColor);
+  _login = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Player", _loginFont, _loginColor);
+  _loginSizeErr = ClickableBtn(_width / 1.568, _height / (MAX_NUMBER_OF_FIELDS + 1) * 1.1, "16 chars max", _fieldsFont, _loginSizeErrColor, 21);
+  _host = Editable(_width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Host", _loginFont, _loginColor);
+  _connectButton = ClickableBtn(_width / 1.3, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.7, "Connect", _fieldsFont, _startColor, 21);
+  _refreshButton = ClickableBtn(_width / 1.15, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.7, "Refresh", _fieldsFont, _startColor, 21);
+  _gameListUp = ClickableBtn(_width / 1.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "/\\", _fieldsFont, _fieldsColor, 21);
+  _gameListDown = ClickableBtn(_width / 1.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 3.4, "\\/", _fieldsFont, _fieldsColor, 21);
   _startButton = ClickableBtn(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 4.7, "START", _fieldsFont, _startColor, 50);
+  
 }
 
 void		Menu::eventHandler()
 {
   sf::Event event;
+
   while (_window.pollEvent(event))
     {
       switch (event.type)
@@ -64,10 +69,14 @@ void		Menu::eventHandler()
 	  _window.close();
 	  break;
 	case sf::Event::MouseMoved:
-	  this->handleMouseMoved(event);
+	  this->handleMouseMoved();
+	  if (_gamesData.size() != 0)
+	    this->handleGameListItem(event);
 	  break;
 	case sf::Event::MouseButtonReleased:
-	  this->handleMouseClick(event);
+	  this->handleMouseClick();
+	  if (_gamesData.size() != 0)
+	    this->handleGameListItem(event);
 	  break;
 	case sf::Event::TextEntered:
 	  if (_currentRow == LOGIN)
@@ -85,24 +94,25 @@ void		Menu::eventHandler()
     }
 }
 
-void		Menu::handleMouseClick(sf::Event& event)
+void		Menu::handleMouseClick()
 {
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     {
-       Unit::Player	player(100, 270, 0, 0, _login.getEditable().getString());
-       Game		game(_window, player);
-	
-      	while (!game.getFinish())
-	  { 
-	  }
-     }
-   if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     std::cout << "Connect" << std::endl;
+     std::cout << "START" << std::endl;
+   else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+     _isConnected = true;
+   else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+     std::cout << "Refresh" << std::endl;
+   else if (_gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
+      if (_gamesData.size())
+	gamesToPrint(true);
+   else if (_gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
+     if (_gamesData.size())
+       gamesToPrint(false);
 }
 
-void		Menu::handleMouseMoved(sf::Event& event)
+void		Menu::handleMouseMoved()
 {
   sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
@@ -110,6 +120,12 @@ void		Menu::handleMouseMoved(sf::Event& event)
     _connectButton.getClickableBtn().setColor(_highlightColor);
   else if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _startButton.getClickableBtn().setColor(_highlightColor);
+  else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+    _refreshButton.getClickableBtn().setColor(_highlightColor);
+  else if (_isConnected && _gamesData.size() != 0 && _gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
+    _gameListUp.getClickableBtn().setColor(_highlightColor);
+  else if (_isConnected && _gamesData.size() != 0 && _gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
+    _gameListDown.getClickableBtn().setColor(_highlightColor);
   else
     {
       for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
@@ -123,12 +139,18 @@ void		Menu::handleMouseMoved(sf::Event& event)
 	}
       _startButton.getClickableBtn().setColor(_startColor);
       _connectButton.getClickableBtn().setColor(_startColor);
+      _refreshButton.getClickableBtn().setColor(_startColor);
+      if (_isConnected)
+	{
+	  _gameListUp.getClickableBtn().setColor(_fieldsColor);
+	  _gameListDown.getClickableBtn().setColor(_fieldsColor);
+	}
     }
 }
 
 void		Menu::handleLoginEdition(sf::Event& event)
 {
-  if (_login.getEditable().getString().getSize() <= 16)
+  if (_login.getEditable().getString().getSize() <= 15)
     {
       _maxLoginSize = false;
       if (event.text.unicode >= 32 && event.text.unicode <= 126)
@@ -156,6 +178,66 @@ void		Menu::handleHostEdition(sf::Event& event)
     }
 }
 
+void		Menu::handleGameListItem(sf::Event& event)
+{
+  int		i = 5;
+  
+  switch (event.type)
+    {
+    case sf::Event::MouseMoved:
+      for(std::list<GameListItem>::iterator it = _gameListIt;
+	  it != _gamesData.end() && i > 0; it++)
+	{
+	  i--;
+	  (*it).eventHandler(_window, event);
+	}
+      break;
+    case sf::Event::MouseButtonReleased:
+      for(std::list<GameListItem>::iterator it = _gameListIt;
+	  it != _gamesData.end() && i > 0; it++)
+	{
+	  i--;
+	  if ((*it).getIsSelected() == true)
+	    {
+	      (*it).setIsSelected(false);
+	      (*it).setColor(_fieldsColor);
+	    }
+	  if (sf::Mouse::getPosition(_window).x >= (*it).getPosX() && sf::Mouse::getPosition(_window).x <= (*it).getPosX() + 140  && sf::Mouse::getPosition(_window).y >= (*it).getPosY() && sf::Mouse::getPosition(_window).y <= (*it).getPosY() + 21)
+	    {
+	      (*it).setIsSelected(true);
+	      (*it).setColor(sf::Color(255, 255, 102));
+	    }
+	  (*it).eventHandler(_window, event);
+	}
+      break;
+    }
+}
+
+void		Menu::gamesToPrint(bool up)
+{
+  if (_gamesData.size() > 5)
+    {
+      if (up == true && _gameListIt != _gamesData.begin())
+	{
+	  _gameListIt--;
+	  for (std::list<GameListItem>::iterator it = _gamesData.begin(); it != _gamesData.end(); it++ )
+	    {
+	      (*it).setPosY((*it).getPosY() + 30);
+	      (*it).updatePosition();
+	    }
+	}
+      else if (up == false && std::distance(_gameListIt, _gamesData.end()) > 5)
+	{
+	  _gameListIt++;
+	  for (std::list<GameListItem>::iterator it = _gamesData.begin(); it != _gamesData.end(); it++ )
+	    {
+	      (*it).setPosY((*it).getPosY() - 30);
+	      (*it).updatePosition();
+	    }
+	}
+    }
+}
+
 void		Menu::drawFields()
 {
   for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
@@ -165,6 +247,7 @@ void		Menu::drawFields()
 	_menuFields[_currentRow].setColor(_highlightColor);
       _window.draw(_menuFields[i].getClickableBtn());
     }
+  _window.draw(_refreshButton.getClickableBtn());
   _window.draw(_connectButton.getClickableBtn());
   _window.draw(_startButton.getClickableBtn());
 }
@@ -179,6 +262,24 @@ void		Menu::drawLoginSizeErr()
 {
   if (_maxLoginSize == true)
     _window.draw(_loginSizeErr.getClickableBtn());
+}
+
+void		Menu::drawGameList()
+{
+  int		i = 5;
+
+  if (_isConnected == true && _gamesData.size() != 0)
+    {
+      for (std::list<GameListItem>::iterator it = _gameListIt;
+	   it != _gamesData.end() && i > 0; it++)
+	{
+	  i--;
+	  _window.draw((*it).getName());
+	  _window.draw((*it).getPlayerNumber());
+	}
+      _window.draw(_gameListUp.getClickableBtn());
+      _window.draw(_gameListDown.getClickableBtn());
+    }
 }
 
 void		Menu::changeCurrentRow()
@@ -197,12 +298,14 @@ void		Menu::changeCurrentRow()
     }
 }
 
-void		Menu::addGame(std::string gameName, unsigned int playerNumber, std::string daySentence)
+void		Menu::addGame(std::string& gameName, unsigned int playerNumber, std::string& daySentence)
 {
-  s_gameData	newGame;
+  std::string	playerNumberToString;
 
-  newGame._gameName = gameName;
-  newGame._playerNumber = playerNumber;
-  newGame._daySentence = daySentence;
-  _gamesData.push_back(newGame);
+  playerNumberToString = std::to_string(playerNumber);
+  GameListItem	gameListItem(_gameListPosX, _gameListPosY + (30 * _currentGameNumber), gameName, playerNumberToString, daySentence, _fieldsFont, _fieldsColor, _highlightColor);
+  _gamesData.push_back(gameListItem);
+  if (_gamesData.size() == 1)
+    _gameListIt = _gamesData.begin();
+  _currentGameNumber += 1;  
 }

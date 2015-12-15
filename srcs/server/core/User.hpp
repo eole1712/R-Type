@@ -30,6 +30,10 @@ public:
     bool        isInGame() const;
     
 public:
+    bool        isReady() const;
+    void        setReady(bool);
+    
+public:
     unsigned int    getScore() const;
     
 private:
@@ -39,6 +43,9 @@ private:
 private:
     unsigned int    _gameID;
     Unit::Player*   _player;
+    
+private:
+    bool            _ready;
 
 private:
     unsigned int    _score;
