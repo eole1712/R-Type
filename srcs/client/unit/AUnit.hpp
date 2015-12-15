@@ -44,15 +44,15 @@ namespace Unit {
   
     virtual Time::stamp		getCreationTime() const;
     virtual unsigned int	getID() const;
-    virtual int			getX() const;
-    virtual int			getY() const;
 
-    virtual pos     move() const = 0;
-    virtual void    render(sf::RenderWindow & window) = 0;
+    virtual pos			move(Time::stamp tick) const = 0;
+    virtual void		render(Time::stamp tick, sf::RenderWindow & window) = 0;
 
   protected:
     int                                     _x;
     int                                     _y;
+    int                                     _trueX;
+    int                                     _trueY;
     unsigned int                            _id;
     Time::stamp                             _creationTime;
   };

@@ -20,16 +20,4 @@ AUnit::AUnit(int x, int y, unsigned int id, Time::stamp creationTime)
   {
     return _id;
   }
-
-
-  int    AUnit::getX() const
-  {
-    return move().first;
-  }
-
-  int    AUnit::getY() const
-  {
-    return move().second;
-  }
-
 }
