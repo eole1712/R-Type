@@ -5,6 +5,7 @@
 #include "AUnit.hpp"
 #include "AMissile.hpp"
 #include "Map.hpp"
+#include "User.hpp"
 #include "Timer.hpp"
 
 #include <string>
@@ -14,7 +15,7 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-    Player(color, std::string name, unsigned int id, unsigned int gameID);
+    Player(color, User *user, unsigned int id, unsigned int gameID);
     virtual ~Player();
 
 public:
@@ -40,6 +41,7 @@ public:
 public:
     std::string     getName() const;
     color           getColor() const;
+    User*           getUser() const;
 
 public:
     bool            isMoving(Unit::dir) const;
@@ -56,7 +58,6 @@ public:
 
 private:
     color           _color;
-    std::string     _name;
     unsigned int    _score;
     Missile::type   _weapon;
     Timer           _time;
@@ -64,6 +65,9 @@ private:
 private:
     bool            _isMoving[4];
     bool            _isShooting;
+    
+private:
+    User*           _user;
     
 public:
     static void     checkMouvement(Player *player, IMap *map);

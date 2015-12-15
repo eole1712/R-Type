@@ -1,6 +1,5 @@
 #include "Client.hpp"
-#include "Thread.hpp" // ??
-
+#include "Thread.hpp"
 #include "ServerUnitDiePacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ServerConnexionPacket.hpp"
@@ -9,26 +8,36 @@
 #include "ServerGameConnectPacket.hpp"
 #include "ServerTimerRefreshPacket.hpp"
 #include "ServerPingPacket.hpp"
+#include "ClientConnexionPacket.hpp"
 
 Client::Client(int port)
-  :
-  _netManager(new NetManager),
-  _netClient(new NetClient(port, _netManager, this),
-  _packetHandlerFuncs{
+{
+  _nm = new NetManager;
+  _nc = new NetClient(port, _nm, this);
+  _packetHandlerFuncs = {
     [this] (APacket* packet, unsigned int id) {
       ServerConnexionPacket* pack = dynamic_cast<ServerConnexionPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (pack->getStatus()) {
+	std::cout << "Connected ! : dayPhrase : " << pack->getServerString() << std::endl;
+      }
     },
     [this] (APacket* packet, unsigned int id) {
       ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
       if (pack == NULL)
 	return;
+      pack->get
+      _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), "");
     },
     [this] (APacket* packet, unsigned int id) {
       ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (pack->getStatus()) {
+	_playerId = pack->getPlayerId();
+
+      }
     },
     [this] (APacket* packet, unsigned int id) {
       ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
@@ -54,20 +63,21 @@ Client::Client(int port)
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
       if (pack == NULL)
 	return;
-    }};
-{
+    }
+  };
+  _menu = new Menu()
 }
 
 Client::~Client()
 {
-  delete _netManager;
-  delete _netClient;
+  delete _nm;
+  delete _nc;
 }
 
 void Client::start()
 {
   std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
-    _netManager->loop();
+    _nm->loop();
   };
   Thread<std::nullptr_t> t(fptr, nullptr);
 }

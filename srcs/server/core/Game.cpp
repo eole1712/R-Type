@@ -14,7 +14,7 @@
 #include "AMonster.hpp"
 
 Game::Game(unsigned int id, std::string name)
-: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _players(4, nullptr), _waveManager(_map, id), _t(0), _inGame(false)
 {
 }
 
@@ -70,13 +70,20 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
     return (nullptr);
 }
 
-bool	Game::addPlayer(std::string name)
+bool    Game::isInGame() const
+{
+    return _inGame;
+}
+
+bool	Game::addPlayer(User* user)
 {
     unsigned int	ixPlayer = static_cast<unsigned int>(this->_players.size());
     
+    if (_inGame)
+        return false;
     if (ixPlayer < 4)
     {
-        this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), name,ixPlayer + 1, _id);
+        this->_players[ixPlayer] = new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id);
         return (true);
     }
     return (false);
@@ -96,6 +103,16 @@ void	Game::removePlayer(Unit::color color)
                       }
                       ++i;
                   });
+}
+
+std::vector<User*>      Game::getUsers() const
+{
+    std::vector<User*>  _tab(_players.size());
+    
+    std::for_each(_players.begin(), _players.end(), [&_tab](Unit::Player* player){
+        _tab.push_back(player->getUser());
+    });
+    return  _tab;
 }
 
 void        Game::checkMouvements(Timer &t)
@@ -167,18 +184,30 @@ bool        Game::checkIfAlive()
 
 void        Game::start()
 {
+    _inGame = true;
     _t.start();
+}
+
+bool        Game::end()
+{
+    std::vector<User*> users = getUsers();
+    std::for_each(_players.begin(), _players.end(), [](Unit::Player *player){
+        player->getUser()->endGame(player->getScore());
+    });
+    return false;
 }
 
 bool        Game::nextAction()
 {
     if (checkIfAlive() == false)
-        return false;
+        return end();
     _waveManager.execConfig(_t);
     checkMouvements(_t);
     shootThemAll();
     _waveManager.nextAction();
-    return checkIfAlive();
+    if (checkIfAlive() == false)
+        return end();
+    return true;
 }
 
 unsigned int             Game::getNewID(unsigned int gameID)
