@@ -102,7 +102,7 @@ namespace Unit {
             return false;
         _x += tab[to][0];
         _y += tab[to][1];
-      
+        _user->setRefresh(true);
         return true;
     }
 
