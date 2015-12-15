@@ -10,6 +10,7 @@
 #include "ServerTimerRefreshPacket.hpp"
 #include "ServerUnitDiePacket.hpp"
 #include "ServerUnitSpawnPacket.hpp"
+#include "ServerPingPacket.hpp"
 #include <iostream>
 
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
@@ -28,7 +29,7 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
     return new ServerPlayerMovePacket(data);
   },
   [] (std::string const& data) {
-    return new APacket(data);
+    return new ServerPingPacket(data);
   },
   [] (std::string const& data) {
     return new ServerUnitSpawnPacket(data);
