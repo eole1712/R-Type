@@ -28,11 +28,12 @@ add_executable(${EXECUTABLE_NAME}
 	core/main.cpp 
 	core/Menu.cpp 
 	core/Player.cpp 
-	core/Game.cpp 
+	core/Game.cpp
 	unit/AUnit.cpp 
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
+	graphics/GameListItem.cpp
 	misc/Time.cpp 
 	../misc/Lock.cpp)
 
