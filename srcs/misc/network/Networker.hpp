@@ -20,6 +20,7 @@ public:
 protected:
   void send(APacket*, int id);
 protected:
+  IPacketHandler* _PacketHandler;
   ISocket* _sock;
   std::vector<std::pair<std::string, int> > _peers;
   std::list<APacket*> _packList;
