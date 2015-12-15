@@ -1,6 +1,5 @@
 #include <iostream>
 #include <windows.h>
-#include <cstdio.h>
 #include "CWLibLoader.hpp"
 
 CWLibLoader::CWLibLoader(std::string libName, std::string creatorName, std::string destructorName)
