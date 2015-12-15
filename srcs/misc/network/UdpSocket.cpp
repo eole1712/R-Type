@@ -164,6 +164,7 @@ size_t UdpSocket::send(std::string const& data)
 
 void UdpSocket::async_send(std::string const& data, sendHandler callback)
 {
+  std::cout << "sending" << std::endl;
   _manager->addSendCall(_sd, data, callback);
 
   //_sendQueue.push_back(std::make_pair(data, callback));

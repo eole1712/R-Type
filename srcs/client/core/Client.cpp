@@ -69,7 +69,6 @@ Client::Client(int port)
   };
   _menu = new Menu(720, 480, this);
   _game = nullptr;
-  _menu->initMainView();
 }
 
 Client::~Client()
@@ -84,6 +83,10 @@ void Client::start()
     _nm->loop();
   };
   Thread<std::nullptr_t> t(fptr, nullptr);
+  std::cout << "main view init" << std::endl;
+  _menu->initMainView();
+  std::cout << "finished" << std::endl;
+  t.join();
 }
 
 void Client::connect(const std::string &ip, const std::string &name)
