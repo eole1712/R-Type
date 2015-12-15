@@ -30,8 +30,9 @@ namespace Unit {
       virtual double          getTime() const = 0;
 
     public:
-        virtual AMissile*	clone(AUnit*, unsigned int id) const = 0;
-        virtual std::string	getClassName() const = 0;
+      virtual AMissile*	clone(AUnit*, unsigned int id) const = 0;
+      virtual std::string	getClassName() const = 0;
+      virtual void	  render(sf::RenderWindow & window) = 0;
     };
   }
 }

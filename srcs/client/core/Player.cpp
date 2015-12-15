@@ -9,12 +9,13 @@ namespace Unit {
   Player::Player(int x, int y, unsigned int id, Timer::time creationTime, std::string name)
     : AUnit(x, y, id, creationTime),
       _color(static_cast<Unit::color>(id % 4)), _name(name), _shooting(false), _weapon(Missile::BASIC),
-      _lastVerticalMove(0), _anim(std::string("../../resources/sprites/ship.fly.91x47x3.png"), 3)
+      _lastVerticalMove(0), _anim(std::string("../../resources/sprites/ship.fly.247x47x3.png"), 3)
   {    
     static sf::Color colors[4] =
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
    
     _anim.pause();
+    _anim.setRotation(45);
     _colorShader.loadFromFile("../../resources/shaders/basic.frag",
 			      "../../resources/shaders/basic.vert");
     _colorShader.setParameter("color", colors[id % 4]);
@@ -125,5 +126,6 @@ public:
     _anim.setFrameIndex(_lastVerticalMove);
     _anim.setPosition(_x, _y);
     window.draw(_anim.getFrame(), &_colorShader);
+    _lastVerticalMove = 0;
   }
 }

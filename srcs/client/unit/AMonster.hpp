@@ -25,6 +25,7 @@ namespace Unit
 	  virtual Monster::type       getMonsterType() const = 0;
 
 	  virtual pos                 move() const = 0;
+	  virtual void	  render(sf::RenderWindow & window) = 0;
         };
 
     }
