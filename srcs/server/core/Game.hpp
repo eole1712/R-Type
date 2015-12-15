@@ -30,7 +30,7 @@ public:
     virtual void        start();
     virtual bool        nextAction();
 
-public:
+protected:
     virtual void        checkMouvements(Timer &);
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
