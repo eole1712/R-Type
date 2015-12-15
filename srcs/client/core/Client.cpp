@@ -1,4 +1,5 @@
 #include "Client.hpp"
+#include "Thread.hpp"
 #include "ServerUnitDiePacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ServerConnexionPacket.hpp"
@@ -58,7 +59,16 @@ Client::Client(int port)
 
 Client::~Client()
 {
-  ;
+  delete _nm;
+  delete _nc;
+}
+
+void Client::start()
+{
+  std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
+    _nm->loop();
+  };
+  Thread<std::nullptr_t> t(fptr, nullptr);
 }
 
 void Client::handlePacket(APacket* pack, unsigned int id)
