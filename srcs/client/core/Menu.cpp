@@ -6,7 +6,7 @@
 Menu::Menu(int width, int height):
   _width(width), _height(height), _window(sf::VideoMode(_width, _height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
-  _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5), _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), _currentGameNumber(0)
+  _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5), _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), _currentGameNumber(0), _isConnected(false)
 {
   _currentRow = LOGIN;
   _maxLoginSize = false;
@@ -70,11 +70,13 @@ void		Menu::eventHandler()
 	  break;
 	case sf::Event::MouseMoved:
 	  this->handleMouseMoved();
-	  this->handleGameListItem(event);
+	  if (_gamesData.size() != 0)
+	    this->handleGameListItem(event);
 	  break;
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick();
-	  this->handleGameListItem(event);
+	  if (_gamesData.size() != 0)
+	    this->handleGameListItem(event);
 	  break;
 	case sf::Event::TextEntered:
 	  if (_currentRow == LOGIN)
@@ -103,9 +105,11 @@ void		Menu::handleMouseClick()
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "Refresh" << std::endl;
    else if (_gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     gamesToPrint(true);
+      if (_gamesData.size())
+	gamesToPrint(true);
    else if (_gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     gamesToPrint(false);
+     if (_gamesData.size())
+       gamesToPrint(false);
 }
 
 void		Menu::handleMouseMoved()
@@ -118,9 +122,9 @@ void		Menu::handleMouseMoved()
     _startButton.getClickableBtn().setColor(_highlightColor);
   else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _refreshButton.getClickableBtn().setColor(_highlightColor);
-  else if (_isConnected && _gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
+  else if (_isConnected && _gamesData.size() != 0 && _gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _gameListUp.getClickableBtn().setColor(_highlightColor);
-  else if (_isConnected && _gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
+  else if (_isConnected && _gamesData.size() != 0 && _gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _gameListDown.getClickableBtn().setColor(_highlightColor);
   else
     {
@@ -264,7 +268,7 @@ void		Menu::drawGameList()
 {
   int		i = 5;
 
-  if (_isConnected == true)
+  if (_isConnected == true && _gamesData.size() != 0)
     {
       for (std::list<GameListItem>::iterator it = _gameListIt;
 	   it != _gamesData.end() && i > 0; it++)
