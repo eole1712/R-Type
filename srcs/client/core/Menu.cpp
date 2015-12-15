@@ -3,8 +3,8 @@
 #include "Player.hpp"
 #include "Game.hpp"
 
-Menu::Menu(int width, int height):
-  _width(width), _height(height), _window(sf::VideoMode(_width, _height), "R-Type"),
+Menu::Menu(int width, int height, Client* client):
+  _width(width), _height(height), _client(client), _window(sf::VideoMode(_width, _height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
   _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5), _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), _currentGameNumber(0), _isConnected(false)
 {
@@ -101,7 +101,10 @@ void		Menu::handleMouseClick()
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "START : " /* << _currentSelectedGame.getName().getString()*/ << std::endl;
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     _isConnected = true;
+     {
+       _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       //       _isConnected = true;
+     }
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "Refresh" << std::endl;
    else if (_gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
@@ -209,9 +212,9 @@ void		Menu::handleGameListItem(sf::Event& event)
 	      && sf::Mouse::getPosition(_window).y >= (*it).getPosY() && sf::Mouse::getPosition(_window).y <= (*it).getPosY() + 21)
 	    {
 	      (*it).setIsSelected(true);
-	      std::string name = (*it).getName().getString();
-	      std::cout << "game selected = " << name << std::endl;
+	      //std::string name = (*it).getName().getString();
 	      (*it).setColor(sf::Color(255, 255, 102));
+	      _client->selectGame((*it).getName().getString());
 	    }
 	  (*it).eventHandler(_window, event);
 	}
@@ -317,4 +320,9 @@ void		Menu::addGame(std::string& gameName, unsigned int playerNumber, std::strin
   if (_gamesData.size() == 1)
     _gameListIt = _gamesData.begin();
   _currentGameNumber += 1;  
+}
+
+void		Menu::setConnected()
+{
+  _isConnected = true;
 }
