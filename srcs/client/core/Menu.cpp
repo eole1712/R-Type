@@ -99,17 +99,20 @@ void		Menu::handleMouseClick()
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     std::cout << "START" << std::endl;
+     std::cout << "START : " /* << _currentSelectedGame.getName().getString()*/ << std::endl;
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      _isConnected = true;
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      std::cout << "Refresh" << std::endl;
    else if (_gameListUp.getClickableBtn().getGlobalBounds().contains(mousePosition))
-      if (_gamesData.size())
+      if (_gamesData.size() != 0)
 	gamesToPrint(true);
    else if (_gameListDown.getClickableBtn().getGlobalBounds().contains(mousePosition))
-     if (_gamesData.size())
-       gamesToPrint(false);
+     {
+       //   std::cout << "in elseif" << std::endl;
+       if (_gamesData.size() != 0)
+	 gamesToPrint(false);
+     }
 }
 
 void		Menu::handleMouseMoved()
@@ -202,9 +205,12 @@ void		Menu::handleGameListItem(sf::Event& event)
 	      (*it).setIsSelected(false);
 	      (*it).setColor(_fieldsColor);
 	    }
-	  if (sf::Mouse::getPosition(_window).x >= (*it).getPosX() && sf::Mouse::getPosition(_window).x <= (*it).getPosX() + 140  && sf::Mouse::getPosition(_window).y >= (*it).getPosY() && sf::Mouse::getPosition(_window).y <= (*it).getPosY() + 21)
+	  if (sf::Mouse::getPosition(_window).x >= (*it).getPosX() && sf::Mouse::getPosition(_window).x <= (*it).getPosX() + 140
+	      && sf::Mouse::getPosition(_window).y >= (*it).getPosY() && sf::Mouse::getPosition(_window).y <= (*it).getPosY() + 21)
 	    {
 	      (*it).setIsSelected(true);
+	      std::string name = (*it).getName().getString();
+	      std::cout << "game selected = " << name << std::endl;
 	      (*it).setColor(sf::Color(255, 255, 102));
 	    }
 	  (*it).eventHandler(_window, event);
@@ -215,8 +221,10 @@ void		Menu::handleGameListItem(sf::Event& event)
 
 void		Menu::gamesToPrint(bool up)
 {
+  //  std::cout << "what to print" << std::endl;
   if (_gamesData.size() > 5)
     {
+      // std::cout << "what to print in if" << std::endl;
       if (up == true && _gameListIt != _gamesData.begin())
 	{
 	  _gameListIt--;
@@ -228,6 +236,7 @@ void		Menu::gamesToPrint(bool up)
 	}
       else if (up == false && std::distance(_gameListIt, _gamesData.end()) > 5)
 	{
+	  // std::cout << "what to print in else" << std::endl;
 	  _gameListIt++;
 	  for (std::list<GameListItem>::iterator it = _gamesData.begin(); it != _gamesData.end(); it++ )
 	    {
