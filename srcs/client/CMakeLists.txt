@@ -64,6 +64,18 @@ add_executable(${EXECUTABLE_NAME}
 	misc/Time.cpp 
 	../misc/Lock.cpp)
 
+if (APPLE)
+set(CMAKE_MACOSX_RPATH ON)
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+if("${isSystemDir}" STREQUAL "-1")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+endif(APPLE)
+
 add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp)
 
 if (WIN32)
@@ -75,6 +87,7 @@ else()
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
+
 
 # Detect and add SFML
 find_package(SFML 2.1 REQUIRED system window graphics network audio)
