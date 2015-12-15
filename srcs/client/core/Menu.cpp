@@ -98,8 +98,9 @@ void		Menu::handleMouseClick()
 {
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
-   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
+   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_currentGameName.isEmpty())
      {
+        _client->selectGame(_currentGameName);
        Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
        Game		game(_client, _window, player);
      }
@@ -217,7 +218,8 @@ void		Menu::handleGameListItem(sf::Event& event)
 	      (*it).setIsSelected(true);
 	      //std::string name = (*it).getName().getString();
 	      (*it).setColor(sf::Color(255, 255, 102));
-	      _client->selectGame((*it).getName().getString());
+	      _currentGameName = (*it).getName().getString();
+	      //	      _client->selectGame((*it).getName().getString());
 	    }
 	  (*it).eventHandler(_window, event);
 	}

@@ -53,7 +53,8 @@ private:
   std::list<GameListItem>::iterator	_gameListIt;
   std::list<GameListItem>::iterator	_currentSelectedGame;
   bool					_isConnected;
-
+  sf::String				_currentGameName;
+  
 public:
   Menu(int width, int height, Client *client);
   ~Menu();
