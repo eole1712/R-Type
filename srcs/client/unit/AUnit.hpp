@@ -2,6 +2,7 @@
 #define AUnit_hpp
 
 #include <list>
+#include <SFML/Graphics.hpp>
 #include "Timer.hpp"
 
 namespace Unit {
@@ -23,7 +24,7 @@ namespace Unit {
   enum dir : int {
     UP,
     DOWN,
-    RIGTH,
+    RIGHT,
     LEFT
   };
 
@@ -34,10 +35,11 @@ namespace Unit {
 
   typedef std::pair<int, int> pos;
 
-  class AUnit {
+  // : public UnitRender
+  class AUnit  {
 
   public:
-    AUnit(team, int x, int y, unsigned int id, unsigned int gameID, Timer::time creationTime);
+    AUnit(int x, int y, unsigned int id, Timer::time creationTime);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);
@@ -54,17 +56,11 @@ namespace Unit {
     virtual type    getType() const = 0;
 
   public:
-    virtual team    getTeam() const;
-
-  public:
     Timer::time     getCreationTime() const;
 
   public:
     virtual unsigned int  getID() const;
-    virtual unsigned int  getGameID() const;
-
-  protected:
-    team                                    _team;
+    virtual void	  render(sf::RenderWindow & window) = 0;
 
   protected:
     int                                     _x;
@@ -72,7 +68,6 @@ namespace Unit {
 
   protected:
     unsigned int                            _id;
-    unsigned int                            _gameID;
     Timer::time                             _creationTime;
   };
 }

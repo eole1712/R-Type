@@ -25,6 +25,7 @@ public:
   bool			getFinish() const;
   void			connectUnit(Unit::AUnit &);
   void			disconnectUnit(unsigned int);
+  Unit::AUnit &		operator[](unsigned int id);
 
 private:
   //void			thread(Game * _this);
@@ -43,6 +44,7 @@ private:
   bool				_finish;  
   Key::Bind<Game *>		_input;
   // std::list<Unit::Player *>	_player;
+  
 };
 
 #endif /* !GAME_H_ */

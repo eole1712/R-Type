@@ -25,7 +25,12 @@ public:
     
     virtual bool			addPlayer(std::string name);
     virtual void			removePlayer(Unit::color);
+    
+public:
     virtual void        start();
+    virtual bool        nextAction();
+
+public:
     virtual void        checkMouvements(Timer &);
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
@@ -40,6 +45,7 @@ private:
     IScoreList*			_scores;
     std::vector<Unit::Player*>	_players;
     Monster::WaveManager    _waveManager;
+    Timer               _t;
 };
 
 #endif /* !GAME_H_ */

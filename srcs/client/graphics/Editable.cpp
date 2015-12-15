@@ -22,7 +22,7 @@ unsigned int	Editable::getPosX() const
   return _posX;
 }
 
-void		Editable::setPosX(unsigned int newPosX)
+void		Editable::setPosX(const unsigned int newPosX)
 {
   _posX = newPosX;
 }
@@ -32,7 +32,7 @@ unsigned int	Editable::getPosY() const
   return _posY;
 }
 
-void		Editable::setPosY(unsigned int newPosY)
+void		Editable::setPosY(const unsigned int newPosY)
 {
   _posY = newPosY;
 }

@@ -4,8 +4,8 @@
 
 namespace Monster {
   
-  WaveManager::WaveManager(IMap *map)
-  : _map(map)
+  WaveManager::WaveManager(IMap *map, unsigned int gameID)
+  : _map(map), _list(), _timer(0), _gameID(gameID)
   {
   }
   
@@ -30,6 +30,14 @@ namespace Monster {
       wave->addWaitingTime(2);
     }
     return wave;
+  }
+  
+  void    WaveManager::execConfig(Timer &time)
+  {
+    if ((time.getElapsedTime() % 10000) == 0)
+    {
+      addWave(Monster::WaveManager::ClassicWave(_gameID));
+    }
   }
   
   void    WaveManager::addWave(Wave* wave)

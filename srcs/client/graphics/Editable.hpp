@@ -19,9 +19,9 @@ public:
   sf::Text&	getEditable();
   void		setColor(const sf::Color&);
   unsigned int	getPosX() const;
-  void		setPosX(unsigned int);
+  void		setPosX(const unsigned int);
   unsigned int	getPosY() const;
-  void		setPosY(unsigned int);
+  void		setPosY(const unsigned int);
 };
 
 #endif /* !EDITABLE_HPP_*/

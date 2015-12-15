@@ -1,5 +1,9 @@
 #include "Networker.hpp"
 #include "UdpSocket.hpp"
+#include "ServerGameInfoPacket.hpp"
+#include "ClientGameInfoPacket.hpp"
+#include "ServerGameConnectPacket.hpp"
+#include "ClientGameConnectPacket.hpp"
 #include "ClientConnexionPacket.hpp"
 #include "ServerConnexionPacket.hpp"
 #include <iostream>
@@ -18,12 +22,16 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
     return pack;
   },
   [] (std::string const& data) {
-    std::cout << "in packet 3" << std::endl;
-    return new APacket(data);
+    return new ServerGameInfoPacket(data);
   },
   [] (std::string const& data) {
-    std::cout << "in packet 4" << std::endl;
-    return new APacket(data);
+    return new ClientGameInfoPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerGameConnectPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerGameConnectPacket(data);
   }
 };
 
