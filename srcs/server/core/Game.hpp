@@ -32,6 +32,7 @@ public:
 public:
     virtual void        start();
     virtual bool        nextAction();
+    virtual bool        end();
 
 protected:
     virtual void        checkMouvements(Timer &);

@@ -102,7 +102,7 @@ std::vector<User*>      Game::getUsers() const
 {
     std::vector<User*>  _tab(_players.size());
     
-    std::for_each(_tab.begin(), _tab.end(), [&_tab](Unit::Player* player){
+    std::for_each(_players.begin(), _players.end(), [&_tab](Unit::Player* player){
         _tab.push_back(player->getUser());
     });
     return  _tab;
@@ -180,15 +180,26 @@ void        Game::start()
     _t.start();
 }
 
+bool        Game::end()
+{
+    std::vector<User*> users = getUsers();
+    std::for_each(_players.begin(), _players.end(), [](Unit::Player *player){
+        player->getUser()->endGame(player->getScore());
+    });
+    return false;
+}
+
 bool        Game::nextAction()
 {
     if (checkIfAlive() == false)
-        return false;
+        return end();
     _waveManager.execConfig(_t);
     checkMouvements(_t);
     shootThemAll();
     _waveManager.nextAction();
-    return checkIfAlive();
+    if (checkIfAlive() == false)
+        return end();
+    return true;
 }
 
 unsigned int             Game::getNewID(unsigned int gameID)
