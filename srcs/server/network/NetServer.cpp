@@ -6,3 +6,12 @@ NetServer::NetServer(int port, NetManager* manager)
 
 NetServer::~NetServer()
 {}
+
+void NetServer::sendAll(APacket * pack)
+{
+  int id = 0;
+  for (auto& peer : _peers) {
+    send(pack, id);
+    ++id;
+  }
+}
