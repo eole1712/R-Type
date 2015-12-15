@@ -14,7 +14,7 @@ public:
 
 	enum eType
 	{
-		SERVERCONNEXION,
+		SERVERCONNEXION = 0,
 		SERVERGAMEINFO,
 		SERVERGAMECONNECT,
         SERVERPLAYERMOVE,
@@ -24,12 +24,13 @@ public:
         SERVERTIMERREFRESH,
         CLIENTCONNEXION,
         CLIENTGAMEINFO,
-        CLIENTGAMECONNECT
+	CLIENTGAMECONNECT,
+	CLIENTGAMEKEY	    
 	};
 
 	static constexpr int kMaxPacketSize = 512;
 	static constexpr int kHeaderSize = sizeof(idSize) + sizeof(packetTypeSize);
-    static constexpr int kNbServerPackets = 8;
+    static const int kNbServerPackets = 8;
 
     APacket(uint8_t type);
 	APacket(std::string const& other);

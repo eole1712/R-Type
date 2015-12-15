@@ -3,21 +3,17 @@
 
 # include <list>
 # include <SFML/Graphics.hpp>
-//# include "Thread.hpp"
-//# include "Lock.hpp"
+# include "Client.hpp"
 # include "Time.hpp" 
 # include "Key.hpp"
-# include "AUnit.hpp"
 # include "Player.hpp"
 
-class IMap;
-class IScoreList;
+class Client;
 
 class Game
 {
-  // Client *
 public:
-  Game(sf::RenderWindow & window, Unit::Player & player);
+  Game(Client * client, sf::RenderWindow & window, Unit::Player & player);
   virtual ~Game();
 
 public:  
@@ -36,6 +32,7 @@ private:
   typedef std::map<unsigned int, Unit::AUnit *> RemoteMap;
 
 private:
+  Client *			_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
   Unit::Player &		_localPlayer;

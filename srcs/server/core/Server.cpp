@@ -16,7 +16,7 @@ Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
 
-	std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs = {
+	_packetHandlerFuncs = {
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 			if (pack == NULL)
@@ -143,5 +143,5 @@ void Server::startGame(IGame* game) {
 }
 
 void	Server::handlePacket(APacket* packet, unsigned int id) {
-	_packetHandlerFuncs[packet->getType() - APacket::kNbServerPackets](packet, id);
+	_packetHandlerFuncs[packet->getType() - 8](packet, id);
 }	
