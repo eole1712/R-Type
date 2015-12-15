@@ -1,0 +1,79 @@
+
+#include "ServerUnitSpawnPacket.hpp"
+
+ServerUnitSpawnPacket::ServerUnitSpawnPacket() : APacket(APacket::SERVERUNITSPAWN) {
+
+}
+
+ServerUnitSpawnPacket::ServerUnitSpawnPacket(std::string const& data) : APacket(data) {
+
+}
+
+ServerUnitSpawnPacket::~ServerUnitSpawnPacket() {};
+
+uint64_t	ServerUnitSpawnPacket::getTimer() {
+	return *reinterpret_cast<const uint64_t*>(_data.substr(kHeaderSize, sizeof(uint64_t)).c_str());
+}
+
+uint32_t	ServerUnitSpawnPacket::getX() {
+    return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint64_t), sizeof(uint32_t)).c_str());
+}
+
+uint32_t	ServerUnitSpawnPacket::getY() {
+    return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (1 * sizeof(uint32_t)), sizeof(uint32_t)).c_str());
+}
+
+uint32_t	ServerUnitSpawnPacket::getUnitType() {
+    return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (2 * sizeof(uint32_t)), sizeof(uint32_t)).c_str());
+}
+
+uint32_t	ServerUnitSpawnPacket::getUnitID() {
+    return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (3 * sizeof(uint32_t)), sizeof(uint32_t)).c_str());
+}
+
+float       ServerUnitSpawnPacket::getParam() {
+    return *reinterpret_cast<const float*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (4 * sizeof(uint32_t)), sizeof(float)).c_str());
+}
+
+void ServerUnitSpawnPacket::setTimer(uint64_t id) {
+	_data.replace(kHeaderSize,
+		sizeof(uint64_t),
+		reinterpret_cast<const char*>(&id),
+		sizeof(uint64_t));
+}
+
+void ServerUnitSpawnPacket::setX(uint32_t id) {
+    _data.replace(kHeaderSize + sizeof(uint64_t),
+                  sizeof(uint32_t),
+                  reinterpret_cast<const char*>(&id),
+                  sizeof(uint32_t));
+}
+
+void ServerUnitSpawnPacket::setY(uint32_t id) {
+    _data.replace(kHeaderSize + sizeof(uint64_t) + (1 * sizeof(uint32_t)),
+                  sizeof(uint32_t),
+                  reinterpret_cast<const char*>(&id),
+                  sizeof(uint32_t));
+}
+
+void ServerUnitSpawnPacket::setUnitType(uint32_t id) {
+    _data.replace(kHeaderSize + sizeof(uint64_t) + (2 * sizeof(uint32_t)),
+                  sizeof(uint32_t),
+                  reinterpret_cast<const char*>(&id),
+                  sizeof(uint32_t));
+}
+
+void ServerUnitSpawnPacket::setUnitID(uint32_t id) {
+    _data.replace(kHeaderSize + sizeof(uint64_t) + (3 * sizeof(uint32_t)),
+                  sizeof(uint32_t),
+                  reinterpret_cast<const char*>(&id),
+                  sizeof(uint32_t));
+}
+
+void ServerUnitSpawnPacket::setParam(float id) {
+    _data.replace(kHeaderSize + sizeof(uint64_t) + (4 * sizeof(uint32_t)),
+                  sizeof(float),
+                  reinterpret_cast<const char*>(&id),
+                  sizeof(float));
+}
+

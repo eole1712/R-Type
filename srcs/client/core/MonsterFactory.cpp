@@ -6,7 +6,7 @@
 #include "ILibLoader.hpp"
 #include "Game.hpp"
 
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
 #include "CULibLoader.hpp"
 #elif defined(_WIN32)
 #include "CWLibLoader.hpp"
@@ -69,7 +69,7 @@ namespace Monster {
                 return (false);
         }
 
-#if defined(__linux__)
+#if (defined __linux__) || (defined __APPLE__)
         libLoader = new CULibLoader(libName, "NewMonster", "DeleteMonster");
 #elif defined(_WIN32)
         libLoader = new CWLibLoader(libName, "NewMonster", "DeleteMonster");

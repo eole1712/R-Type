@@ -86,7 +86,7 @@ Networker::~Networker()
 void Networker::send(APacket *pack, int id)
 {
   std::string data = pack->getData();
-  int dataSize = data.size();
+  unsigned long dataSize = data.size();
 
   _sock->setSendPort(_peers[id].second);
   _sock->setAddr(_peers[id].first);

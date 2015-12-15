@@ -17,7 +17,7 @@ public:
   uintmax_t			getElapsedTime() const;
 
 public:
-    typedef uintmax_t time;
+    typedef uint64_t time;
     
 private:
   Timer(const Timer &);
