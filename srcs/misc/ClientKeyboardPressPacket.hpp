@@ -19,6 +19,7 @@ public:
         SpaceRelease
     };
     ClientKeyboardPressPacket();
+    ClientKeyboardPressPacket(ClientKeyboardPressPacket::keyEvent event);
     ClientKeyboardPressPacket(std::string const& data);
     virtual ~ClientKeyboardPressPacket();
     void setKey(keyEvent);

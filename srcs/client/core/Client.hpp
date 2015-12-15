@@ -1,11 +1,13 @@
 #ifndef CLIENT_H_
 # define CLIENT_H_
 
+#include "ClientKeyboardPressPacket.hpp"
 #include "NetClient.hpp"
 #include "IPacketHandler.hpp"
 #include "Menu.hpp"
 #include "Game.hpp"
 
+class Game;
 class Menu;
 
 class Client : public IPacketHandler
@@ -17,7 +19,7 @@ public:
   void selectGame(std::string const& name);
   void connect(std::string const& ip, std::string const& name);
   void setGame(Game*);
-  void sendKey();
+  void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
 protected:
   NetManager* _nm;

@@ -1,9 +1,8 @@
-# include "Game.hpp"
-
-Game::Game(sf::RenderWindow & window, Unit::Player & player)
-  : _window(window), /* _thread(&thread, this),*/ _tick(Time::getTimeStamp()), _localPlayer(player),
+#include "Game.hpp"
+Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
+  : _client(client),_window(window),_tick(Time::getTimeStamp()), _localPlayer(player),
     _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(0),
-    _input({
+    /*    _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -24,33 +23,32 @@ Game::Game(sf::RenderWindow & window, Unit::Player & player)
 
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
-      })
-      /* _input({
+      })*/
+      _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param-> (); }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::UpPress); }},
       {{sf::Keyboard::Up, Key::RELEASE}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::UpRealease); }},
       {{sf::Keyboard::Down, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-       	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::DownPress); }},
       {{sf::Keyboard::Down, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-       	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::DownRealease); }},
       {{sf::Keyboard::Right, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::RightPress); }},
       {{sf::Keyboard::Right, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::RightRealease); }},
       {{sf::Keyboard::Left, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::LeftPress); }},
       {{sf::Keyboard::Left, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::LeftRealease); }},
       {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
-	{ param->; }},
+	{ param->_client->sendKey(ClientKeyboardPressPacket::SpacePress); }},
       {{sf::Keyboard::Space, Key::RELEASE}, [](Time::stamp, Key::keyState & keys, Game * param)
-	{ param->; }}
-	})*/
+	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
+      })
 {
-  //_thread.join();
   loop();
 }
 
