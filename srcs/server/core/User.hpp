@@ -5,8 +5,10 @@
 #include <string>
 
 #include "AUnit.hpp"
-#include "Player.hpp"
-#include "ScoreList.hpp"
+
+namespace Unit {
+    class Player;
+}
 
 class User
 {
@@ -24,7 +26,7 @@ public:
 
 public:
     void        startGame(unsigned int gameID, Unit::Player *player);
-    void        endGame(ScoreList *list);
+    void        endGame(unsigned int score);
     bool        isInGame() const;
     
 public:
@@ -37,7 +39,6 @@ private:
 private:
     unsigned int    _gameID;
     Unit::Player*   _player;
-    Unit::color     _color;
 
 private:
     unsigned int    _score;
