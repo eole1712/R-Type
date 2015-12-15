@@ -49,6 +49,7 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
       })
 {
+  _client->setGame(this);
   loop();
 }
 
