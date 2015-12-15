@@ -58,3 +58,13 @@ unsigned int    User::getScore() const
 {
     return _score;
 }
+
+bool            User::isReady() const
+{
+    return _ready;
+}
+
+void            User::setReady(bool ready)
+{
+    _ready = ready;
+}
