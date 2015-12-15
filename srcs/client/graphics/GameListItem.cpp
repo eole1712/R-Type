@@ -26,7 +26,8 @@ void			GameListItem::handleMouseMoved(sf::RenderWindow& window)
 {
   sf::Vector2f	mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 
-  if (sf::Mouse::getPosition(window).x >= _posX && sf::Mouse::getPosition(window).x <= _posX + 140  && sf::Mouse::getPosition(window).y >= _posY && sf::Mouse::getPosition(window).y <= _posY + 21 && _isSelected == false)
+  if (sf::Mouse::getPosition(window).x >= _posX && sf::Mouse::getPosition(window).x <= _posX + 140 &&
+      sf::Mouse::getPosition(window).y >= _posY && sf::Mouse::getPosition(window).y <= _posY + 21 && _isSelected == false)
     {
       _gameName.setColor(_highlightColor);
       _playerNumber.setColor(_highlightColor);

@@ -32,6 +32,8 @@ public:
 public:
     bool        isReady() const;
     void        setReady(bool);
+    bool        needRefresh() const;
+    void        setRefresh(bool);
     
 public:
     unsigned int    getScore() const;
@@ -46,6 +48,7 @@ private:
     
 private:
     bool            _ready;
+    bool            _needRefresh;
 
 private:
     unsigned int    _score;

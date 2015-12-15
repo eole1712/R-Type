@@ -9,6 +9,8 @@
 #include "ServerTimerRefreshPacket.hpp"
 #include "ServerPingPacket.hpp"
 #include "ClientConnexionPacket.hpp"
+#include "ClientGameConnectPacket.hpp"
+#include "ClientGameInfoPacket.hpp"
 
 Client::Client(int port)
 {
@@ -27,7 +29,7 @@ Client::Client(int port)
       ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
       if (pack == NULL)
 	return;
-      pack->get
+      _rooms[pack->getRoomName()] = pack->getRoomId();
       _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), "");
     },
     [this] (APacket* packet, unsigned int id) {
@@ -65,7 +67,7 @@ Client::Client(int port)
 	return;
     }
   };
-  _menu = new Menu()
+  _menu = new Menu(720, 480);
 }
 
 Client::~Client()
@@ -80,6 +82,20 @@ void Client::start()
     _nm->loop();
   };
   Thread<std::nullptr_t> t(fptr, nullptr);
+}
+
+void Client::connect(const std::string &ip, const std::string &name)
+{
+  _nc->connect(ip, 6524, name);
+}
+
+void Client::selectGame(const std::string &name)
+{
+  ClientGameConnectPacket* pack = new ClientGameConnectPacket;
+
+  pack->setRoomName(name);
+  pack->setRoomId(_rooms[name]);
+  _nc->sendPacket(pack);
 }
 
 void Client::handlePacket(APacket* pack, unsigned int id)

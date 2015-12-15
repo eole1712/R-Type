@@ -47,6 +47,7 @@ private:
   unsigned int				_currentGameNumber;
   std::list<GameListItem>		_gamesData;
   std::list<GameListItem>::iterator	_gameListIt;
+  std::list<GameListItem>::iterator	_currentSelectedGame;
   bool					_isConnected;
   
 public:
@@ -54,6 +55,7 @@ public:
   ~Menu();
 
   void				initMainView();
+  void				addGame(std::string&, unsigned int, std::string&);
 
 private:
   void				initFields();
@@ -69,7 +71,6 @@ private:
   void				drawLoginSizeErr();
   void				drawGameList();
   void				changeCurrentRow();
-  void				addGame(std::string&, unsigned int, std::string&);
   void				handleGameListItem(sf::Event&);
   void				gamesToPrint(bool);
 };

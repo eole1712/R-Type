@@ -1,6 +1,11 @@
 #include "ClientConnexionPacket.hpp"
 #include "ClientGameInfoPacket.hpp"
 #include "ClientGameConnectPacket.hpp"
+#include "ServerConnexionPacket.hpp"
+#include "ServerGameConnectPacket.hpp"
+#include "ServerGameInfoPacket.hpp"
+#include "ClientKeyboardPressPacket.hpp"
+#include "ServerPlayerMovePacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
 
@@ -12,36 +17,38 @@ Server::Server() {
 	_netServer = new NetServer(kPort, _netManager, this);
 
 	std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs = {
-		[] (APacket* packet, unsigned int id) {
+		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 			if (pack == NULL)
 				return;
-			ServerConnexionPacket ret();
+			ServerConnexionPacket* ret = new ServerConnexionPacket;
 			if (_users.find(id) != _users.end())
 			{
-				ret.setServerString("Not Welcome to R-Type Server");
-				ret.setStatus(false);
+				ret->setServerString("Not Welcome to R-Type Server");
+				ret->setStatus(false);
 			}
-			_players[id] = new User(pack->getName(), id);
-			ret.setServerString("Welcome to R-Type Server");
-			ret.setStatus(true);
-			_netServer.send(ret, id);
+			_users[id] = new User(pack->getClientName(), id);
+			ret->setServerString("Welcome to R-Type Server");
+			ret->setStatus(true);
+			_netServer->send(ret, id);
+			delete ret;
 		},
-		[] (APacket* packet, unsigned int id) {
+		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
 			if (pack == NULL)
 				return;
 			if (_users.find(id) != _users.end())
 				return;
 			for (auto& game : _games) {
-				ServerGameInfoPacket ret();
-				ret.setRoomId(game.getID());
-				ret.setRoomSlots(4 - game.getNbPlayers());
-				ret.setRoomName(game.getName());
-				_netServer.send(ret, id);
+                ServerGameInfoPacket* ret = new ServerGameInfoPacket;
+                ret->setRoomId(game.second->getID());
+				ret->setRoomSlots(4 - game.second->getNbPlayers());
+				ret->setRoomName(game.second->getName());
+				_netServer->send(ret, id);
+				delete ret;
 			}
 		},
-		[] (APacket* packet, unsigned int id) {
+		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
 			static unsigned int gameID = 1;
 			if (pack == NULL)
@@ -49,48 +56,50 @@ Server::Server() {
 			if (_users.find(id) != _users.end())
 				return;
 			IGame* game;
-			if ((auto it  = _games.find(pack->getRoomId())) == _games.end())
+            auto it  = _games.find(pack->getRoomId());
+			if ((it) == _games.end())
 			{
 				_games[gameID] = new Game(gameID, pack->getRoomName());
 				game = _games[gameID];
 				++gameID;
 			}
 			else
-				game = *it;
-			ServerGameConnectPacket ret();
+				game = (*it).second;
+			ServerGameConnectPacket* ret = new ServerGameConnectPacket;
 			if (!game->addPlayer(_users[id])) {
-				ret.setStatus(false);
+				ret->setStatus(false);
 			}
 			else {
-				ret.setStatus(true);
-				ret.setPlayerId(_users[id]->getPlayer()->getColor());
+				ret->setStatus(true);
+				ret->setPlayerId(_users[id]->getPlayer()->getID());
 			}
-			_netServer.send(ret, id);
+			_netServer->send(ret, id);
+			delete ret;
 		},
-		[] (APacket* packet, unsigned int id) {
+		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
 			if (pack == NULL)
 				return;
 			if (_users.find(id) != _users.end())
 				return;
+            User* user = _users[id];
 			IGame* game = _games[user->getGameID()];
-			User* user = _users[id];
 			std::pair<unsigned int, bool> key = pack->getStatus();
 			if (!game->isInGame()) {
-				if (key.first = 5 && key.second == 1)
+				if (key.first == 5 && key.second == 1)
 					user->setReady(!user->isReady());
-				bool startGame = true;
+				bool shouldStart = true;
 				for (auto& aUser : game->getUsers())
 				{
-					if (!user->isReady())
-					startGame = false;
+					if (!aUser->isReady())
+					shouldStart = false;
 				}
-				if (startGame)
+				if (shouldStart)
 					startGame(game);
 				return;
 			}
 			if (key.first < 4)
-				user->getPlayer()->setMoving(key.first, key.second);
+                user->getPlayer()->setMoving(static_cast<Unit::dir>(key.first), key.second);
 			else
 				user->getPlayer()->setShooting(key.second);
 		} 
@@ -107,11 +116,28 @@ void	Server::start() {
 		_netManager->loop();
 	};
 	Thread<std::nullptr_t> t(fptr, nullptr);
+    t.join();
 }
 
 void Server::startGame(IGame* game) {
-	std::function<void(std::nullptr_t)> fptr = [game] (std::nullptr_t) {
-		while (game->nextAction());
+	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
+		while (game->nextAction()) {
+			std::vector<User*> v = game->getUsers();
+			for (auto& user : v) {
+				if (user->needRefresh()) {
+					ServerPlayerMovePacket* packet = new ServerPlayerMovePacket();
+					packet->setPlayerID(user->getPlayer()->getID());
+					packet->setX(user->getPlayer()->getX());
+					packet->setY(user->getPlayer()->getY());
+					for (auto& aUser : v) {
+						_netServer->send(packet, aUser->getClientID());
+					}
+					delete packet;
+					user->setRefresh(false);
+				}
+
+			}
+		}
 	};
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
