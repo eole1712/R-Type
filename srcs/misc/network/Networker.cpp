@@ -12,23 +12,34 @@ std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::
 
 std::vector<std::function<APacket*(std::string const&) > > const Networker::_packHandlers = {
   [] (std::string const& data) {
-    ServerConnexionPacket* pack = new ServerConnexionPacket(data);
-    std::cout << "ServerConnection ==> status : " << pack->getStatus() << " mdj : " << pack->getServerString() << std::endl;
-    return pack;
-  },
-  [] (std::string const& data) {
-    ClientConnexionPacket* pack = new ClientConnexionPacket(data);
-    std::cout << "clientConnection ==> name : " << pack->getClientName() << std::endl;
-    return pack;
+    return new ServerConnexionPacket(data);
   },
   [] (std::string const& data) {
     return new ServerGameInfoPacket(data);
   },
   [] (std::string const& data) {
-    return new ClientGameInfoPacket(data);
+    return new ServerGameConnectPacket(data);
   },
   [] (std::string const& data) {
-    return new ServerGameConnectPacket(data);
+    return new ServerPlayerMovePacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerPingPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerUnitSpawnPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerUnitDiePacket(data);
+  },
+  [] (std::string const& data) {
+    return new ServerTimerRefreshPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ClientConnexionPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ClientGameInfoPacket(data);
   },
   [] (std::string const& data) {
     return new ServerGameConnectPacket(data);
@@ -56,7 +67,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
   _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
     APacket* pack;
     bool found = false;
-    int id = 0;
+    unsigned int id = 0;
 
     std::cout << "Message received from : " << addr << ":" << port << " ==> " << _buffer << std::endl;
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);

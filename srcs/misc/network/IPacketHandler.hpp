@@ -8,7 +8,7 @@ class IPacketHandler {
 public:
 	virtual ~IPacketHandler() {};
 
-	virtual void handlePacket(APacket* packet, playerId id) = 0;
+	virtual void handlePacket(APacket* packet, unsigned int id) = 0;
 };
 
 #endif /* !IPACKETHANDLER_H_ */
