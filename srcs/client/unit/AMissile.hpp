@@ -14,14 +14,13 @@ namespace Unit {
 
     class AMissile : public AUnit {
     public:
-      AMissile(team, unsigned int x, unsigned int y, unsigned int id, unsigned int gameID,
-	       Time::stamp creationTime);
+      AMissile(int x, int y, unsigned int id, Time::stamp creationTime);
       virtual ~AMissile();
 
     public:
       virtual Missile::type   getMissileType() const = 0;
-      virtual pos             move() const = 0;
-      virtual void	      render(sf::RenderWindow & window) = 0;
+      virtual pos             move(Time::stamp) const = 0;
+      virtual void	      render(Time::stamp tick, sf::RenderWindow & window) = 0;
     };
   }
 }

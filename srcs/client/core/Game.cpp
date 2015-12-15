@@ -2,7 +2,7 @@
 
 Game::Game(sf::RenderWindow & window, Unit::Player & player)
   : _window(window), /* _thread(&thread, this),*/ _tick(Time::getTimeStamp()), _localPlayer(player),
-    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false),
+    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(0),
     _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
@@ -25,6 +25,30 @@ Game::Game(sf::RenderWindow & window, Unit::Player & player)
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
       })
+      /* _input({
+      {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->setFinish(); }},
+      {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param-> (); }},
+      {{sf::Keyboard::Up, Key::RELEASE}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Down, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+       	{ param->; }},
+      {{sf::Keyboard::Down, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+       	{ param->; }},
+      {{sf::Keyboard::Right, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Right, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Left, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Left, Key::RELEASE}, [](Time::stamp tick, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
+	{ param->; }},
+      {{sf::Keyboard::Space, Key::RELEASE}, [](Time::stamp, Key::keyState & keys, Game * param)
+	{ param->; }}
+	})*/
 {
   //_thread.join();
   loop();
@@ -120,7 +144,7 @@ void			Game::pollEvent()
 void			Game::render()
 {
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
-    i->second->render(_window);
+    i->second->render(Time::getTimeStamp() - _creationTime, _window);
 }
 
 Unit::AUnit &		Game::operator[](unsigned int id)

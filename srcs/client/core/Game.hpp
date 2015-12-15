@@ -15,6 +15,7 @@ class IScoreList;
 
 class Game
 {
+  // Client *
 public:
   Game(sf::RenderWindow & window, Unit::Player & player);
   virtual ~Game();
@@ -28,7 +29,6 @@ public:
   Unit::AUnit &		operator[](unsigned int id);
 
 private:
-  //void			thread(Game * _this);
   void			loop();
   void			pollEvent();
   void			render();
@@ -37,14 +37,12 @@ private:
 
 private:
   sf::RenderWindow &		_window;
-  //Thread<Game *>		_thread;
   Time::stamp			_tick;
   Unit::Player &		_localPlayer;
   RemoteMap			_map;
-  bool				_finish;  
-  Key::Bind<Game *>		_input;
-  // std::list<Unit::Player *>	_player;
-  
+  bool				_finish;
+  Time::stamp			_creationTime;
+  Key::Bind<Game *>		_input;  
 };
 
 #endif /* !GAME_H_ */

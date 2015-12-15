@@ -8,6 +8,7 @@
 #include "ClickableBtn.hpp"
 #include "Editable.hpp"
 #include "GameListItem.hpp"
+#include "Client.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 3
 
@@ -23,6 +24,7 @@ private:
 private:
   int					_width;
   int					_height;
+  Client*				_client;
   sf::RenderWindow			_window;
   sf::Color				_fieldsColor;
   sf::Color				_loginColor;
@@ -47,13 +49,15 @@ private:
   unsigned int				_currentGameNumber;
   std::list<GameListItem>		_gamesData;
   std::list<GameListItem>::iterator	_gameListIt;
+  std::list<GameListItem>::iterator	_currentSelectedGame;
   bool					_isConnected;
   
 public:
-  Menu(int width, int height);
+  Menu(int width, int height, Client *client);
   ~Menu();
 
   void				initMainView();
+  void				addGame(std::string&, unsigned int, std::string&);
 
 private:
   void				initFields();
@@ -69,9 +73,9 @@ private:
   void				drawLoginSizeErr();
   void				drawGameList();
   void				changeCurrentRow();
-  void				addGame(std::string&, unsigned int, std::string&);
   void				handleGameListItem(sf::Event&);
   void				gamesToPrint(bool);
+  void				setConnected();
 };
 
 #endif /* !MENU_HPP */

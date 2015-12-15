@@ -8,6 +8,7 @@ namespace Unit {
 
   Player::Player(int x, int y, unsigned int id, Time::stamp creationTime, std::string name)
     : AUnit(x, y, id, creationTime),
+      _trueX(x), _trueY(y),
       _color(static_cast<Unit::color>(id % 4)), _name(name), _shooting(false), _weapon(Missile::BASIC),
       _lastVerticalMove(0), _anim(std::string("../../resources/sprites/ship.fly.247x47x3.png"), 3)
   {    
@@ -67,6 +68,11 @@ public:
   }
   */
 
+  pos			Player::move(Time::stamp) const
+  {
+    return pos(_trueX, _trueY);
+  }
+
   void                  Player::move(dir to, Time::stamp tick)
   {
     static int              tab[4][2] =
@@ -83,22 +89,17 @@ public:
         _y += tab[to][1] * (100 / tick);
       }
   }
-
+  /*
   void			Player::getHit(AUnit *)
   {
     //TODO what must do
   }
-
-  pos			Player::move() const
-  {
-
-  }
-
-  void			Player::render(sf::RenderWindow & window)
+  */
+  void			Player::render(Time::stamp , sf::RenderWindow & window)
   {
     _colorShader.setParameter("texture", sf::Shader::CurrentTexture);
     _anim.setFrameIndex(_lastVerticalMove);
-    _anim.setPosition(_x, _y);
+    _anim.setPosition(_trueX, _trueY);
     window.draw(_anim.getFrame(), &_colorShader);
     _lastVerticalMove = 0;
   }

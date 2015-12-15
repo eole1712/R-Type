@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 2.6)
 project(RType)
 
+project(MonsterTest)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
+set(EXECUTABLE_OUTPUT_PATH .. )
+set(LIBRARY_OUTPUT_PATH ../lib )
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE Debug)
@@ -18,9 +22,11 @@ include_directories("${PROJECT_BINARY_DIR}")
 set(EXECUTABLE_NAME "rtype")
 include_directories(BEFORE core)
 include_directories(BEFORE graphics)
+include_directories(BEFORE network)
 include_directories(BEFORE unit)
 include_directories(BEFORE misc)
 include_directories(BEFORE ../misc)
+include_directories(BEFORE ../misc/network)
 
 # ../common/misc/linux_specific/CULibLoader.cpp
 
@@ -34,8 +40,30 @@ add_executable(${EXECUTABLE_NAME}
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
 	graphics/GameListItem.cpp
+
+
+	network/NetClient.cpp
+	../misc/network/Networker.cpp
+	../misc/network/UdpSocket.cpp
+	../misc/network/NetManager.cpp
+	../misc/APacket.cpp
+	../misc/ClientConnexionPacket.cpp
+	../misc/ClientGameConnectPacket.cpp
+	../misc/ClientGameInfoPacket.cpp
+	../misc/ClientKeyboardPressPacket.cpp
+	../misc/ServerConnexionPacket.cpp
+	../misc/ServerPlayerMovePacket.cpp
+	../misc/ServerGameConnectPacket.cpp
+	../misc/ServerTimerRefreshPacket.cpp
+	../misc/ServerGameInfoPacket.cpp
+	../misc/ServerUnitDiePacket.cpp
+	../misc/ServerPingPacket.cpp
+	../misc/ServerUnitSpawnPacket.cpp
+
 	misc/Time.cpp 
 	../misc/Lock.cpp)
+
+add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/misc/windows_specific)

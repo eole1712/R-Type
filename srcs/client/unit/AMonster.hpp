@@ -16,14 +16,11 @@ namespace Unit
         class AMonster : public AUnit
         {
         public:
-	  AMonster(int x, int y, unsigned int id, unsigned int gameID, Time::stamp creationTime);
+	  AMonster(int x, int y, unsigned int id, Time::stamp creationTime);
 	  virtual ~AMonster();
 
-	  virtual Unit::type          getType() const;
-	  virtual Monster::type       getMonsterType() const = 0;
-
-	  virtual pos                 move() const = 0;
-	  virtual void		      render(sf::RenderWindow & window) = 0;
+	  virtual pos                 move(Time::stamp) const = 0;
+	  virtual void		      render(Time::stamp tick, sf::RenderWindow & window) = 0;
         };
 
     }

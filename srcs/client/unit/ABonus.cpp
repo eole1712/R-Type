@@ -7,7 +7,7 @@ namespace Unit
   namespace Bonus
   {
 
-  ABonus::ABonus(int x, int y, unsigned int id, unsigned int gameID, Time::stamp creationTime)
+  ABonus::ABonus(int x, int y, unsigned int id, Time::stamp creationTime)
     : AUnit(Unit::ENEMY, x, y, id, gameID, creationTime)
     {}
 
