@@ -12,6 +12,8 @@
 
 #define MAX_NUMBER_OF_FIELDS 3
 
+class Client;
+
 class Menu
 {
 private:
@@ -51,13 +53,13 @@ private:
   std::list<GameListItem>::iterator	_gameListIt;
   std::list<GameListItem>::iterator	_currentSelectedGame;
   bool					_isConnected;
-  
+
 public:
   Menu(int width, int height, Client *client);
   ~Menu();
 
   void				initMainView();
-  void				addGame(std::string&, unsigned int, std::string&);
+  void				addGame(std::string const&, unsigned int, std::string const&);
 
 private:
   void				initFields();

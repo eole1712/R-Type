@@ -30,7 +30,7 @@ Client::Client(int port)
       if (pack == NULL)
 	return;
       _rooms[pack->getRoomName()] = pack->getRoomId();
-      _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), "");
+      _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), pack->getRoomName());
     },
     [this] (APacket* packet, unsigned int id) {
       ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
@@ -67,7 +67,9 @@ Client::Client(int port)
 	return;
     }
   };
-  _menu = new Menu(720, 480);
+  _menu = new Menu(720, 480, this);
+  _game = nullptr;
+  _menu->initMainView();
 }
 
 Client::~Client()
@@ -86,6 +88,7 @@ void Client::start()
 
 void Client::connect(const std::string &ip, const std::string &name)
 {
+  std::cout << "connecting to : " << ip << "with name : " << name << std::endl;
   _nc->connect(ip, 6524, name);
 }
 
@@ -101,4 +104,14 @@ void Client::selectGame(const std::string &name)
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
   _packetHandlerFuncs[pack->getType()](pack, id);
+}
+
+void Client::setGame(Game* game)
+{
+  _game = game;
+}
+
+void Client::sendKey()
+{
+  ;
 }

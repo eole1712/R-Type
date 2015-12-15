@@ -1,8 +1,13 @@
 #include "Menu.hpp"
+#include "Client.hpp"
 
 int	main()
 {
-  Menu menu(720, 480);
-  
-  menu.initMainView();
+  Client cl;
+
+  cl.start();
+  // Menu menu(720, 480);
+
+  // menu.initMainView();
+
 }

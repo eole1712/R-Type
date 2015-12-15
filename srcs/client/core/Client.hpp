@@ -4,6 +4,9 @@
 #include "NetClient.hpp"
 #include "IPacketHandler.hpp"
 #include "Menu.hpp"
+#include "Game.hpp"
+
+class Menu;
 
 class Client : public IPacketHandler
 {
@@ -13,6 +16,8 @@ public:
   void handlePacket(APacket*, unsigned int id);
   void selectGame(std::string const& name);
   void connect(std::string const& ip, std::string const& name);
+  void setGame(Game*);
+  void sendKey();
   void start();
 protected:
   NetManager* _nm;
@@ -21,6 +26,7 @@ protected:
   std::map<std::string, uint32_t> _rooms;
   Menu* _menu;
   int _playerId;
+  Game* _game;
 };
 
 #endif /* !CLIENT_H_ */
