@@ -18,6 +18,7 @@ public:
     virtual IMap*			getMap() const = 0;
     virtual IScoreList*		getScores() const = 0;
     virtual Unit::Player*		getPlayer(Unit::color) const = 0;
+    virtual std::string     getName() const = 0;
     
 public:
     virtual void        start() = 0;
