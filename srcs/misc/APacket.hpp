@@ -29,7 +29,8 @@ public:
 
 	static constexpr int kMaxPacketSize = 512;
 	static constexpr int kHeaderSize = sizeof(idSize) + sizeof(packetTypeSize);
-	
+	static constexpr int kNbServerPackets = 8
+
 	APacket(uint8_t type);
 	APacket(std::string const& other);
 	virtual ~APacket();
