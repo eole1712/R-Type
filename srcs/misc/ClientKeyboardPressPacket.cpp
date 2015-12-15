@@ -1,9 +1,15 @@
 #include "ClientKeyboardPressPacket.hpp"
 
 ClientKeyboardPressPacket::ClientKeyboardPressPacket()
-  : APacket(5)
+  : APacket(CLIENTGAMEKEY)
 {
   ;
+}
+
+ClientKeyboardPressPacket::ClientKeyboardPressPacket(ClientKeyboardPressPacket::keyEvent event)
+  : APacket(CLIENTGAMEKEY)
+{
+  _data.replace(kHeaderSize, sizeof(keyEvent), reinterpret_cast<const char*>(&event), sizeof(keyEvent));
 }
 
 ClientKeyboardPressPacket::ClientKeyboardPressPacket(std::string const& data)

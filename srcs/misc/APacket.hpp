@@ -24,7 +24,8 @@ public:
         SERVERTIMERREFRESH,
         CLIENTCONNEXION,
         CLIENTGAMEINFO,
-        CLIENTGAMECONNECT
+	CLIENTGAMECONNECT,
+	CLIENTGAMEKEY	    
 	};
 
 	static constexpr int kMaxPacketSize = 512;
