@@ -79,7 +79,7 @@ if (APPLE)
    endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp 
+add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp misc/Time.cpp
 )
 
 if (WIN32)
@@ -97,4 +97,5 @@ find_package(SFML 2.1 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
+  target_link_libraries(MonsterTest ${SFML_LIBRARIES})
 endif()
