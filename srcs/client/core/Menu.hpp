@@ -9,8 +9,11 @@
 #include "Editable.hpp"
 #include "GameListItem.hpp"
 #include "Client.hpp"
+#include "Player.hpp"
+#include "Game.hpp"
+#include "List.hpp"
 
-#define MAX_NUMBER_OF_FIELDS 3
+#define MAX_NUMBER_OF_FIELDS 4
 
 class Client;
 
@@ -19,9 +22,10 @@ class Menu
 private:
   enum Row : unsigned int{
     LOGIN,
-    HOST,
-    SERVER
-  };
+      CREATE,
+      HOST,
+      SERVER
+      };
 
 private:
   int					_width;
@@ -33,27 +37,28 @@ private:
   sf::Color				_loginSizeErrColor;
   sf::Color				_highlightColor;
   sf::Color				_startColor;
-  ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
-  Editable				_login;
-  Editable				_host;
-  ClickableBtn				_loginSizeErr;
-  ClickableBtn				_startButton;
-  ClickableBtn				_connectButton;
-  ClickableBtn				_refreshButton;
-  ClickableBtn				_gameListUp;
-  ClickableBtn				_gameListDown;
-  sf::Font				_fieldsFont;
-  sf::Font				_loginFont;
-  Row					_currentRow;
-  bool					_maxLoginSize;
   unsigned int				_gameListPosX;
   unsigned int				_gameListPosY;
   unsigned int				_currentGameNumber;
-  std::list<GameListItem>		_gamesData;
-  std::list<GameListItem>::iterator	_gameListIt;
-  std::list<GameListItem>::iterator	_currentSelectedGame;
   bool					_isConnected;
-  sf::String				_currentGameName;
+  ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
+  Editable				_login;
+  Editable				_gameName;
+  Editable				_host;
+  ClickableBtn				_loginSizeErr;
+  ClickableBtn				_createButton;
+  ClickableBtn				_connectButton;
+  ClickableBtn				_refreshButton;
+  ClickableBtn				_startButton;
+  List					_gameList;
+  sf::Font				_fieldsFont;
+  sf::Font				_loginFont;
+  Row					_currentRow;
+  //  bool					_maxLoginSize;
+  /*  std::list<GameListItem>		_gamesData;
+  stxd::list<GameListItem>::iterator	_gameListIt;
+  std::list<GameListItem>::iterator	_currentSelectedGame;*/
+   //  sf::String				_currentGameName;
   
 public:
   Menu(int width, int height, Client *client);
@@ -63,21 +68,20 @@ public:
   void				addGame(std::string const&, unsigned int, std::string const&);
 
 private:
-  void				initFields();
+  void				loadFonts();
   void				initColors();
   void				initPlayerColorSelection();
   void				handleMouseClick();
   void				handleMouseMoved();
+  void				editionHandler(sf::Event const&);
   void				handleLoginEdition(sf::Event&);
   void				handleHostEdition(sf::Event&);
   void				eventHandler();
   void				drawFields();
   void				drawEditable();
   void				drawLoginSizeErr();
-  void				drawGameList();
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
-  void				gamesToPrint(bool);
   void				setConnected();
 };
 

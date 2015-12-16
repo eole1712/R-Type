@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-#include "MonsterFactory.hpp"
+#include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
 Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
@@ -53,7 +53,7 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
 	})*/
 {
-  Unit::Monster::AMonster *test = Monster::Factory::getInstance()->createMonster(Unit::Monster::MONSTERTEST, 100, 100, 5, 0);
+  Unit::AUnit *test = Unit::Factory::getInstance()->createUnit(Unit::MONSTERTEST, 100, 100, 5, 0);
 
   connectUnit(*test);
   loop();
@@ -61,7 +61,7 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 
 Game::~Game()
 {
-  
+
 }
 
 bool			Game::getFinish() const
@@ -118,7 +118,7 @@ void			Game::pollEvent()
       _finish = true;
       return ;
     }
-  
+
   while (_window.pollEvent(event))
     {
       if (event.type == sf::Event::Closed ||

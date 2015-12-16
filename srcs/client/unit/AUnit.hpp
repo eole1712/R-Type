@@ -21,6 +21,11 @@ namespace Unit {
     LEFT
   };
 
+enum type {
+  MONSTERTEST,
+  BASICMISSILE
+};
+
   enum team {
     ALLY,
     ENEMY
