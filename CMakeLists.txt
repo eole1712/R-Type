@@ -55,6 +55,7 @@ set(server_sources
 	srcs/server/core/AUnit.cpp
 	srcs/server/core/FactoryUnit.cpp
 	srcs/server/core/Game.cpp
+	srcs/server/core/GameUtils.cpp
 	srcs/server/core/Map.cpp
 	srcs/server/core/MissileFactory.cpp
 	srcs/server/core/MonsterFactory.cpp
@@ -99,13 +100,17 @@ endif (UNIX)
 add_library(MonsterTest MODULE
   srcs/server/core/monsters/MonsterTest.cpp
   srcs/server/core/AUnit.cpp
-  srcs/server/core/AMonster.cpp)
+  srcs/server/core/AMonster.cpp
+  srcs/server/core/GameUtils.cpp
+  srcs/server/misc/Timer.cpp)
 
 target_compile_features(MonsterTest PRIVATE cxx_range_for)
 
 add_library(BasicMissile MODULE
   srcs/server/core/missiles/BasicMissile.cpp
   srcs/server/core/AUnit.cpp
-  srcs/server/core/AMissile.cpp)
+  srcs/server/core/AMissile.cpp
+  srcs/server/core/GameUtils.cpp
+  srcs/server/misc/Timer.cpp)
 
 target_compile_features(BasicMissile PRIVATE cxx_range_for)
