@@ -97,9 +97,15 @@ namespace Monster {
     Factory*     Factory::getInstance()
     {
         if (_instance == nullptr)
-        {
-            _instance = new Factory({{Unit::Monster::MONSTERTEST, "lib/libMonsterTest.so"}});
-        }
+	  _instance = new Factory({{Unit::Monster::MONSTERTEST, "../../libs/client/libMonsterTest.so"}});
         return _instance;
+    }
+
+    void Factory::destroy()
+    {
+      if (_instance == NULL)
+	return;
+      delete _instance;
+      _instance = NULL;
     }
 }
