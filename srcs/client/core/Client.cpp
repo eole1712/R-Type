@@ -11,6 +11,7 @@
 #include "ClientConnexionPacket.hpp"
 #include "ClientGameConnectPacket.hpp"
 #include "ClientGameInfoPacket.hpp"
+#include "AUnit.hpp"
 //Debug feature
 #include <sstream>
 
@@ -30,7 +31,7 @@ Client::Client(int port)
 	ClientGameConnectPacket* ansPack = new ClientGameConnectPacket;
 	std::stringstream name;
 	name << "room" << reinterpret_cast<unsigned long>(this);
-	this->createGame(name);
+	this->createGame(name.str());
 	//end Debug feature
       }
     },
@@ -47,7 +48,7 @@ Client::Client(int port)
       if (pack == NULL)
 	return;
       if (pack->getStatus()) {
-	std::cout << "Connecting to a game with id : " << pack->getPlayerId() << std::endl;
+	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
 	_playerId = pack->getPlayerId();
       }
       else
@@ -67,6 +68,11 @@ Client::Client(int port)
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (_game)
+	{
+	  _units.emplace_back(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
+	  _game->connectUnit(_units.back());
+	}
     },
     [this] (APacket* packet, unsigned int id) {
       ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
