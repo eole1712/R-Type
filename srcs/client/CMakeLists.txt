@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(RType)
 
 project(MonsterTest)
+project(BasicMissile)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -24,7 +25,9 @@ include_directories(BEFORE core)
 include_directories(BEFORE graphics)
 include_directories(BEFORE network)
 include_directories(BEFORE unit)
-include_directories(BEFORE unit/monsters)
+include_directories(BEFORE unit/MonsterTest)
+include_directories(BEFORE unit/BasicMissile)
+
 include_directories(BEFORE misc)
 include_directories(BEFORE ../misc)
 include_directories(BEFORE ../common/)
@@ -78,8 +81,8 @@ if (APPLE)
    endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp 
-)
+add_library(MonsterTest SHARED unit/MonsterTest/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp)
+add_library(BasicMissile SHARED unit/MonsterTest/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/windows_specific)
