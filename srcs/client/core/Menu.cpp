@@ -28,7 +28,7 @@ Menu::Menu(int width, int height, Client* client):
   if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
     std::cout << "error loading Font" << std::endl;
 
-  initMainView();
+  //initMainView();
 }
 
 Menu::~Menu()
