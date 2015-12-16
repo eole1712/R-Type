@@ -87,7 +87,8 @@ endif (WIN32)
 add_executable(RType_server ${server_sources})
 target_compile_features(RType_server PRIVATE cxx_range_for)
 if (UNIX)
-	target_link_libraries(RType_server -lpthread)
+  target_link_libraries(RType_server -lpthread)
+  target_link_libraries(RType_server -ldl)
 endif (UNIX)
 #Client sources files
 #set(client_sources
