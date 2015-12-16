@@ -41,11 +41,11 @@ namespace Unit {
 
   public:
 
-  
+
     virtual Time::stamp		getCreationTime() const;
     virtual unsigned int	getID() const;
 
-    virtual pos			move(Time::stamp tick) const = 0;
+    virtual pos			move(Time::stamp tick) const;
     virtual void		render(Time::stamp tick, sf::RenderWindow & window) = 0;
 
   protected:
