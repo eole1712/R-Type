@@ -97,12 +97,29 @@ endif (UNIX)
 #	)
 #add_executable(RType_client client_sources)
 
+if (UNIX)
 add_library(MonsterTest MODULE
+  srcs/common/linux_specific/CULibLoader.cpp
   srcs/server/core/monsters/MonsterTest.cpp
   srcs/server/core/AUnit.cpp
+  srcs/server/core/AMissile.cpp
+  srcs/server/core/MissileFactory.cpp
   srcs/server/core/AMonster.cpp
   srcs/server/core/GameUtils.cpp
   srcs/server/misc/Timer.cpp)
+endif (UNIX)
+
+if (WIN32)
+add_library(MonsterTest MODULE
+  srcs/common/windows_specific/CWLibLoader.cpp
+  srcs/server/core/monsters/MonsterTest.cpp
+  srcs/server/core/AUnit.cpp
+  srcs/server/core/AMissile.cpp
+  srcs/server/core/MissileFactory.cpp
+  srcs/server/core/AMonster.cpp
+  srcs/server/core/GameUtils.cpp
+  srcs/server/misc/Timer.cpp)
+endif (WIN32)
 
 target_compile_features(MonsterTest PRIVATE cxx_range_for)
 
