@@ -29,3 +29,6 @@
 
 #build folder
 build/
+
+#emacs project folder
+.emacsproject/
