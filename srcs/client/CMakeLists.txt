@@ -82,8 +82,8 @@ if (APPLE)
    endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp misc/Time.cpp
-)
+add_library(MonsterTest SHARED unit/MonsterTest/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp misc/Time.cpp)
+add_library(BasicMissile SHARED unit/MonsterTest/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp misc/Time.cpp)
 
 if (WIN32)
    include_directories(BEFORE ../common/windows_specific)
@@ -101,4 +101,5 @@ if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
   target_link_libraries(MonsterTest ${SFML_LIBRARIES})
+  target_link_libraries(BasicMissile ${SFML_LIBRARIES})
 endif()
