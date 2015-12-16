@@ -11,6 +11,9 @@
 #include "ClientConnexionPacket.hpp"
 #include "ClientGameConnectPacket.hpp"
 #include "ClientGameInfoPacket.hpp"
+#include "AUnit.hpp"
+//Debug feature
+#include <sstream>
 
 Client::Client(int port)
 {
@@ -23,12 +26,20 @@ Client::Client(int port)
 	return;
       if (pack->getStatus()) {
 	std::cout << "Connected ! : dayPhrase : " << pack->getServerString() << std::endl;
+	//Debug feature
+	std::cout << "Test feature : sending create room packet with room + this addr" << std::endl;
+	ClientGameConnectPacket* ansPack = new ClientGameConnectPacket;
+	std::stringstream name;
+	name << "room" << reinterpret_cast<unsigned long>(this);
+	this->createGame(name.str());
+	//end Debug feature
       }
     },
     [this] (APacket* packet, unsigned int id) {
       ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
       if (pack == NULL)
 	return;
+      std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
       _rooms[pack->getRoomName()] = pack->getRoomId();
       _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), pack->getRoomName());
     },
@@ -37,9 +48,11 @@ Client::Client(int port)
       if (pack == NULL)
 	return;
       if (pack->getStatus()) {
+	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
 	_playerId = pack->getPlayerId();
-
       }
+      else
+	std::cout << "failed to connect" << std::endl;
     },
     [this] (APacket* packet, unsigned int id) {
       ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
@@ -55,6 +68,11 @@ Client::Client(int port)
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (_game)
+	{
+	  _units.emplace_back(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
+	  _game->connectUnit(_units.back());
+	}
     },
     [this] (APacket* packet, unsigned int id) {
       ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
@@ -95,12 +113,28 @@ void Client::connect(const std::string &ip, const std::string &name)
   _nc->connect(ip, 6524, name);
 }
 
+void Client::refreshGames()
+{
+  ClientGameInfoPacket* pack = new ClientGameInfoPacket;
+
+  _nc->sendPacket(pack);
+}
+
 void Client::selectGame(const std::string &name)
 {
   ClientGameConnectPacket* pack = new ClientGameConnectPacket;
 
   pack->setRoomName(name);
   pack->setRoomId(_rooms[name]);
+  _nc->sendPacket(pack);
+}
+
+void Client::createGame(const std::string &name)
+{
+  ClientGameConnectPacket* pack = new ClientGameConnectPacket;
+
+  pack->setRoomId(0);
+  pack->setRoomName(name);
   _nc->sendPacket(pack);
 }
 
