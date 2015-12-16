@@ -1,13 +1,13 @@
 #ifndef MONSTERFACTORY_HPP_
 # define MONSTERFACTORY_HPP_
 
-# include <list>
 # include <map>
+# include <list>
+# include <string>
 # include "AMonster.hpp"
-# include "Time.hpp"
 
-typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y, unsigned int id,
-							  Time::stamp creationTime);
+typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y,
+							  unsigned int id, Time::stamp creationTime);
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
@@ -18,7 +18,6 @@ class Factory
 {
 private:
   Factory();
-  Factory(std::map<Unit::Monster::type, std::string>);
 
 public:
   ~Factory();
@@ -31,6 +30,8 @@ public:
 
   static Factory*		getInstance();
   static void			destroy();
+
+  static const std::map<Unit::Monster::type, std::string>	LIBSLIST;
 
 private:
   std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
