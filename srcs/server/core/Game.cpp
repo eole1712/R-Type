@@ -46,7 +46,7 @@ IMap*	Game::getMap() const
 
 unsigned int    Game::getNbPlayers() const
 {
-    return _players.size();
+    return static_cast<unsigned int>(_players.size());
 }
 
 IScoreList*	Game::getScores() const

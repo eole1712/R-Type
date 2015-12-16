@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 set(EXECUTABLE_OUTPUT_PATH .. )
-set(LIBRARY_OUTPUT_PATH ../lib )
+set(LIBRARY_OUTPUT_PATH ../../../libs/client/ )
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE Debug)
@@ -42,7 +42,6 @@ add_executable(${EXECUTABLE_NAME}
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
 	graphics/GameListItem.cpp
-
 
 	network/NetClient.cpp
 	../misc/network/Networker.cpp
