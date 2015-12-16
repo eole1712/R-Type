@@ -27,10 +27,12 @@ protected:
   NetManager* _nm;
   NetClient*  _nc;
   std::vector<std::function<void(APacket*, unsigned int)> > _packetHandlerFuncs;
+  std::list<Unit::AUnit> _units;
   std::map<std::string, uint32_t> _rooms;
   Menu* _menu;
   int _playerId;
   Game* _game;
+
 };
 
 #endif /* !CLIENT_H_ */
