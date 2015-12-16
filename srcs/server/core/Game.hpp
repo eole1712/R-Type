@@ -17,17 +17,17 @@ class Game : public IGame
 public:
     Game(unsigned int id, std::string name);
     virtual ~Game();
-    
+
     virtual unsigned int	getID() const;
     virtual IMap*			getMap() const;
     virtual IScoreList*		getScores() const;
     virtual Unit::Player*	getPlayer(Unit::color) const;
     virtual std::string     getName() const;
     virtual std::vector<User*>  getUsers() const;
-    
+
     virtual bool			addPlayer(User *);
     virtual void			removePlayer(Unit::color);
-    virtual unsigned long   getNbPlayers() const;
+    virtual unsigned int   getNbPlayers() const;
 
 public:
     virtual void        start();
@@ -39,11 +39,11 @@ protected:
     virtual void        checkMouvements(Timer &);
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
-    
+
 public:
     static unsigned int     getNewID(unsigned int id);
     static Timer::time      now(unsigned int id);
-    
+
 private:
     unsigned int		_id;
     std::string         _name;

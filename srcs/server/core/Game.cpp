@@ -44,7 +44,7 @@ IMap*	Game::getMap() const
     return (this->_map);
 }
 
-unsigned long    Game::getNbPlayers() const
+unsigned int    Game::getNbPlayers() const
 {
     return _players.size();
 }
@@ -61,7 +61,7 @@ IScoreList*	Game::getScores() const
 Unit::Player*	Game::getPlayer(Unit::color color) const
 {
     std::vector<Unit::Player*>::const_iterator it;
-    
+
     for(it = _players.begin(); it != _players.end(); it++)
     {
         if ((*it)->getColor() == color)
@@ -78,7 +78,7 @@ bool    Game::isInGame() const
 bool	Game::addPlayer(User* user)
 {
     unsigned int	ixPlayer = static_cast<unsigned int>(this->_players.size());
-    
+
     if (_inGame)
         return false;
     if (ixPlayer < 4)
@@ -92,7 +92,7 @@ bool	Game::addPlayer(User* user)
 void	Game::removePlayer(Unit::color color)
 {
     unsigned int	i = 0;
-    
+
     std::for_each(this->_players.begin(), this->_players.end(),
                   [this, color, &i](Unit::Player* player)
                   {
@@ -108,7 +108,7 @@ void	Game::removePlayer(Unit::color color)
 std::vector<User*>      Game::getUsers() const
 {
     std::vector<User*>  _tab(_players.size());
-    
+
     std::for_each(_players.begin(), _players.end(), [&_tab](Unit::Player* player){
         _tab.push_back(player->getUser());
     });
@@ -118,13 +118,13 @@ std::vector<User*>      Game::getUsers() const
 void        Game::checkMouvements(Timer &t)
 {
     std::list<Unit::AUnit*>::iterator it;
-    
+
     std::for_each(_players.begin(), _players.end(), [&t, this](Unit::Player *player)
                   {
                       if (t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
                   });
-    
+
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         Unit::AUnit *unit = _map->checkInterractions(*it);
         if (unit) {
@@ -132,7 +132,7 @@ void        Game::checkMouvements(Timer &t)
             unit->getHit(*it);
         }
     }
-    
+
     for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
         Unit::AUnit *unit = _map->checkInterractions(*it);
         if (unit) {
@@ -140,7 +140,7 @@ void        Game::checkMouvements(Timer &t)
             unit->getHit(*it);
         }
     }
-    
+
     t.reset(60);
     t.start();
 }
@@ -167,15 +167,15 @@ bool        Game::checkIfAlive()
 {
     int     i = 0;
     std::list<Unit::AUnit*>::iterator it;
-    
+
     std::for_each(_players.begin(), _players.end(), [&i](Unit::Player *player) {
         if (player->isAlive())
             i++;
     });
     if (i == 0)
         return false;
-    
-    
+
+
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
             _map->removeUnit(*it);
@@ -219,7 +219,7 @@ unsigned int             Game::getNewID(unsigned int gameID)
 {
     static std::map<unsigned int, unsigned int>   tab;
     std::map<unsigned int, unsigned int>::iterator it;
-    
+
     it = tab.find(gameID);
     if (it == tab.end())
         tab[gameID] = 5;
@@ -232,7 +232,7 @@ Timer::time             Game::now(unsigned int gameID)
 {
     static std::map<unsigned int, Timer*>   tab;
     std::map<unsigned int, Timer*>::iterator it;
-    
+
     it = tab.find(gameID);
     if (it == tab.end())
     {
