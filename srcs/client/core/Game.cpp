@@ -1,8 +1,8 @@
 #include "Game.hpp"
-Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
-  : _client(client),_window(window),_tick(Time::getTimeStamp()), _localPlayer(player),
+Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player, std::string const & name)
+  : _client(client),_window(window), _name(name), _tick(Time::getTimeStamp()), _localPlayer(player),
     _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(0),
-    /*    _input({
+    _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -23,7 +23,7 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
-      })*/
+      })/*
       _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
@@ -47,8 +47,9 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpacePress); }},
       {{sf::Keyboard::Space, Key::RELEASE}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
-      })
+	})*/
 {
+  _client->selectGame(_name);
   _client->setGame(this);
   loop();
 }
@@ -72,13 +73,6 @@ Unit::Player*		Game::getLocalPlayer()
 {
   return &_localPlayer;
 }
-
-/*
-void			Game::thread(Game * _this)
-{
-  this = _this;
-  loop();
-}*/
 
 void			Game::loop()
 {
@@ -114,10 +108,6 @@ void			Game::pollEvent()
       _finish = true;
       return ;
     }
-
-  // network :
-  // connect / disconnect Unit
-  // send player move event to game
   
   while (_window.pollEvent(event))
     {
@@ -142,8 +132,9 @@ void			Game::pollEvent()
 
 void			Game::render()
 {
+  Time::stamp		currentFrameTime = Time::getTimeStamp() - _creationTime;
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
-    i->second->render(Time::getTimeStamp() - _creationTime, _window);
+    i->second->render(currentFrameTime, _window);
 }
 
 Unit::AUnit &		Game::operator[](unsigned int id)

@@ -24,11 +24,11 @@ include_directories(BEFORE core)
 include_directories(BEFORE graphics)
 include_directories(BEFORE network)
 include_directories(BEFORE unit)
+include_directories(BEFORE unit/monster)
 include_directories(BEFORE misc)
 include_directories(BEFORE ../misc)
+include_directories(BEFORE ../common/)
 include_directories(BEFORE ../misc/network)
-
-# ../common/misc/linux_specific/CULibLoader.cpp
 
 add_executable(${EXECUTABLE_NAME}
 	core/main.cpp 
@@ -37,6 +37,7 @@ add_executable(${EXECUTABLE_NAME}
 	core/Game.cpp
 	core/Client.cpp
 	unit/AUnit.cpp
+	unit/MonsterFactory.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
@@ -61,33 +62,35 @@ add_executable(${EXECUTABLE_NAME}
 	../misc/ServerPingPacket.cpp
 	../misc/ServerUnitSpawnPacket.cpp
 
+	../common/linux_specific/CULibLoader.cpp
+
 	misc/Time.cpp 
 	../misc/Lock.cpp)
 
 if (APPLE)
-set(CMAKE_MACOSX_RPATH ON)
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
-if("${isSystemDir}" STREQUAL "-1")
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-endif()
+   set(CMAKE_MACOSX_RPATH ON)
+   set(CMAKE_SKIP_BUILD_RPATH FALSE)
+   set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+   list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+   if("${isSystemDir}" STREQUAL "-1")
+      set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+   endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp)
+add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp graphics/Animation.cpp 
+)
 
 if (WIN32)
-   include_directories(BEFORE ../common/misc/windows_specific)
+   include_directories(BEFORE ../common/windows_specific)
 else()
    target_link_libraries(${EXECUTABLE_NAME} -lpthread)
    target_link_libraries(${EXECUTABLE_NAME} -ldl)
-   include_directories(BEFORE ../common/misc/linux_specific)
+   include_directories(BEFORE ../common/linux_specific)
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
-
 
 # Detect and add SFML
 find_package(SFML 2.1 REQUIRED system window graphics network audio)

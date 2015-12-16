@@ -3,6 +3,7 @@
 
 # include "AMonster.hpp"
 # include "AUnit.hpp"
+# include "Animation.hpp"
 
 namespace Unit
 {
@@ -20,6 +21,8 @@ namespace Unit
       virtual pos	move(Time::stamp) const;
       virtual void	render(Time::stamp tick, sf::RenderWindow & window);
 
+    private:
+      Animation		_mySprite;
     };
 
   }

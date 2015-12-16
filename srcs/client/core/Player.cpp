@@ -16,7 +16,6 @@ namespace Unit {
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
    
     _anim.pause();
-    _anim.setRotation(45);
     _colorShader.loadFromFile("../../resources/shaders/basic.frag",
 			      "../../resources/shaders/basic.vert");
     _colorShader.setParameter("color", colors[id % 4]);
@@ -85,8 +84,8 @@ public:
       
     if (tick != 0)
       {
-	_x += tab[to][0] * (100 / tick);
-        _y += tab[to][1] * (100 / tick);
+	_trueX += tab[to][0] * (100 / tick);
+        _trueY += tab[to][1] * (100 / tick);
       }
   }
   /*
