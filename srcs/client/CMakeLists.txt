@@ -35,7 +35,8 @@ include_directories(BEFORE ../misc/network)
 
 add_executable(${EXECUTABLE_NAME}
 	core/main.cpp 
-	core/Menu.cpp 
+	core/Menu.cpp
+	core/List.cpp
 	core/Player.cpp 
 	core/Game.cpp
 	core/Client.cpp
