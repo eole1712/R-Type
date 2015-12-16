@@ -1,3 +1,4 @@
+#include <iostream>
 #include "MonsterTest.hpp"
 
 extern "C"
@@ -22,16 +23,18 @@ namespace Unit
     MonsterTest::MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime)
       : AMonster(x, y, id, creationTime),
 	_mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
-    {}
+    {
+      _mySprite.scale(2.5, 2.5);
+    }
 
     MonsterTest::~MonsterTest()
     {}
 
     Unit::pos            MonsterTest::move(Time::stamp tick) const
     {
-      Time::stamp diff = tick -_creationTime;
-      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
-      
+      long diff = static_cast<long>(tick - _creationTime) / 10;
+
+      pos p = std::make_pair(_x + diff, _y + diff % 50);
       return p;
     }
 
@@ -40,7 +43,7 @@ namespace Unit
       pos p = move(tick);
       
       _mySprite.setPosition(p.first, p.second);
-      window.draw(_mySprite);
+      window.draw(_mySprite.getFrame());
     }
   }
 
