@@ -68,16 +68,23 @@ Client::Client(int port)
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
-      if (_game)
-	{
-	  _units.emplace_back(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
-	  _game->connectUnit(_units.back());
-	}
+      // if (_game)
+      // 	{
+      // 	  _units.push_back(new Unit::AUnit(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
+      // 	  _game->connectUnit(_units.back());
+      // 	}
     },
     [this] (APacket* packet, unsigned int id) {
       ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
       if (pack == NULL)
 	return;
+      // if (_game)
+      // 	{
+      // 	  _units.remove_if([pack] (Unit::AUnit const& unit) {
+      // 	    return unit.getID() == pack->getUnitID();
+      // 	  });
+      // 	  _game->disconnectUnit(pack->getUnitID());
+      // 	}
     },
     [this] (APacket* packet, unsigned int id) {
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
