@@ -1,9 +1,9 @@
 #ifndef MONSTERFACTORY_HPP_
 # define MONSTERFACTORY_HPP_
 
+# include <string>
 # include <map>
 # include <list>
-# include <string>
 # include "AMonster.hpp"
 
 typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y,

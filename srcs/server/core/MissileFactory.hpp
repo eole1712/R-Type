@@ -1,8 +1,10 @@
 #ifndef MISSILEFACTORY_H_
 # define MISSILEFACTORY_H_
 
-#include <list>
-#include "AMissile.hpp"
+# include <string>
+# include <map>
+# include <list>
+# include "AMissile.hpp"
 
 typedef Unit::Missile::AMissile*	(*fptrNewMissile)(Unit::AUnit* origin, unsigned int id);
 typedef void				(*fptrDeleteMissile)(Unit::Missile::AMissile*);
@@ -11,33 +13,38 @@ class ILibLoader;
 
 namespace Unit
 {
-    namespace Missile
-    {
-        class Factory
-        {
-        private:
-            Factory();
 
-        public:
-            ~Factory();
+namespace Missile
+{
 
-        public:
-	  Unit::Missile::AMissile*	createMissile(Unit::Missile::type type, Unit::AUnit* origin,
-						      unsigned int id);
+class Factory
+{
+private:
+  Factory();
 
-	  bool				addMissileType(Unit::Missile::type, std::string libName);
-	  bool				removeMissileType(Unit::Missile::type);
+public:
+  ~Factory();
 
-	  static Factory*		getInstance();
-	  static void			destroy();
+public:
+  Unit::Missile::AMissile*	createMissile(Unit::Missile::type type, Unit::AUnit* origin,
+					      unsigned int id);
 
-        protected:
-	  std::list<std::pair<Unit::Missile::type, ILibLoader*> >	_libs;
+  bool				addMissileType(Unit::Missile::type, std::string libName);
+  bool				removeMissileType(Unit::Missile::type);
 
-        private:
-            static Factory*						_instance;
-	};
-    }
+  static Factory*		getInstance();
+  static void			destroy();
+
+  static const std::map<Unit::Missile::type, std::string>	LIBSLIST;
+
+private:
+  std::list<std::pair<Unit::Missile::type, ILibLoader*> >	_libs;
+
+  static Factory*						_instance;
+};
+
+}
+
 }
 
 

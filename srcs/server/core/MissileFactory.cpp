@@ -1,3 +1,5 @@
+#include <string>
+#include <map>
 #include <list>
 #include <algorithm>
 #include <utility>
@@ -12,6 +14,10 @@
 
 #include "MissileFactory.hpp"
 
+const std::map<Unit::Missile::type, std::string> Unit::Missile::Factory::LIBSLIST = {
+  {Unit::Missile::BASIC, "../libs/server/libBasicMissile.so"}
+};
+
 namespace Unit
 {
     namespace Missile
@@ -20,7 +26,13 @@ namespace Unit
     Factory*	Factory::_instance = NULL;
 
     Factory::Factory()
-    {}
+    {
+      std::for_each(Missile::Factory::LIBSLIST.begin(), Missile::Factory::LIBSLIST.end(),
+		    [this](std::pair<Unit::Missile::type, std::string> elem)
+		    {
+		      this->addMissileType(elem.first, elem.second);
+		    });
+    }
 
     Factory::~Factory()
     {
