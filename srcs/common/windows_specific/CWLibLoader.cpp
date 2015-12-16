@@ -1,6 +1,4 @@
 #include <iostream>
-# define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include "CWLibLoader.hpp"
 
 CWLibLoader::CWLibLoader(std::string libName, std::string creatorName, std::string destructorName)
