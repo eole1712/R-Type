@@ -34,6 +34,7 @@ private:
 private:
   Client *			_client;
   sf::RenderWindow &		_window;
+  std::string			_name;
   Time::stamp			_tick;
   Unit::Player &		_localPlayer;
   RemoteMap			_map;
