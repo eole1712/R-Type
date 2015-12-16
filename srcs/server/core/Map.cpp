@@ -36,6 +36,14 @@ void	Map::addUnit(Unit::AUnit* unit)
     this->_enemies.push_back(unit);
 }
 
+void            Map::removeUnit(Unit::AUnit* unit)
+{
+    if (unit->getTeam() == Unit::ALLY)
+        _allies.remove(unit);
+    else
+        _enemies.remove(unit);
+}
+
 Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
 {
   Unit::team	team = unit->getTeam();
@@ -45,14 +53,6 @@ Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
     if (unit->isHitting(other))
       return (other);
   return (nullptr);
-}
-
-void            Map::removeUnit(Unit::AUnit* unit)
-{
-    if (unit->getTeam() == Unit::ALLY)
-        _allies.remove(unit);
-    else
-        _enemies.remove(unit);
 }
 
 bool            Map::isIn(int x, int y)
