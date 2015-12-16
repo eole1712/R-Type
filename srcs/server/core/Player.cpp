@@ -20,7 +20,7 @@ namespace Unit {
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
-        
+
         user->startGame(gameID, this);
     }
 
@@ -33,7 +33,8 @@ namespace Unit {
         if (!_time.isFinished())
             return NULL;
 
-      Missile::AMissile *m = Missile::Factory::getInstance()->getObject(_weapon, this, Game::getNewID(_gameID));
+      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
+									    Game::getNewID(_gameID));
 
         _time.reset(m->getTime());
 
@@ -77,12 +78,12 @@ namespace Unit {
     {
         return _user;
     }
-    
+
     color                       Player::getColor() const
     {
         return _color;
     }
-  
+
     pos                         Player::move() const
     {
       return std::make_pair(_x, _y);
@@ -97,7 +98,7 @@ namespace Unit {
             {1, 0},
             {-1, 0}
         };
-      
+
         if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == Map::HEIGHT))
             return false;
         _x += tab[to][0];
@@ -110,7 +111,7 @@ namespace Unit {
     {
         return PLAYER;
     }
-    
+
     bool                        Player::isMoving(Unit::dir d)
     {
         std::lock_guard<Lock>   lock(_lock);
@@ -121,7 +122,7 @@ namespace Unit {
         std::lock_guard<Lock>   lock(_lock);
         _isMoving[dir] = isMoving;
     }
-    
+
     bool                        Player::isShooting()
     {
         std::lock_guard<Lock>   lock(_lock);
@@ -133,7 +134,7 @@ namespace Unit {
         std::lock_guard<Lock>   lock(_lock);
         _isShooting = isShooting;
     }
-    
+
     void                        Player::checkMouvement(Player *player, IMap *map)
     {
         for (Unit::dir i = Unit::UP; i <= Unit::LEFT; i = static_cast<Unit::dir>(static_cast<int>(i) + 1))
