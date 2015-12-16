@@ -1,4 +1,3 @@
-#include <utility>
 #include "MonsterTest.hpp"
 
 extern "C"
@@ -21,7 +20,8 @@ namespace Unit
   {
 
     MonsterTest::MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime)
-    : AMonster(x, y, id, creationTime)
+      : AMonster(x, y, id, creationTime),
+	_mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
     {}
 
     MonsterTest::~MonsterTest()
@@ -38,7 +38,9 @@ namespace Unit
     void		MonsterTest::render(Time::stamp tick, sf::RenderWindow & window)
     {
       pos p = move(tick);
-
+      
+      _mySprite.setPosition(p.first, p.second);
+      window.draw(_mySprite);
     }
   }
 

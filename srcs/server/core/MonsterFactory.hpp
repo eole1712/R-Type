@@ -2,42 +2,38 @@
 # define MONSTERFACTORY_HPP_
 
 # include <list>
-# include <map>
 # include "AMonster.hpp"
 
-typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y, unsigned int id, unsigned int gameID);
+typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y,
+							  unsigned int id, unsigned int gameID);
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
 
-namespace Unit {
-
 namespace Monster {
 
-    class Factory
-    {
-    private:
-        Factory();
-        Factory(std::map<Unit::Monster::type, std::string>);
+class Factory
+{
+private:
+  Factory();
 
-    public:
-        ~Factory();
+public:
+  ~Factory();
 
-        Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y, unsigned int gameID);
+  Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
+					      unsigned int gameID);
 
-        bool				addMonsterType(Unit::Monster::type, std::string libName);
-        bool				removeMonsterType(Unit::Monster::type);
+  bool				addMonsterType(Unit::Monster::type, std::string libName);
+  bool				removeMonsterType(Unit::Monster::type);
 
-    private:
-        std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
+  static Factory*		getInstance();
+  static void			destroy();
 
-    public:
-        static Factory*    getInstance();
+private:
+  std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
 
-    private:
-        static Factory*     _instance;
-    };
-}
+  static Factory*						_instance;
+};
 
 }
 

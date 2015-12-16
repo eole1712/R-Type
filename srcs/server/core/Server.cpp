@@ -22,14 +22,17 @@ Server::Server() {
 			if (pack == NULL)
 				return;
 			ServerConnexionPacket* ret = new ServerConnexionPacket;
+			std::cout << "Client connect with id : " << id << std::endl;
 			if (_users.find(id) != _users.end())
 			{
 				ret->setServerString("Not Welcome to R-Type Server");
 				ret->setStatus(false);
 			}
-			_users[id] = new User(pack->getClientName(), id);
-			ret->setServerString("Welcome to R-Type Server");
-			ret->setStatus(true);
+			else {
+			  _users[id] = new User(pack->getClientName(), id);
+			  ret->setServerString("Welcome to R-Type Server");
+			  ret->setStatus(true);
+			}
 			_netServer->send(ret, id);
 			delete ret;
 		},
@@ -49,38 +52,43 @@ Server::Server() {
 			}
 		},
 		[this] (APacket* packet, unsigned int id) {
-			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
-			static unsigned int gameID = 1;
-			if (pack == NULL)
-				return;
-			if (_users.find(id) != _users.end())
-				return;
-			IGame* game;
-            auto it  = _games.find(pack->getRoomId());
-			if ((it) == _games.end())
-			{
-				_games[gameID] = new Game(gameID, pack->getRoomName());
-				game = _games[gameID];
-				++gameID;
-			}
-			else
-				game = (*it).second;
-			ServerGameConnectPacket* ret = new ServerGameConnectPacket;
-			if (!game->addPlayer(_users[id])) {
-				ret->setStatus(false);
-			}
-			else {
-				ret->setStatus(true);
-				ret->setPlayerId(_users[id]->getPlayer()->getID());
-			}
-			_netServer->send(ret, id);
-			delete ret;
+		  ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
+		  static unsigned int gameID = 1;
+		  std::cout << "in ClientGameConnect ! " << std::endl;
+		  if (pack == NULL)
+		    return;
+		  std::cout << "pack is well formated" << std::endl;
+		  if (_users.find(id) == _users.end())
+		    return;
+		  IGame* game;
+		  auto it  = _games.find(pack->getRoomId());
+		  if ((it) == _games.end())
+		    {
+		      std::cout << "creating game" << std::endl;
+		      _games[gameID] = new Game(gameID, pack->getRoomName());
+		      game = _games[gameID];
+		      ++gameID;
+		    }
+		  else
+		    game = (*it).second;
+		  ServerGameConnectPacket* ret = new ServerGameConnectPacket;
+		  if (!game->addPlayer(_users[id])) {
+		    std::cout << "failed" << std::endl;
+		    ret->setStatus(false);
+		  }
+		  else {
+		    ret->setStatus(true);
+		    ret->setPlayerId(_users[id]->getPlayer()->getID());
+		  }
+		  std::cout << "answering packet" << std::endl;
+		  _netServer->send(ret, id);
+		  delete ret;
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
 			if (pack == NULL)
 				return;
-			if (_users.find(id) != _users.end())
+			if (_users.find(id) == _users.end())
 				return;
             User* user = _users[id];
 			IGame* game = _games[user->getGameID()];
@@ -102,7 +110,7 @@ Server::Server() {
                 user->getPlayer()->setMoving(static_cast<Unit::dir>(key.first), key.second);
 			else
 				user->getPlayer()->setShooting(key.second);
-		} 
+		}
 	};
 }
 
@@ -144,4 +152,4 @@ void Server::startGame(IGame* game) {
 
 void	Server::handlePacket(APacket* packet, unsigned int id) {
 	_packetHandlerFuncs[packet->getType() - 8](packet, id);
-}	
+}

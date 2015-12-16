@@ -18,7 +18,9 @@ public:
   void handlePacket(APacket*, unsigned int id);
   void selectGame(std::string const& name);
   void connect(std::string const& ip, std::string const& name);
+  void refreshGames();
   void setGame(Game*);
+  void createGame(std::string const& name);
   void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
 protected:

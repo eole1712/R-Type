@@ -14,30 +14,30 @@ class ILibLoader;
 
 namespace Monster {
 
-    class Factory
-    {
-    private:
-        Factory();
-        Factory(std::map<Unit::Monster::type, std::string>);
+class Factory
+{
+private:
+  Factory();
+  Factory(std::map<Unit::Monster::type, std::string>);
 
-    public:
-        ~Factory();
+public:
+  ~Factory();
 
-        Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
-						      unsigned int id, Time::stamp creationTime);
+  Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
+					      unsigned int id, Time::stamp creationTime);
 
-        bool				addMonsterType(Unit::Monster::type, std::string libName);
-        bool				removeMonsterType(Unit::Monster::type);
+  bool				addMonsterType(Unit::Monster::type, std::string libName);
+  bool				removeMonsterType(Unit::Monster::type);
 
-    private:
-        std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
+  static Factory*		getInstance();
+  static void			destroy();
 
-    public:
-        static Factory*    getInstance();
+private:
+  std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
 
-    private:
-        static Factory*     _instance;
-    };
+  static Factory*						_instance;
+};
+
 }
 
 #endif /* !MONSTERFACTORY_HPP_ */

@@ -47,7 +47,7 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
     return new ClientGameInfoPacket(data);
   },
   [] (std::string const& data) {
-    return new ServerGameConnectPacket(data);
+    return new ClientGameConnectPacket(data);
   }
 };
 
