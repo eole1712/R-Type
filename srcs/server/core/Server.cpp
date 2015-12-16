@@ -8,7 +8,8 @@
 #include "ServerPlayerMovePacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
-
+#include "MonsterFactory.hpp"
+#include "MissileFactory.hpp"
 
 
 
@@ -117,6 +118,8 @@ Server::Server() {
 Server::~Server() {
 	delete _netServer;
 	delete _netManager;
+	Monster::Factory::destroy();
+	Unit::Missile::Factory::destroy();
 }
 
 void	Server::start() {

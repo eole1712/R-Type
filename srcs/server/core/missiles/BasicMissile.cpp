@@ -2,7 +2,7 @@
 #include <string>
 #include "AMissile.hpp"
 #include "BasicMissile.hpp"
-#include "Game.hpp"
+#include "GameUtils.hpp"
 #include "Map.hpp"
 
 extern "C"
@@ -43,7 +43,7 @@ namespace Unit {
 
     Unit::pos            BasicMissile::move() const
     {
-      uintmax_t diff = Game::now(_gameID) - _creationTime;
+        uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
       pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
 
       return p;

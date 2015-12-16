@@ -2,14 +2,18 @@
 # define CWLIBLOADER_HPP_
 
 # include <string>
+
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
+
 # include "ILibLoader.hpp"
 
 class		CWLibLoader : public ILibLoader
 {
 private:
-  HMODULE	_libHandle;
-  FARPROC	_externalCreator;
-  FARPROC	_externalDestructor;
+  HINSTANCE	_libHandle;
+  void*		_externalCreator;
+  void*		_externalDestructor;
 
   CWLibLoader();
 

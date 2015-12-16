@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 set(EXECUTABLE_OUTPUT_PATH .. )
-set(LIBRARY_OUTPUT_PATH ../lib )
+set(LIBRARY_OUTPUT_PATH ../../../libs/client/ )
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE Debug)
@@ -24,7 +24,7 @@ include_directories(BEFORE core)
 include_directories(BEFORE graphics)
 include_directories(BEFORE network)
 include_directories(BEFORE unit)
-include_directories(BEFORE unit/monster)
+include_directories(BEFORE unit/monsters)
 include_directories(BEFORE misc)
 include_directories(BEFORE ../misc)
 include_directories(BEFORE ../common/)
@@ -38,12 +38,11 @@ add_executable(${EXECUTABLE_NAME}
 	core/Game.cpp
 	core/Client.cpp
 	unit/AUnit.cpp
-	unit/MonsterFactory.cpp
+	unit/UnitFactory.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
 	graphics/GameListItem.cpp
-
 
 	network/NetClient.cpp
 	../misc/network/Networker.cpp
@@ -80,7 +79,7 @@ if (APPLE)
    endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp graphics/Animation.cpp 
+add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp 
 )
 
 if (WIN32)

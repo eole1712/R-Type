@@ -27,8 +27,9 @@
 *.out
 *.app
 
-#build folder
+#build/bin folders
 build/
+bin/
 
 #emacs project folder
 .emacsproject/
