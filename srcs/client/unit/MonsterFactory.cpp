@@ -98,7 +98,7 @@ namespace Monster {
     {
         if (_instance == nullptr)
         {
-            _instance = new Factory();
+            _instance = new Factory({{Unit::Monster::MONSTERTEST, "lib/libMonsterTest.so"}});
         }
         return _instance;
     }
