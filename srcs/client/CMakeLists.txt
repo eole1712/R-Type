@@ -37,7 +37,7 @@ add_executable(${EXECUTABLE_NAME}
 	core/Game.cpp
 	core/Client.cpp
 	unit/AUnit.cpp
-	unit/MonsterFactory.cpp
+	unit/UnitFactory.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp 
 	graphics/Editable.cpp 
@@ -78,7 +78,7 @@ if (APPLE)
    endif()
 endif(APPLE)
 
-add_library(MonsterTest SHARED unit/monster/MonsterTest.cpp unit/AMonster.cpp unit/AUnit.cpp graphics/Animation.cpp 
+add_library(MonsterTest SHARED unit/monsters/MonsterTest.cpp unit/AUnit.cpp graphics/Animation.cpp 
 )
 
 if (WIN32)
