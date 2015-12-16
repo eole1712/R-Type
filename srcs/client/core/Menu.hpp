@@ -41,6 +41,8 @@ private:
   unsigned int				_gameListPosY;
   unsigned int				_currentGameNumber;
   bool					_isConnected;
+  sf::Font				_fieldsFont;
+  sf::Font				_loginFont;
   ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
   Editable				_login;
   Editable				_gameName;
@@ -51,8 +53,6 @@ private:
   ClickableBtn				_refreshButton;
   ClickableBtn				_startButton;
   List					_gameList;
-  sf::Font				_fieldsFont;
-  sf::Font				_loginFont;
   Row					_currentRow;
   //  bool					_maxLoginSize;
   /*  std::list<GameListItem>		_gamesData;
