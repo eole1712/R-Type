@@ -1,4 +1,6 @@
+#if defined(__linux__)
 #include <unistd.h>
+#endif
 #include "Menu.hpp"
 
 Menu::Menu(int width, int height, Client* client):

@@ -8,6 +8,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 set(EXECUTABLE_OUTPUT_PATH .. )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 set(LIBRARY_OUTPUT_PATH ../../../libs/client/ )
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
@@ -33,7 +35,7 @@ include_directories(BEFORE ../misc)
 include_directories(BEFORE ../common/)
 include_directories(BEFORE ../misc/network)
 
-add_executable(${EXECUTABLE_NAME}
+set(server_sources 
 	core/main.cpp 
 	core/Menu.cpp
 	core/List.cpp
@@ -64,11 +66,17 @@ add_executable(${EXECUTABLE_NAME}
 	../misc/ServerUnitDiePacket.cpp
 	../misc/ServerPingPacket.cpp
 	../misc/ServerUnitSpawnPacket.cpp
-
-	../common/linux_specific/CULibLoader.cpp
-
 	misc/Time.cpp 
-	../misc/Lock.cpp)
+	../misc/Lock.cpp
+	)
+
+if (WIN32)
+   set(server_sources ${server_sources} ../common/windows_specific/CWLibLoader.cpp)
+elseif (UNIX)
+   set(server_sources ${server_sources} ../common/linux_specific/CULibLoader.cpp)
+endif()
+
+add_executable(${EXECUTABLE_NAME} ${server_sources})
 
 if (APPLE)
    set(CMAKE_MACOSX_RPATH ON)
@@ -96,8 +104,17 @@ endif()
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
+if (WIN32)
+	set(SFML_ROOT C:/libs/SFML-2.3.2)
+endif()
+set(SFML_STATIC_LIBRARIES TRUE)
+#set(GLEW_STATIC_LIBRARIES TRUE)
+
+find_package(OpenGL REQUIRED)
+#find_package(GLUT REQUIRED)
 find_package(SFML 2.1 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
+	MESSAGE(${SFML_DEPENDENCIES})
   include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
   target_link_libraries(MonsterTest ${SFML_LIBRARIES})
