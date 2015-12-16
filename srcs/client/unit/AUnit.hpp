@@ -21,15 +21,16 @@ namespace Unit {
     LEFT
   };
 
-enum type {
-  MONSTERTEST,
-  BASICMISSILE
-};
+  enum type {
+    MONSTERTEST,
+    BASICMISSILE
+  };
 
   enum team {
     ALLY,
     ENEMY
   };
+
 
   typedef std::pair<int, int> pos;
 
