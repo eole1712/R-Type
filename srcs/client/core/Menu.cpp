@@ -6,6 +6,7 @@ Menu::Menu(int width, int height, Client* client):
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
   _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5),
   _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _currentGameNumber(0), _isConnected(false),
+  _fieldsFont(), _loginFont(),
   _menuFields{ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor, 21),
     ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Create", _fieldsFont, _fieldsColor, 21),
     ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Host", _fieldsFont, _fieldsColor, 21),
@@ -20,16 +21,11 @@ Menu::Menu(int width, int height, Client* client):
   _startButton(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
   _gameList(_gameListPosX, _gameListPosY, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN)
 {
-  std::string g = "game";
-  std::string s = "a";
-  
-  addGame(g, 1, s);
-  addGame(g, 2, s);
-  addGame(g, 3, s);
-  addGame(g, 4, s);
-  addGame(g, 5, s);
-  addGame(g, 6, s);
-  addGame(g, 7, s);
+  if (!_fieldsFont.loadFromFile("../../resources/menu/fonts/BebasNeue Bold.ttf"))
+    std::cout << "error loading Font" << std::endl;
+  if (!_loginFont.loadFromFile("../../resources/menu/fonts/BebasNeue Book.ttf"))
+    std::cout << "error loading Font" << std::endl;
+
   initMainView();
 }
 
