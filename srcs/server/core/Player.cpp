@@ -4,6 +4,7 @@
 #include "AMissile.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
+#include "GameUtils.hpp"
 #include "Game.hpp"
 #include "ObjectCast.hpp"
 
@@ -12,7 +13,7 @@ namespace Unit {
     const unsigned int          Player::DEFAULTHP = 1;
     const Missile::type         Player::DEFAULTMISSILE = Missile::BASIC;
     const unsigned int          Player::STARTX = 10;
-    const unsigned int          Player::STARTY = Map::HEIGHT / 2;
+    const unsigned int          Player::STARTY = GameUtils::Map::HEIGHT / 2;
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
@@ -34,7 +35,7 @@ namespace Unit {
             return NULL;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-									    Game::getNewID(_gameID));
+									    GameUtils::Game::getNewID(_gameID));
 
         _time.reset(m->getTime());
 
@@ -99,7 +100,7 @@ namespace Unit {
             {-1, 0}
         };
 
-        if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == Map::HEIGHT))
+        if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == GameUtils::Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == GameUtils::Map::HEIGHT))
             return false;
         _x += tab[to][0];
         _y += tab[to][1];

@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "MonsterWaveManager.hpp"
-#include "Map.hpp"
+#include "GameUtils.hpp"
 
 namespace Monster {
     
@@ -23,10 +23,10 @@ namespace Monster {
         
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, Map::WIDTH - 1, i * (Map::HEIGHT / 3));
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, i * (GameUtils::Map::HEIGHT / 3));
             }
             wave->addWaitingTime(2);
-            wave->addMonster(Unit::Monster::MONSTERTEST, Map::WIDTH - 1, Map::HEIGHT / 2);
+            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, GameUtils::Map::HEIGHT / 2);
             wave->addWaitingTime(2);
         }
         return wave;

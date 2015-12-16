@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "GameUtils.hpp"
 #include "AUnit.hpp"
 #include "AMissile.hpp"
 #include "AMonster.hpp"
@@ -29,7 +29,7 @@ namespace Unit
         return NULL;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-									    Game::getNewID(_gameID));
+                                                                            GameUtils::Game::getNewID(_gameID));
 
       _time.reset(m->getTime());
 

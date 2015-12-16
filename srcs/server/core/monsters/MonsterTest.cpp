@@ -5,7 +5,7 @@
 #include "MonsterTest.hpp"
 #include "MissileFactory.hpp"
 #include "Timer.hpp"
-#include "Game.hpp"
+#include "GameUtils.hpp"
 
 // ébauche de classe pour test
 
@@ -46,7 +46,7 @@ namespace Unit
         return NULL;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-									    Game::getNewID(_gameID));
+									    GameUtils::Game::getNewID(_gameID));
 
       _time.reset(m->getTime());
       return m;
@@ -54,7 +54,7 @@ namespace Unit
 
     Unit::pos            MonsterTest::move() const
     {
-      uintmax_t diff = Game::now(_gameID) - _creationTime;
+      uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
       pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
 
       return p;

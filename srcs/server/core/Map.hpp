@@ -17,13 +17,6 @@ public:
   virtual void                        removeUnit(Unit::AUnit *);
   virtual Unit::AUnit*				checkInterractions(Unit::AUnit*) const;
   
-public:
-  static const int	WIDTH;
-  static const int	HEIGHT;
-  
-public:
-  static bool       isIn(int x, int y);
-  
 private:
   std::list<Unit::AUnit*>	_allies;
   std::list<Unit::AUnit*>	_enemies;

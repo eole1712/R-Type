@@ -40,10 +40,6 @@ protected:
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
 
-public:
-    static unsigned int     getNewID(unsigned int id);
-    static Timer::time      now(unsigned int id);
-
 private:
     unsigned int		_id;
     std::string         _name;
