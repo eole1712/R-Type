@@ -1,33 +1,27 @@
 #ifndef BasicMissile_hpp
-#define BasicMissile_hpp
+# define BasicMissile_hpp
 
-#include "AMissile.hpp"
+# include "AUnit.hpp"
+# include "Animation.hpp"
+# include "Time.hpp"
 
-namespace Unit {
-  
-  namespace Missile {
-    
-    class BasicMissile : public AMissile{
-    public:
-      BasicMissile(AUnit *origin, unsigned int id);
-      virtual ~BasicMissile();
-      
-    public:
-      virtual bool                isKillable() const;
-      virtual Missile::type       getMissileType() const;
-      virtual pos                 move() const;
-      
-    public:
-      virtual double              getTime() const;
-      
-    public:
-      virtual void                getHit(AUnit*);
-      
-    public:
-      virtual AMissile*	clone(AUnit*, unsigned int id) const;
-      virtual std::string	getClassName() const;
-    };
-  }
+namespace Unit
+{
+
+class BasicMissile : public AUnit
+{
+public:
+  BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime);
+  virtual ~BasicMissile();
+
+public:
+  virtual pos	move(Time::stamp tick) const;
+  virtual void	render(Time::stamp tick, sf::RenderWindow& window);
+
+private:
+  Animation	_mySprite;
+};
+
 }
 
 #endif /* BasicMissile_hpp */

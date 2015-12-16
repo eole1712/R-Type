@@ -7,67 +7,42 @@
 
 extern "C"
 {
-  Unit::Missile::AMissile*	NewMissile(Unit::AUnit* origin, unsigned int id)
+  Unit::AUnit*	NewUnit(int x, int y, unsigned int id, Time::stamp creationTime)
   {
-    return (new Unit::Missile::BasicMissile(origin, id));
+    return (new Unit::BasicMissile(x, y, id, creationTime));
   }
 
-  void	DeleteMissile(Unit::Missile::AMissile* missile)
+  void	DeleteMissile(Unit::AUnit* missile)
   {
     delete missile;
   }
 }
 
-namespace Unit {
+namespace Unit
+{
 
-  namespace Missile {
+BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime)
+  : AUnit(x, y, id, creationTime),
+    _mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
+{}
 
-    BasicMissile::BasicMissile(AUnit *origin, unsigned int id)
-    : AMissile(std::make_pair(2, 2), 5, origin, id)
-    {
-    }
+BasicMissile::~BasicMissile()
+{}
 
-    BasicMissile::~BasicMissile()
-    {
-    }
+Unit::pos            BasicMissile::move(Time::stamp tick) const
+{
+  Time::stamp diff = tick -_creationTime;
+  pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
 
-    bool    BasicMissile::isKillable() const
-    {
-      return true;
-    }
+  return p;
+}
 
-    Missile::type   BasicMissile::getMissileType() const
-    {
-      return BASIC;
-    }
+void		BasicMissile::render(Time::stamp tick, sf::RenderWindow & window)
+{
+  pos p = move(tick);
 
-    Unit::pos            BasicMissile::move() const
-    {
-      uintmax_t diff = Game::now(_gameID) - _creationTime;
-      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
-
-      return p;
-    }
-
-    double    BasicMissile::getTime() const
-    {
-      return 1.0;
-    }
-
-    std::string     BasicMissile::getClassName() const
-    {
-      return std::string("BasicMissile");
-    }
-
-    void            BasicMissile::getHit(AUnit*)
-    {
-      _hp = 0;
-    }
-
-    AMissile*            BasicMissile::clone(AUnit *unit, unsigned int id) const
-    {
-      return new BasicMissile(unit, id);
-    }
-  }
+  _mySprite.setPosition(p.first, p.second);
+  window.draw(_mySprite);
+}
 
 }
