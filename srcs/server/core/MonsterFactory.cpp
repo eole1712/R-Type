@@ -14,13 +14,15 @@
 
 #include "MonsterFactory.hpp"
 
+namespace Unit {
+
 namespace Monster {
-    
+
     Factory*     Factory::_instance = NULL;
-    
+
     Factory::Factory()
     {}
-    
+
     Factory::Factory(std::map<Unit::Monster::type, std::string> list)
     {
         std::for_each(list.begin(), list.end(),
@@ -29,7 +31,7 @@ namespace Monster {
                           this->addMonsterType(elem.first, elem.second);
                       });
     }
-    
+
     Factory::~Factory()
     {
         std::for_each(this->_libs.begin(), this->_libs.end(),
@@ -38,12 +40,12 @@ namespace Monster {
                           delete lib.second;
                       });
     }
-    
+
     Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y, unsigned int gameID)
     {
         fptrNewMonster		ptr;
         Unit::Monster::AMonster*	newMonster;
-        
+
         for(std::list<std::pair<Unit::Monster::type, ILibLoader*> >::iterator it = this->_libs.begin();
             it != this->_libs.end(); ++it)
         {
@@ -56,28 +58,28 @@ namespace Monster {
         }
         return (NULL);
     }
-    
+
     bool	Factory::addMonsterType(Unit::Monster::type type, std::string libName)
     {
         ILibLoader*	libLoader;
-        
+
         for(std::list<std::pair<Unit::Monster::type, ILibLoader*> >::iterator it = this->_libs.begin();
             it != this->_libs.end(); ++it)
         {
             if ((*it).first == type)
                 return (false);
         }
-        
+
 #if (defined __linux__) || (defined __APPLE__)
         libLoader = new CULibLoader(libName, "NewMonster", "DeleteMonster");
 #elif defined(_WIN32)
         libLoader = new CWLibLoader(libName, "NewMonster", "DeleteMonster");
 #endif
-        
+
         this->_libs.push_back(std::make_pair(type, libLoader));
         return (true);
     }
-    
+
     bool	Factory::removeMonsterType(Unit::Monster::type type)
     {
         for(std::list<std::pair<Unit::Monster::type, ILibLoader*> >::iterator it = this->_libs.begin();
@@ -92,7 +94,7 @@ namespace Monster {
         }
         return (false);
     }
-    
+
     Factory*     Factory::getInstance()
     {
         if (_instance == nullptr)
@@ -101,4 +103,6 @@ namespace Monster {
         }
         return _instance;
     }
+}
+
 }

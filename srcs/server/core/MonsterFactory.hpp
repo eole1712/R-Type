@@ -10,6 +10,8 @@ typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
 
+namespace Unit {
+
 namespace Monster {
 
     class Factory
@@ -20,21 +22,23 @@ namespace Monster {
 
     public:
         ~Factory();
-        
+
         Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y, unsigned int gameID);
-        
+
         bool				addMonsterType(Unit::Monster::type, std::string libName);
         bool				removeMonsterType(Unit::Monster::type);
-        
+
     private:
         std::list<std::pair<Unit::Monster::type, ILibLoader*> >	_libs;
-        
+
     public:
         static Factory*    getInstance();
-        
+
     private:
         static Factory*     _instance;
     };
+}
+
 }
 
 #endif /* !MONSTERFACTORY_HPP_ */
