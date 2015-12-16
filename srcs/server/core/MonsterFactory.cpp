@@ -5,7 +5,7 @@
 #include <utility>
 #include "AMonster.hpp"
 #include "ILibLoader.hpp"
-#include "Game.hpp"
+#include "GameUtils.hpp"
 
 #if (defined __linux__) || (defined __APPLE__)
 #include "CULibLoader.hpp"
@@ -53,7 +53,7 @@ Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x,
       if ((*it).first == type)
 	{
 	  ptr = reinterpret_cast<fptrNewMonster>((*it).second->getExternalCreator());
-	  newMonster = ptr(x, y, Game::getNewID(gameID), gameID);
+        newMonster = ptr(x, y, GameUtils::Game::getNewID(gameID), gameID);
 	  return (newMonster);
 	}
     }

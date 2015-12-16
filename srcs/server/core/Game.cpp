@@ -214,29 +214,3 @@ bool        Game::nextAction()
         return end();
     return true;
 }
-
-unsigned int             Game::getNewID(unsigned int gameID)
-{
-    static std::map<unsigned int, unsigned int>   tab;
-    std::map<unsigned int, unsigned int>::iterator it;
-    
-    it = tab.find(gameID);
-    if (it == tab.end())
-        tab[gameID] = 5;
-    else
-        tab[gameID]++;
-    return tab[gameID];
-}
-
-Timer::time             Game::now(unsigned int gameID)
-{
-    static std::map<unsigned int, Timer*>   tab;
-    std::map<unsigned int, Timer*>::iterator it;
-    
-    it = tab.find(gameID);
-    if (it == tab.end())
-    {
-        tab[gameID] = new Timer(0);
-    }
-    return tab[gameID]->getElapsedTime();
-}

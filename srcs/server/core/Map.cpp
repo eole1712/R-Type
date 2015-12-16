@@ -3,9 +3,6 @@
 #include "AUnit.hpp"
 #include "Map.hpp"
 
-const int Map::WIDTH = 720;
-const int Map::HEIGHT = 480;
-
 Map::Map()
 {}
 
@@ -53,11 +50,4 @@ Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
     if (unit->isHitting(other))
       return (other);
   return (nullptr);
-}
-
-bool            Map::isIn(int x, int y)
-{
-  if (x < 0 || y < 0 || x > WIDTH || y > HEIGHT)
-    return false;
-  return true;
 }

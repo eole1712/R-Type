@@ -1,11 +1,11 @@
 #include "Timer.hpp"
 #include "AUnit.hpp"
-#include "Game.hpp"
+#include "GameUtils.hpp"
 
 namespace Unit {
     
     AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID)
-    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(Game::now(gameID))
+    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(GameUtils::Game::now(gameID))
     {
     }
     
@@ -15,7 +15,7 @@ namespace Unit {
     
     bool    AUnit::isAlive() const
     {
-        if ((getType() == MONSTER || getType() == MISSILE) && Map::isIn(getX(), getY()) == false)
+        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(), getY()) == false)
             return (false);
         return (_hp > 0);
     }
