@@ -5,15 +5,15 @@
 #include <list>
 #include <iostream>
 #include "Animation.hpp"
-//#include "ClickableBtn.hpp"
+#include "ClickableBtn.hpp"
 #include "Editable.hpp"
-//#include "GameListItem.hpp"
+#include "GameListItem.hpp"
 #include "Client.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
 #include "List.hpp"
 
-#define MAX_NUMBER_OF_FIELDS 3
+#define MAX_NUMBER_OF_FIELDS 4
 
 class Client;
 
@@ -22,9 +22,10 @@ class Menu
 private:
   enum Row : unsigned int{
     LOGIN,
-    HOST,
-    SERVER
-  };
+      CREATE,
+      HOST,
+      SERVER
+      };
 
 private:
   int					_width;
@@ -42,8 +43,10 @@ private:
   bool					_isConnected;
   ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
   Editable				_login;
+  Editable				_gameName;
   Editable				_host;
   ClickableBtn				_loginSizeErr;
+  ClickableBtn				_createButton;
   ClickableBtn				_connectButton;
   ClickableBtn				_refreshButton;
   ClickableBtn				_startButton;
@@ -51,7 +54,7 @@ private:
   sf::Font				_fieldsFont;
   sf::Font				_loginFont;
   Row					_currentRow;
-  bool					_maxLoginSize;
+  //  bool					_maxLoginSize;
   /*  std::list<GameListItem>		_gamesData;
   stxd::list<GameListItem>::iterator	_gameListIt;
   std::list<GameListItem>::iterator	_currentSelectedGame;*/
@@ -70,16 +73,15 @@ private:
   void				initPlayerColorSelection();
   void				handleMouseClick();
   void				handleMouseMoved();
+  void				editionHandler(sf::Event const&);
   void				handleLoginEdition(sf::Event&);
   void				handleHostEdition(sf::Event&);
   void				eventHandler();
   void				drawFields();
   void				drawEditable();
   void				drawLoginSizeErr();
-  //  void				drawGameList();
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
-  //  void				gamesToPrint(bool);
   void				setConnected();
 };
 
