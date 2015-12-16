@@ -5,10 +5,13 @@
 #include <list>
 #include <iostream>
 #include "Animation.hpp"
-#include "ClickableBtn.hpp"
+//#include "ClickableBtn.hpp"
 #include "Editable.hpp"
-#include "GameListItem.hpp"
+//#include "GameListItem.hpp"
 #include "Client.hpp"
+#include "Player.hpp"
+#include "Game.hpp"
+#include "List.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 3
 
@@ -33,27 +36,26 @@ private:
   sf::Color				_loginSizeErrColor;
   sf::Color				_highlightColor;
   sf::Color				_startColor;
+  unsigned int				_gameListPosX;
+  unsigned int				_gameListPosY;
+  unsigned int				_currentGameNumber;
+  bool					_isConnected;
   ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
   Editable				_login;
   Editable				_host;
   ClickableBtn				_loginSizeErr;
-  ClickableBtn				_startButton;
   ClickableBtn				_connectButton;
   ClickableBtn				_refreshButton;
-  ClickableBtn				_gameListUp;
-  ClickableBtn				_gameListDown;
+  ClickableBtn				_startButton;
+  List					_gameList;
   sf::Font				_fieldsFont;
   sf::Font				_loginFont;
   Row					_currentRow;
   bool					_maxLoginSize;
-  unsigned int				_gameListPosX;
-  unsigned int				_gameListPosY;
-  unsigned int				_currentGameNumber;
-  std::list<GameListItem>		_gamesData;
-  std::list<GameListItem>::iterator	_gameListIt;
-  std::list<GameListItem>::iterator	_currentSelectedGame;
-  bool					_isConnected;
-  sf::String				_currentGameName;
+  /*  std::list<GameListItem>		_gamesData;
+  stxd::list<GameListItem>::iterator	_gameListIt;
+  std::list<GameListItem>::iterator	_currentSelectedGame;*/
+   //  sf::String				_currentGameName;
   
 public:
   Menu(int width, int height, Client *client);
@@ -63,7 +65,7 @@ public:
   void				addGame(std::string const&, unsigned int, std::string const&);
 
 private:
-  void				initFields();
+  void				loadFonts();
   void				initColors();
   void				initPlayerColorSelection();
   void				handleMouseClick();
@@ -74,10 +76,10 @@ private:
   void				drawFields();
   void				drawEditable();
   void				drawLoginSizeErr();
-  void				drawGameList();
+  //  void				drawGameList();
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
-  void				gamesToPrint(bool);
+  //  void				gamesToPrint(bool);
   void				setConnected();
 };
 
