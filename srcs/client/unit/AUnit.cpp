@@ -27,7 +27,7 @@ pos	AUnit::move(Time::stamp tick) const
 {
   int	diff = static_cast<long>(tick - _creationTime) / 10;
 
-  return {_x + diff, _y}
+  return {_x + diff, _y};
 }
 
 }
