@@ -13,7 +13,7 @@ class Client;
 class Game
 {
 public:
-  Game(Client * client, sf::RenderWindow & window, Unit::Player & player);
+  Game(Client * client, sf::RenderWindow & window, Unit::Player & player, std::string const & name);
   virtual ~Game();
 
 public:  
