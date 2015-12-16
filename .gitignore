@@ -33,3 +33,6 @@ bin/
 
 #emacs project folder
 .emacsproject/
+
+*.pdb
+*.ilk
