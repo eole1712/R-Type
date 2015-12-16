@@ -7,9 +7,9 @@
 class		CWLibLoader : public ILibLoader
 {
 private:
-  HMODULE	_libHandle;
-  FARPROC	_externalCreator;
-  FARPROC	_externalDestructor;
+  HMODULE WINAPI	_libHandle;
+  FARPROC WINAPI	_externalCreator;
+  FARPROC WINAPI	_externalDestructor;
 
   CWLibLoader();
 
