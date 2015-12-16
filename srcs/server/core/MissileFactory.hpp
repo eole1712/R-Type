@@ -1,8 +1,13 @@
 #ifndef MISSILEFACTORY_H_
 # define MISSILEFACTORY_H_
 
-#include <map>
+#include <list>
 #include "AMissile.hpp"
+
+typedef Unit::Missile::AMissile*	(*fptrNewMissile)(Unit::AUnit* origin, unsigned int id);
+typedef void				(*fptrDeleteMissile)(Unit::Missile::AMissile*);
+
+class ILibLoader;
 
 namespace Unit
 {
@@ -17,20 +22,20 @@ namespace Unit
             ~Factory();
 
         public:
-            static Factory	*getInstance();
-            static void     destroy();
-            void            init();
-            AMissile*       getObject(Missile::type, AUnit*, unsigned  int id);
+	  Unit::Missile::AMissile*	createMissile(Unit::Missile::type type, Unit::AUnit* origin,
+						      unsigned int id);
 
-        private:
-            Factory(Factory const& other);
-            Factory&	operator=(Factory const& other);
+	  bool				addMissileType(Unit::Missile::type, std::string libName);
+	  bool				removeMissileType(Unit::Missile::type);
+
+	  static Factory*		getInstance();
+	  static void			destroy();
 
         protected:
-            std::map<Missile::type, AMissile*> _map;
+	  std::list<std::pair<Unit::Missile::type, ILibLoader*> >	_libs;
 
         private:
-            static Factory *_instance;
+            static Factory*						_instance;
 	};
     }
 }

@@ -1,5 +1,4 @@
 #include <list>
-#include <map>
 #include <algorithm>
 #include <utility>
 #include "AMonster.hpp"
@@ -21,27 +20,19 @@ namespace Monster {
     Factory::Factory()
     {}
 
-    Factory::Factory(std::map<Unit::Monster::type, std::string> list)
-    {
-        std::for_each(list.begin(), list.end(),
-                      [this](std::pair<Unit::Monster::type, std::string> elem)
-                      {
-                          this->addMonsterType(elem.first, elem.second);
-                      });
-    }
-
     Factory::~Factory()
     {
-        std::for_each(this->_libs.begin(), this->_libs.end(),
-                      [](std::pair<Unit::Monster::type, ILibLoader*> lib)
-                      {
-                          delete lib.second;
-                      });
+      std::for_each(this->_libs.begin(), this->_libs.end(),
+		    [](std::pair<Unit::Monster::type, ILibLoader*> lib)
+		    {
+		      delete lib.second;
+		    });
     }
 
-    Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y, unsigned int gameID)
+    Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y,
+						       unsigned int gameID)
     {
-        fptrNewMonster		ptr;
+        fptrNewMonster			ptr;
         Unit::Monster::AMonster*	newMonster;
 
         for(std::list<std::pair<Unit::Monster::type, ILibLoader*> >::iterator it = this->_libs.begin();
@@ -50,7 +41,7 @@ namespace Monster {
             if ((*it).first == type)
             {
                 ptr = reinterpret_cast<fptrNewMonster>((*it).second->getExternalCreator());
-              newMonster = ptr(x, y, Game::getNewID(gameID), gameID);
+		newMonster = ptr(x, y, Game::getNewID(gameID), gameID);
                 return (newMonster);
             }
         }
@@ -96,9 +87,15 @@ namespace Monster {
     Factory*     Factory::getInstance()
     {
         if (_instance == nullptr)
-        {
-            _instance = new Factory();
-        }
+	  _instance = new Factory();
         return _instance;
+    }
+
+    void Factory::destroy()
+    {
+      if (_instance == NULL)
+	return;
+      delete _instance;
+      _instance = NULL;
     }
 }
