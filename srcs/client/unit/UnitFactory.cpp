@@ -15,7 +15,7 @@
 #include "UnitFactory.hpp"
 
 const std::map<Unit::type, std::string> Unit::Factory::LIBSLIST = {
-  {Unit::MONSTERTEST, "../../libs/client/libMonsterTest.so"}
+  {Unit::MONSTERTEST, "../../libs/client/libMonsterTest.so"},
   {Unit::BASICMISSILE, "../../libs/client/libBasicMissile.so"}
 };
 
@@ -42,10 +42,10 @@ Factory::~Factory()
 }
 
 Unit::AUnit*	Factory::createUnit(Unit::type type, int x, int y,
-						       unsigned int id, Time::stamp creationTime)
+				    unsigned int id, Time::stamp creationTime)
 {
   fptrNewUnit	ptr;
-  Unit::AUnit*		newUnit;
+  Unit::AUnit*	newUnit;
 
   for(std::list<std::pair<Unit::type, ILibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)

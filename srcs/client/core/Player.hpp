@@ -5,9 +5,16 @@
 #include <string>
 #include "Time.hpp"
 #include "AUnit.hpp"
-#include "AMissile.hpp"
 
 #include "Animation.hpp"
+
+namespace Missile {
+
+enum	type {
+  BASIC
+};
+
+}
 
 namespace Unit {
 
@@ -16,7 +23,7 @@ class Player : public AUnit {
 public:
   Player(int x, int y, unsigned int id, Time::stamp creationTime, std::string name);
   virtual ~Player();
-  
+
 public:
   std::string     getName() const;
   color           getColor() const;
@@ -29,15 +36,15 @@ public:
 
   void            move(dir, Time::stamp);
 
-  //void		  renderUI(sf::RenderWindow & window);  
+  //void		  renderUI(sf::RenderWindow & window);
   virtual void	  render(Time::stamp tick, sf::RenderWindow & window);
   virtual pos     move(Time::stamp tick) const;
-    
+
 private:
   color         _color;
   std::string   _name;
   bool		_shooting;
-  Time::stamp	_shootTime;	
+  Time::stamp	_shootTime;
   Missile::type _weapon;
   int		_trueX;
   int		_trueY;
