@@ -13,11 +13,12 @@ class Client;
 class Game
 {
 public:
-  Game(Client * client, sf::RenderWindow & window, Unit::Player & player, std::string const & name);
+  Game(Client * client, sf::RenderWindow & window, Unit::Player & player);
   virtual ~Game();
 
 public:  
-  Unit::Player*		getLocalPlayer();
+  Unit::Player *	getLocalPlayer();
+  Unit::Player *	getPlayer(unsigned int id);
   void			setFinish();
   bool			getFinish() const;
   void			connectUnit(Unit::AUnit &);
@@ -34,7 +35,6 @@ private:
 private:
   Client *			_client;
   sf::RenderWindow &		_window;
-  std::string			_name;
   Time::stamp			_tick;
   Unit::Player &		_localPlayer;
   RemoteMap			_map;

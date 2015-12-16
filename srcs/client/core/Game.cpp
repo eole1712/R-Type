@@ -1,6 +1,10 @@
 #include "Game.hpp"
-Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player, std::string const & name)
-  : _client(client),_window(window), _name(name), _tick(Time::getTimeStamp()), _localPlayer(player),
+
+#include "MonsterFactory.hpp"
+#include "MonsterTest.hpp"
+
+Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
+  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(player),
     _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(0),
     _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -49,8 +53,9 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player, st
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
 	})*/
 {
-  _client->selectGame(_name);
-  _client->setGame(this);
+  Unit::Monster::AMonster *test = Monster::Factory::getInstance()->createMonster(Unit::Monster::MONSTERTEST, 100, 100, 5, 0);
+
+  connectUnit(*test);
   loop();
 }
 
@@ -72,6 +77,11 @@ void			Game::setFinish()
 Unit::Player*		Game::getLocalPlayer()
 {
   return &_localPlayer;
+}
+
+Unit::Player *		Game::getPlayer(unsigned int id)
+{
+  return dynamic_cast<Unit::Player *>(_map[id % 5]);
 }
 
 void			Game::loop()
