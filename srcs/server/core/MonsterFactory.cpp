@@ -14,8 +14,6 @@
 
 #include "MonsterFactory.hpp"
 
-namespace Unit {
-
 namespace Monster {
 
     Factory*     Factory::_instance = NULL;
@@ -103,6 +101,4 @@ namespace Monster {
         }
         return _instance;
     }
-}
-
 }

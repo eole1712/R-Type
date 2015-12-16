@@ -10,8 +10,6 @@ typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
 
-namespace Unit {
-
 namespace Monster {
 
     class Factory
@@ -37,8 +35,6 @@ namespace Monster {
     private:
         static Factory*     _instance;
     };
-}
-
 }
 
 #endif /* !MONSTERFACTORY_HPP_ */
