@@ -52,8 +52,8 @@ Client::Client(int port)
 	return;
       if (pack->getStatus()) {
 	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
-	_playerId = pack->getPlayerId();
-	_menu->startGame();
+    _playerId = pack->getPlayerId();
+          //	_menu->startGame();
 	std::cout << "game started" << std::endl;
       }
       else
@@ -100,6 +100,9 @@ Client::Client(int port)
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (_game == nullptr)
+        _menu->startGame();
+    _game->setTimer(pack->getCurrentTimer());
     }
   };
   _menu = new Menu(720, 480, this);
