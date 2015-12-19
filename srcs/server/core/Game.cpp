@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 #include <algorithm>
 #include <map>
 #include "IMap.hpp"
@@ -107,11 +108,12 @@ void	Game::removePlayer(Unit::color color)
 
 std::vector<User*>      Game::getUsers() const
 {
-    std::vector<User*>  _tab(_players.size());
+    std::vector<User*>  _tab;
     
     std::for_each(_players.begin(), _players.end(), [&_tab](Unit::Player* player){
         _tab.push_back(player->getUser());
     });
+    std::cout << "Nombre de users : " <<  _tab.size() << std::endl;
     return  _tab;
 }
 
