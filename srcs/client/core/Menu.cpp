@@ -32,15 +32,6 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  std::string	s = "game";
-  std::string	t = "hello";
-  
-  _gameList.addItem(s, 1, t);
-  _gameList.addItem(s, 2, t);
-  _gameList.addItem(s, 3, t);
-  _gameList.addItem(s, 4, t);
-  _gameList.addItem(s, 5, t);
-
   background.scale(2, 2);
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
@@ -95,11 +86,11 @@ void		Menu::handleMouseClick()
 {
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
-   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition)
-       && !_gameList.getCurrentItem().empty())
-     {
-       Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
-       Game		game(_client, _window, player);
+   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentItem().empty())
+   {;
+       _client->selectGame(_gameList.getCurrentItem());
+//       Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
+//       Game		game(_client, _window, player);
      }
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
