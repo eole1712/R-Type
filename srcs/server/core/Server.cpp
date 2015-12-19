@@ -24,19 +24,19 @@ Server::Server() {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 			if (pack == NULL)
 				return;
-			ServerConnexionPacket* ret = new ServerConnexionPacket;
+			ServerConnexionPacket ret;
 			std::cout << "Client connect with id : " << id << std::endl;
 			if (_users.find(id) != _users.end())
 			{
-				ret->setServerString("Not Welcome to R-Type Server");
-				ret->setStatus(false);
+				ret.setServerString("Not Welcome to R-Type Server");
+				ret.setStatus(false);
 			}
 			else {
 			  _users[id] = new User(pack->getClientName(), id);
-			  ret->setServerString("Welcome to R-Type Server");
-			  ret->setStatus(true);
+			  ret.setServerString("Welcome to R-Type Server");
+			  ret.setStatus(true);
 			}
-			_netServer->send(ret, id);
+			_netServer->send(&ret, id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
@@ -45,18 +45,18 @@ Server::Server() {
 			if (_users.find(id) == _users.end())
 				return;
 			for (auto& game : _games) {
-                ServerGameInfoPacket* ret = new ServerGameInfoPacket;
-                ret->setRoomId(game.second->getID());
-				ret->setRoomSlots(4 - game.second->getNbPlayers());
+                ServerGameInfoPacket ret;
+                ret.setRoomId(game.second->getID());
+				ret.setRoomSlots(4 - game.second->getNbPlayers());
                 int nb = 0;
                 for (auto& user : game.second->getUsers())
                 {
                     if (user->isReady())
                         nb++;
                 }
-                ret->setRoomReady(nb);
-				ret->setRoomName(game.second->getName());
-				_netServer->send(ret, id);
+                ret.setRoomReady(nb);
+				ret.setRoomName(game.second->getName());
+				_netServer->send(&ret, id);
 			}
 		},
 		[this] (APacket* packet, unsigned int id) {
@@ -164,17 +164,15 @@ void Server::startGame(IGame* game) {
 			std::vector<User*> v = game->getUsers();
 			for (auto& user : v) {
 				if (user->needRefresh()) {
-					ServerPlayerMovePacket* packet = new ServerPlayerMovePacket();
-					packet->setPlayerID(user->getPlayer()->getID());
-					packet->setX(user->getPlayer()->getX());
-					packet->setY(user->getPlayer()->getY());
+					ServerPlayerMovePacket packet;
+					packet.setPlayerID(user->getPlayer()->getID());
+					packet.setX(user->getPlayer()->getX());
+					packet.setY(user->getPlayer()->getY());
 					for (auto& aUser : v) {
-						_netServer->send(packet, aUser->getClientID());
+						_netServer->send(&packet, aUser->getClientID());
 					}
-					delete packet;
 					user->setRefresh(false);
 				}
-
 			}
 		}
 	};
@@ -188,11 +186,11 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 
 void    Server::refreshTimer(unsigned int idGame)
 {
-    ServerTimerRefreshPacket   *pack = new ServerTimerRefreshPacket;
+    ServerTimerRefreshPacket   pack;
     
-    pack->setCurrentTimer(GameUtils::Game::now(idGame));
+    pack.setCurrentTimer(GameUtils::Game::now(idGame));
     for (auto& user : _games[idGame]->getUsers())
-        _netServer->send(pack, user->getClientID());
+        _netServer->send(&pack, user->getClientID());
 }
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
