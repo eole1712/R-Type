@@ -22,6 +22,7 @@ public:
     
 private:
     void startGame(IGame*);
+    void refreshTimer(unsigned int idGame);
     
     
 private:
