@@ -20,7 +20,7 @@ public:
     virtual IScoreList*         getScores() const = 0;
     virtual Unit::Player*	getPlayer(Unit::color) const = 0;
     virtual std::string         getName() const = 0;
-    virtual std::vector<User*>  getUsers() const = 0;
+    virtual std::vector<User*> const& getUsers() const = 0;
 
 public:
     virtual bool		addPlayer(User*) = 0;

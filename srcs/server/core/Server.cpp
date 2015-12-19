@@ -105,7 +105,7 @@ Server::Server() {
 			IGame* game = _games[user->getGameID()];
 			std::pair<unsigned int, bool> key = pack->getStatus();
 			if (!game->isInGame()) {
-				if (key.first == 5 && key.second == 1)
+    			if (key.first == 4 && key.second == 1)
 					user->setReady(!user->isReady());
 				bool shouldStart = true;
 				for (auto& aUser : game->getUsers())

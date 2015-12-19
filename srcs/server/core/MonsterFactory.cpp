@@ -16,7 +16,13 @@
 #include "MonsterFactory.hpp"
 
 const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
-  {Unit::Monster::MONSTERTEST, "../libs/server/libMonsterTest.so"}
+  {
+#if (defined __APPLE__)
+      Unit::Monster::MONSTERTEST, "../libs/server/libMonsterTest.dylib"
+#else
+      Unit::Monster::MONSTERTEST, "../libs/server/libMonsterTest.so"
+#endif
+  }
 };
 
 namespace Monster {

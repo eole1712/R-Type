@@ -11,6 +11,7 @@
 #include "ServerUnitDiePacket.hpp"
 #include "ServerUnitSpawnPacket.hpp"
 #include "ServerPingPacket.hpp"
+#include "ClientKeyboardPressPacket.hpp"
 #include <iostream>
 
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
@@ -48,6 +49,9 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
   },
   [] (std::string const& data) {
     return new ClientGameConnectPacket(data);
+  },
+  [] (std::string const& data) {
+    return new ClientKeyboardPressPacket(data);
   }
 };
 
@@ -74,7 +78,8 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
     bool found = false;
     unsigned int id = 0;
 
-    std::cout << "Message received from : " << addr << ":" << port << " ==> " << _buffer << std::endl;
+    std::cout << "Message received from : " << addr << ":" << port << " ==> [" << _buffer << "]" << std::endl;
+      std::cout << "Packet type : " << (int)(APacket::sGetType(_buffer)) << std::endl;
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     _packList.push_front(pack);
     for (auto elem : _peers) {

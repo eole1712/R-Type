@@ -5,7 +5,7 @@
 namespace Monster {
     
     WaveManager::WaveManager(IMap *map, unsigned int gameID)
-    : _map(map), _list(), _timer(0), _gameID(gameID)
+    : _map(map), _list(), _gameID(gameID)
     {
     }
     

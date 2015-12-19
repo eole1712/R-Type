@@ -85,6 +85,7 @@ bool	Game::addPlayer(User* user)
     if (ixPlayer < 4)
     {
       this->_players.push_back(new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id));
+      _users.push_back(user);
       return (true);
     }
     return (false);
@@ -99,6 +100,7 @@ void	Game::removePlayer(Unit::color color)
                   {
                       if (player->getColor() == color)
                       {
+                          std::remove(_users.begin(), _users.end(), player->getUser());
                           delete player;
                           this->_players[i] = nullptr;
                       }
@@ -106,15 +108,9 @@ void	Game::removePlayer(Unit::color color)
                   });
 }
 
-std::vector<User*>      Game::getUsers() const
+std::vector<User*> const&     Game::getUsers() const
 {
-    std::vector<User*>  _tab;
-    
-    std::for_each(_players.begin(), _players.end(), [&_tab](Unit::Player* player){
-        _tab.push_back(player->getUser());
-    });
-    std::cout << "Nombre de users : " <<  _tab.size() << std::endl;
-    return  _tab;
+    return _users;
 }
 
 void        Game::checkMouvements(Timer &t)

@@ -15,7 +15,13 @@
 #include "MissileFactory.hpp"
 
 const std::map<Unit::Missile::type, std::string> Unit::Missile::Factory::LIBSLIST = {
-  {Unit::Missile::BASIC, "../libs/server/libBasicMissile.so"}
+  {
+#if (defined __APPLE__)
+      Unit::Missile::BASIC, "../libs/server/libBasicMissile.dylib"
+#else
+      Unit::Missile::BASIC, "../libs/server/libBasicMissile.so"
+#endif
+  }
 };
 
 namespace Unit

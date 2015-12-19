@@ -26,7 +26,6 @@ namespace Monster {
     private:
         IMap*               _map;
         std::list<Wave*>    _list;
-        Timer*              _timer;
         unsigned int        _gameID;
     };
 }

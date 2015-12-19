@@ -97,8 +97,20 @@ endif (UNIX)
 #	)
 #add_executable(RType_client client_sources)
 
+if (APPLE)
+set(CMAKE_MACOSX_RPATH ON)
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+if("${isSystemDir}" STREQUAL "-1")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+endif(APPLE)
+
 if (UNIX)
-add_library(MonsterTest MODULE
+add_library(MonsterTest SHARED
   srcs/common/linux_specific/CULibLoader.cpp
   srcs/server/core/monsters/MonsterTest.cpp
   srcs/server/core/AUnit.cpp
@@ -110,7 +122,7 @@ add_library(MonsterTest MODULE
 endif (UNIX)
 
 if (WIN32)
-add_library(MonsterTest MODULE
+add_library(MonsterTest SHARED
   srcs/common/windows_specific/CWLibLoader.cpp
   srcs/server/core/monsters/MonsterTest.cpp
   srcs/server/core/AUnit.cpp
@@ -123,7 +135,7 @@ endif (WIN32)
 
 target_compile_features(MonsterTest PRIVATE cxx_range_for)
 
-add_library(BasicMissile MODULE
+add_library(BasicMissile SHARED
   srcs/server/core/missiles/BasicMissile.cpp
   srcs/server/core/AUnit.cpp
   srcs/server/core/AMissile.cpp

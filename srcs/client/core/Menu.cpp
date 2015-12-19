@@ -1,4 +1,5 @@
 #include "Menu.hpp"
+#include "ClientKeyboardPressPacket.hpp"
 
 Menu::Menu(int width, int height, Client* client):
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
@@ -79,6 +80,9 @@ void		Menu::eventHandler()
 	  case sf::Event::KeyPressed:
 	  if (event.key.code == sf::Keyboard::Tab)
 	    this->changeCurrentRow();
+      if (event.key.code == sf::Keyboard::Space) {
+          _client->sendKey(ClientKeyboardPressPacket::SpacePress);
+      }
 	  break;
 	default:
 	  break;
