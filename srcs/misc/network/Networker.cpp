@@ -117,7 +117,6 @@ void Networker::send(APacket *pack, int id)
     if (written != dataSize || ret != ISocket::Sucess)
       std::cerr << "Error while writing ==> written : " << written << "expected : " << dataSize << " ret : " << ret << std::endl;
   });
-  delete pack;
 }
 
 APacket* Networker::getLastPacket()
