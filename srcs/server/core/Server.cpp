@@ -101,9 +101,12 @@ Server::Server() {
 			if (_users.find(id) == _users.end())
 				return;
             User* user = _users[id];
-			IGame* game = _games[user->getGameID()];
 			std::pair<unsigned int, bool> key = pack->getStatus();
-			if (!game->isInGame()) {
+            if (!user->isInGame())
+                return;
+            if (!(_games[user->getGameID()]->isStarted()))
+            {
+                IGame* game = _games[user->getGameID()];
     			if (key.first == 4 && key.second == 1)
 					user->setReady(!user->isReady());
 				bool shouldStart = true;
@@ -117,9 +120,8 @@ Server::Server() {
 					startGame(game);
                     refreshTimer(game->getID());                    
                 }
-				return;
 			}
-			if (key.first < 4)
+			else if (key.first < 4)
                 user->getPlayer()->setMoving(static_cast<Unit::dir>(key.first), key.second);
 			else
 				user->getPlayer()->setShooting(key.second);
@@ -138,6 +140,7 @@ void	Server::start() {
 	std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
 		_netManager->loop();
 	};
+        std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
     t.join();
 }
@@ -162,6 +165,7 @@ void Server::startGame(IGame* game) {
 			}
 		}
 	};
+        std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
 

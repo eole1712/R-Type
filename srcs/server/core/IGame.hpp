@@ -30,7 +30,7 @@ public:
 public:
     virtual void		start() = 0;
     virtual bool		nextAction() = 0;
-    virtual bool		isInGame() const = 0;
+    virtual bool		isStarted() const = 0;
 };
 
 #endif /* !IGAME_H_ */
