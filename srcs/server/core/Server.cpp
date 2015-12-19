@@ -41,7 +41,7 @@ Server::Server() {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
 			if (pack == NULL)
 				return;
-			if (_users.find(id) != _users.end())
+			if (_users.find(id) == _users.end())
 				return;
 			for (auto& game : _games) {
                 ServerGameInfoPacket* ret = new ServerGameInfoPacket;

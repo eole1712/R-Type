@@ -117,7 +117,8 @@ void		Menu::handleMouseClick()
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && _isConnected)
      {
        _gameList.clean();
-       _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       //_client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       _client->refreshGames();
      }
    else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
