@@ -195,6 +195,7 @@ add_library(ServerMonsterTest SHARED
 	srcs/server/core/AMissile.cpp
 	srcs/server/core/MissileFactory.cpp
 	srcs/server/core/AMonster.cpp
+	srcs/misc/Lock.cpp
 	srcs/server/core/GameUtils.cpp
 	srcs/server/misc/Timer.cpp)
 endif (UNIX)
@@ -205,6 +206,7 @@ add_library(ServerMonsterTest SHARED
 	srcs/server/core/monsters/MonsterTest.cpp
 	srcs/server/core/AUnit.cpp
 	srcs/server/core/AMissile.cpp
+	srcs/misc/Lock.cpp
 	srcs/server/core/MissileFactory.cpp
 	srcs/server/core/AMonster.cpp
 	srcs/server/core/GameUtils.cpp
@@ -214,6 +216,7 @@ endif (WIN32)
 target_include_directories(ServerMonsterTest PRIVATE ${server_includes_directories})
 target_compile_features(ServerMonsterTest PRIVATE cxx_range_for)
 if (UNIX)
+target_link_libraries(ServerMonsterTest -lpthread)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
@@ -227,6 +230,7 @@ endif (WIN32)
 add_library(ServerBasicMissile SHARED
 	srcs/server/core/missiles/BasicMissile.cpp
 	srcs/server/core/AUnit.cpp
+	srcs/misc/Lock.cpp
 	srcs/server/core/AMissile.cpp
 	srcs/server/core/GameUtils.cpp
 	srcs/server/misc/Timer.cpp
@@ -235,6 +239,7 @@ add_library(ServerBasicMissile SHARED
 target_include_directories(ServerBasicMissile PRIVATE ${server_includes_directories})
 target_compile_features(ServerBasicMissile PRIVATE cxx_range_for)
 if (UNIX)
+target_link_libraries(ServerBasicMissile -lpthread)
 set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
 set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
 set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
