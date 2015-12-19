@@ -7,9 +7,10 @@
 #include "NetManager.hpp"
 #include "NetServer.hpp"
 #include "User.hpp"
+#include "IGameUnitSender.hpp"
 #include <map>
 
-class Server : public IPacketHandler {
+class Server : public IPacketHandler, IGameUnitSender {
 public:
 
 	static constexpr int kPort = 6524;
@@ -23,6 +24,9 @@ public:
 private:
     void startGame(IGame*);
     void refreshTimer(unsigned int idGame);
+    
+public:
+    void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     
     
 private:
