@@ -22,6 +22,24 @@ Menu::Menu(int width, int height, Client* client):
   _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
+ {
+      _eventChecks.push_back([this] () {
+      if (_gameStart)
+	{
+	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
+
+	  _game = new Game(_client, _window, player);
+	  _game->loop();
+	  _gameStart = false;
+	}
+      });
+      _eventChecks.push_back([this] () {
+	for (auto& room : _roomsBuf)
+	  _gameList.addItem(room.first, room.second, room.first);
+	while (!_roomsBuf.empty())
+	  _roomsBuf.pop_back();
+      });
+    }
 }
 
 Menu::~Menu()
@@ -40,14 +58,9 @@ void		Menu::initMainView()
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
     {
-      if (_gameStart)
-	{
-	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
-	  
-	  _game = new Game(_client, _window, player);
-	  _game->loop();
-	  _gameStart = false;
-	}
+      for (auto& elem : _eventChecks) {
+	elem();
+      }
       eventHandler();
       _window.clear();
       _window.draw(background.getFrame());
@@ -68,12 +81,6 @@ void		Menu::eventHandler()
     {
       switch (event.type)
 	{
-	  //case sf::Event::Resize:
-	  //float	scale[2] = { _with / event.size.width, _height / event.size.height };
-
-	  //std::cout << event.size.width << "x" << event.size.width << std::endl;
-	  // std::cout << _window.getHeight() << " x " << _window.getWidth() << std::endl;
-	  //break;
 	case sf::Event::Closed:
 	  _window.close();
 	  break;
@@ -217,9 +224,9 @@ void		Menu::startGame()
   _gameStart = true;
 }
 
-void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const& daySentence)
+void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const&)
 {
-  _gameList.addItem(gameName, playerNumber, daySentence);
+  _roomsBuf.push_back(std::make_pair(gameName, playerNumber));
 }
 
 void		Menu::setConnected()
