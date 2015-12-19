@@ -32,9 +32,9 @@ namespace Monster {
         return wave;
     }
     
-    void    WaveManager::execConfig(Timer &time)
+    void        WaveManager::execConfig(Timer &time)
     {
-        int t[] = {1};
+        static int t[] = {1};
         
         if (time.getElapsedTime() > (10000 * t[0]))
         {

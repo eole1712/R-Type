@@ -121,6 +121,11 @@ void        Game::checkMouvements(Timer &t)
                   {
                       if (t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
+                      Unit::AUnit *unit = _map->checkInterractions(player);
+                      if (unit) {
+                          (player)->getHit(unit);
+                          unit->getHit(player);
+                      }
                   });
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
@@ -176,11 +181,11 @@ bool        Game::checkIfAlive()
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
         if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
-            _map->removeUnit(*it);
+            _map->getList((*it)->getTeam()).erase(it);
     }
     for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
         if (((*it)->getType() == Unit::MISSILE || (*it)->getType() == Unit::MONSTER) && (*it)->isAlive() == false)
-            _map->removeUnit(*it);
+            _map->getList((*it)->getTeam()).erase(it);
     }
     return true;
 }
