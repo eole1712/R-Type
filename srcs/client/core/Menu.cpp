@@ -31,15 +31,6 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  std::string	s = "game";
-  std::string	t = "hello";
-  
-  _gameList.addItem(s, 1, t);
-  _gameList.addItem(s, 2, t);
-  _gameList.addItem(s, 3, t);
-  _gameList.addItem(s, 4, t);
-  _gameList.addItem(s, 5, t);
-
   background.scale(2, 2);
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
