@@ -13,7 +13,7 @@ class Client;
 class Game
 {
 public:
-  Game(Client * client, sf::RenderWindow & window, Unit::Player & player);
+  Game(Client * client, sf::RenderWindow & window, int player);
   virtual ~Game();
 
 public:  
@@ -40,7 +40,7 @@ private:
   Client *			_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
-  Unit::Player &		_localPlayer;
+  int				_localPlayer;
   RemoteMap			_map;
   bool				_finish;
   Time::stamp			_creationTime;

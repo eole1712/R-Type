@@ -1,6 +1,8 @@
 #include "Menu.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 
+#include <unistd.h>
+
 Menu::Menu(int width, int height, Client* client):
   _width(width), _height(height), _scale{1, 1},
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
@@ -26,9 +28,7 @@ Menu::Menu(int width, int height, Client* client):
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
-	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
-
-	  _game = new Game(_client, _window, player);
+	  _game = new Game(_client, _window, 0);
 	  _game->loop();
 	  _gameStart = false;
 	}
@@ -58,6 +58,7 @@ void		Menu::initMainView()
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
     {
+      usleep(3000);
       for (auto& elem : _eventChecks) {
 	elem();
       }
