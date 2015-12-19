@@ -1,7 +1,7 @@
 #include "List.hpp"
  
 List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::Color const& listColor, sf::Color const& highlightColor)
-  : _posX(posX), _posY(posY), _list{}, _iterator(_list.begin()), _font(listFont),
+  : _posX(posX), _posY(posY), _originPosX(posX), _originPosY(posY), _list{}, _iterator(_list.begin()), _font(listFont),
     _color(listColor), _highlightColor(highlightColor), _currentIndex(0),
     _scrollBtn{
       ClickableBtn((posX) * 1.5, (posY), "/\\", _font, _color, 21),
@@ -131,6 +131,8 @@ void			List::render(sf::RenderWindow& window)
 
 void			List::clean()
 {
+  _posX = _originPosX;
+  _posY = _originPosY;
   _list = {};
   _iterator = _list.end();
 }

@@ -55,7 +55,7 @@ private:
   List					_gameList;
   Row					_currentRow;
   Game *				_game;
-  SoundPlayer			_soundPlayer;
+  SoundPlayer				_soundPlayer;
   
 public:
   Menu(int width, int height, Client *client);
