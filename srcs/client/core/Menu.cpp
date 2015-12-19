@@ -40,15 +40,6 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  std::string	s = "game";
-  std::string	t = "hello";
-  
-  _gameList.addGame(s, 1, t);
-  _gameList.addGame(s, 2, t);
-  _gameList.addGame(s, 3, t);
-  _gameList.addGame(s, 4, t);
-  _gameList.addGame(s, 5, t);
-
   background.scale(2, 2);
   this->loadFonts();
   _window.setVerticalSyncEnabled(true);
