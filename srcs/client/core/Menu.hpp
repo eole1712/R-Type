@@ -5,6 +5,7 @@
 #include <list>
 #include "Animation.hpp"
 #include "ClickableBtn.hpp"
+#include "Font.hpp"
 #include "Editable.hpp"
 #include "GameListItem.hpp"
 #include "Client.hpp"
@@ -29,8 +30,6 @@ private:
   };
 
 private:
-  int					_width;
-  int					_height;
   Client*				_client;
   sf::RenderWindow			_window;
   sf::Color				_fieldsColor;
@@ -40,8 +39,8 @@ private:
   sf::Color				_startColor;
   unsigned int				_currentGameNumber;
   bool					_isConnected;
-  sf::Font				_fieldsFont;
-  sf::Font				_loginFont;
+  Font					_fieldsFont;
+  Font					_loginFont;
   ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
   Editable				_login;
   Editable				_gameName;
@@ -62,7 +61,6 @@ public:
   void				addGame(std::string const&, unsigned int, std::string const&);
 
 private:
-  void				loadFonts();
   void				initColors();
   void				initPlayerColorSelection();
   void				handleMouseClick();

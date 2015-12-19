@@ -44,6 +44,7 @@ set(server_sources
 	unit/AUnit.cpp
 	unit/UnitFactory.cpp
 	graphics/List.cpp
+	graphics/Font.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp
 	graphics/Editable.cpp
