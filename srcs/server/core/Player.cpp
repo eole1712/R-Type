@@ -27,6 +27,7 @@ namespace Unit {
 
     Player::~Player()
     {
+        user->endGame(_score);
     }
 
     Missile::AMissile*          Player::shoot()
