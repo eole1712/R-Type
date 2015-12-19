@@ -55,6 +55,7 @@ private:
   List					_gameList;
   Row					_currentRow;
   Game *				_game;
+  bool					_gameStart;
   SoundPlayer				_soundPlayer;
 
 public:
@@ -63,7 +64,7 @@ public:
 
   void				initMainView();
   void				addGame(std::string const&, unsigned int, std::string const&);
-  Game *			startGame();
+  void				startGame();
 
 private:
   void				initColors();

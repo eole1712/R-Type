@@ -18,7 +18,8 @@ Menu::Menu(int width, int height, Client* client):
   _connectButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
-  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN), _game(NULL), _soundPlayer("../../resources/sound/MegaMan.ogg")
+  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
+  _game(NULL), _gameStart(false), _soundPlayer("../../resources/sound/MegaMan.ogg")
 {
 }
 
@@ -38,8 +39,14 @@ void		Menu::initMainView()
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
     {
-      if (_game != NULL)
-	_game->loop();
+      if (_gameStart)
+	{
+	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
+	  
+	  _game = new Game(_client, _window, player);
+	  _game->loop();
+	  _gameStart = false;
+	}
       eventHandler();
       _window.clear();
       _window.draw(background.getFrame());
@@ -193,11 +200,9 @@ void		Menu::changeCurrentRow()
     _currentRow = static_cast<Row>(0);
 }
 
-Game *		Menu::startGame()
+void		Menu::startGame()
 {
-  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
-  _game = new Game(_client, _window, player);
-  return _game;
+  _gameStart = true;
 }
 
 void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const& daySentence)

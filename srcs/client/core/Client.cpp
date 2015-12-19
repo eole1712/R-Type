@@ -53,7 +53,7 @@ Client::Client(int port)
       if (pack->getStatus()) {
 	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
 	_playerId = pack->getPlayerId();
-	_game = _menu->startGame();
+	_menu->startGame();
 	std::cout << "game started" << std::endl;
       }
       else

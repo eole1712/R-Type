@@ -6,7 +6,7 @@
 Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(player),
     _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(Time::getTimeStamp()),
-    _input({
+    /*_input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
       {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -24,10 +24,10 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 	}},
       {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{
-
 	  keys[sf::Keyboard::Space] = Key::UNKNOWN;
 	}}
-      })/*
+      })*/
+
       _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
@@ -51,16 +51,17 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpacePress); }},
       {{sf::Keyboard::Space, Key::RELEASE}, [](Time::stamp, Key::keyState & keys, Game * param)
 	{ param->_client->sendKey(ClientKeyboardPressPacket::SpaceRelease); }}
-	})*/
+	})
 {
   Unit::AUnit *test = Unit::Factory::getInstance()->createUnit(Unit::MONSTERTEST, 100, 100, 5, 0);
 
+  client->setGame(this);
   connectUnit(*test);
 }
 
 Game::~Game()
 {
-
+  _client->setGame(NULL);
 }
 
 bool			Game::getFinish() const
