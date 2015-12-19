@@ -3,7 +3,7 @@
 #include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
-Game::Game(Client * client, sf::RenderWindow & window, int localPlayer, std::string playerName)
+Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(localPlayer),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({

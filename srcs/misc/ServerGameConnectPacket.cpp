@@ -25,10 +25,21 @@ void	ServerGameConnectPacket::setPlayerId(uint8_t id) {
 		sizeof(uint8_t));
 }
 
+void	ServerGameConnectPacket::setGameId(uint32_t id) {
+	_data.replace(kHeaderSize + sizeof(bool) + sizeof(uint8_t),
+		sizeof(uint32_t),
+		reinterpret_cast<const char*>(&id),
+		sizeof(uint32_t));
+}
+
 bool	ServerGameConnectPacket::getStatus() {
 	return *reinterpret_cast<const bool*>(_data.substr(kHeaderSize, sizeof(bool)).c_str());
 }
 
 uint8_t ServerGameConnectPacket::getPlayerId() {
 	return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(bool), sizeof(uint8_t)).c_str());
+}
+
+uint32_t ServerGameConnectPacket::getGameId() {
+	return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(bool) + sizeof(uint8_t), sizeof(uint32_t)).c_str());
 }

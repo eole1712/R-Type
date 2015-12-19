@@ -18,9 +18,11 @@ public:
 
 	bool getStatus();
 	uint8_t	getPlayerId();
+	uint32_t getGameId();
 
 	void setStatus(bool status);
 	void setPlayerId(uint8_t id);
+	void setGameId(uint32_t id);
 };
 
 #endif /* !SERVERGAMECONNECTPACKET_H_ */
