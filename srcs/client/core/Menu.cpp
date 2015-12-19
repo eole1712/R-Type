@@ -5,8 +5,8 @@ Menu::Menu(int width, int height, Client* client):
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
   _highlightColor(255, 255, 255), _startColor(121, 248, 248), _currentGameNumber(0), _isConnected(false),
-  _fieldsFont("../../resources/menu/fonts/BebasNeue Bold.ttf"),
-  _loginFont("../../resources/menu/fonts/BebasNeue Book.ttf"),
+  _fieldsFont("../resources/menu/fonts/BebasNeue Bold.ttf"),
+  _loginFont("../resources/menu/fonts/BebasNeue Book.ttf"),
   _menuFields{ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor, 21),
     ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Create", _fieldsFont, _fieldsColor, 21),
     ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Host", _fieldsFont, _fieldsColor, 21),
@@ -20,9 +20,9 @@ Menu::Menu(int width, int height, Client* client):
   _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
   _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
-  _game(NULL), _gameStart(false), _soundPlayer("../../resources/sound/MegaMan.ogg")
-
-    {
+  _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
+{
+ {
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
@@ -40,6 +40,7 @@ Menu::Menu(int width, int height, Client* client):
 	  _roomsBuf.pop_back();
       });
     }
+}
 
 Menu::~Menu()
 {
@@ -50,7 +51,7 @@ Menu::~Menu()
 
 void		Menu::initMainView()
 {
-  Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
+  Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
   _soundPlayer.play();
   background.scale(2, 2);
@@ -176,6 +177,8 @@ void		Menu::editionHandler(sf::Event const& event)
       break;
     case HOST:
       _host.editionHandler(event);
+      break;
+    default:
       break;
     }
 }

@@ -2,10 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(R-Type)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 
 ################################## RType_server #####################################
 #Server sources files
@@ -51,36 +49,47 @@ set(server_sources
 	)
 
 #server includes files
-set(server_includes
-	srcs/server/core
-	srcs/server/core/missiles
-	srcs/server/core/monsters
-	srcs/server/misc
-	srcs/server/network
-	srcs/misc
-	srcs/misc/network
-	srcs/common
+set(server_includes_directories
+	srcs/server/core/
+	srcs/server/core/missiles/
+	srcs/server/core/monsters/
+	srcs/server/misc/
+	srcs/server/network/
+	srcs/misc/
+	srcs/misc/network/
+	srcs/common/
 	)
+
+foreach(DIRECTORY ${server_includes_directories}) 
+    # Get the directory of the source file
+    FILE(GLOB tmp RELATIVE "${CMAKE_SOURCE_DIR}/" ${DIRECTORY}/*.hpp)
+    set(server_includes ${server_includes} ${tmp})
+endforeach()
+
+message(${server_includes})
 
 if (UNIX)
 set(server_sources ${server_sources} srcs/common/linux_specific/CULibLoader.cpp)
-set(server_includes ${server_includes} srcs/common/linux_specific)
+set(server_includes_directories ${server_includes_directories} srcs/common/linux_specific)
 endif (UNIX)
 if (WIN32)
 set(server_sources ${server_sources} srcs/common/windows_specific/CWLibLoader.cpp)
-set(server_includes ${server_includes} srcs/common/windows_specific)
+set(server_includes_directories ${server_includes_directories} srcs/common/windows_specific)
 endif (WIN32)
 
 add_executable(RType_server ${server_sources} ${server_includes})
 
+set_target_properties(RType_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
+set_target_properties(RType_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
+
 target_compile_features(RType_server PRIVATE cxx_range_for)
-target_include_directories(RType_server PRIVATE ${server_includes})
+target_include_directories(RType_server PRIVATE ${server_includes_directories})
 if (UNIX)
 target_link_libraries(RType_server -lpthread)
 target_link_libraries(RType_server -ldl)
 endif (UNIX)
 
-source_group(ServerIncludes FILES ${server_includes})
+#source_group(ServerIncludes FILES ${server_includes})
 ################################## !RType_server #####################################
 
 ################################## RType_client #####################################
@@ -124,7 +133,7 @@ set(client_sources
 	)
 
 #client includes files
-set(client_includes
+set(client_includes_directories
 	srcs/client/core
 	srcs/client/graphics
 	srcs/client/sound
@@ -138,23 +147,36 @@ set(client_includes
 	srcs/misc/network
 	)
 
+
+foreach(DIRECTORY ${client_includes_directories}) 
+    # Get the directory of the source file
+    FILE(GLOB tmp RELATIVE "${CMAKE_SOURCE_DIR}/" ${DIRECTORY}/*.hpp)
+    set(client_includes ${client_includes} ${tmp})
+endforeach()
+
+message(${client_includes})
+
 if (WIN32)
 set(client_sources ${client_sources} srcs/common/windows_specific/CWLibLoader.cpp)
-set(client_includes ${client_includes} srcs/common/windows_specific)
+set(client_includes_directories ${client_includes_directories} srcs/common/windows_specific)
 elseif (UNIX)
 set(client_sources ${client_sources} srcs/common/linux_specific/CULibLoader.cpp)
-set(client_includes ${client_includes} srcs/common/linux_specific)
+set(client_includes_directories ${client_includes_directories} srcs/common/linux_specific)
 endif()
 
-add_executable(RType_client ${client_sources} ${client_sources})
+add_executable(RType_client ${client_sources} ${client_includes})
+
+set_target_properties(RType_client PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
+set_target_properties(RType_client PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
+
 target_compile_features(RType_client PRIVATE cxx_range_for)
-target_include_directories(RType_client PRIVATE ${client_includes})
+target_include_directories(RType_client PRIVATE ${client_includes_directories})
 if (UNIX)
 target_link_libraries(RType_client -lpthread)
 target_link_libraries(RType_client -ldl)
 endif (UNIX)
 
-source_group(ClientIncludes FILES ${client_includes})
+#source_group(ClientIncludes FILES ${client_includes})
 ################################## !RType_client #####################################
 
 if (APPLE)
@@ -193,9 +215,18 @@ add_library(ServerMonsterTest SHARED
 	srcs/server/misc/Timer.cpp)
 endif (WIN32)
 
-target_include_directories(ServerMonsterTest PRIVATE ${server_includes})
+target_include_directories(ServerMonsterTest PRIVATE ${server_includes_directories})
 target_compile_features(ServerMonsterTest PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
 
 add_library(ServerBasicMissile SHARED
 	srcs/server/core/missiles/BasicMissile.cpp
@@ -205,10 +236,18 @@ add_library(ServerBasicMissile SHARED
 	srcs/server/misc/Timer.cpp
 	)
 
-target_include_directories(ServerBasicMissile PRIVATE ${server_includes})
+target_include_directories(ServerBasicMissile PRIVATE ${server_includes_directories})
 target_compile_features(ServerBasicMissile PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
-
+set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
 
 add_library(ClientMonsterTest SHARED
 	srcs/client/unit/MonsterTest/MonsterTest.cpp
@@ -216,9 +255,18 @@ add_library(ClientMonsterTest SHARED
 	srcs/client/graphics/Animation.cpp
 	srcs/client/misc/Time.cpp
 	)
-target_include_directories(ClientMonsterTest PRIVATE ${client_includes})
+target_include_directories(ClientMonsterTest PRIVATE ${client_includes_directories})
 target_compile_features(ClientMonsterTest PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
 
 add_library(ClientBasicMissile SHARED
 	srcs/client/unit/MonsterTest/MonsterTest.cpp
@@ -226,11 +274,18 @@ add_library(ClientBasicMissile SHARED
 	srcs/client/graphics/Animation.cpp
 	srcs/client/misc/Time.cpp
 	)
-target_include_directories(ClientBasicMissile PRIVATE ${client_includes})
+target_include_directories(ClientBasicMissile PRIVATE ${client_includes_directories})
 target_compile_features(ClientBasicMissile PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
-
-
+set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
@@ -246,3 +301,25 @@ if(SFML_FOUND)
   target_link_libraries(ClientMonsterTest ${SFML_LIBRARIES})
   target_link_libraries(ClientBasicMissile ${SFML_LIBRARIES})
 endif()
+
+FILE(GLOB_RECURSE all_files *.*pp)
+
+foreach(FILE ${all_files}) 
+    # Get the directory of the source file
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+
+    # Remove common directory prefix to make the group
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    # Make sure we are using windows slashes
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    # Group into "Source Files" and "Header Files"
+    if ("${FILE}" MATCHES ".*\\.cpp")
+       set(GROUP "Source Files${GROUP}")
+    elseif("${FILE}" MATCHES ".*\\.hpp")
+       set(GROUP "Header Files${GROUP}")
+    endif()
+
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()
