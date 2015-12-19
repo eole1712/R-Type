@@ -25,6 +25,8 @@ include_directories("${PROJECT_BINARY_DIR}")
 set(EXECUTABLE_NAME "rtype")
 include_directories(BEFORE core)
 include_directories(BEFORE graphics)
+include_directories(BEFORE sound)
+
 include_directories(BEFORE network)
 include_directories(BEFORE unit)
 include_directories(BEFORE unit/MonsterTest)
@@ -50,6 +52,7 @@ set(server_sources
 	graphics/Editable.cpp
 	graphics/Error.cpp
 	graphics/GameListItem.cpp
+	sound/SoundPlayer.cpp
 	
 	network/NetClient.cpp
 	../misc/network/Networker.cpp

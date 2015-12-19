@@ -18,8 +18,9 @@ Menu::Menu(int width, int height, Client* client):
   _connectButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
-  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN)
+  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN), _soundPlayer("../../ressources/sound/MegaMan.mp3")
 {
+
 }
 
 Menu::~Menu()
