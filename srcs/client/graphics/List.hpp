@@ -35,7 +35,7 @@ public:
   void					slide(bool up);
   void					clickHandler(sf::RenderWindow&, sf::Event&);
   void					mouseMovedHandler(sf::RenderWindow&, sf::Event&);
-  void					scrollHandler(sf::RenderWindow&);
+  void					scrollHandler(sf::RenderWindow&, sf::Event&);
   void					render(sf::RenderWindow&);
 
   void					refresh();

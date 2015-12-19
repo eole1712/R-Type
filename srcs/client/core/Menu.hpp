@@ -32,6 +32,9 @@ private:
   };
 
 private:
+  int					_width;
+  int					_height;
+  float					_scale[2];
   Client*				_client;
   sf::RenderWindow			_window;
   sf::Color				_fieldsColor;
@@ -70,8 +73,8 @@ public:
 private:
   void				initColors();
   void				initPlayerColorSelection();
-  void				handleMouseClick();
-  void				handleMouseMoved();
+  void				handleMouseClick(sf::Event&);
+  void				handleMouseMoved(sf::Event&);
   void				editionHandler(sf::Event const&);
   void				handleLoginEdition(sf::Event&);
   void				handleHostEdition(sf::Event&);

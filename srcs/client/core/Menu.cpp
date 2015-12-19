@@ -2,6 +2,7 @@
 #include "ClientKeyboardPressPacket.hpp"
 
 Menu::Menu(int width, int height, Client* client):
+  _width(width), _height(height), _scale{1, 1},
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
   _highlightColor(255, 255, 255), _startColor(121, 248, 248), _currentGameNumber(0), _isConnected(false),
@@ -22,7 +23,6 @@ Menu::Menu(int width, int height, Client* client):
   _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
- {
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
@@ -39,7 +39,7 @@ Menu::Menu(int width, int height, Client* client):
 	while (!_roomsBuf.empty())
 	  _roomsBuf.pop_back();
       });
-    }
+
 }
 
 Menu::~Menu()
@@ -79,25 +79,35 @@ void		Menu::eventHandler()
 
   while (_window.pollEvent(event))
     {
+      if (event.type == sf::Event::MouseMoved||
+	  event.type == sf::Event::MouseButtonReleased)
+	{
+          event.mouseMove.x /= _scale[0];
+	  event.mouseMove.y /= _scale[1];
+	}
       switch (event.type)
 	{
+	  case sf::Event::Resized:
+	    _scale[0] = float(event.size.width) / _width;
+	    _scale[1] = float(event.size.height) / _height;	    
+	    break;
 	case sf::Event::Closed:
 	  _window.close();
 	  break;
 	case sf::Event::MouseMoved:
-	  this->handleMouseMoved();
+	  this->handleMouseMoved(event);
 	  if (_gameList.getList().size() != 0)
 	    _gameList.mouseMovedHandler(_window, event);
 	  break;
 	case sf::Event::MouseButtonReleased:
-	  this->handleMouseClick();
+	  this->handleMouseClick(event);
 	  if (_gameList.getList().size() != 0)
 	    _gameList.clickHandler(_window, event);
 	  break;
 	case sf::Event::TextEntered:
 	  editionHandler(event);
 	  break;
-	  case sf::Event::KeyPressed:
+	case sf::Event::KeyPressed:
 	  if (event.key.code == sf::Keyboard::Tab)
 	    this->changeCurrentRow();
       if (event.key.code == sf::Keyboard::Space) {
@@ -110,9 +120,9 @@ void		Menu::eventHandler()
     }
 }
 
-void		Menu::handleMouseClick()
+void		Menu::handleMouseClick(sf::Event& event)
 {
-   sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
+   sf::Vector2f	mousePosition(event.mouseMove.x, event.mouseMove.y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentItem().empty())
      _client->selectGame(_gameList.getCurrentItem());
@@ -132,12 +142,12 @@ void		Menu::handleMouseClick()
        _client->createGame((std::string) _gameName.getEditable().getString());
      }
    else
-     _gameList.scrollHandler(_window);
+     _gameList.scrollHandler(_window, event);
 }
 
-void		Menu::handleMouseMoved()
+void		Menu::handleMouseMoved(sf::Event& event)
 {
-  sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
+  sf::Vector2f	mousePosition(event.mouseMove.x, event.mouseMove.y);
 
   if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _connectButton.getClickableBtn().setColor(_highlightColor);
