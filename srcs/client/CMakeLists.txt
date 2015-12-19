@@ -38,12 +38,13 @@ include_directories(BEFORE ../misc/network)
 set(server_sources 
 	core/main.cpp 
 	core/Menu.cpp
-	core/List.cpp
 	core/Player.cpp 
 	core/Game.cpp
 	core/Client.cpp
 	unit/AUnit.cpp
 	unit/UnitFactory.cpp
+	graphics/List.cpp
+	graphics/Font.cpp
 	graphics/Animation.cpp 
 	graphics/ClickableBtn.cpp
 	graphics/Editable.cpp
