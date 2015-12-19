@@ -18,7 +18,7 @@ Menu::Menu(int width, int height, Client* client):
   _connectButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
-  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN), _game(NULL)
+  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN), _soundPlayer("../../ressources/sound/MegaMan.mp3")
 {
 }
 
@@ -32,15 +32,6 @@ Menu::~Menu()
 void		Menu::initMainView()
 {
   Animation background(std::string("../../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
-
-  std::string	s = "game";
-  std::string	t = "hello";
-  
-  _gameList.addItem(s, 1, t);
-  _gameList.addItem(s, 2, t);
-  _gameList.addItem(s, 3, t);
-  _gameList.addItem(s, 4, t);
-  _gameList.addItem(s, 5, t);
 
   background.scale(2, 2);
   _window.setVerticalSyncEnabled(true);

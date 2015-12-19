@@ -8,6 +8,7 @@
 #include "Font.hpp"
 #include "Editable.hpp"
 #include "GameListItem.hpp"
+#include "SoundPlayer.hpp"
 #include "Client.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
@@ -54,6 +55,7 @@ private:
   List					_gameList;
   Row					_currentRow;
   Game *				_game;
+  SoundPlayer			_soundPlayer;
   
 public:
   Menu(int width, int height, Client *client);

@@ -17,6 +17,7 @@ public:
   virtual ~Game();
 
 public:  
+  void			loop();
   Unit::Player *	getLocalPlayer();
   Unit::Player *	getPlayer(unsigned int id);
   void			setFinish();
@@ -26,7 +27,6 @@ public:
   Unit::AUnit &		operator[](unsigned int id);
 
 private:
-  void			loop();
   void			pollEvent();
   void			render();
 
