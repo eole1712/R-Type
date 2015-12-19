@@ -133,7 +133,9 @@ void			List::clean()
 {
   _posX = _originPosX;
   _posY = _originPosY;
-  _list = {};
+  _currentIndex = 0;
+//  _list = {};
+  _list.clear();
   _iterator = _list.end();
 }
 

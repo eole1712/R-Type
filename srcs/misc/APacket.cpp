@@ -2,7 +2,7 @@
 
 APacket::APacket(uint8_t type) {
 
-	_data.resize(kMaxPacketSize);
+	_data.resize(kMaxPacketSize, 0);
 	_data.replace(sizeof(APacket::idSize),
 		sizeof(APacket::packetTypeSize),
 		reinterpret_cast<const char*>(&type),
