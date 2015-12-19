@@ -10,7 +10,7 @@ private:
   unsigned int		_posX;
   unsigned int		_posY;
   sf::Text		_error;
-  unsigned int		_charSize;
+//  unsigned int		_charSize;
   
 public:
   Error(unsigned int posX, unsigned int posY, std::string error, sf::Font& font,

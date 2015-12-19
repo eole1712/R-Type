@@ -7,9 +7,9 @@ namespace Unit {
 
   Player::Player(int x, int y, unsigned int id, Time::stamp creationTime, std::string name, float param)
     : AUnit(x, y, id, creationTime, param),
-      _trueX(x), _trueY(y),
-      _color(static_cast<Unit::color>(id % 5)), _name(name), _shooting(false), _weapon(Missile::BASIC),
-      _lastVerticalMove(0), _anim(std::string("../resources/sprites/ship.fly.247x47x3.png"), 3)
+      _color(static_cast<Unit::color>(id % 5)), _name(name),
+    _trueX(x), _trueY(y),
+      _lastVerticalMove(0), _anim(std::string("../resources/sprites/ship.fly.247x47x3.png"), 3)//, _shooting(false), _weapon(Missile::BASIC),
   {
     static sf::Color colors[4] =
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
