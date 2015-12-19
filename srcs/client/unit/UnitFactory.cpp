@@ -17,16 +17,16 @@
 const std::map<Unit::type, std::string> Unit::Factory::LIBSLIST = {
   {
 #if (defined __APPLE__)
-      Unit::MONSTERTEST, "../../libs/client/libMonsterTest.dylib"
+      Unit::MONSTERTEST, "../../libs/client/libClientMonsterTest.dylib"
 #else
-      Unit::MONSTERTEST, "../../libs/client/libMonsterTest.so"
+      Unit::MONSTERTEST, "../../libs/client/libClientMonsterTest.so"
 #endif
   },
   {
 #if (defined __APPLE__)
-      Unit::BASICMISSILE, "../../libs/client/libBasicMissile.dylib"
+      Unit::BASICMISSILE, "../../libs/client/libClientBasicMissile.dylib"
 #else
-      Unit::BASICMISSILE, "../../libs/client/libBasicMissile.so"
+      Unit::BASICMISSILE, "../../libs/client/libClientBasicMissile.so"
 #endif
   }
 };

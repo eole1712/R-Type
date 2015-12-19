@@ -17,9 +17,9 @@
 const std::map<Unit::Missile::type, std::string> Unit::Missile::Factory::LIBSLIST = {
   {
 #if (defined __APPLE__)
-      Unit::Missile::BASIC, "../libs/server/libBasicMissile.dylib"
+      Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.dylib"
 #else
-      Unit::Missile::BASIC, "../libs/server/libBasicMissile.so"
+      Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.so"
 #endif
   }
 };
