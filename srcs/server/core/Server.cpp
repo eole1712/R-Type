@@ -80,19 +80,31 @@ Server::Server() {
 		    }
 		  else
 		    game = (*it).second;
-          
-          //???
-		  ServerGameConnectPacket* ret = new ServerGameConnectPacket;
+		  ServerGameConnectPacket ret;
+		  User* user = _users[id];
+		  if (user->isInGame())
+		  {
+		  	int currentGameID = user->getGameID();
+		  	_games[currentGameID]->deletePlayer(user->getPlayer()->getColor());
+		  	ret.setStatus(false);
+		  	ret.setGameId(0);
+		  	ret.setPlayerId(0);
+		  	_netServer->send(&ret, id);
+		  	if (currentGameID == game->getID())
+		  		return;
+		  }
 		  if (!game->addPlayer(_users[id])) {
-		    std::cout << "failed" << std::endl;
-		    ret->setStatus(false);
+		  	std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl; 
+		    ret.setStatus(false);
+		  	ret.setGameId(0);
+		  	ret.setPlayerId(0);
 		  }
 		  else {
-		    ret->setStatus(true);
-		    ret->setPlayerId(_users[id]->getPlayer()->getID());
+		    ret.setStatus(true);
+		  	ret.setGameId(game->getID());
+		    ret.setPlayerId(_users[id]->getPlayer()->getID());
 		  }
-		  std::cout << "answering packet" << std::endl;
-		  _netServer->send(ret, id);
+		  _netServer->send(&ret, id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
