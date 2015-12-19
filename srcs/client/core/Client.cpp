@@ -26,7 +26,7 @@ Client::Client(int port)
 	return;
       if (pack->getStatus()) {
 	std::cout << "Connected ! : dayPhrase : " << pack->getServerString() << std::endl;
-          
+
 //	//Debug feature
 //	std::cout << "Test feature : sending create room packet with room + this addr" << std::endl;
 //	//ClientGameConnectPacket* ansPack = new ClientGameConnectPacket; #useless
@@ -36,7 +36,7 @@ Client::Client(int port)
 //	//end Debug feature
       }
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
       if (pack == NULL)
@@ -45,7 +45,7 @@ Client::Client(int port)
       _rooms[pack->getRoomName()] = pack->getRoomId();
       _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), pack->getRoomName());
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
       if (pack == NULL)
@@ -53,23 +53,25 @@ Client::Client(int port)
       if (pack->getStatus()) {
 	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
 	_playerId = pack->getPlayerId();
+	_game = _menu->startGame();
+	std::cout << "game started" << std::endl;
       }
       else
 	std::cout << "failed to connect" << std::endl;
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
       if (pack == NULL)
 	return;
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
       if (pack == NULL)
 	return;
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
@@ -80,7 +82,7 @@ Client::Client(int port)
       // 	  _game->connectUnit(_units.back());
       // 	}
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
       if (pack == NULL)
@@ -93,7 +95,7 @@ Client::Client(int port)
       // 	  _game->disconnectUnit(pack->getUnitID());
       // 	}
     },
-      
+
     [this] (APacket* packet, unsigned int id) {
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
       if (pack == NULL)
@@ -168,4 +170,9 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
   ClientKeyboardPressPacket packet(e);
 
   _nc->sendPacket(&packet);
+}
+
+void Client::setGame(Game *game)
+{
+  _game = game;
 }

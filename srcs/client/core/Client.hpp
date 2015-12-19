@@ -23,6 +23,7 @@ public:
   void createGame(std::string const& name);
   void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
+  void setGame(Game*);
 protected:
   NetManager* _nm;
   NetClient*  _nc;

@@ -109,7 +109,7 @@ void Networker::send(APacket *pack, int id)
 
   _sock->async_send(data, [dataSize] (ISocket::returnCode ret, size_t written) {
     if (written != dataSize || ret != ISocket::Sucess)
-      std::cerr << "Error while writing ==> written : " << dataSize << " ret : " << ret << std::endl;
+      std::cerr << "Error while writing ==> written : " << written << "expected : " << dataSize << " ret : " << ret << std::endl;
   });
 }
 
