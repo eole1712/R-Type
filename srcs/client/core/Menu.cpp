@@ -87,12 +87,12 @@ void		Menu::eventHandler()
 	  break;
 	case sf::Event::MouseMoved:
 	  this->handleMouseMoved();
-	  if (_gameList.getGameList().size() != 0)
+	  if (_gameList.getList().size() != 0)
 	    _gameList.mouseMovedHandler(_window, event);
 	  break;
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick();
-	  if (_gameList.getGameList().size() != 0)
+	  if (_gameList.getList().size() != 0)
 	    _gameList.clickHandler(_window, event);
 	  break;
 	case sf::Event::TextEntered:
