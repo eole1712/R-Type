@@ -75,7 +75,7 @@ Server::Server() {
 		  if ((it) == _games.end())
 		    {
 		      std::cout << "creating game" << std::endl;
-		      _games[gameID] = new Game(gameID, pack->getRoomName());
+		      _games[gameID] = new Game(gameID, pack->getRoomName(), this);
 		      game = _games[gameID];
 		      ++gameID;
 		    }

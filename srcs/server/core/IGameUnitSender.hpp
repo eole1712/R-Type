@@ -6,10 +6,10 @@
 class       IGameUnitSender
 {
 public:
-    ~IGameUnitSender();
+    virtual ~IGameUnitSender() {}
     
 public:
-    void        sendUnit(Unit::AUnit *unit, unsigned int unitType) = 0;
+    virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType) = 0;
 };
 
 #endif /* IGameUnitSender_hpp */

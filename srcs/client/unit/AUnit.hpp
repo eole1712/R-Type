@@ -4,6 +4,7 @@
 #include <list>
 #include <SFML/Graphics.hpp>
 #include "Time.hpp"
+#include "UnitType.hpp"
 
 namespace Unit {
 
@@ -19,11 +20,6 @@ namespace Unit {
     DOWN,
     RIGHT,
     LEFT
-  };
-
-  enum type {
-    MONSTERTEST,
-    BASICMISSILE
   };
 
   enum team {

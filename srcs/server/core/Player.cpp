@@ -148,4 +148,9 @@ namespace Unit {
             }
         }
     }
+    
+    Unit::typeID  Player::getTypeID() const
+    {
+        return PLAYERTYPE;
+    }
 }

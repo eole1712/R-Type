@@ -8,6 +8,8 @@
 # include "Player.hpp"
 # include "MonsterFactory.hpp"
 # include "MonsterWaveManager.hpp"
+# include "IGameUnitSender.hpp"
+
 
 class IMap;
 class IScoreList;
@@ -15,7 +17,7 @@ class IScoreList;
 class Game : public IGame
 {
 public:
-    Game(unsigned int id, std::string name);
+    Game(unsigned int id, std::string name, IGameUnitSender*);
     virtual ~Game();
 
     virtual unsigned int	getID() const;
@@ -50,6 +52,7 @@ private:
     Monster::WaveManager    _waveManager;
     Timer               _t;
     bool                _inGame;
+    IGameUnitSender*    _owl;
 };
 
 #endif /* !GAME_H_ */

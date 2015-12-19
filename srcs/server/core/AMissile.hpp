@@ -31,6 +31,7 @@ namespace Unit {
     public:
       virtual Unit::type      getType() const;
       virtual double          getTime() const = 0;
+      virtual Unit::typeID    getTypeID() const = 0;
 
     public:
         virtual AMissile*	clone(AUnit*, unsigned int id) const = 0;

@@ -14,8 +14,8 @@
 #include "ObjectCast.hpp"
 #include "AMonster.hpp"
 
-Game::Game(unsigned int id, std::string name)
-: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id), _t(0), _inGame(false)
+Game::Game(unsigned int id, std::string name, IGameUnitSender* owl)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id), _t(0), _inGame(false), _owl(owl)
 {
 }
 
@@ -154,7 +154,10 @@ void        Game::shootThemAll()
         if (player->isShooting()) {
             Unit::AUnit* m = player->shoot();
             if (m)
+            {
                 _map->addUnit(m);
+                _owl->sendUnit(m, m->getTypeID());
+            }
         }
     });
     std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this](Unit::AUnit* unit){

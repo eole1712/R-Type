@@ -57,7 +57,8 @@ public:
     bool            move(dir, IMap*);
 
 public:
-    virtual type    getType() const;
+    virtual type            getType() const;
+    virtual Unit::typeID    getTypeID() const;
 
 private:
     color           _color;

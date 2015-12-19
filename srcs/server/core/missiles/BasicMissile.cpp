@@ -68,6 +68,11 @@ namespace Unit {
     {
       return new BasicMissile(unit, id);
     }
+      
+    Unit::typeID  MonsterTest::getTypeID() const
+    {
+          return 0;
+    }
   }
 
 }
