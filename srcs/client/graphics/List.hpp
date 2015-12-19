@@ -11,6 +11,8 @@ private:
 
   unsigned int				_posX;
   unsigned int				_posY;
+  unsigned int				_originPosX;
+  unsigned int				_originPosY;
   std::list<GameListItem>		_list;
   std::list<GameListItem>::iterator	_iterator;
   sf::Font				_font;
