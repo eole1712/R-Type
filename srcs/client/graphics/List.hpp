@@ -41,7 +41,7 @@ public:
   void					refresh();
   void					clean();
 
-  std::list<GameListItem>		getList() const;
+  std::map<int, GameListItem>const&		getList() const;
   std::string				getCurrentItem() const;
 
   void					setFont(sf::Font const&);

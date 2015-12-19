@@ -68,7 +68,7 @@ public:
   ~Menu();
 
   void				initMainView();
-  void				addGame(std::string const&, unsigned int, int);
+    void				addGame(unsigned int id, std::string const&, unsigned int, std::string const &);
   void				startGame();
 
 private:

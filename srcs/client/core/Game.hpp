@@ -13,8 +13,7 @@ class Client;
 class Game
 {
 public:
-  Game(IGameHandler * client, sf::RenderWindow & window,
-       int playerId, std::string playerName);
+    Game(IGameHandler * client, sf::RenderWindow & window, int playerId, std::string);
   virtual ~Game();
 
 public:  

@@ -26,23 +26,22 @@ Menu::Menu(int width, int height, IMenuHandler* client):
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
-	  _game = new Game(_client, _window, 0, _login.getEditable().getString());
+	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString());
 	  _game->loop();
 	  _gameStart = false;
 	}
       });
       _eventChecks.push_back([this] () {
 	for (auto& room : _roomsBuf)
-	  _gameList.addItem(room.first, room.second, room.first);
-	while (!_roomsBuf.empty())
-	  _roomsBuf.pop_back();
+	  _gameList.addItem(room.first, room.second.first, room.second.second, room.second.first);
+//	while (!_roomsBuf.empty())
+//	  _roomsBuf.erase();
+      _roomsBuf.clear();
       });
     }
-}
 
 Menu::~Menu()
 {
-  delete _client;
   if (_game != NULL)
     delete _game;
 }
@@ -232,7 +231,7 @@ void		Menu::startGame()
   _gameStart = true;
 }
 
-void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const&)
+void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, std::string const&)
 {
   _roomsBuf[id] = std::make_pair(gameName, playerNumber);
 }

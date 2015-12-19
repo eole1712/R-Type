@@ -18,7 +18,7 @@ void			List::addItem(int id, std::string const& gameName,
   playerNumberToString = std::to_string(playerNumber);
   GameListItem	gameListItem(_posX, _posY + (30 * _currentIndex), gameName,
 			     playerNumberToString, daySentence, _font, _color, _highlightColor);
-  _list.push_back({id, gameListItem});
+  _list[id] = gameListItem;
   if (_list.size() == 1)
     _iterator = _list.begin();
   _currentIndex += 1;
@@ -29,19 +29,19 @@ void			List::slide(bool up)
   if (up && _iterator != _list.begin())
     {
       _iterator--;
-      for (std::list<GameListItem>::iterator it = _list.begin(); it != _list.end(); it++ )
+      for (std::map<int, GameListItem>::iterator it = _list.begin(); it != _list.end(); it++ )
 	{
-	  (*it).setPosY((*it).getPosY() + 30);
-	  (*it).updatePosition();
+	  (*it).second.setPosY((*it).second.getPosY() + 30);
+	  (*it).second.updatePosition();
 	}
     }
   else if (!up && std::distance(_iterator, _list.end()) > 5)
     {
       _iterator++;
-      for (std::list<GameListItem>::iterator it = _list.begin(); it != _list.end(); it++ )
+      for (std::map<int, GameListItem>::iterator it = _list.begin(); it != _list.end(); it++ )
 	{
-	  (*it).setPosY((*it).getPosY() - 30);
-	  (*it).updatePosition();
+	  (*it).second.setPosY((*it).second.getPosY() - 30);
+	  (*it).second.updatePosition();
 	}
     }
 }
@@ -51,27 +51,27 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
   
-  for(std::list<GameListItem>::iterator it = _iterator;
+  for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
       i--;
-      if ((*it).getIsSelected() == true)
+      if ((*it).second.getIsSelected() == true)
 	{
-	  (*it).setIsSelected(false);
-	  (*it).setColor(_color);
+	  (*it).second.setIsSelected(false);
+	  (*it).second.setColor(_color);
 	}
       /*
       if (sf::Mouse::getPosition(window).x >= (*it).getPosX() &&
 	  sf::Mouse::getPosition(window).x <= (*it).getPosX() + 140 &&
 	  sf::Mouse::getPosition(window).y >= (*it).getPosY() &&
 	  sf::Mouse::getPosition(window).y <= (*it).getPosY() + 21)*/
-      if ((*it).getName().getGlobalBounds().contains(mousePosition) ||
-	  (*it).getPlayerNumber().getGlobalBounds().contains(mousePosition))
+      if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
+	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
 	{
-	  (*it).setIsSelected(true);
-	  (*it).setColor(sf::Color(255, 255, 102));
+	  (*it).second.setIsSelected(true);
+	  (*it).second.setColor(sf::Color(255, 255, 102));
 	}
-      (*it).eventHandler(window, event);
+      (*it).second.eventHandler(window, event);
     }
 }
 
@@ -81,11 +81,11 @@ void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   
 //sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y
-  for(std::list<GameListItem>::iterator it = _iterator;
+  for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
       i--;
-      (*it).eventHandler(window, event);
+      (*it).second.eventHandler(window, event);
     }
   if (_list.size() > 5)
     {
@@ -115,12 +115,12 @@ void			List::render(sf::RenderWindow& window)
   int		i = 5;
   std::string	test;
   
-  for (std::list<GameListItem>::iterator it = _iterator;
+  for (std::map<int, GameListItem>::iterator it = _iterator;
        it != _list.end() && i > 0; it++)
     {
       i--;
-      window.draw((*it).getName());
-      window.draw((*it).getPlayerNumber());
+      window.draw((*it).second.getName());
+      window.draw((*it).second.getPlayerNumber());
     }
   if (_list.size() >= 6)
     {
@@ -139,7 +139,7 @@ void			List::clean()
   _iterator = _list.end();
 }
 
-std::list<GameListItem>	List::getList() const
+std::map<int, GameListItem>const&	List::getList() const
 {
   return _list;
 }
@@ -148,7 +148,7 @@ std::string		List::getCurrentItem() const
 {
   if (_iterator == _list.end())
     return std::string("");
-  return (std::string)(*_iterator).getName().getString();
+  return (std::string)(*_iterator).second.getName().getString();
 }
 
 void			List::setFont(sf::Font const& listFont)

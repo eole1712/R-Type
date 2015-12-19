@@ -3,8 +3,8 @@
 #include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
-Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer)
-  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(localPlayer),
+Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, std::string name)
+  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayerName(name), _localPlayer(localPlayer),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -128,9 +128,9 @@ void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
   Unit::AUnit *		unit;
   float			_param = float(param) / 1000;
 
-  if (type == Unit::PLAYER)
+  if (type == Unit::PLAYERTYPE)
     {
-      if (id = _localPlayer)
+      if (id == _localPlayer)
 	unit = new Unit::Player(x, y, id, creationTime, _localPlayerName, _param);
       else
 	unit = new Unit::Player(x, y, id, creationTime, std::string(""), _param);	
