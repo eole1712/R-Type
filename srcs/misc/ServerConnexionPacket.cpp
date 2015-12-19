@@ -22,7 +22,7 @@ void	ServerConnexionPacket::setServerString(std::string const& str) {
 	_data.replace(kHeaderSize + sizeof(bool),
 		kServerStringSize,
 		str.c_str(),
-		kServerStringSize);
+		str.size());
 }
 
 bool	ServerConnexionPacket::getStatus() {

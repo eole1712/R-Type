@@ -30,5 +30,5 @@ void ClientGameConnectPacket::setRoomName(std::string const& name) {
 	_data.replace(kHeaderSize + sizeof(uint32_t),
 		kRoomNameSize,
 		name.c_str(),
-		kRoomNameSize);
+		name.size());
 }

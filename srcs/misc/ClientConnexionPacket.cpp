@@ -13,10 +13,10 @@ ClientConnexionPacket::ClientConnexionPacket(std::string const& data) : APacket(
 ClientConnexionPacket::~ClientConnexionPacket() {};
 
 void	ClientConnexionPacket::setClientName(std::string const& str) {
-	_data.replace(sizeof(APacket::idSize) + sizeof(APacket::packetTypeSize),
+	_data.replace(kHeaderSize,
 		kPlayerNameSize,
 		str.c_str(),
-		kPlayerNameSize);
+		str.size());
 }
 
 std::string	ClientConnexionPacket::getClientName() {

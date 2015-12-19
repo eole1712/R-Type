@@ -41,5 +41,5 @@ void ServerGameInfoPacket::setRoomName(std::string const& name) {
 	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t),
 		kRoomNameSize,
 		name.c_str(),
-		kRoomNameSize);
+		name.size());
 }
