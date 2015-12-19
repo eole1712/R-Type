@@ -16,7 +16,6 @@
 Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
-
 	_packetHandlerFuncs = {
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
@@ -61,7 +60,9 @@ Server::Server() {
 		  std::cout << "pack is well formated" << std::endl;
 		  if (_users.find(id) == _users.end())
 		    return;
-		  IGame* game;
+            
+          //Recherche ou création de la game
+          IGame* game;
 		  auto it  = _games.find(pack->getRoomId());
 		  if ((it) == _games.end())
 		    {
@@ -72,6 +73,8 @@ Server::Server() {
 		    }
 		  else
 		    game = (*it).second;
+          
+          //???
 		  ServerGameConnectPacket* ret = new ServerGameConnectPacket;
 		  if (!game->addPlayer(_users[id])) {
 		    std::cout << "failed" << std::endl;

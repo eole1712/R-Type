@@ -105,9 +105,10 @@ void		Menu::handleMouseClick()
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentGameName().empty())
-     {
-       Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
-       Game		game(_client, _window, player);
+   {;
+       _client->selectGame(_gameList.getCurrentGameName());
+//       Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
+//       Game		game(_client, _window, player);
      }
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
