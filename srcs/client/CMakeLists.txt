@@ -40,10 +40,11 @@ add_executable(${EXECUTABLE_NAME}
 	unit/AUnit.cpp
 	unit/UnitFactory.cpp
 	graphics/Animation.cpp 
-	graphics/ClickableBtn.cpp 
-	graphics/Editable.cpp 
+	graphics/ClickableBtn.cpp
+	graphics/Editable.cpp
+	graphics/Error.cpp
 	graphics/GameListItem.cpp
-
+	
 	network/NetClient.cpp
 	../misc/network/Networker.cpp
 	../misc/network/UdpSocket.cpp

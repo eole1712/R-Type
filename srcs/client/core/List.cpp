@@ -12,7 +12,6 @@ void			List::addGame(std::string const& gameName, unsigned int playerNumber,
 {
   std::string		playerNumberToString;
 
-  std::cout << "in List::addGame" << std::endl;
   playerNumberToString = std::to_string(playerNumber);
   GameListItem	gameListItem(_posX, _posY + (30 * _currentGameNumber), gameName,
 			     playerNumberToString, daySentence, _listFont, _listColor, _highlightColor);
@@ -115,7 +114,6 @@ void			List::drawGameList(sf::RenderWindow& window)
     {
       i--;
       test = (std::string) (*it).getName().getString();
-      std::cout << "in List::addGame, " << test << std::endl;
       window.draw((*it).getName());
       window.draw((*it).getPlayerNumber());
     }

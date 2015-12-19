@@ -12,6 +12,7 @@
 #include "Player.hpp"
 #include "Game.hpp"
 #include "List.hpp"
+#include "Error.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 4
 
@@ -47,7 +48,7 @@ private:
   Editable				_login;
   Editable				_gameName;
   Editable				_host;
-  ClickableBtn				_loginSizeErr;
+  Error					_loginSizeErr;
   ClickableBtn				_createButton;
   ClickableBtn				_connectButton;
   ClickableBtn				_refreshButton;
