@@ -69,9 +69,9 @@ namespace Unit {
       return new BasicMissile(unit, id);
     }
       
-    Unit::typeID  MonsterTest::getTypeID() const
+    Unit::typeID        BasicMissile::getTypeID() const
     {
-          return 0;
+        return Unit::BASICMISSILE;
     }
   }
 
