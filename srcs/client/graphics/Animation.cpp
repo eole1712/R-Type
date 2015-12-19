@@ -4,7 +4,7 @@
 
 
 Animation::Animation(std::string const & image, unsigned int frame, float speed, Time::stamp initTime)
-  : _frame(frame), _initTime(initTime), _speed(speed), _state(PLAY), _index(0)
+  : _initTime(initTime), _frame(frame), _speed(speed), _state(PLAY), _index(0)
 {
   _texture.loadFromFile(image.c_str());
   setTexture(_texture);

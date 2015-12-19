@@ -43,15 +43,15 @@ public:
 private:
   color         _color;
   std::string   _name;
-  bool		_shooting;
-  Time::stamp	_shootTime;
-  Missile::type _weapon;
   int		_trueX;
   int		_trueY;
 
   int		_lastVerticalMove;
   Animation	_anim;
   sf::Shader	_colorShader;
+    //  bool		_shooting;
+    //  Time::stamp	_shootTime;
+    //  Missile::type _weapon;
  };
 }
 

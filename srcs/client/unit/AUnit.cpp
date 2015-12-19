@@ -5,7 +5,7 @@
 namespace Unit {
 
   AUnit::AUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
-    : _x(x), _y(y), _id(id), _creationTime(creationTime), _param(param)
+    : _x(x), _y(y), _id(id), _param(param), _creationTime(creationTime)
   {
   }
 

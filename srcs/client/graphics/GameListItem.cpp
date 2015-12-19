@@ -2,7 +2,7 @@
 
 
 GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
-  :_gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _posX(posX), _posY(posY), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false)
+  : _posX(posX), _posY(posY), _gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false)
 {
   _gameName.setPosition(posX, posY);
   _gameName.setColor(_color);
@@ -19,6 +19,8 @@ void			GameListItem::eventHandler(sf::RenderWindow& window, sf::Event& event)
       break;
     case sf::Event::MouseButtonReleased:
       this->handleMouseClick(window);
+    default:
+      break;
     }
 }
 

@@ -165,6 +165,8 @@ void		Menu::editionHandler(sf::Event const& event)
     case HOST:
       _host.editionHandler(event);
       break;
+    default:
+      break;
     }
 }
 

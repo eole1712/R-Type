@@ -1,7 +1,7 @@
 #include "Error.hpp"
 
 Error::Error(unsigned int posX, unsigned int posY, std::string error, sf::Font& font, sf::Color& color, unsigned int charSize)
-  : _posX(posX), _posY(posY), _error(error, font, charSize), _charSize(charSize)
+  : _posX(posX), _posY(posY), _error(error, font, charSize) //, _charSize(charSize)
 {
   _error.setPosition(_posX, _posY);
   _error.setColor(color);
