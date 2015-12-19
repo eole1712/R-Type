@@ -13,7 +13,8 @@ class Client;
 class Game
 {
 public:
-  Game(IGameHandler * client, sf::RenderWindow & window, int player);
+  Game(IGameHandler * client, sf::RenderWindow & window,
+       int playerId, std::string playerName);
   virtual ~Game();
 
 public:  
@@ -40,6 +41,7 @@ private:
   IGameHandler *		_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
+  std::string			_localPlayerName;
   int				_localPlayer;
   RemoteMap			_map;
   bool				_finish;

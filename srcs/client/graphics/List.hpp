@@ -13,8 +13,8 @@ private:
   unsigned int				_posY;
   unsigned int				_originPosX;
   unsigned int				_originPosY;
-  std::list<GameListItem>		_list;
-  std::list<GameListItem>::iterator	_iterator;
+  std::map<int, GameListItem>		_list;
+  std::map<int, GameListItem>::iterator	_iterator;
   sf::Font				_font;
   sf::Color				_color;
   sf::Color				_highlightColor;
@@ -31,7 +31,7 @@ public:
   void					setPosX(unsigned int x);
   unsigned int				getPosY() const;
   void					setPosY(unsigned int y);
-  void					addItem(std::string const&, unsigned int, std::string const&);
+  void					addItem(int, std::string const&, unsigned int, std::string const&);
   void					slide(bool up);
   void					clickHandler(sf::RenderWindow&, sf::Event&);
   void					mouseMovedHandler(sf::RenderWindow&, sf::Event&);

@@ -31,7 +31,7 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer)
       _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{
-	  param->setFinish();
+	  param->setFinish();	  
 	}},
 	{{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp, Key::keyState & keys, Game * param)
 	    { Game::sendKey(param, keys, sf::Keyboard::Up, Key::PRESS); }},
@@ -125,8 +125,18 @@ void			Game::setTimer(unsigned long time)
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 					  Time::stamp creationTime, int param)
 {
-  Unit::AUnit *	unit = Unit::Factory::getInstance()->createUnit(type, x, y, id, creationTime, float(param) / 1000);
+  Unit::AUnit *		unit;
+  float			_param = float(param) / 1000;
 
+  if (type == Unit::PLAYER)
+    {
+      if (id = _localPlayer)
+	unit = new Unit::Player(x, y, id, creationTime, _localPlayerName, _param);
+      else
+	unit = new Unit::Player(x, y, id, creationTime, std::string(""), _param);	
+    }
+  else
+    unit = Unit::Factory::getInstance()->createUnit(type, x, y, id, creationTime, _param);
   _map[unit->getID()] = unit;
 }
 
