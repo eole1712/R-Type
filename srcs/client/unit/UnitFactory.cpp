@@ -15,20 +15,13 @@
 #include "UnitFactory.hpp"
 
 const std::map<Unit::type, std::string> Unit::Factory::LIBSLIST = {
-  {
 #if (defined __APPLE__)
-      Unit::MONSTERTEST, "../../libs/client/libClientMonsterTest.dylib"
+  { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.dylib" },
+  { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.dylib" }
 #else
-      Unit::MONSTERTEST, "../../libs/client/libClientMonsterTest.so"
+  { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.so" },
+  { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.so" }
 #endif
-  },
-  {
-#if (defined __APPLE__)
-      Unit::BASICMISSILE, "../../libs/client/libClientBasicMissile.dylib"
-#else
-      Unit::BASICMISSILE, "../../libs/client/libClientBasicMissile.so"
-#endif
-  }
 };
 
 namespace Unit {

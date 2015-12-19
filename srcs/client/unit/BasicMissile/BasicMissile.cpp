@@ -18,7 +18,7 @@ namespace Unit
 {
   BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param)
     : AUnit(x, y, id, creationTime, param),
-      _mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
+      _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
     _mySprite.scale(2.5, 2.5);
   }
