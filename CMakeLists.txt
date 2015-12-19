@@ -4,9 +4,6 @@ project(R-Type)
 
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
-
 ################################## RType_server #####################################
 #Server sources files
 set(server_sources
@@ -72,6 +69,9 @@ set(server_includes ${server_includes} srcs/common/windows_specific)
 endif (WIN32)
 
 add_executable(RType_server ${server_sources} ${server_includes})
+
+set_target_properties(RType_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
+set_target_properties(RType_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 
 target_compile_features(RType_server PRIVATE cxx_range_for)
 target_include_directories(RType_server PRIVATE ${server_includes})
@@ -147,6 +147,10 @@ set(client_includes ${client_includes} srcs/common/linux_specific)
 endif()
 
 add_executable(RType_client ${client_sources} ${client_sources})
+
+set_target_properties(RType_client PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
+set_target_properties(RType_client PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
+
 target_compile_features(RType_client PRIVATE cxx_range_for)
 target_include_directories(RType_client PRIVATE ${client_includes})
 if (UNIX)
@@ -195,7 +199,16 @@ endif (WIN32)
 
 target_include_directories(ServerMonsterTest PRIVATE ${server_includes})
 target_compile_features(ServerMonsterTest PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
 
 add_library(ServerBasicMissile SHARED
 	srcs/server/core/missiles/BasicMissile.cpp
@@ -207,8 +220,16 @@ add_library(ServerBasicMissile SHARED
 
 target_include_directories(ServerBasicMissile PRIVATE ${server_includes})
 target_compile_features(ServerBasicMissile PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
-
+set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
 
 add_library(ClientMonsterTest SHARED
 	srcs/client/unit/MonsterTest/MonsterTest.cpp
@@ -218,7 +239,16 @@ add_library(ClientMonsterTest SHARED
 	)
 target_include_directories(ClientMonsterTest PRIVATE ${client_includes})
 target_compile_features(ClientMonsterTest PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
 
 add_library(ClientBasicMissile SHARED
 	srcs/client/unit/MonsterTest/MonsterTest.cpp
@@ -228,9 +258,16 @@ add_library(ClientBasicMissile SHARED
 	)
 target_include_directories(ClientBasicMissile PRIVATE ${client_includes})
 target_compile_features(ClientBasicMissile PRIVATE cxx_range_for)
+if (UNIX)
 set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
-
-
+set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
