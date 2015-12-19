@@ -28,4 +28,4 @@ public:
   bool		getMaxSize() const;
 };
 
-#endif /* !EDITABLE_HPP_*/
+#endif /* !EDITABLE_HPP_ */
