@@ -22,11 +22,15 @@
 *.la
 *.a
 *.lib
+*.LOCAL.*
+*.REMOTE.*
+*.BASE.*
 
 # Executables
 *.exe
 *.out
 *.app
+*.ilk
 
 #build/bin folders
 build/
