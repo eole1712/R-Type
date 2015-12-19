@@ -23,11 +23,10 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
- {
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
-	  _game = new Game(_client->getGameHandler(), _window, 0);
+	  _game = new Game(_client, _window, 0, _login.getEditable().getString());
 	  _game->loop();
 	  _gameStart = false;
 	}
@@ -88,7 +87,7 @@ void		Menu::eventHandler()
 	{
 	  case sf::Event::Resized:
 	    _scale[0] = float(event.size.width) / _width;
-	    _scale[1] = float(event.size.height) / _height;
+	    _scale[1] = float(event.size.height) / _height;	    
 	    break;
 	case sf::Event::Closed:
 	  _window.close();
@@ -235,7 +234,7 @@ void		Menu::startGame()
 
 void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const&)
 {
-  _roomsBuf.push_back(std::make_pair(gameName, playerNumber));
+  _roomsBuf[id] = std::make_pair(gameName, playerNumber);
 }
 
 void		Menu::setConnected()
