@@ -18,13 +18,15 @@ Menu::Menu(int width, int height, Client* client):
   _connectButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
-  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN)
+  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN), _game(NULL)
 {
 }
 
 Menu::~Menu()
 {
   delete _client;
+  if (_game != NULL)
+    delete _game;
 }
 
 void		Menu::initMainView()
@@ -44,6 +46,8 @@ void		Menu::initMainView()
   _window.setVerticalSyncEnabled(true);
   while (_window.isOpen())
     {
+      if (_game != NULL)
+	_game->loop();
       eventHandler();
       _window.clear();
       _window.draw(background.getFrame());
@@ -95,11 +99,7 @@ void		Menu::handleMouseClick()
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
    if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentItem().empty())
-   {;
-       _client->selectGame(_gameList.getCurrentItem());
-//       Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
-//       Game		game(_client, _window, player);
-     }
+     _client->selectGame(_gameList.getCurrentItem());
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
        _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
@@ -199,6 +199,13 @@ void		Menu::changeCurrentRow()
     _currentRow = static_cast<Row>(_currentRow + 1);
   else
     _currentRow = static_cast<Row>(0);
+}
+
+Game *		Menu::startGame()
+{
+  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
+  _game = new Game(_client, _window, player);
+  return _game;
 }
 
 void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const& daySentence)

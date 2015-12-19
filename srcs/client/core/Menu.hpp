@@ -17,6 +17,7 @@
 #define MAX_NUMBER_OF_FIELDS 4
 
 class Client;
+class Game;
 
 class Menu
 {
@@ -52,6 +53,7 @@ private:
   ClickableBtn				_startButton;
   List					_gameList;
   Row					_currentRow;
+  Game *				_game;
   
 public:
   Menu(int width, int height, Client *client);
@@ -75,6 +77,7 @@ private:
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
   void				setConnected();
+  Game *			startGame();
 };
 
 #endif /* !MENU_HPP */

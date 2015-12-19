@@ -56,7 +56,6 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
   Unit::AUnit *test = Unit::Factory::getInstance()->createUnit(Unit::MONSTERTEST, 100, 100, 5, 0);
 
   connectUnit(*test);
-  loop();
 }
 
 Game::~Game()
