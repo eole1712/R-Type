@@ -1,3 +1,6 @@
+#if defined(__linux__)
+#include <unistd.h>
+#endif
 #include "Menu.hpp"
 
 Menu::Menu(int width, int height, Client* client):
@@ -84,12 +87,12 @@ void		Menu::eventHandler()
 	  break;
 	case sf::Event::MouseMoved:
 	  this->handleMouseMoved();
-	  if (_gameList.getList().size() != 0)
+	  if (_gameList.getGameList().size() != 0)
 	    _gameList.mouseMovedHandler(_window, event);
 	  break;
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick();
-	  if (_gameList.getList().size() != 0)
+	  if (_gameList.getGameList().size() != 0)
 	    _gameList.clickHandler(_window, event);
 	  break;
 	case sf::Event::TextEntered:
@@ -123,7 +126,8 @@ void		Menu::handleMouseClick()
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && _isConnected)
      {
        _gameList.clean();
-       _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       //_client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       _client->refreshGames();
      }
    else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {

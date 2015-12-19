@@ -122,8 +122,8 @@ void Client::connect(const std::string &ip, const std::string &name)
 
 void Client::refreshGames()
 {
-  ClientGameInfoPacket* pack = new ClientGameInfoPacket;
-
+    ClientGameInfoPacket* pack = new ClientGameInfoPacket;
+    std::cout << "Trying to refresh game list." << std::endl;
   _nc->sendPacket(pack);
 }
 
