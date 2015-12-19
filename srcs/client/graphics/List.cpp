@@ -48,8 +48,7 @@ void			List::slide(bool up)
 
 void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
 {
-  sf::Vector2f		mousePosition(sf::Mouse::getPosition(window).x,
-				      sf::Mouse::getPosition(window).y);
+  sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
   
   for(std::list<GameListItem>::iterator it = _iterator;
@@ -79,8 +78,9 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
 void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
 {
   int			i = 5;
-  sf::Vector2f		mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+  sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   
+//sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y
   for(std::list<GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
@@ -100,9 +100,9 @@ void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
     }
 }
 
-void			List::scrollHandler(sf::RenderWindow& window)
+void			List::scrollHandler(sf::RenderWindow& window, sf::Event& event)
 {
-  sf::Vector2f		mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+  sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   
   if (_list.size() >= 6 && _scrollBtn[0].getClickableBtn().getGlobalBounds().contains(mousePosition))
     this->slide(true);
