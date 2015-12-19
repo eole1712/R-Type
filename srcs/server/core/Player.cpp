@@ -22,12 +22,12 @@ namespace Unit {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
 
-        user->startGame(gameID, this);
+        _user->startGame(gameID, this);
     }
 
     Player::~Player()
     {
-        user->endGame(_score);
+        _user->endGame(_score);
     }
 
     Missile::AMissile*          Player::shoot()

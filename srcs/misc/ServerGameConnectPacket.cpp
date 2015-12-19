@@ -25,7 +25,7 @@ void	ServerGameConnectPacket::setPlayerId(uint8_t id) {
 		sizeof(uint8_t));
 }
 
-void	ServerGameConnectPacket::setPlayerId(uint32_t id) {
+void	ServerGameConnectPacket::setGameId(uint32_t id) {
 	_data.replace(kHeaderSize + sizeof(bool) + sizeof(uint8_t),
 		sizeof(uint32_t),
 		reinterpret_cast<const char*>(&id),

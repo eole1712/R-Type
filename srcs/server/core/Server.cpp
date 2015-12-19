@@ -85,7 +85,7 @@ Server::Server() {
 		  if (user->isInGame())
 		  {
 		  	int currentGameID = user->getGameID();
-		  	_games[currentGameID]->deletePlayer(user->getPlayer()->getColor());
+		  	_games[currentGameID]->removePlayer(user->getPlayer()->getColor());
 		  	ret.setStatus(false);
 		  	ret.setGameId(0);
 		  	ret.setPlayerId(0);
