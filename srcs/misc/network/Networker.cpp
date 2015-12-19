@@ -81,7 +81,6 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
     std::cout << "Message received from : " << addr << ":" << port << " ==> [" << _buffer << "]" << std::endl;
       std::cout << "Packet type : " << (int)(APacket::sGetType(_buffer)) << std::endl;
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
-    _packList.push_front(pack);
     for (auto elem : _peers) {
       if (elem.second == port && elem.first == addr)
       {
@@ -92,8 +91,8 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
    }
    if (!found)
     _peers.push_back(std::make_pair(addr, port));
-  //answer(pack, id);
   _PacketHandler->handlePacket(pack, id);
+  delete pack;
   _asyncRec(_sock, _buffer, _handle);
 };
 _asyncRec(_sock, _buffer, _handle);

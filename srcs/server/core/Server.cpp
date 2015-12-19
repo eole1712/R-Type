@@ -34,7 +34,6 @@ Server::Server() {
 			  ret->setStatus(true);
 			}
 			_netServer->send(ret, id);
-			delete ret;
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
@@ -55,7 +54,6 @@ Server::Server() {
                 ret->setRoomReady(nb);
 				ret->setRoomName(game.second->getName());
 				_netServer->send(ret, id);
-				delete ret;
 			}
 		},
 		[this] (APacket* packet, unsigned int id) {
@@ -93,7 +91,6 @@ Server::Server() {
 		  }
 		  std::cout << "answering packet" << std::endl;
 		  _netServer->send(ret, id);
-		  delete ret;
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
