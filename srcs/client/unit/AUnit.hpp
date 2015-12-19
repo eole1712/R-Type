@@ -38,7 +38,7 @@ namespace Unit {
   {
 
   public:
-    AUnit(int x, int y, unsigned int id, Time::stamp creationTime);
+    AUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param);
     virtual ~AUnit();
 
   private:
@@ -60,6 +60,7 @@ namespace Unit {
     int                                     _trueX;
     int                                     _trueY;
     unsigned int                            _id;
+    float				    _param;
     Time::stamp                             _creationTime;
   };
 }

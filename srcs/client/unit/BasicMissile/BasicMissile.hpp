@@ -9,7 +9,7 @@ namespace Unit
   class BasicMissile : public AUnit
   {
   public:
-    BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime);
+    BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param);
     virtual ~BasicMissile();
     
     virtual pos	move(Time::stamp) const;

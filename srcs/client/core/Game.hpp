@@ -17,12 +17,16 @@ public:
   virtual ~Game();
 
 public:  
+  static void		sendKey(Game * param, Key::keyState & key,
+				sf::Keyboard::Key keycode, Key::event e);
   void			loop();
   Unit::Player *	getLocalPlayer();
   Unit::Player *	getPlayer(unsigned int id);
   void			setFinish();
+  void			setTimer(unsigned long time);
   bool			getFinish() const;
-  void			connectUnit(Unit::AUnit &);
+  void			connectUnit(Unit::type type, int x, int y, unsigned int id,
+				    Time::stamp creationTime, int param);
   void			disconnectUnit(unsigned int);
   Unit::AUnit &		operator[](unsigned int id);
 

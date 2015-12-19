@@ -9,7 +9,7 @@ namespace Unit
   class MonsterTest : public AUnit
   {
   public:
-    MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime);
+    MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime, float param);
     virtual ~MonsterTest();
     
     virtual pos	move(Time::stamp) const;

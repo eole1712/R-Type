@@ -3,9 +3,9 @@
 
 extern "C"
 {
-  Unit::BasicMissile *		NewUnit(int x, int y, unsigned int id, Time::stamp creationTime)
+  Unit::BasicMissile *		NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
-    return (new BasicMissile(x, y, id, creationTime));
+    return (new BasicMissile(x, y, id, creationTime, param));
   }
 
   void				DeleteUnit(Unit::BasicMissile * monster)
@@ -16,8 +16,8 @@ extern "C"
 
 namespace Unit
 {
-  BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime)
-    : AUnit(x, y, id, creationTime),
+  BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param)
+    : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
     _mySprite.scale(2.5, 2.5);

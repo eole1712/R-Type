@@ -54,7 +54,7 @@ Factory::~Factory()
 }
 
 Unit::AUnit*	Factory::createUnit(Unit::type type, int x, int y,
-				    unsigned int id, Time::stamp creationTime)
+				    unsigned int id, Time::stamp creationTime, float param)
 {
   fptrNewUnit	ptr;
   Unit::AUnit*	newUnit;
@@ -65,7 +65,7 @@ Unit::AUnit*	Factory::createUnit(Unit::type type, int x, int y,
       if ((*it).first == type)
 	{
 	  ptr = reinterpret_cast<fptrNewUnit>((*it).second->getExternalCreator());
-	  newUnit = ptr(x, y, id, creationTime);
+	  newUnit = ptr(x, y, id, creationTime, param);
 	  return (newUnit);
 	}
     }

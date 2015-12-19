@@ -7,7 +7,7 @@
 # include "AUnit.hpp"
 
 typedef Unit::AUnit*	(*fptrNewUnit)(int x, int y,
-				       unsigned int id, Time::stamp creationTime);
+				       unsigned int id, Time::stamp creationTime, float param);
 typedef void		(*fptrDeleteUnit)(Unit::AUnit*);
 
 class ILibLoader;
@@ -24,7 +24,7 @@ public:
   ~Factory();
 
   Unit::AUnit*		createUnit(Unit::type, int x, int y,
-				   unsigned int id, Time::stamp creationTime);
+				   unsigned int id, Time::stamp creationTime, float param);
 
   bool			addUnitType(Unit::type, std::string libName);
   bool			removeUnitType(Unit::type);

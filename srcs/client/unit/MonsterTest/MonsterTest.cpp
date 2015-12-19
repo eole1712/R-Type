@@ -3,9 +3,9 @@
 
 extern "C"
 {
-  Unit::MonsterTest *			NewUnit(int x, int y, unsigned int id, Time::stamp creationTime)
+  Unit::MonsterTest *			NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
-    return (new Unit::MonsterTest(x, y, id, creationTime));
+    return (new Unit::MonsterTest(x, y, id, creationTime, param));
   }
 
   void					DeleteUnit(Unit::MonsterTest * monster)
@@ -16,8 +16,8 @@ extern "C"
 
 namespace Unit
 {
-  MonsterTest::MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime)
-    : AUnit(x, y, id, creationTime),
+  MonsterTest::MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime, float param)
+    : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
     _mySprite.scale(2.5, 2.5);

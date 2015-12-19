@@ -42,7 +42,7 @@ void		Menu::initMainView()
     {
       if (_gameStart)
 	{
-	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
+	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
 	  
 	  _game = new Game(_client, _window, player);
 	  _game->loop();
