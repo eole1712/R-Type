@@ -4,10 +4,12 @@
 #include "ServerConnexionPacket.hpp"
 #include "ServerGameConnectPacket.hpp"
 #include "ServerGameInfoPacket.hpp"
+#include "ServerTimerRefreshPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 #include "ServerPlayerMovePacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
+#include "GameUtils.hpp"
 #include "MonsterFactory.hpp"
 #include "MissileFactory.hpp"
 
@@ -111,7 +113,10 @@ Server::Server() {
 					shouldStart = false;
 				}
 				if (shouldStart)
+                {
 					startGame(game);
+                    refreshTimer(game->getID());                    
+                }
 				return;
 			}
 			if (key.first < 4)
@@ -162,4 +167,13 @@ void Server::startGame(IGame* game) {
 
 void	Server::handlePacket(APacket* packet, unsigned int id) {
 	_packetHandlerFuncs[packet->getType() - 8](packet, id);
+}
+
+void    Server::refreshTimer(unsigned int idGame)
+{
+    ServerTimerRefreshPacket   *pack = new ServerTimerRefreshPacket;
+    
+    pack->setCurrentTimer(GameUtils::Game::now(idGame));
+    for (auto& user : _games[idGame]->getUsers())
+        _netServer->send(pack, user->getClientID());
 }

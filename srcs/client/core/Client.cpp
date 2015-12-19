@@ -45,15 +45,14 @@ Client::Client(int port)
       _rooms[pack->getRoomName()] = pack->getRoomId();
       _menu->addGame(pack->getRoomName(), pack->getRoomSlots(), pack->getRoomName());
     },
-
     [this] (APacket* packet, unsigned int id) {
       ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
       if (pack == NULL)
 	return;
       if (pack->getStatus()) {
 	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
-    _playerId = pack->getPlayerId();
-          //	_menu->startGame();
+	_playerId = pack->getPlayerId();
+	//	_menu->startGame();
 	std::cout << "game started" << std::endl;
       }
       else
@@ -102,7 +101,8 @@ Client::Client(int port)
 	return;
       if (_game == nullptr)
         _menu->startGame();
-    _game->setTimer(pack->getCurrentTimer());
+      std::cout << "timer update" << std::endl;
+      _game->setTimer(pack->getCurrentTimer());
     }
   };
   _menu = new Menu(720, 480, this);
@@ -135,27 +135,27 @@ void Client::connect(const std::string &ip, const std::string &name)
 
 void Client::refreshGames()
 {
-    ClientGameInfoPacket* pack = new ClientGameInfoPacket;
-    std::cout << "Trying to refresh game list." << std::endl;
-  _nc->sendPacket(pack);
+  ClientGameInfoPacket pack;
+  std::cout << "Trying to refresh game list." << std::endl;
+  _nc->sendPacket(&pack);
 }
 
 void Client::selectGame(const std::string &name)
 {
-  ClientGameConnectPacket* pack = new ClientGameConnectPacket;
+  ClientGameConnectPacket pack;
 
-  pack->setRoomName(name);
-  pack->setRoomId(_rooms[name]);
-  _nc->sendPacket(pack);
+  pack.setRoomName(name);
+  pack.setRoomId(_rooms[name]);
+  _nc->sendPacket(&pack);
 }
 
 void Client::createGame(const std::string &name)
 {
-  ClientGameConnectPacket* pack = new ClientGameConnectPacket;
+  ClientGameConnectPacket pack;
 
-  pack->setRoomId(0);
-  pack->setRoomName(name);
-  _nc->sendPacket(pack);
+  pack.setRoomId(0);
+  pack.setRoomName(name);
+  _nc->sendPacket(&pack);
 }
 
 void Client::handlePacket(APacket* pack, unsigned int id)

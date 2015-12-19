@@ -60,7 +60,8 @@ private:
   Game *				_game;
   bool					_gameStart;
   SoundPlayer				_soundPlayer;
-
+  std::list<std::function<void()> >	_eventChecks;
+  std::list<std::pair<std::string, unsigned int> > _roomsBuf;
 public:
   Menu(int width, int height, Client *client);
   ~Menu();
