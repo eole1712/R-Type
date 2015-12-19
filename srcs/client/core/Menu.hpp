@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <list>
-#include <iostream>
 #include "Animation.hpp"
 #include "ClickableBtn.hpp"
 #include "Editable.hpp"
@@ -21,12 +20,13 @@ class Client;
 class Menu
 {
 private:
-  enum Row : unsigned int{
+  enum Row : unsigned int
+  {
     LOGIN,
-      CREATE,
-      HOST,
-      SERVER
-      };
+    CREATE,
+    HOST,
+    SERVER
+  };
 
 private:
   int					_width;
@@ -38,8 +38,6 @@ private:
   sf::Color				_loginSizeErrColor;
   sf::Color				_highlightColor;
   sf::Color				_startColor;
-  unsigned int				_gameListPosX;
-  unsigned int				_gameListPosY;
   unsigned int				_currentGameNumber;
   bool					_isConnected;
   sf::Font				_fieldsFont;
@@ -55,11 +53,6 @@ private:
   ClickableBtn				_startButton;
   List					_gameList;
   Row					_currentRow;
-  //  bool					_maxLoginSize;
-  /*  std::list<GameListItem>		_gamesData;
-  stxd::list<GameListItem>::iterator	_gameListIt;
-  std::list<GameListItem>::iterator	_currentSelectedGame;*/
-   //  sf::String				_currentGameName;
   
 public:
   Menu(int width, int height, Client *client);

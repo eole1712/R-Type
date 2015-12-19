@@ -1,13 +1,9 @@
-#if defined(__linux__)
-#include <unistd.h>
-#endif
 #include "Menu.hpp"
 
 Menu::Menu(int width, int height, Client* client):
   _width(width), _height(height), _client(client), _window(sf::VideoMode(_width, _height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
-  _highlightColor(255, 255, 255), _startColor(121, 248, 248), _gameListPosX(width / 2.5),
-  _gameListPosY(_height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _currentGameNumber(0), _isConnected(false),
+  _highlightColor(255, 255, 255), _startColor(121, 248, 248), _currentGameNumber(0), _isConnected(false),
   _fieldsFont(), _loginFont(),
   _menuFields{ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor, 21),
     ClickableBtn(_width / 5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Create", _fieldsFont, _fieldsColor, 21),
@@ -21,7 +17,7 @@ Menu::Menu(int width, int height, Client* client):
   _connectButton(_width / 1.3, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(_width / 1.15, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
   _startButton(_width / 2.3, _height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
-  _gameList(_gameListPosX, _gameListPosY, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN)
+  _gameList(width / 2.5, _height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN)
 {
   if (!_fieldsFont.loadFromFile("../../resources/menu/fonts/BebasNeue Bold.ttf"))
     std::cout << "error loading Font" << std::endl;
@@ -43,11 +39,11 @@ void		Menu::initMainView()
   std::string	s = "game";
   std::string	t = "hello";
   
-  _gameList.addGame(s, 1, t);
-  _gameList.addGame(s, 2, t);
-  _gameList.addGame(s, 3, t);
-  _gameList.addGame(s, 4, t);
-  _gameList.addGame(s, 5, t);
+  _gameList.addItem(s, 1, t);
+  _gameList.addItem(s, 2, t);
+  _gameList.addItem(s, 3, t);
+  _gameList.addItem(s, 4, t);
+  _gameList.addItem(s, 5, t);
 
   background.scale(2, 2);
   this->loadFonts();
@@ -60,8 +56,8 @@ void		Menu::initMainView()
       this->drawFields();
       this->drawEditable();
       this->drawLoginSizeErr();
-      if (_isConnected == true && _gameList.getGameList().size() != 0)
-	_gameList.drawGameList(_window);
+      if (_isConnected == true && _gameList.getList().size() != 0)
+	_gameList.render(_window);
       _window.display();
     }
 }
@@ -88,12 +84,12 @@ void		Menu::eventHandler()
 	  break;
 	case sf::Event::MouseMoved:
 	  this->handleMouseMoved();
-	  if (_gameList.getGameList().size() != 0)
+	  if (_gameList.getList().size() != 0)
 	    _gameList.mouseMovedHandler(_window, event);
 	  break;
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick();
-	  if (_gameList.getGameList().size() != 0)
+	  if (_gameList.getList().size() != 0)
 	    _gameList.clickHandler(_window, event);
 	  break;
 	case sf::Event::TextEntered:
@@ -113,7 +109,8 @@ void		Menu::handleMouseClick()
 {
    sf::Vector2f	mousePosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
 
-   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentGameName().empty())
+   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition)
+       && !_gameList.getCurrentItem().empty())
      {
        Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString());
        Game		game(_client, _window, player);
@@ -220,7 +217,7 @@ void		Menu::changeCurrentRow()
 
 void		Menu::addGame(std::string const& gameName, unsigned int playerNumber, std::string const& daySentence)
 {
-  _gameList.addGame(gameName, playerNumber, daySentence);
+  _gameList.addItem(gameName, playerNumber, daySentence);
 }
 
 void		Menu::setConnected()
