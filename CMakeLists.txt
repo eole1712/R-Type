@@ -4,34 +4,10 @@ project(R-Type)
 
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
 
-set(SERVER_LIBRARY_OUTPUT_PATH ../libs/server/ )
-set(CLIENT_LIBRARY_OUTPUT_PATH ../libs/client/ )
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${EXECUTABLE_OUTPUT_PATH}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${EXECUTABLE_OUTPUT_PATH}")
 
-#All include directories
-include_directories(
-	srcs/server/core
-	srcs/server/core/missiles
-	srcs/server/core/monsters
-	srcs/server/misc
-	srcs/server/network
-	srcs/misc
-	srcs/misc/network
-	srcs/common
-	)
-if (UNIX)
-include_directories(
-	srcs/common/linux_specific	
-	)
-endif (UNIX)
-if (WIN32)
-include_directories(
-	srcs/common/windows_specific
-	)
-endif(WIN32)
-
+################################## RType_server #####################################
 #Server sources files
 set(server_sources
 	srcs/misc/APacket.cpp
@@ -74,31 +50,112 @@ set(server_sources
 	srcs/server/network/NetServer.cpp
 	)
 
-if (UNIX)
-set(server_sources 
-	${server_sources}
-	srcs/common/linux_specific/CULibLoader.cpp
+#server includes files
+set(server_includes
+	srcs/server/core
+	srcs/server/core/missiles
+	srcs/server/core/monsters
+	srcs/server/misc
+	srcs/server/network
+	srcs/misc
+	srcs/misc/network
+	srcs/common
 	)
+
+if (UNIX)
+set(server_sources ${server_sources} srcs/common/linux_specific/CULibLoader.cpp)
+set(server_includes ${server_includes} srcs/common/linux_specific)
 endif (UNIX)
 if (WIN32)
-set(server_sources 
-	${server_sources}
-	srcs/common/windows_specific/CWLibLoader.cpp
-	)
+set(server_sources ${server_sources} srcs/common/windows_specific/CWLibLoader.cpp)
+set(server_includes ${server_includes} srcs/common/windows_specific)
 endif (WIN32)
 
-add_executable(RType_server ${server_sources})
+add_executable(RType_server ${server_sources} ${server_includes})
+
 target_compile_features(RType_server PRIVATE cxx_range_for)
+target_include_directories(RType_server PRIVATE ${server_includes})
 if (UNIX)
-  target_link_libraries(RType_server -lpthread)
-  target_link_libraries(RType_server -ldl)
+target_link_libraries(RType_server -lpthread)
+target_link_libraries(RType_server -ldl)
 endif (UNIX)
-#Client sources files
-#set(client_sources
-#	srcs/client/main.cpp
-#	srcs/client/client.cpp
-#	)
-#add_executable(RType_client client_sources)
+
+source_group(ServerIncludes FILES ${server_includes})
+################################## !RType_server #####################################
+
+################################## RType_client #####################################
+#client sources files
+set(client_sources 
+	srcs/client/core/main.cpp 
+	srcs/client/core/Menu.cpp
+	srcs/client/core/Player.cpp 
+	srcs/client/core/Game.cpp
+	srcs/client/core/Client.cpp
+	srcs/client/unit/AUnit.cpp
+	srcs/client/unit/UnitFactory.cpp
+	srcs/client/graphics/List.cpp
+	srcs/client/graphics/Font.cpp
+	srcs/client/graphics/Animation.cpp 
+	srcs/client/graphics/ClickableBtn.cpp
+	srcs/client/graphics/Editable.cpp
+	srcs/client/graphics/Error.cpp
+	srcs/client/graphics/GameListItem.cpp
+	srcs/client/sound/SoundPlayer.cpp
+	
+	srcs/client/network/NetClient.cpp
+	srcs/misc/network/Networker.cpp
+	srcs/misc/network/UdpSocket.cpp
+	srcs/misc/network/NetManager.cpp
+	srcs/misc/APacket.cpp
+	srcs/misc/ClientConnexionPacket.cpp
+	srcs/misc/ClientGameConnectPacket.cpp
+	srcs/misc/ClientGameInfoPacket.cpp
+	srcs/misc/ClientKeyboardPressPacket.cpp
+	srcs/misc/ServerConnexionPacket.cpp
+	srcs/misc/ServerPlayerMovePacket.cpp
+	srcs/misc/ServerGameConnectPacket.cpp
+	srcs/misc/ServerTimerRefreshPacket.cpp
+	srcs/misc/ServerGameInfoPacket.cpp
+	srcs/misc/ServerUnitDiePacket.cpp
+	srcs/misc/ServerPingPacket.cpp
+	srcs/misc/ServerUnitSpawnPacket.cpp
+	srcs/client/misc/Time.cpp 
+	srcs/misc/Lock.cpp
+	)
+
+#client includes files
+set(client_includes
+	srcs/client/core
+	srcs/client/graphics
+	srcs/client/sound
+	srcs/client/network
+	srcs/client/unit
+	srcs/client/unit/MonsterTest
+	srcs/client/unit/BasicMissile
+	srcs/client/misc
+	srcs/misc
+	srcs/common
+	srcs/misc/network
+	)
+
+if (WIN32)
+set(client_sources ${client_sources} srcs/common/windows_specific/CWLibLoader.cpp)
+set(client_includes ${client_includes} srcs/common/windows_specific)
+elseif (UNIX)
+set(client_sources ${client_sources} srcs/common/linux_specific/CULibLoader.cpp)
+set(client_includes ${client_includes} srcs/common/linux_specific)
+endif()
+
+add_executable(RType_client ${client_sources} ${client_sources})
+target_compile_features(RType_client PRIVATE cxx_range_for)
+target_include_directories(RType_client PRIVATE ${client_includes})
+if (UNIX)
+target_link_libraries(RType_client -lpthread)
+target_link_libraries(RType_client -ldl)
+endif (UNIX)
+
+source_group(ClientIncludes FILES ${client_includes})
+################################## !RType_client #####################################
 
 if (APPLE)
 set(CMAKE_MACOSX_RPATH ON)
@@ -113,36 +170,79 @@ endif()
 endif(APPLE)
 
 if (UNIX)
-add_library(MonsterTest SHARED
-  srcs/common/linux_specific/CULibLoader.cpp
-  srcs/server/core/monsters/MonsterTest.cpp
-  srcs/server/core/AUnit.cpp
-  srcs/server/core/AMissile.cpp
-  srcs/server/core/MissileFactory.cpp
-  srcs/server/core/AMonster.cpp
-  srcs/server/core/GameUtils.cpp
-  srcs/server/misc/Timer.cpp)
+add_library(ServerMonsterTest SHARED
+	srcs/common/linux_specific/CULibLoader.cpp
+	srcs/server/core/monsters/MonsterTest.cpp
+	srcs/server/core/AUnit.cpp
+	srcs/server/core/AMissile.cpp
+	srcs/server/core/MissileFactory.cpp
+	srcs/server/core/AMonster.cpp
+	srcs/server/core/GameUtils.cpp
+	srcs/server/misc/Timer.cpp)
 endif (UNIX)
 
 if (WIN32)
-add_library(MonsterTest SHARED
-  srcs/common/windows_specific/CWLibLoader.cpp
-  srcs/server/core/monsters/MonsterTest.cpp
-  srcs/server/core/AUnit.cpp
-  srcs/server/core/AMissile.cpp
-  srcs/server/core/MissileFactory.cpp
-  srcs/server/core/AMonster.cpp
-  srcs/server/core/GameUtils.cpp
-  srcs/server/misc/Timer.cpp)
+add_library(ServerMonsterTest SHARED
+	srcs/common/windows_specific/CWLibLoader.cpp
+	srcs/server/core/monsters/MonsterTest.cpp
+	srcs/server/core/AUnit.cpp
+	srcs/server/core/AMissile.cpp
+	srcs/server/core/MissileFactory.cpp
+	srcs/server/core/AMonster.cpp
+	srcs/server/core/GameUtils.cpp
+	srcs/server/misc/Timer.cpp)
 endif (WIN32)
 
-target_compile_features(MonsterTest PRIVATE cxx_range_for)
+target_include_directories(ServerMonsterTest PRIVATE ${server_includes})
+target_compile_features(ServerMonsterTest PRIVATE cxx_range_for)
+set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
 
-add_library(BasicMissile SHARED
-  srcs/server/core/missiles/BasicMissile.cpp
-  srcs/server/core/AUnit.cpp
-  srcs/server/core/AMissile.cpp
-  srcs/server/core/GameUtils.cpp
-  srcs/server/misc/Timer.cpp)
+add_library(ServerBasicMissile SHARED
+	srcs/server/core/missiles/BasicMissile.cpp
+	srcs/server/core/AUnit.cpp
+	srcs/server/core/AMissile.cpp
+	srcs/server/core/GameUtils.cpp
+	srcs/server/misc/Timer.cpp
+	)
 
-target_compile_features(BasicMissile PRIVATE cxx_range_for)
+target_include_directories(ServerBasicMissile PRIVATE ${server_includes})
+target_compile_features(ServerBasicMissile PRIVATE cxx_range_for)
+set_target_properties(ServerBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+
+
+add_library(ClientMonsterTest SHARED
+	srcs/client/unit/MonsterTest/MonsterTest.cpp
+	srcs/client/unit/AUnit.cpp
+	srcs/client/graphics/Animation.cpp
+	srcs/client/misc/Time.cpp
+	)
+target_include_directories(ClientMonsterTest PRIVATE ${client_includes})
+target_compile_features(ClientMonsterTest PRIVATE cxx_range_for)
+set_target_properties(ClientMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+
+add_library(ClientBasicMissile SHARED
+	srcs/client/unit/MonsterTest/MonsterTest.cpp
+	srcs/client/unit/AUnit.cpp
+	srcs/client/graphics/Animation.cpp
+	srcs/client/misc/Time.cpp
+	)
+target_include_directories(ClientBasicMissile PRIVATE ${client_includes})
+target_compile_features(ClientBasicMissile PRIVATE cxx_range_for)
+set_target_properties(ClientBasicMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+
+
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
+
+# Detect and add SFML
+if (WIN32)
+	set(SFML_ROOT C:/libs/SFML-2.3.2)
+endif()
+
+find_package(SFML 2.1 REQUIRED system window graphics network audio)
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+  target_link_libraries(RType_client ${SFML_LIBRARIES})
+  target_link_libraries(ClientMonsterTest ${SFML_LIBRARIES})
+  target_link_libraries(ClientBasicMissile ${SFML_LIBRARIES})
+endif()
