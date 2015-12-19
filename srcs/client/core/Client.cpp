@@ -171,8 +171,3 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
 
   _nc->sendPacket(&packet);
 }
-
-void Client::setGame(Game *game)
-{
-  _game = game;
-}
