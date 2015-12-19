@@ -9,7 +9,7 @@ class SoundPlayer
 private:
   std::string		_soundFileName;
   sf::SoundBuffer	_soundBuffer;
-  sf::Sound		_sound;
+  sf::Music		_music;
   
 public:
   SoundPlayer(std::string const&);
