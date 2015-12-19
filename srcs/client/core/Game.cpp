@@ -122,7 +122,7 @@ void			Game::setTimer(unsigned long time)
   _creationTime = Time::getTimeStamp() - time;
 }
 
-void			Game::connectUnit(Unit::type type, int x, int y, unsigned int id,
+void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 					  Time::stamp creationTime, int param)
 {
   Unit::AUnit *		unit;

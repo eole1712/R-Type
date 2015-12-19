@@ -4,6 +4,7 @@
 #include "ServerConnexionPacket.hpp"
 #include "ServerGameConnectPacket.hpp"
 #include "ServerGameInfoPacket.hpp"
+#include "ServerUnitSpawnPacket.hpp"
 #include "ServerTimerRefreshPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 #include "ServerPlayerMovePacket.hpp"
@@ -74,7 +75,7 @@ Server::Server() {
 		  if ((it) == _games.end())
 		    {
 		      std::cout << "creating game" << std::endl;
-		      _games[gameID] = new Game(gameID, pack->getRoomName());
+		      _games[gameID] = new Game(gameID, pack->getRoomName(), this);
 		      game = _games[gameID];
 		      ++gameID;
 		    }
@@ -191,5 +192,20 @@ void    Server::refreshTimer(unsigned int idGame)
     
     pack->setCurrentTimer(GameUtils::Game::now(idGame));
     for (auto& user : _games[idGame]->getUsers())
+        _netServer->send(pack, user->getClientID());
+}
+
+void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
+{
+    ServerUnitSpawnPacket*    pack = new ServerUnitSpawnPacket;
+    
+    pack->setTimer(unit->getCreationTime());
+    pack->setX(unit->getX());
+    pack->setY(unit->getY());
+    pack->setUnitType(unitType);
+    pack->setUnitID(unit->getID());
+    pack->setParam(0);
+
+    for (auto& user : _games[unit->getGameID()]->getUsers())
         _netServer->send(pack, user->getClientID());
 }

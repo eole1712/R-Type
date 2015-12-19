@@ -26,7 +26,7 @@ public:
   void			setFinish();
   void			setTimer(unsigned long time);
   bool			getFinish() const;
-  void			connectUnit(Unit::type type, int x, int y, unsigned int id,
+  void			connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 				    Time::stamp creationTime, int param);
   void			disconnectUnit(unsigned int);
   Unit::AUnit &		operator[](unsigned int id);

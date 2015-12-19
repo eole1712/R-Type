@@ -17,6 +17,7 @@ namespace Unit
       virtual ~MonsterTest();
       
       virtual Monster::type		getMonsterType() const;
+      virtual Unit::typeID    getTypeID() const;
       
       virtual Missile::AMissile*	shoot();
       virtual pos     move() const;

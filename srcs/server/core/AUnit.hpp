@@ -3,6 +3,7 @@
 
 #include <list>
 #include "Timer.hpp"
+#include "UnitType.hpp"
 
 namespace Unit {
   
@@ -75,6 +76,7 @@ namespace Unit {
   public:
     virtual unsigned int  getID() const;
     virtual unsigned int  getGameID() const;
+    virtual typeID        getTypeID() const = 0;
     
   protected:
     unsigned int                            _hp;

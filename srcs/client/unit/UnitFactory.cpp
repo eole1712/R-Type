@@ -14,7 +14,7 @@
 
 #include "UnitFactory.hpp"
 
-const std::map<Unit::type, std::string> Unit::Factory::LIBSLIST = {
+const std::map<Unit::typeID, std::string> Unit::Factory::LIBSLIST = {
 #if (defined __APPLE__)
   { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.dylib" },
   { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.dylib" }
@@ -31,7 +31,7 @@ Factory*     Factory::_instance = NULL;
 Factory::Factory()
 {
   std::for_each(Unit::Factory::LIBSLIST.begin(), Unit::Factory::LIBSLIST.end(),
-		[this](std::pair<Unit::type, std::string> elem)
+		[this](std::pair<Unit::typeID, std::string> elem)
 		{
 		  this->addUnitType(elem.first, elem.second);
 		});
@@ -40,19 +40,19 @@ Factory::Factory()
 Factory::~Factory()
 {
   std::for_each(this->_libs.begin(), this->_libs.end(),
-		[](std::pair<Unit::type, ILibLoader*> lib)
+		[](std::pair<Unit::typeID, ILibLoader*> lib)
 		{
 		  delete lib.second;
 		});
 }
 
-Unit::AUnit*	Factory::createUnit(Unit::type type, int x, int y,
+Unit::AUnit*	Factory::createUnit(Unit::typeID type, int x, int y,
 				    unsigned int id, Time::stamp creationTime, float param)
 {
   fptrNewUnit	ptr;
   Unit::AUnit*	newUnit;
 
-  for(std::list<std::pair<Unit::type, ILibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::typeID, ILibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
       if ((*it).first == type)
@@ -65,11 +65,11 @@ Unit::AUnit*	Factory::createUnit(Unit::type type, int x, int y,
   return (NULL);
 }
 
-bool	Factory::addUnitType(Unit::type type, std::string libName)
+bool	Factory::addUnitType(Unit::typeID type, std::string libName)
 {
   ILibLoader*	libLoader;
 
-  for(std::list<std::pair<Unit::type, ILibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::typeID, ILibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
       if ((*it).first == type)
@@ -86,9 +86,9 @@ bool	Factory::addUnitType(Unit::type type, std::string libName)
   return (true);
 }
 
-bool	Factory::removeUnitType(Unit::type type)
+bool	Factory::removeUnitType(Unit::typeID type)
 {
-  for(std::list<std::pair<Unit::type, ILibLoader*> >::iterator it = this->_libs.begin();
+  for(std::list<std::pair<Unit::typeID, ILibLoader*> >::iterator it = this->_libs.begin();
       it != this->_libs.end(); ++it)
     {
       if ((*it).first == type)

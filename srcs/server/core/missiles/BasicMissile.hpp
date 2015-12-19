@@ -19,7 +19,8 @@ namespace Unit {
       
     public:
       virtual double              getTime() const;
-      
+      virtual Unit::typeID    getTypeID() const;
+
     public:
       virtual void                getHit(AUnit*);
       

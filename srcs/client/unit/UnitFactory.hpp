@@ -23,19 +23,19 @@ private:
 public:
   ~Factory();
 
-  Unit::AUnit*		createUnit(Unit::type, int x, int y,
+  Unit::AUnit*		createUnit(Unit::typeID, int x, int y,
 				   unsigned int id, Time::stamp creationTime, float param);
 
-  bool			addUnitType(Unit::type, std::string libName);
-  bool			removeUnitType(Unit::type);
+  bool			addUnitType(Unit::typeID, std::string libName);
+  bool			removeUnitType(Unit::typeID);
 
   static Factory*	getInstance();
   static void		destroy();
 
-  static const std::map<Unit::type, std::string>	LIBSLIST;
+  static const std::map<Unit::typeID, std::string>	LIBSLIST;
 
 private:
-  std::list<std::pair<Unit::type, ILibLoader*> >	_libs;
+  std::list<std::pair<Unit::typeID, ILibLoader*> >	_libs;
 
   static Factory*					_instance;
 };
