@@ -5,7 +5,7 @@
 
 Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(player),
-    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(0),
+    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(Time::getTimeStamp()),
     _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},

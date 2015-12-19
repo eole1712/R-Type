@@ -23,11 +23,11 @@ AUnit::AUnit(int x, int y, unsigned int id, Time::stamp creationTime)
     return _id;
   }
 
-pos	AUnit::move(Time::stamp tick) const
-{
-  int	diff = static_cast<long>(tick - _creationTime) / 10;
+  pos		AUnit::move(Time::stamp tick) const
+  {
+    int	diff = static_cast<long>(tick - _creationTime) / 10;
 
-  return {_x + diff, _y};
-}
+    return {_x + diff, _y};
+  }
 
 }
