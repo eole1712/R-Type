@@ -7,5 +7,4 @@ int	main(int ac, char **av)
   Client cl(port);
 
   cl.start();
-  Menu menu(720, 480, &cl);
 }

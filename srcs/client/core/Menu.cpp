@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 
-Menu::Menu(int width, int height, Client* client):
+Menu::Menu(int width, int height, IMenuHandler* client):
   _width(width), _height(height), _scale{1, 1},
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
@@ -23,12 +23,11 @@ Menu::Menu(int width, int height, Client* client):
   _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
+ {
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
-	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
-
-	  _game = new Game(_client, _window, player);
+	  _game = new Game(_client->getGameHandler(), _window, 0);
 	  _game->loop();
 	  _gameStart = false;
 	}
@@ -39,7 +38,7 @@ Menu::Menu(int width, int height, Client* client):
 	while (!_roomsBuf.empty())
 	  _roomsBuf.pop_back();
       });
-
+    }
 }
 
 Menu::~Menu()
@@ -89,7 +88,7 @@ void		Menu::eventHandler()
 	{
 	  case sf::Event::Resized:
 	    _scale[0] = float(event.size.width) / _width;
-	    _scale[1] = float(event.size.height) / _height;	    
+	    _scale[1] = float(event.size.height) / _height;
 	    break;
 	case sf::Event::Closed:
 	  _window.close();

@@ -6,11 +6,13 @@
 #include "IPacketHandler.hpp"
 #include "Menu.hpp"
 #include "Game.hpp"
+#include "IGameHandler.hpp"
+#include "IMenuHandler.hpp"
 
 class Game;
 class Menu;
 
-class Client : public IPacketHandler
+class Client : public IPacketHandler, IGameHandler, IMenuHandler
 {
 public:
   Client(int port = 6524);
@@ -23,12 +25,14 @@ public:
   void createGame(std::string const& name);
   void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
+  virtual IGameHandler* getGameHandler();
 protected:
   NetManager* _nm;
   NetClient*  _nc;
   std::vector<std::function<void(APacket*, unsigned int)> > _packetHandlerFuncs;
   //std::list<Unit::AUnit*> _units;
   std::map<std::string, uint32_t> _rooms;
+  uint32_t _connected;
   Menu* _menu;
   int _playerId;
   Game* _game;
