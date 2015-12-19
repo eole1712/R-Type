@@ -33,7 +33,7 @@ public:
     virtual void        start();
     virtual bool        nextAction();
     virtual bool        end();
-    virtual bool        isInGame() const;
+    virtual bool        isStarted() const;
 
 protected:
     virtual void        checkMouvements(Timer &);
