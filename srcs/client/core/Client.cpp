@@ -107,8 +107,9 @@ Client::Client(int port)
 	return;
       if (_game == nullptr)
         _menu->startGame();
+      else
+        _game->setTimer(pack->getCurrentTimer());
       std::cout << "timer update" << std::endl;
-      _game->setTimer(pack->getCurrentTimer());
     }
   };
   _menu = new Menu(720, 480, this);
@@ -126,6 +127,7 @@ void Client::start()
   std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
     _nm->loop();
   };
+    std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
   Thread<std::nullptr_t> t(fptr, nullptr);
   std::cout << "main view init" << std::endl;
   _menu->initMainView();

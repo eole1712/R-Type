@@ -3,9 +3,9 @@
 #include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
-Game::Game(IGameHandler * client, sf::RenderWindow & window, Unit::Player & player)
-  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(player),
-    _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(Time::getTimeStamp()),
+Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer)
+  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(localPlayer),
+    _map{}, _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
@@ -56,7 +56,6 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, Unit::Player & play
     	})
 {
   client->setGame(this);
-  connectUnit(Unit::MONSTERTEST, 100, 100, 5u, Time::stamp(0), 2);
 }
 
 Game::~Game()
@@ -77,9 +76,9 @@ void			Game::sendKey(Game * param, Key::keyState & key,
       {{sf::Keyboard::Right, Key::PRESS}, ClientKeyboardPressPacket::RightPress},
       {{sf::Keyboard::Right, Key::RELEASE}, ClientKeyboardPressPacket::RightRealease},
       {{sf::Keyboard::Left, Key::PRESS}, ClientKeyboardPressPacket::LeftPress},
-      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease},
+      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease}, 
       {{sf::Keyboard::Space, Key::PRESS}, ClientKeyboardPressPacket::SpacePress},
-      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease},
+      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease}, 
     };
 
   param->_client->sendKey(netAssoc[std::pair<sf::Keyboard::Key, Key::event>(keycode, e)]);
@@ -98,7 +97,7 @@ void			Game::setFinish()
 
 Unit::Player*		Game::getLocalPlayer()
 {
-  return &_localPlayer;
+  return getPlayer(_localPlayer);
 }
 
 Unit::Player *		Game::getPlayer(unsigned int id)
@@ -158,14 +157,6 @@ void			Game::pollEvent()
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
 	  _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
-
-      /*
-      else if (event.type == sf::Event::TextEntered)
-	{
-	  if (event.text.unicode < 128)
-	    std::cout << "typed: " << static_cast<char>(event.text.unicode) << std::endl;
-
-       }*/
     }
   _input.process(_tick, this);
 }

@@ -66,8 +66,6 @@ foreach(DIRECTORY ${server_includes_directories})
     set(server_includes ${server_includes} ${tmp})
 endforeach()
 
-message(${server_includes})
-
 if (UNIX)
 set(server_sources ${server_sources} srcs/common/linux_specific/CULibLoader.cpp)
 set(server_includes_directories ${server_includes_directories} srcs/common/linux_specific)
@@ -153,8 +151,6 @@ foreach(DIRECTORY ${client_includes_directories})
     FILE(GLOB tmp RELATIVE "${CMAKE_SOURCE_DIR}/" ${DIRECTORY}/*.hpp)
     set(client_includes ${client_includes} ${tmp})
 endforeach()
-
-message(${client_includes})
 
 if (WIN32)
 set(client_sources ${client_sources} srcs/common/windows_specific/CWLibLoader.cpp)

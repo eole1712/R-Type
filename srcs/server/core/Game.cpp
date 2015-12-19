@@ -71,7 +71,7 @@ Unit::Player*	Game::getPlayer(Unit::color color) const
     return (nullptr);
 }
 
-bool    Game::isInGame() const
+bool    Game::isStarted() const
 {
     return _inGame;
 }

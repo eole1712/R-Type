@@ -3,8 +3,8 @@
 
 # include <list>
 # include <SFML/Graphics.hpp>
-# include "IGameHandler.hpp"
-# include "Time.hpp"
+# include "Client.hpp"
+# include "Time.hpp" 
 # include "Key.hpp"
 # include "Player.hpp"
 
@@ -13,10 +13,10 @@ class Client;
 class Game
 {
 public:
-  Game(IGameHandler * client, sf::RenderWindow & window, Unit::Player & player);
+  Game(IGameHandler * client, sf::RenderWindow & window, int player);
   virtual ~Game();
 
-public:
+public:  
   static void		sendKey(Game * param, Key::keyState & key,
 				sf::Keyboard::Key keycode, Key::event e);
   void			loop();
@@ -40,11 +40,11 @@ private:
   IGameHandler *		_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
-  Unit::Player &		_localPlayer;
+  int				_localPlayer;
   RemoteMap			_map;
   bool				_finish;
   Time::stamp			_creationTime;
-  Key::Bind<Game *>		_input;
+  Key::Bind<Game *>		_input;  
 };
 
 #endif /* !GAME_H_ */

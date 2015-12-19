@@ -1,5 +1,7 @@
 #include <map>
+#include "Lock.hpp"
 #include "GameUtils.hpp"
+#include <mutex>
 
 namespace GameUtils {
     
@@ -7,6 +9,10 @@ namespace GameUtils {
         
         unsigned int            getNewID(unsigned int gameID)
         {
+            static Lock         lock;
+            
+            std::lock_guard<Lock> l(lock);
+            
             static std::map<unsigned int, unsigned int>   tab;
             std::map<unsigned int, unsigned int>::iterator it;
             
@@ -20,6 +26,10 @@ namespace GameUtils {
         
         Timer::time             now(unsigned int gameID)
         {
+            static Lock         lock;
+            
+            std::lock_guard<Lock> l(lock);
+            
             static std::map<unsigned int, Timer*>   tab;
             std::map<unsigned int, Timer*>::iterator it;
             
