@@ -46,6 +46,13 @@ Server::Server() {
                 ServerGameInfoPacket* ret = new ServerGameInfoPacket;
                 ret->setRoomId(game.second->getID());
 				ret->setRoomSlots(4 - game.second->getNbPlayers());
+                int nb = 0;
+                for (auto& user : game.second->getUsers())
+                {
+                    if (user->isReady())
+                        nb++;
+                }
+                ret->setRoomReady(nb);
 				ret->setRoomName(game.second->getName());
 				_netServer->send(ret, id);
 				delete ret;

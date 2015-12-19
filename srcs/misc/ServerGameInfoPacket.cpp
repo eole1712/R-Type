@@ -19,8 +19,12 @@ uint8_t ServerGameInfoPacket::getRoomSlots() {
 	return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(uint32_t), sizeof(uint8_t)).c_str());
 }
 
+uint8_t ServerGameInfoPacket::getRoomReady() {
+    return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), sizeof(uint8_t)).c_str());
+}
+
 std::string ServerGameInfoPacket::getRoomName() {
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), kRoomNameSize).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t), kRoomNameSize).c_str()));
 }
 
 void ServerGameInfoPacket::setRoomId(uint32_t id) {
@@ -37,8 +41,16 @@ void ServerGameInfoPacket::setRoomSlots(uint8_t nb) {
 		sizeof(uint8_t));
 }
 
+void ServerGameInfoPacket::setRoomReady(uint8_t nb) {
+    _data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t),
+                  sizeof(uint8_t),
+                  reinterpret_cast<const char*>(&nb),
+                  sizeof(uint8_t));
+}
+
+
 void ServerGameInfoPacket::setRoomName(std::string const& name) {
-	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t),
+	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t),
 		kRoomNameSize,
 		name.c_str(),
 		name.size());
