@@ -55,14 +55,16 @@ private:
   List					_gameList;
   Row					_currentRow;
   Game *				_game;
+  bool					_gameStart;
   SoundPlayer				_soundPlayer;
-  
+
 public:
   Menu(int width, int height, Client *client);
   ~Menu();
 
   void				initMainView();
   void				addGame(std::string const&, unsigned int, std::string const&);
+  void				startGame();
 
 private:
   void				initColors();
@@ -79,7 +81,6 @@ private:
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
   void				setConnected();
-  Game *			startGame();
 };
 
 #endif /* !MENU_HPP */
