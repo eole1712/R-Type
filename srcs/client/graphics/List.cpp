@@ -10,15 +10,15 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 {
 }
 
-void			List::addItem(std::string const& gameName, unsigned int playerNumber,
-				      std::string const& daySentence)
+void			List::addItem(int id, std::string const& gameName,
+				      unsigned int playerNumber, std::string const& daySentence)
 {
   std::string		playerNumberToString;
 
   playerNumberToString = std::to_string(playerNumber);
   GameListItem	gameListItem(_posX, _posY + (30 * _currentIndex), gameName,
 			     playerNumberToString, daySentence, _font, _color, _highlightColor);
-  _list.push_back(gameListItem);
+  _list.push_back({id, gameListItem});
   if (_list.size() == 1)
     _iterator = _list.begin();
   _currentIndex += 1;

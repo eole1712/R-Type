@@ -22,6 +22,7 @@ namespace Unit {
   };
 
   enum type {
+    PLAYER,
     MONSTERTEST,
     BASICMISSILE
   };

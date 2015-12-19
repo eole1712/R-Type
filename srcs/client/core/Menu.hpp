@@ -17,6 +17,7 @@
 
 #define MAX_NUMBER_OF_FIELDS 4
 
+class Player;
 class Client;
 class Game;
 
@@ -61,13 +62,13 @@ private:
   bool					_gameStart;
   SoundPlayer				_soundPlayer;
   std::list<std::function<void()> >	_eventChecks;
-  std::list<std::pair<std::string, unsigned int> > _roomsBuf;
+  std::map<int, std::pair<std::string, unsigned int>> _roomsBuf;
 public:
   Menu(int width, int height, Client *client);
   ~Menu();
 
   void				initMainView();
-  void				addGame(std::string const&, unsigned int, std::string const&);
+  void				addGame(std::string const&, unsigned int, int);
   void				startGame();
 
 private:

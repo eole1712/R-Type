@@ -3,7 +3,7 @@
 #include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
-Game::Game(Client * client, sf::RenderWindow & window, int localPlayer)
+Game::Game(Client * client, sf::RenderWindow & window, int localPlayer, std::string playerName)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(localPlayer),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({
@@ -125,8 +125,18 @@ void			Game::setTimer(unsigned long time)
 void			Game::connectUnit(Unit::type type, int x, int y, unsigned int id,
 					  Time::stamp creationTime, int param)
 {
-  Unit::AUnit *	unit = Unit::Factory::getInstance()->createUnit(type, x, y, id, creationTime, float(param) / 1000);
+  Unit::AUnit *		unit;
+  float			_param = float(param) / 1000;
 
+  if (type == Unit::PLAYER)
+    {
+      if (id = _localPlayer)
+	unit = new Unit::Player(x, y, id, creationTime, _localPlayerName, _param);
+      else
+	unit = new Unit::Player(x, y, id, creationTime, std::string(""), _param);	
+    }
+  else
+    unit = Unit::Factory::getInstance()->createUnit(type, x, y, id, creationTime, _param);
   _map[unit->getID()] = unit;
 }
 
