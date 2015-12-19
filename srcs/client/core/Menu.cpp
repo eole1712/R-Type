@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 
-Menu::Menu(int width, int height, Client* client):
+Menu::Menu(int width, int height, IMenuHandler* client):
   _client(client), _window(sf::VideoMode(width, height), "R-Type"),
   _fieldsColor(102,78,255), _loginColor(178,102,255), _loginSizeErrColor(204, 0, 0),
   _highlightColor(255, 255, 255), _startColor(121, 248, 248), _currentGameNumber(0), _isConnected(false),
@@ -28,7 +28,7 @@ Menu::Menu(int width, int height, Client* client):
 	{
 	  Unit::Player	player(100, 290, 1, 0, _login.getEditable().getString(), 0);
 
-	  _game = new Game(_client, _window, player);
+	  _game = new Game(_client->getGameHandler(), _window, player);
 	  _game->loop();
 	  _gameStart = false;
 	}

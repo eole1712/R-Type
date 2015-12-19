@@ -9,7 +9,7 @@
 #include "Editable.hpp"
 #include "GameListItem.hpp"
 #include "SoundPlayer.hpp"
-#include "Client.hpp"
+#include "IMenuHandler.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
 #include "List.hpp"
@@ -32,7 +32,7 @@ private:
   };
 
 private:
-  Client*				_client;
+  IMenuHandler*				_client;
   sf::RenderWindow			_window;
   sf::Color				_fieldsColor;
   sf::Color				_loginColor;
@@ -60,7 +60,7 @@ private:
   std::list<std::function<void()> >	_eventChecks;
   std::list<std::pair<std::string, unsigned int> > _roomsBuf;
 public:
-  Menu(int width, int height, Client *client);
+  Menu(int width, int height, IMenuHandler *client);
   ~Menu();
 
   void				initMainView();

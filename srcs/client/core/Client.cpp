@@ -16,6 +16,7 @@
 #include <sstream>
 
 Client::Client(int port)
+  : _connected(0)
 {
   _nm = new NetManager;
   _nc = new NetClient(port, _nm, this);
@@ -63,6 +64,7 @@ Client::Client(int port)
       ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
       if (pack == NULL)
 	return;
+
     },
 
     [this] (APacket* packet, unsigned int id) {
@@ -75,9 +77,13 @@ Client::Client(int port)
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
+      if (_game)
+	{
+	  _game->connectUnit(static_cast<Unit::type>(pack->getType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
+	}
       // if (_game)
       // 	{
-      // 	  _units.push_back(new Unit::AUnit(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
+      // 	  _units.push_back(new Unit::AUn:it(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
       // 	  _game->connectUnit(_units.back());
       // 	}
     },
@@ -173,4 +179,9 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
   ClientKeyboardPressPacket packet(e);
 
   _nc->sendPacket(&packet);
+}
+
+IGameHandler* Client::getGameHandler()
+{
+  return this;
 }

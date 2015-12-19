@@ -175,7 +175,7 @@ void NetManager::loop()
   while (_ret == ISocket::Sucess) {
 
     tVal.tv_sec = 0;
-    tVal.tv_usec = 100 + _timeout;
+    tVal.tv_usec = 10000 + _timeout;
 
     FD_ZERO(&readFds);
     FD_ZERO(&writeFds);

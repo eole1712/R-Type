@@ -3,7 +3,7 @@
 #include "UnitFactory.hpp"
 #include "MonsterTest.hpp"
 
-Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
+Game::Game(IGameHandler * client, sf::RenderWindow & window, Unit::Player & player)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayer(player),
     _map({{_localPlayer.getID(), &_localPlayer}}), _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({
@@ -31,7 +31,7 @@ Game::Game(Client * client, sf::RenderWindow & window, Unit::Player & player)
       _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{
-	  param->setFinish();	  
+	  param->setFinish();
 	}},
 	{{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp, Key::keyState & keys, Game * param)
 	    { Game::sendKey(param, keys, sf::Keyboard::Up, Key::PRESS); }},
@@ -77,9 +77,9 @@ void			Game::sendKey(Game * param, Key::keyState & key,
       {{sf::Keyboard::Right, Key::PRESS}, ClientKeyboardPressPacket::RightPress},
       {{sf::Keyboard::Right, Key::RELEASE}, ClientKeyboardPressPacket::RightRealease},
       {{sf::Keyboard::Left, Key::PRESS}, ClientKeyboardPressPacket::LeftPress},
-      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease}, 
+      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease},
       {{sf::Keyboard::Space, Key::PRESS}, ClientKeyboardPressPacket::SpacePress},
-      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease}, 
+      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease},
     };
 
   param->_client->sendKey(netAssoc[std::pair<sf::Keyboard::Key, Key::event>(keycode, e)]);
