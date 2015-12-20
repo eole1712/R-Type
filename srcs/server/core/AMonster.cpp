@@ -23,7 +23,7 @@ namespace Unit
       return (Unit::MONSTER);
     }
 
-    Missile::AMissile*          AMonster::shoot()
+      Missile::AMissile*          AMonster::shoot(Timer::time time)
     {
       if (!_time.isFinished())
         return NULL;
