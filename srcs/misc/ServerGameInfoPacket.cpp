@@ -57,6 +57,6 @@ void ServerGameInfoPacket::setRoomName(std::string const& name) {
 }
 
 std::ostream& operator<<(std::ostream& os, ServerGameInfoPacket const& packet) {
-	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", ROOMID : " << packet.getRoomId() << ", ROOMSLOTS : " << packet.getRoomSlots() << ", ROOMREADY : " << packet.getRoomReady() << ", ROOMNAME : " << packet.getRoomName() << ".";
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", ROOMID : " << packet.getRoomId() << ", ROOMSLOTS : " << (int)packet.getRoomSlots() << ", ROOMREADY : " << (int)packet.getRoomReady() << ", ROOMNAME : " << packet.getRoomName() << ".";
 	return os;
 }

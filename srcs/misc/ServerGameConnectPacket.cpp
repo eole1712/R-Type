@@ -45,6 +45,6 @@ uint32_t ServerGameConnectPacket::getGameId() const{
 }
 
 std::ostream& operator<<(std::ostream& os, ServerGameConnectPacket const& packet) {
-	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", STATUS : " << packet.getStatus() << ", PLAYERID : " << packet.getPlayerId() << ", GAMEID : " << packet.getGameId() << ".";
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", STATUS : " << packet.getStatus() << ", PLAYERID : " << (int)packet.getPlayerId() << ", GAMEID : " << packet.getGameId() << ".";
 	return os;
 }
