@@ -26,18 +26,18 @@ namespace Unit
     : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
-    _mySprite.scale(2.5, 2.5);
+    _mySprite.scale(1.8, 1.8);
   }
   
   MonsterTest::~MonsterTest()
   {}
-  
-  pos            MonsterTest::move(Time::stamp time) const
+
+  pos            MonsterTest::move(Time::stamp tick) const
   {
-      uintmax_t diff = time - _creationTime;
-      pos p = std::make_pair(_x - (diff / 10000), _y);
-      
-      return p;
+    long diff = static_cast<long>(tick - _creationTime) / 10;
+    
+    pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
+    return p;
   }
   
   void	MonsterTest::render(Time::stamp tick, sf::RenderWindow & window)

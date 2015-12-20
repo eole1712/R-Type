@@ -34,6 +34,9 @@ public:
   state			getState() const;
 
   void			setFrameIndex(unsigned int idx);
+  void			setFrameIndex(float idx);
+  unsigned int		getFrameWidth() const;
+  unsigned int	        getFrameHeight() const;
   unsigned int		getFrameIndex() const;
   sf::Sprite const &	getFrame();
 };

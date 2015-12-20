@@ -16,7 +16,7 @@ namespace GameUtils {
     namespace Map {
         bool             isIn(int x, int y);
         
-        static const int        WIDTH = 1600;
+        static const int        WIDTH = 1200;
         static const int        HEIGHT = 800;
     }
 }

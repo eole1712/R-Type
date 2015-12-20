@@ -124,7 +124,7 @@ Client::Client(int port)
       _nc->sendPacket(&ans);
     }
   };
-  _menu = new Menu(1600, 800, this);
+  _menu = new Menu(1200, 800, this);
   _game = nullptr;
 }
 

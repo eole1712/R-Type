@@ -165,6 +165,7 @@ void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
         static unsigned int     refresh = 1;
         unsigned int            gameID = game->getID();
+        
         //Boucle du jeu principale.
         game->start();
 		while (game->nextAction()) {

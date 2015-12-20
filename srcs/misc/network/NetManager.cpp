@@ -12,7 +12,7 @@
 NetManager* NetManager::_ptr = nullptr;
 
 NetManager::NetManager()
-  :_ret(ISocket::Sucess), _timeout(0)
+:_ret(ISocket::Sucess), _timeout(0)
 {
 
 }
@@ -115,29 +115,29 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
   std::unique_lock<Mutex> locker(_mutex);
 
   for (auto& elem : _sendings)
-    {
-      if (_sockets.find(elem.first) != _sockets.end()) {
+  {
+    if (_sockets.find(elem.first) != _sockets.end()) {
 
-	if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
-	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
-	  _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
-	  ret = _sockets[elem.first]->send(std::get<0>(elem.second.back()));
+     if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
+       _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
+       _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
+       ret = _sockets[elem.first]->send(std::get<0>(elem.second.back()));
 	  //locker.unlock();
-	  std::get<1>(elem.second.back())(_ret, ret);
+       std::get<1>(elem.second.back())(_ret, ret);
 	  //locker.lock();
-	  elem.second.pop_back();
-	}
-      }
-      else
-	{
-	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
-	  _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
+       elem.second.pop_back();
+     }
+   }
+   else
+   {
+     _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
+     _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
 	  //locker.unlock();
-	  std::get<1>(elem.second.back())(ISocket::UndefFD, ret);
+     std::get<1>(elem.second.back())(ISocket::UndefFD, ret);
 	  //locker.lock();
-	  _sockets.erase(elem.first);
-	}
-    }
+     _sockets.erase(elem.first);
+   }
+ }
 }
 
 template <>
@@ -147,23 +147,23 @@ void NetManager::doAction<NetManager::receiveList>(fd_set& set, unsigned int tim
   std::unique_lock<Mutex> locker(_mutex);
 
   for (auto& elem : _reiceivings)
-    {
-      if (_sockets.find(elem.first) != _sockets.end()) {
-	if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
-	  ret = _sockets[elem.first]->receive(elem.second.back().first);
-	  locker.unlock();
-	  elem.second.back().second(_ret, ret, _sockets[elem.first]->getLastPackAddr(), _sockets[elem.first]->getLastPackPort());
-	  locker.lock();
-	  elem.second.pop_back();
-	}
-      }
-      else
-	{
-	  elem.second.back().second(ISocket::UndefFD, ret, "", -1);
-	  elem.second.pop_back();
-	  _sockets.erase(elem.first);
-	}
-    }
+  {
+    if (_sockets.find(elem.first) != _sockets.end()) {
+     if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
+       ret = _sockets[elem.first]->receive(elem.second.back().first);
+       locker.unlock();
+       elem.second.back().second(_ret, ret, _sockets[elem.first]->getLastPackAddr(), _sockets[elem.first]->getLastPackPort());
+       locker.lock();
+       elem.second.pop_back();
+     }
+   }
+   else
+   {
+     elem.second.back().second(ISocket::UndefFD, ret, "", -1);
+     elem.second.pop_back();
+     _sockets.erase(elem.first);
+   }
+ }
 }
 
 void NetManager::loop()
@@ -188,17 +188,17 @@ void NetManager::loop()
     if (select(maxFd + 1, &readFds, &writeFds, NULL, &tVal) < 0)
       #ifdef _WIN32
       if (WSAGetLastError() == WSAENOTSOCK)
-	_ret = ISocket::Fail;
+       _ret = ISocket::Fail;
 #else
 #if (defined __APPLE__)
-      if (errno != EBADF)
+     if (errno != EBADF)
 #else
       if (errno != EBADFD)
 #endif
-	_ret = ISocket::Fail;
+       _ret = ISocket::Fail;
       #endif
       //timeout = _timeout - tVal.tv_usec;
-    doAction<sendList>(writeFds, 0);
-    doAction<receiveList>(readFds, 0);
-  }
-}
+     doAction<sendList>(writeFds, 0);
+     doAction<receiveList>(readFds, 0);
+   }
+ }

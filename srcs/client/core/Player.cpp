@@ -15,9 +15,11 @@ namespace Unit {
       { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
 
     _anim.pause();
-    _colorShader.loadFromFile("../resources/shaders/basic.frag",
-			      "../resources/shaders/basic.vert");
+    /*
+    _colorShader.loadFromFile("../resources/shader/basic.frag",
+			      "../resources/shader/basic.vert");
     _colorShader.setParameter("color", colors[(id % 5) - 1]);
+    */
   }
 
   Player::~Player()
@@ -106,9 +108,10 @@ void Player::setY(int y)
   void			Player::render(Time::stamp , sf::RenderWindow & window)
   {
     _colorShader.setParameter("texture", sf::Shader::CurrentTexture);
-    _anim.setFrameIndex(_lastVerticalMove);
+    _anim.setFrameIndex(unsigned(_lastVerticalMove));
     _anim.setPosition(_trueX, _trueY);
-    window.draw(_anim.getFrame(), &_colorShader);
+    //window.draw(_anim.getFrame(), &_colorShader);
+    window.draw(_anim.getFrame());
     _lastVerticalMove = 0;
   }
 }

@@ -6,6 +6,7 @@
 Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, std::string name, unsigned long time)
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _createStack(),
     _localPlayerName(name), _localPlayer(localPlayer),
+    _background("../resources/textures/star.png", 1),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp() - time),
     /*_input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -57,6 +58,7 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, st
     	})
 {
   client->setGame(this);
+  _background.setState(Animation::PAUSE);
 }
 
 Game::~Game()
@@ -200,6 +202,10 @@ void			Game::render()
   Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
 
   std::lock_guard<Lock> l(_lock);
+ 
+  _background.setFrameIndex(float(_tick / 10 % _background.getFrameWidth())
+			    / _background.getFrameWidth());
+  _window.draw(_background);
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
     i->second->render(currentFrameTime, _window);
 }
