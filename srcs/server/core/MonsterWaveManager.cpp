@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include "MonsterWaveManager.hpp"
 #include "GameUtils.hpp"
 
@@ -25,9 +26,9 @@ namespace Monster {
             for (int i = 0; i < 3; i++) {
                 wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, i * (GameUtils::Map::HEIGHT / 3));
             }
-            wave->addWaitingTime(2);
+            wave->addWaitingTime(1000);
             wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, GameUtils::Map::HEIGHT / 2);
-            wave->addWaitingTime(2);
+            wave->addWaitingTime(1000);
         }
         return wave;
     }
@@ -36,7 +37,7 @@ namespace Monster {
     {
         static int t[] = {1};
         
-        if (time.getElapsedTime() > (10000 * t[0]))
+        if (GameUtils::Game::now(_gameID) > (10000 * t[0]))
         {
             addWave(Monster::WaveManager::ClassicWave(_gameID));
             t[0]++;
@@ -59,19 +60,21 @@ namespace Monster {
     
     void    WaveManager::nextAction()
     {
-        std::for_each(_list.begin(), _list.end(), [this](Wave *wave){
-            
+        std::list<Wave*>::iterator it = _list.begin();
+        
+        while (it != _list.end())
+        {
             Unit::AUnit*    unit;
-            while (wave->isFinished() && (unit = wave->getNextMonster()))
+            while ((*it)->isFinished() && (unit = (*it)->getNextMonster()))
             {
                 this->_map->addUnit(unit);
+                std::cout << "Ajout de monstre" << std::endl;
             }
-        });
-        for (std::list<Wave*>::iterator it = _list.begin(); it != _list.end(); it++)
-        {
             if ((*it)->isEmpty())
                 it = _list.erase(it);
-        }
+            else
+                it++;
+         }
     }
     
 }

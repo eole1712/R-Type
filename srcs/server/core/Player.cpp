@@ -31,15 +31,13 @@ namespace Unit {
         _user->endGame(_score);
     }
 
-    Missile::AMissile*          Player::shoot()
+    Missile::AMissile*          Player::shoot(Timer::time time)
     {
         if (!_time.isFinished())
             return NULL;
 
-        //std::cout << "CREATION TIME ON " << __FUNCTION__ << " : " << GameUtils::Game::now(_id) << std::endl;
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-                                                                            GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
-        //std::cout << "CREATION TIME ON " << __FUNCTION__ << " : " << GameUtils::Game::now(_id) << std::endl;
+                                                                            GameUtils::Game::getNewID(_gameID), time);
 
         _time.reset(m->getTime() * 1000);
 
