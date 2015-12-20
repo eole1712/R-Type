@@ -117,9 +117,9 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
    }
    if (!found)
     _peers.push_back(std::make_pair(addr, port));
+  l.unlock();
   _PacketHandler->handlePacket(pack, id);
   delete pack;
-  l.unlock();
   _asyncRec(_sock, _buffer, _handle);
 };
 _asyncRec(_sock, _buffer, _handle);

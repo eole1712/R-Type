@@ -130,8 +130,8 @@ Server::Server() {
 				}
 				if (shouldStart)
                 {
+                    refreshTimer(game->getID());
 					startGame(game);
-                    refreshTimer(game->getID());                    
                 }
 			}
 			else if (key.first < 4)

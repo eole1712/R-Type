@@ -31,8 +31,7 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x + diff, _y + std::sin((diff % 2600) / 1000.0));
-      std::cout << diff % 180 << std::endl;
+    pos p = std::make_pair(_x + diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
     //  pos p = std::make_pair(_x, _y);
     return p;
   }
