@@ -164,4 +164,9 @@ namespace Unit {
     {
         _y = y;
     }
+    
+    void          Player::setUser(User *user)
+    {
+        _user = user;
+    }
 }
