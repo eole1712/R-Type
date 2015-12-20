@@ -128,13 +128,12 @@ void			Game::createUnit(unitObject newUnit)
   Unit::AUnit *		unit;
 
   if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
-    unit = new Unit::Player(std::get<1>(newUnit), std::get<2>(newUnit) - 300, std::get<3>(newUnit),
+    unit = new Unit::Player(std::get<1>(newUnit), std::get<2>(newUnit), std::get<3>(newUnit),
 			    std::get<4>(newUnit), std::get<5>(newUnit), std::get<6>(newUnit));
   else
     unit = Unit::Factory::getInstance()->createUnit(std::get<0>(newUnit), std::get<1>(newUnit),
 						    std::get<2>(newUnit), std::get<3>(newUnit),
 						    std::get<4>(newUnit), std::get<6>(newUnit));
-  std::cout << "bra " << std::get<1>(newUnit) <<  "x" << std::get<2>(newUnit) << std::endl;
   _map[unit->getID()] = unit;
 }
 
@@ -179,7 +178,10 @@ void			Game::pollEvent()
 
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
+	{
+	  std::cout << event.key.code << "=" << (event.type == sf::Event::KeyPressed) << std::endl;
 	  _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
+	}
     }
   _input.process(_tick, this);
 }
