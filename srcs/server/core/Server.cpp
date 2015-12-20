@@ -158,8 +158,10 @@ void	Server::start() {
     t.join();
 }
 
-void Server::startGame(IGame* game) {
+void Server::startGame(IGame* game) {    
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
+        game->start();
+        
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
 			for (auto& user : v) {

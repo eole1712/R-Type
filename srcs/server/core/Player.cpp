@@ -154,4 +154,14 @@ namespace Unit {
     {
         return PLAYERTYPE;
     }
+    
+    void          Player::setX(int x)
+    {
+        _x = x;
+    }
+
+    void          Player::setY(int y)
+    {
+        _y = y;
+    }
 }

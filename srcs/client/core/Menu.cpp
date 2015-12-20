@@ -79,15 +79,14 @@ void		Menu::eventHandler()
       if (event.type == sf::Event::MouseMoved||
 	  event.type == sf::Event::MouseButtonReleased)
 	{
-	  
-          event.mouseMove.x = sf::Mouse::getPosition(_window).x * _scale[0];
+	  event.mouseMove.x = sf::Mouse::getPosition(_window).x * _scale[0];
 	  event.mouseMove.y = sf::Mouse::getPosition(_window).y * _scale[1];
 	}
       switch (event.type)
 	{
 	  case sf::Event::Resized:
-	    _scale[0] = float(event.size.width) / _width;
-	    _scale[1] = float(event.size.height) / _height;
+	    _scale[0] = float(_width) / event.size.width;
+	    _scale[1] = float(_height) / event.size.height;
 	    break;
 	case sf::Event::Closed:
 	  _window.close();
@@ -137,7 +136,6 @@ void		Menu::handleMouseClick(sf::Event& event)
      }
    else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
-       std::cout << "create" << std::endl;
        _client->createGame((std::string) _gameName.getEditable().getString());
      }
    else

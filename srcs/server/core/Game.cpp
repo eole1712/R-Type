@@ -13,6 +13,7 @@
 #include "Timer.hpp"
 #include "ObjectCast.hpp"
 #include "AMonster.hpp"
+#include "GameUtils.hpp"
 
 Game::Game(unsigned int id, std::string name, IGameUnitSender* owl)
 : _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id), _t(0), _inGame(false), _owl(owl)
@@ -197,6 +198,12 @@ void        Game::start()
 {
     _inGame = true;
     _t.start();
+    for (auto& player : _players)
+    {
+        player->setX(30);
+        player->setY(_id * (GameUtils::Map::HEIGHT / _players.size()));
+        _owl->sendUnit(player, Unit::PLAYERTYPE);
+    }
 }
 
 bool        Game::end()

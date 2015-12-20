@@ -68,7 +68,7 @@ namespace Unit
       
     Unit::typeID  MonsterTest::getTypeID() const
     {
-          return 0;
+          return Unit::MONSTERTEST;
     }
 
   }
