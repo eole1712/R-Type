@@ -217,7 +217,7 @@ target_include_directories(ServerMonsterTest PRIVATE ${server_includes_directori
 target_compile_features(ServerMonsterTest PRIVATE cxx_range_for)
 if (UNIX)
 target_link_libraries(ServerMonsterTest -lpthread)
-target_link_libraries(ServerBasicMissile -ldl)
+target_link_libraries(ServerMonsterTest -ldl)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
 set_target_properties(ServerMonsterTest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
