@@ -120,17 +120,17 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
 
 	if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
 	  ret = _sockets[elem.first]->send(elem.second.back().first);
-	  locker.unlock();
+	  //locker.unlock();
 	  elem.second.back().second(_ret, ret);
-	  locker.lock();
+	  //locker.lock();
 	  elem.second.pop_back();
 	}
       }
       else
 	{
-	  locker.unlock();
+	  //locker.unlock();
 	  elem.second.back().second(ISocket::UndefFD, ret);
-	  locker.lock();
+	  //locker.lock();
 	  elem.second.pop_back();
 	  _sockets.erase(elem.first);
 	}
