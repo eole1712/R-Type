@@ -40,13 +40,13 @@ void NetManager::addSendCall(int sd, std::string msg, ISocket::sendHandler& hand
 {
   std::lock_guard<Mutex> locker(_mutex);
 
-  _sendings[sd].push_back(std::make_pair(msg, handler));
+  _sendings[sd].push_front(std::make_pair(msg, handler));
 }
 
 void NetManager::addReceiveCall(int sd, std::string &buffer, ISocket::receiveHandler &handler)
 {
   std::lock_guard<Mutex> locker(_mutex);
-  _reiceivings[sd].push_back(std::make_pair(std::reference_wrapper<std::string>(buffer), handler));
+  _reiceivings[sd].push_front(std::make_pair(std::reference_wrapper<std::string>(buffer), handler));
 }
 
 void NetManager::addSocket(int sd, ISocket * sock)
