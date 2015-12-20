@@ -4,6 +4,11 @@
 #include <string>
 #include <functional>
 
+#ifdef _WIN32
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 /*!
  * \class ISocket
  * \brief Interface permettant d'interagir avec n'imprte quel type de socket
