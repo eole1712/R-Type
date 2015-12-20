@@ -55,7 +55,9 @@ private:
   bool				_finish;
   Time::stamp			_creationTime;
   Key::Bind<Game *>		_input;
-  Lock              _lock;
+  Lock				_lock;
+  //Lock				_lockMap;
+  Animation			_background;
 };
 
 #endif /* !GAME_H_ */

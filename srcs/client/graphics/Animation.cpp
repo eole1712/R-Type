@@ -7,6 +7,7 @@ Animation::Animation(std::string const & image, unsigned int frame, float speed,
   : _initTime(initTime), _frame(frame), _speed(speed), _state(PLAY), _index(0)
 {
   _texture.loadFromFile(image.c_str());
+  _texture.setRepeated(true);
   setTexture(_texture);
   _frameWidth = _texture.getSize().x / frame;
   _frameHeight = _texture.getSize().y;
@@ -39,7 +40,13 @@ Animation::state	Animation::getState() const
 
 void			Animation::setFrameIndex(unsigned int idx)
 {
+  setTextureRect(sf::IntRect(_frameWidth * (idx % _frame), 0, _frameWidth, _frameHeight));
   _index = idx % _frame;
+}
+
+void			Animation::setFrameIndex(float idx)
+{
+  setTextureRect(sf::IntRect(_frameWidth * idx, 0, _frameWidth, _frameHeight));
 }
 
 unsigned int		Animation::getFrameIndex() const
@@ -53,7 +60,18 @@ sf::Sprite const &	Animation::getFrame()
     {
       _index = ((Time::getTimeStamp() - _initTime) / _speed);
       _index %=  _frame;
+       setTextureRect(sf::IntRect(_frameWidth * _index, 0, _frameWidth,_frameHeight));
     }
-  setTextureRect(sf::IntRect(_frameWidth * _index, 0, _frameWidth,_frameHeight));
   return *this;
+}
+
+
+unsigned int		Animation::getFrameWidth() const
+{
+  return _frameWidth;
+}
+
+unsigned int	        Animation::getFrameHeight() const
+{
+  return _frameHeight;
 }
