@@ -26,9 +26,9 @@ namespace Unit
   MonsterTest::~MonsterTest()
   {}
   
-  pos            MonsterTest::move(Time::stamp tick) const
+  pos            MonsterTest::move(Time::stamp) const
   {
-    long diff = static_cast<long>(tick - _creationTime) / 10;
+    //long diff = static_cast<long>(tick - _creationTime) / 10;
     
     //pos p = std::make_pair(_x + diff, _y + diff % 50);
     pos p = std::make_pair(_x, _y);

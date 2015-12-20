@@ -1,11 +1,12 @@
 #include <iostream>
+#include <cmath>
 #include "BasicMissile.hpp"
 
 extern "C"
 {
   Unit::BasicMissile *		NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
-    return (new BasicMissile(x, y, id, creationTime, param));
+      return (new Unit::BasicMissile(x, y, id, creationTime, param));
   }
 
   void				DeleteUnit(Unit::BasicMissile * monster)
@@ -30,7 +31,9 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x + diff, _y + diff % 50);
+    pos p = std::make_pair(_x + diff, _y + std::sin((diff % 2600) / 1000.0));
+      std::cout << diff % 180 << std::endl;
+    //  pos p = std::make_pair(_x, _y);
     return p;
   }
   
