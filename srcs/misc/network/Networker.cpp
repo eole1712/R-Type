@@ -100,6 +100,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
     APacket* pack;
     bool found = false;
     unsigned int id = 0;
+    std::cout << "[RECEIVING :] ";
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     for (auto elem : _peers) {
       if (elem.second == port && elem.first == addr)
@@ -125,6 +126,13 @@ Networker::~Networker()
 
 void Networker::send(APacket *pack, int id)
 {
+//REMOVE WHEN NO DEBUG
+  APacket* packdebug;
+   std::cout << "[SENDING :] ";
+    packdebug = _packHandlers[APacket::sGetType(_buffer)](_buffer);
+    delete packdebug;
+//!REMOVE WHEN NO DEBUG
+
   std::string data = pack->getData();
   unsigned long dataSize = data.size();
 
