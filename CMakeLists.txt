@@ -272,7 +272,7 @@ set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBU
 endif (WIN32)
 
 add_library(ClientBasicMissile SHARED
-	srcs/client/unit/MonsterTest/MonsterTest.cpp
+	srcs/client/unit/BasicMissile/BasicMissile.cpp
 	srcs/client/unit/AUnit.cpp
 	srcs/client/graphics/Animation.cpp
 	srcs/client/misc/Time.cpp
