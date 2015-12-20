@@ -18,40 +18,64 @@ std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::
 
 std::vector<std::function<APacket*(std::string const&) > > const Networker::_packHandlers = {
   [] (std::string const& data) {
-    return new ServerConnexionPacket(data);
+    ServerConnexionPacket* pack = new ServerConnexionPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerGameInfoPacket(data);
+    ServerGameInfoPacket* pack = new ServerGameInfoPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerGameConnectPacket(data);
+    ServerGameConnectPacket* pack = new ServerGameConnectPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerPlayerMovePacket(data);
+    ServerPlayerMovePacket* pack = new ServerPlayerMovePacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerPingPacket(data);
+    ServerPingPacket* pack = new ServerPingPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerUnitSpawnPacket(data);
+    ServerUnitSpawnPacket* pack = new ServerUnitSpawnPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerUnitDiePacket(data);
+    ServerUnitDiePacket* pack = new ServerUnitDiePacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ServerTimerRefreshPacket(data);
+    ServerTimerRefreshPacket* pack = new ServerTimerRefreshPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ClientConnexionPacket(data);
+    ClientConnexionPacket* pack = new ClientConnexionPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ClientGameInfoPacket(data);
+    ClientGameInfoPacket* pack = new ClientGameInfoPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ClientGameConnectPacket(data);
+    ClientGameConnectPacket* pack = new ClientGameConnectPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   },
   [] (std::string const& data) {
-    return new ClientKeyboardPressPacket(data);
+    ClientKeyboardPressPacket* pack = new ClientKeyboardPressPacket(data);
+    std::cout << pack << std::endl;
+    return pack;
   }
 };
 
@@ -79,7 +103,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
     unsigned int id = 0;
 
     std::cout << "Message received from : " << addr << ":" << port << " ==> [" << _buffer << "]" << std::endl;
-      std::cout << "Packet type : " << (int)(APacket::sGetType(_buffer)) << std::endl;
+    std::cout << "Packet type : " << (int)(APacket::sGetType(_buffer)) << std::endl;
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     for (auto elem : _peers) {
       if (elem.second == port && elem.first == addr)
