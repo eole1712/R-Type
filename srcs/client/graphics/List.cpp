@@ -2,7 +2,7 @@
  
 List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::Color const& listColor, sf::Color const& highlightColor)
   : _posX(posX), _posY(posY), _originPosX(posX), _originPosY(posY), _list{}, _iterator(_list.begin()), _font(listFont),
-    _color(listColor), _highlightColor(highlightColor), _currentIndex(0),
+  _color(listColor), _highlightColor(highlightColor), _currentIndex(0),
     _scrollBtn{
       ClickableBtn((posX) * 1.5, (posY), "/\\", _font, _color, 21),
       ClickableBtn((posX) * 1.5, (posY) * 1.6, "\\/", _font, _color, 21)
@@ -11,7 +11,7 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 }
 
 void			List::addItem(int id, std::string const& gameName,
-				      unsigned int playerNumber, std::string const& daySentence)
+				      unsigned int playerNumber, std::string const& daySentence, bool select)
 {
   std::string		playerNumberToString;
 
@@ -21,6 +21,14 @@ void			List::addItem(int id, std::string const& gameName,
   _list[id] = gameListItem;
   if (_list.size() == 1)
     _iterator = _list.begin();
+  else if (select)
+    {
+      _iterator->second.setIsSelected(false);
+      _iterator->second.setColor(_color);
+      _iterator = _list.find(id);
+      _iterator->second.setIsSelected(true);
+      _iterator->second.setColor(sf::Color(255, 255, 102));
+    }
   _currentIndex += 1;
 }
 
@@ -55,11 +63,6 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
       it != _list.end() && i > 0; it++)
     {
       i--;
-      if ((*it).second.getIsSelected() == true)
-	{
-	  (*it).second.setIsSelected(false);
-	  (*it).second.setColor(_color);
-	}
       /*
       if (sf::Mouse::getPosition(window).x >= (*it).getPosX() &&
 	  sf::Mouse::getPosition(window).x <= (*it).getPosX() + 140 &&
@@ -68,6 +71,8 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
       if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
 	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
 	{
+	  _iterator->second.setIsSelected(false);
+	  _iterator->second.setColor(_color);
 	  (*it).second.setIsSelected(true);
 	  (*it).second.setColor(sf::Color(255, 255, 102));
 	}
@@ -80,7 +85,6 @@ void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
   int			i = 5;
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   
-//sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y
   for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
@@ -134,7 +138,6 @@ void			List::clean()
   _posX = _originPosX;
   _posY = _originPosY;
   _currentIndex = 0;
-//  _list = {};
   _list.clear();
   _iterator = _list.end();
 }
