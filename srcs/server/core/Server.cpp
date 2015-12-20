@@ -164,7 +164,7 @@ void Server::startGame(IGame* game) {
         
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
-            refreshTimer(game->getID());
+            //refreshTimer(game->getID());
 			for (auto& user : v) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;

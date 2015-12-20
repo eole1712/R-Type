@@ -95,10 +95,10 @@ namespace Unit {
     {
         static int              tab[4][2] =
         {
-            {0, -1},
-            {0, 1},
-            {1, 0},
-            {-1, 0}
+            {0, -5},
+            {0, 5},
+            {5, 0},
+            {-5, 0}
         };
 
         if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == GameUtils::Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == GameUtils::Map::HEIGHT))
