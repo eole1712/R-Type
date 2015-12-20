@@ -162,6 +162,7 @@ void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
         static unsigned int     refresh = 1;
         unsigned int            gameID = game->getID();
+        
         //Boucle du jeu principale.
         game->start();
 		while (game->nextAction()) {
@@ -208,15 +209,15 @@ void    Server::refreshTimer(unsigned int idGame)
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 {
-    ServerUnitSpawnPacket*    pack = new ServerUnitSpawnPacket;
+    ServerUnitSpawnPacket    pack;
     
-    pack->setTimer(unit->getCreationTime());
-    pack->setX(unit->getStartX());
-    pack->setY(unit->getStartY());
-    pack->setUnitType(unitType);
-    pack->setUnitID(unit->getID());
-    pack->setParam(0);
+    pack.setTimer(unit->getCreationTime());
+    pack.setX(unit->getStartX());
+    pack.setY(unit->getStartY());
+    pack.setUnitType(unitType);
+    pack.setUnitID(unit->getID());
+    pack.setParam(0);
 
     for (auto& user : _games[unit->getGameID()]->getUsers())
-        _netServer->send(pack, user->getClientID());
+        _netServer->send(&pack, user->getClientID());
 }
