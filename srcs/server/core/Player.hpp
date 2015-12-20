@@ -60,6 +60,10 @@ public:
     virtual type            getType() const;
     virtual Unit::typeID    getTypeID() const;
 
+public:
+    virtual void    setX(int);
+    virtual void    setY(int);
+    
 private:
     color           _color;
     unsigned int    _score;

@@ -79,7 +79,7 @@ Client::Client(int port)
 	return;
       if (_game)
 	{
-	  _game->connectUnit(static_cast<Unit::typeID>(pack->getType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
+	  _game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
 	}
       // if (_game)
       // 	{
