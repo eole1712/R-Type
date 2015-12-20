@@ -30,7 +30,7 @@ namespace Unit {
   namespace Missile {
 
       BasicMissile::BasicMissile(AUnit *origin, unsigned int id, Timer::time time)
-    : AMissile(std::make_pair(33 * 2.5, 36 * 2.5), 5, origin, id, time)
+    : AMissile(std::make_pair(20, 14), 5, origin, id, time)
     {
     }
 
@@ -52,7 +52,7 @@ namespace Unit {
     {
         long diff = static_cast<long>(time - _creationTime) / 10;
         
-        pos p = std::make_pair(_x + diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
+        pos p = std::make_pair(_x + diff * 3, _y);
         return p;
     }
 

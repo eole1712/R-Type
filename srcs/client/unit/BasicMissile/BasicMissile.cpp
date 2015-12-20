@@ -35,7 +35,7 @@ namespace Unit
   
   Unit::pos            BasicMissile::move(Time::stamp tick) const
   {    
-    pos p = std::make_pair(_x + tick, _y);
+    pos p = std::make_pair(_x + tick * 3, _y);
     
     return p;
   }
