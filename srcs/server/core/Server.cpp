@@ -200,8 +200,8 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
     ServerUnitSpawnPacket*    pack = new ServerUnitSpawnPacket;
     
     pack->setTimer(unit->getCreationTime());
-    pack->setX(unit->getX());
-    pack->setY(unit->getY());
+    pack->setX(unit->getStartX());
+    pack->setY(unit->getStartY());
     pack->setUnitType(unitType);
     pack->setUnitID(unit->getID());
     pack->setParam(0);

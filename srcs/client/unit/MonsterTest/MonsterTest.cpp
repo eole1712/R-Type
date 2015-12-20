@@ -30,7 +30,8 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x + diff, _y + diff % 50);
+    //pos p = std::make_pair(_x + diff, _y + diff % 50);
+    pos p = std::make_pair(_x, _y);
     return p;
   }
   
