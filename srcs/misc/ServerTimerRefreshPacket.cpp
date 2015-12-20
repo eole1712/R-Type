@@ -21,3 +21,8 @@ void ServerTimerRefreshPacket::setCurrentTimer(uint64_t id) {
                   reinterpret_cast<const char*>(&id),
                   sizeof(uint64_t));
 }
+
+std::ostream& operator<<(std::ostream& os, ServerTimerRefreshPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", CURRENTTIMER : " << packet.getCurrentTimer() << ".";
+	return os;
+}

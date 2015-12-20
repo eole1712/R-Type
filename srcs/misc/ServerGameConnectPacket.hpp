@@ -25,4 +25,6 @@ public:
 	void setGameId(uint32_t id);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerGameConnectPacket const& packet);
+
 #endif /* !SERVERGAMECONNECTPACKET_H_ */

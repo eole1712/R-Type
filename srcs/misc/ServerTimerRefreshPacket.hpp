@@ -19,4 +19,6 @@ public:
     void        setCurrentTimer(uint64_t);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerTimerRefreshPacket const& packet);
+
 #endif /* !SERVERTIMERREFRESHPACKET_H_ */

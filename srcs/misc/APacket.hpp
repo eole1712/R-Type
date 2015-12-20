@@ -47,4 +47,6 @@ protected:
 	std::string _data;
 };
 
+std::ostream& operator<<(std::ostream& os, APacket const& packet);
+
 #endif /* !APACKET_H_ */

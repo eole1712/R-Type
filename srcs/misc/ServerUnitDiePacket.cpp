@@ -21,3 +21,8 @@ void ServerUnitDiePacket::setUnitID(uint32_t id) {
                   reinterpret_cast<const char*>(&id),
                   sizeof(uint32_t));
 }
+
+std::ostream& operator<<(std::ostream& os, ServerUnitDiePacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", UNITID : " << packet.getUnitID()<< ".";
+	return os;
+}

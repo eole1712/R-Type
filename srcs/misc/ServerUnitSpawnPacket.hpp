@@ -29,4 +29,6 @@ public:
     void        setParam(float);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerUnitSpawnPacket const& packet);
+
 #endif /* !SERVERUNITSPAWNPACKET_H_ */

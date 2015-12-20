@@ -21,3 +21,8 @@ void ServerPingPacket::setStatus(bool id) {
                   reinterpret_cast<const char*>(&id),
                   sizeof(bool));
 }
+
+std::ostream& operator<<(std::ostream& os, ServerPingPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", STATUS : " << packet.getStatus() << ".";
+	return os;
+}

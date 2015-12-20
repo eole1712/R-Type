@@ -28,4 +28,6 @@ public:
     
 };
 
+std::ostream& operator<<(std::ostream& os, ClientKeyboardPressPacket const& packet);
+
 #endif /* !KEYBOARDPRESSPACKET_H_ */

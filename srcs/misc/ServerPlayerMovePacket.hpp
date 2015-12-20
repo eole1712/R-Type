@@ -23,4 +23,6 @@ public:
     void setY(uint32_t id);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerPlayerMovePacket const& packet);
+
 #endif /* !SERVERPLAYERMOVEPACKET_H_ */

@@ -32,3 +32,8 @@ void ClientGameConnectPacket::setRoomName(std::string const& name) {
 		name.c_str(),
 		name.size());
 }
+
+std::ostream& operator<<(std::ostream& os, ClientGameConnectPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", ROOMID : " << packet.getRoomId() << ", ROOMNAME : " << packet.getRoomName() << ".";
+	return os;
+}

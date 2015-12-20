@@ -77,3 +77,7 @@ void ServerUnitSpawnPacket::setParam(float id) {
                   sizeof(float));
 }
 
+std::ostream& operator<<(std::ostream& os, ServerUnitSpawnPacket const& packet) {
+  os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", TIMER : " << packet.getTimer() << ", X : " << packet.getX() << ", Y : " << packet.getY() << ", UNITTYPE : " << packet.getUnitType() << ", UNITID : " << packet.getUnitID() << ", PARAM : " << packet.getParam() << ".";
+  return os;
+}

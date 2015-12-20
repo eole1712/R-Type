@@ -19,4 +19,6 @@ public:
     void        setUnitID(uint32_t);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerUnitDiePacket const& packet);
+
 #endif /* !SERVERUNITDIEPACKET_H_ */

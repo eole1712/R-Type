@@ -33,3 +33,7 @@ std::string	ServerConnexionPacket::getServerString() {
 	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(bool), kServerStringSize).c_str()));
 }
 
+std::ostream& operator<<(std::ostream& os, ServerConnexionPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", STATUS : " << (int)packet.getStatus() << ", SERVERSTRING : " << packet.getServerString() << ".";
+	return os;
+}

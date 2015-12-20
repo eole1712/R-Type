@@ -27,4 +27,6 @@ public:
 	void setRoomName(std::string const& name);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerGameInfoPacket const& packet);
+
 #endif /* !SERVERGAMEINFOPACKET_H_ */

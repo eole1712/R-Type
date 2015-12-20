@@ -41,3 +41,8 @@ std::pair<unsigned int, bool>      ClientKeyboardPressPacket::getStatus()
     
     return pair;
 }
+
+std::ostream& operator<<(std::ostream& os, ClientKeyboardPressPacket const& packet) {
+  os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", KEY : " << packet.getStatus().first << ", PRESSED : " << (int)packet.getStatus().second << ".";
+  return os;
+}

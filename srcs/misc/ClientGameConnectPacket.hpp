@@ -23,4 +23,6 @@ public:
 	void	setRoomName(std::string const& name);
 };
 
+std::ostream& operator<<(std::ostream& os, ClientGameConnectPacket const& packet);
+
 #endif /* !CLIENTGAMECONNECTPACKET_H_ */

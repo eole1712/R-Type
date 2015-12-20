@@ -23,4 +23,6 @@ public:
 	void setServerString(std::string const& str);
 };
 
+std::ostream& operator<<(std::ostream& os, ServerConnexionPacket const& packet);
+
 #endif /* !SERVERCONNEXIONPACKET_H_ */

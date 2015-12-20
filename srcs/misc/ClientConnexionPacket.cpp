@@ -22,3 +22,8 @@ void	ClientConnexionPacket::setClientName(std::string const& str) {
 std::string	ClientConnexionPacket::getClientName() {
 	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize, kPlayerNameSize).c_str()));
 }
+
+std::ostream& operator<<(std::ostream& os, ClientConnexionPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", CLIENTNAME : " << packet.getClientName() << ".";
+	return os;
+}
