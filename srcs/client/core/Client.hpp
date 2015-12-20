@@ -9,12 +9,17 @@
 #include "IGameHandler.hpp"
 #include "IMenuHandler.hpp"
 
+#include <vector>
+#include <tuple>
+
 class Game;
 class Menu;
 
 class Client : public IPacketHandler, IGameHandler, IMenuHandler
 {
 public:
+  typedef std::tuple<Unit::typeID, int, int, unsigned int,
+		     Time::stamp, float>		unitObject;
   Client(int port = 6524);
   virtual ~Client();
   void handlePacket(APacket*, unsigned int id);
@@ -29,6 +34,7 @@ public:
 protected:
   NetManager* _nm;
   NetClient*  _nc;
+  std::vector<unitObject> _toCreate;
   std::vector<std::function<void(APacket*, unsigned int)> > _packetHandlerFuncs;
   //std::list<Unit::AUnit*> _units;
   std::map<std::string, uint32_t> _rooms;

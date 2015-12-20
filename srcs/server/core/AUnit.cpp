@@ -1,11 +1,12 @@
+#include <iostream>
 #include "Timer.hpp"
 #include "AUnit.hpp"
 #include "GameUtils.hpp"
 
 namespace Unit {
     
-    AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID)
-    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(GameUtils::Game::now(gameID))
+    AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID, Timer::time time)
+    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
     {
     }
     

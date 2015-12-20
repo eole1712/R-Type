@@ -33,10 +33,11 @@ Menu::Menu(int width, int height, IMenuHandler* client):
       });
       _eventChecks.push_back([this] () {
 	for (auto& room : _roomsBuf)
-	  _gameList.addItem(room.first, room.second.first, room.second.second, room.second.first);
-//	while (!_roomsBuf.empty())
-//	  _roomsBuf.erase();
-      _roomsBuf.clear();
+	  {
+	    _gameList.addItem(room.first, room.second.first, room.second.second, room.second.first,
+			      (room.second.first == ((std::string) _gameName.getEditable().getString())));
+	  }
+	_roomsBuf.clear();
       });
     }
 
@@ -65,7 +66,7 @@ void		Menu::initMainView()
       this->drawFields();
       this->drawEditable();
       this->drawLoginSizeErr();
-      if (_isConnected == true && _gameList.getList().size() != 0)
+      if (_gameList.getList().size() != 0)
 	_gameList.render(_window);
       _window.display();
     }
@@ -122,17 +123,18 @@ void		Menu::handleMouseClick(sf::Event& event)
 {
    sf::Vector2f	mousePosition(event.mouseMove.x, event.mouseMove.y);
 
-   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && !_gameList.getCurrentItem().empty())
+   if (_startButton.getClickableBtn().getGlobalBounds().contains(mousePosition) &&
+       _gameList.getCurrentItem() != "")
      _client->selectGame(_gameList.getCurrentItem());
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
        _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       _client->refreshGames();
        _isConnected = true;
      }
    else if (_refreshButton.getClickableBtn().getGlobalBounds().contains(mousePosition) && _isConnected)
      {
        _gameList.clean();
-       //_client->connect(_host.getEditable().getString(), _login.getEditable().getString());
        _client->refreshGames();
      }
    else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))

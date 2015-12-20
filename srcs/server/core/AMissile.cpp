@@ -4,8 +4,8 @@
 namespace Unit {
   namespace Missile {
 
-    AMissile::AMissile(boxType hitBox, unsigned int damage, AUnit *unit, unsigned int id)
-    : AUnit(1, unit->getTeam(), unit->getX(), unit->getY(), hitBox, id, unit->getGameID()), _damage(damage), _origin(unit)
+      AMissile::AMissile(boxType hitBox, unsigned int damage, AUnit *unit, unsigned int id, Timer::time time)
+    : AUnit(1, unit->getTeam(), unit->getX(), unit->getY(), hitBox, id, unit->getGameID(), time), _damage(damage), _origin(unit)
     {
     }
 

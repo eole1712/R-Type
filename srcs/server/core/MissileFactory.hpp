@@ -6,7 +6,7 @@
 # include <list>
 # include "AMissile.hpp"
 
-typedef Unit::Missile::AMissile*	(*fptrNewMissile)(Unit::AUnit* origin, unsigned int id);
+typedef Unit::Missile::AMissile*	(*fptrNewMissile)(Unit::AUnit* origin, unsigned int id, Timer::time);
 typedef void				(*fptrDeleteMissile)(Unit::Missile::AMissile*);
 
 class ILibLoader;
@@ -26,8 +26,7 @@ public:
   ~Factory();
 
 public:
-  Unit::Missile::AMissile*	createMissile(Unit::Missile::type type, Unit::AUnit* origin,
-					      unsigned int id);
+    Unit::Missile::AMissile*	createMissile(Unit::Missile::type type, Unit::AUnit* origin, unsigned int id, Timer::time);
 
   bool				addMissileType(Unit::Missile::type, std::string libName);
   bool				removeMissileType(Unit::Missile::type);

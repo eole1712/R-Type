@@ -74,7 +74,6 @@ Client::Client(int port)
 	pl->setY(pack->getY());
       }
     },
-
     [this] (APacket* packet, unsigned int id) {
       ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
       if (pack == NULL)
@@ -90,38 +89,37 @@ Client::Client(int port)
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
-      if (_game)
-	{
-	  _game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
-	}
-      // if (_game)
-      // 	{
-      // 	  _units.push_back(new Unit::AUn:it(pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer());
-      // 	  _game->connectUnit(_units.back());
-      // 	}
+      if (_game) {
+	std::cerr << "unit added to exist game" << std::endl;
+	_game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
+      }
+      else {
+	std::cerr << "unit added to non exist game" << std::endl;
+	_toCreate.push_back(std::make_tuple(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam()));
+      }
     },
 
     [this] (APacket* packet, unsigned int id) {
       ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
       if (pack == NULL)
 	return;
-      // if (_game)
-      // 	{
-      // 	  _units.remove_if([pack] (Unit::AUnit const& unit) {
-      // 	    return unit.getID() == pack->getUnitID();
-      // 	  });
-      // 	  _game->disconnectUnit(pack->getUnitID());
-      // 	}
     },
 
     [this] (APacket* packet, unsigned int id) {
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
       if (pack == NULL)
 	return;
-      if (_game == nullptr)
+      if (_game == nullptr) {
         _menu->startGame(pack->getCurrentTimer());
-      else
+      }
+      else {
         _game->setTimer(pack->getCurrentTimer());
+	while (!_toCreate.empty()) {
+	  std::cerr << "unit recreated" << std::endl;
+	  _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), std::get<5>(_toCreate.back()));
+	  _toCreate.pop_back();
+	}
+      }
       std::cout << "timer update" << std::endl;
     }
   };
@@ -140,7 +138,7 @@ void Client::start()
   std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
     _nm->loop();
   };
-    std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
+  std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
   Thread<std::nullptr_t> t(fptr, nullptr);
   std::cout << "main view init" << std::endl;
   _menu->initMainView();
@@ -181,6 +179,8 @@ void Client::createGame(const std::string &name)
 
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
+  if (pack->getType() == 5)
+    std::cerr << "handling unitspawn" << std::endl;
   _packetHandlerFuncs[pack->getType()](pack, id);
 }
 

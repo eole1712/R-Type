@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <map>
+#include <iostream>
 #include "MissileFactory.hpp"
 #include "AMissile.hpp"
 #include "Player.hpp"
@@ -17,7 +18,7 @@ namespace Unit {
     const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
 
     Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID, GameUtils::Game::now(gameID)), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;
@@ -35,8 +36,10 @@ namespace Unit {
         if (!_time.isFinished())
             return NULL;
 
+        //std::cout << "CREATION TIME ON " << __FUNCTION__ << " : " << GameUtils::Game::now(_id) << std::endl;
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-									    GameUtils::Game::getNewID(_gameID));
+                                                                            GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
+        //std::cout << "CREATION TIME ON " << __FUNCTION__ << " : " << GameUtils::Game::now(_id) << std::endl;
 
         _time.reset(m->getTime() * 1000);
 

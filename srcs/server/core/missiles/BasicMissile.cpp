@@ -8,11 +8,11 @@
 extern "C"
 {
 #if (defined _WIN32)
-	__declspec(dllexport)   Unit::Missile::AMissile*		NewMissile(Unit::AUnit* origin, unsigned int id);
+	__declspec(dllexport)      Unit::Missile::AMissile*  NewMissile(Unit::AUnit* origin, unsigned int id, Timer::time time);
 #endif
-  Unit::Missile::AMissile*		NewMissile(Unit::AUnit* origin, unsigned int id)
+    Unit::Missile::AMissile*  NewMissile(Unit::AUnit* origin, unsigned int id, Timer::time time)
   {
-    return (new Unit::Missile::BasicMissile(origin, id));
+    return (new Unit::Missile::BasicMissile(origin, id, time));
   }
 
 #if (defined _WIN32)
@@ -28,8 +28,8 @@ namespace Unit {
 
   namespace Missile {
 
-    BasicMissile::BasicMissile(AUnit *origin, unsigned int id)
-    : AMissile(std::make_pair(2, 2), 5, origin, id)
+      BasicMissile::BasicMissile(AUnit *origin, unsigned int id, Timer::time time)
+    : AMissile(std::make_pair(2, 2), 5, origin, id, time)
     {
     }
 
@@ -70,9 +70,9 @@ namespace Unit {
       _hp = 0;
     }
 
-    AMissile*            BasicMissile::clone(AUnit *unit, unsigned int id) const
+      AMissile*            BasicMissile::clone(AUnit *unit, unsigned int id, Timer::time time) const
     {
-      return new BasicMissile(unit, id);
+      return new BasicMissile(unit, id, time);
     }
 
     Unit::typeID        BasicMissile::getTypeID() const

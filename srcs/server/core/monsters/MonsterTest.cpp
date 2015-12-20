@@ -12,11 +12,11 @@
 extern "C"
 {
 #if (defined _WIN32)
-  __declspec(dllexport)     Unit::Monster::AMonster*  NewMonster(int x, int y, unsigned int id, unsigned int gameID);
+  __declspec(dllexport)        Unit::Monster::AMonster* NewMonster(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
 #endif
-  Unit::Monster::AMonster*	NewMonster(int x, int y, unsigned int id, unsigned int gameID)
+    Unit::Monster::AMonster*  NewMonster(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
   {
-    return (new Unit::Monster::MonsterTest(x, y, id, gameID));
+    return (new Unit::Monster::MonsterTest(x, y, id, gameID, time));
   }
   
 #if (defined _WIN32)
@@ -34,8 +34,8 @@ namespace Unit
   namespace Monster
   {
 
-    MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID)
-    : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, id, gameID)
+      MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
+    : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, id, gameID, time)
     {}
 
     MonsterTest::~MonsterTest()
@@ -51,8 +51,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
 
-      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-       GameUtils::Game::getNewID(_gameID));
+      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
 
       _time.reset(m->getTime() * 1000);
       return m;

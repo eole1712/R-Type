@@ -19,7 +19,7 @@ namespace Unit
         {
         public:
             AMonster(unsigned int hp, int x, int y, boxType hitBox, Missile::type weapon,
-		     unsigned int id, unsigned int gameID);
+                     unsigned int id, unsigned int gameID, Timer::time);
             virtual ~AMonster();
 
             virtual Unit::type          getType() const;
