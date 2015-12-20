@@ -160,11 +160,21 @@ void	Server::start() {
 
 void Server::startGame(IGame* game) {    
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
+        static unsigned int     refresh = 1;
+        unsigned int            gameID = game->getID();
+        //Boucle du jeu principale.
         game->start();
-        
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
+            
             //refreshTimer(game->getID());
+            if (GameUtils::Game::now(gameID) > (refresh * 1000))
+            {
+                refreshTimer(gameID);
+                refresh++;
+            }
+            
+            //refreshPlayersPosition
 			for (auto& user : v) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;
