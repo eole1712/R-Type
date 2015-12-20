@@ -32,7 +32,7 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, st
       _input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{
-	  param->setFinish();	  
+	  param->setFinish();
 	}},
 	{{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp, Key::keyState & keys, Game * param)
 	    { Game::sendKey(param, keys, sf::Keyboard::Up, Key::PRESS); }},
@@ -77,9 +77,9 @@ void			Game::sendKey(Game * param, Key::keyState & key,
       {{sf::Keyboard::Right, Key::PRESS}, ClientKeyboardPressPacket::RightPress},
       {{sf::Keyboard::Right, Key::RELEASE}, ClientKeyboardPressPacket::RightRealease},
       {{sf::Keyboard::Left, Key::PRESS}, ClientKeyboardPressPacket::LeftPress},
-      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease}, 
+      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease},
       {{sf::Keyboard::Space, Key::PRESS}, ClientKeyboardPressPacket::SpacePress},
-      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease}, 
+      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease},
     };
 
   param->_client->sendKey(netAssoc[std::pair<sf::Keyboard::Key, Key::event>(keycode, e)]);
@@ -178,10 +178,7 @@ void			Game::pollEvent()
 
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
-	{
-	  std::cout << event.key.code << "=" << (event.type == sf::Event::KeyPressed) << std::endl;
-	  _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
-	}
+	_input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
     }
   _input.process(_tick, this);
 }
