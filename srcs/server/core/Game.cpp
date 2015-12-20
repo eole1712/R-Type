@@ -48,7 +48,15 @@ IMap*	Game::getMap() const
 
 unsigned int    Game::getNbPlayers() const
 {
-    return static_cast<unsigned int>(_players.size());
+    unsigned int    nb;
+    
+    nb = 0;
+    for (auto& player: _players)
+    {
+        if (player->getUser())
+            nb++;
+    }
+    return nb;
 }
 
 IScoreList*	Game::getScores() const
@@ -83,6 +91,15 @@ bool	Game::addPlayer(User* user)
     
     if (_inGame)
         return false;
+    for (auto& player : _players)
+    {
+        if (player->getUser() == nullptr)
+        {
+            player->setUser(user);
+            return true;
+        }
+    }
+    
     if (ixPlayer < 4)
     {
       this->_players.push_back(new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id));
@@ -92,21 +109,17 @@ bool	Game::addPlayer(User* user)
     return (false);
 }
 
-void	Game::removePlayer(Unit::color color)
+void                Game::removePlayer(Unit::color color)
 {
-    unsigned int	i = 0;
+    Unit::Player    *player = nullptr;
     
-    std::for_each(this->_players.begin(), this->_players.end(),
-                  [this, color, &i](Unit::Player* player)
-                  {
-                      if (player->getColor() == color)
-                      {
-                          std::remove(_users.begin(), _users.end(), player->getUser());
-                          delete player;
-                          this->_players[i] = nullptr;
-                      }
-                      ++i;
-                  });
+    for (auto& pl : _players) {
+        if (pl->getColor() == color)
+            player = pl;
+    }
+
+    std::remove(_users.begin(), _users.end(), player->getUser());
+    player->setUser(nullptr);
 }
 
 std::vector<User*> const&     Game::getUsers() const
@@ -201,7 +214,7 @@ void        Game::start()
     for (auto& player : _players)
     {
         player->setX(30);
-        player->setY(_id * (GameUtils::Map::HEIGHT / _players.size()));
+        player->setY(_id * (GameUtils::Map::HEIGHT / (_players.size() + 1)));
         _owl->sendUnit(player, Unit::PLAYERTYPE);
     }
 }

@@ -45,6 +45,7 @@ public:
     std::string     getName() const;
     color           getColor() const;
     User*           getUser() const;
+    void            setUser(User*);
 
 public:
     bool            isMoving(Unit::dir);
