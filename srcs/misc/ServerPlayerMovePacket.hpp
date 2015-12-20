@@ -14,13 +14,15 @@ public:
 	ServerPlayerMovePacket(std::string const& data);
 	virtual ~ServerPlayerMovePacket();
 
-	uint32_t getPlayerID();
-	uint32_t getX();
-    uint32_t getY();
+	uint32_t getPlayerID() const;
+	uint32_t getX() const;
+    uint32_t getY() const;
 
 	void setPlayerID(uint32_t id);
     void setX(uint32_t id);
     void setY(uint32_t id);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerPlayerMovePacket const& packet);
 
 #endif /* !SERVERPLAYERMOVEPACKET_H_ */

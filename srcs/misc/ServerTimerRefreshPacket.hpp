@@ -14,9 +14,11 @@ public:
 	ServerTimerRefreshPacket(std::string const& data);
 	virtual ~ServerTimerRefreshPacket();
 
-    uint64_t getCurrentTimer();
+    uint64_t getCurrentTimer() const;
 
     void        setCurrentTimer(uint64_t);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerTimerRefreshPacket const& packet);
 
 #endif /* !SERVERTIMERREFRESHPACKET_H_ */

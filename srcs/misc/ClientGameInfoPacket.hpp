@@ -14,4 +14,6 @@ public:
 	virtual ~ClientGameInfoPacket();
 };
 
+std::ostream& operator<<(std::ostream& os, ClientGameInfoPacket const& packet);
+
 #endif /* !CLIENTGAMEINFOPACKET_H_ */

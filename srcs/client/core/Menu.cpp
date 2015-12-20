@@ -53,6 +53,7 @@ void		Menu::initMainView()
   _soundPlayer.play();
   background.scale(2, 2);
   _window.setVerticalSyncEnabled(true);
+  _window.setKeyRepeatEnabled(false);
   while (_window.isOpen())
     {
       for (auto& elem : _eventChecks) {

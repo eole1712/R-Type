@@ -4,7 +4,8 @@
 #include "MonsterTest.hpp"
 
 Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, std::string name)
-  : _client(client),_window(window), _tick(Time::getTimeStamp()), _localPlayerName(name), _localPlayer(localPlayer),
+  : _client(client),_window(window), _tick(Time::getTimeStamp()), _createStack(),
+    _localPlayerName(name), _localPlayer(localPlayer),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp()),
     /*_input({
       {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
@@ -122,22 +123,29 @@ void			Game::setTimer(unsigned long time)
   _creationTime = Time::getTimeStamp() - time;
 }
 
+void			Game::createUnit(unitObject newUnit)
+{
+  Unit::AUnit *		unit;
+
+  if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
+    unit = new Unit::Player(std::get<1>(newUnit), std::get<2>(newUnit), std::get<3>(newUnit),
+			    std::get<4>(newUnit), std::get<5>(newUnit), std::get<6>(newUnit));
+  else
+    unit = Unit::Factory::getInstance()->createUnit(std::get<0>(newUnit), std::get<1>(newUnit),
+						    std::get<2>(newUnit), std::get<3>(newUnit),
+						    std::get<4>(newUnit), std::get<6>(newUnit));
+  _map[unit->getID()] = unit;
+}
+
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 					  Time::stamp creationTime, int param)
 {
-  Unit::AUnit *		unit;
   float			_param = float(param) / 1000;
+  std::string		_name = std::string("");
 
-  if (type == Unit::PLAYERTYPE)
-    {
-      if (id == _localPlayer)
-	unit = new Unit::Player(x, y, id, creationTime, _localPlayerName, _param);
-      else
-	unit = new Unit::Player(x, y, id, creationTime, std::string(""), _param);	
-    }
-  else
-    unit = Unit::Factory::getInstance()->createUnit(type, x, y, id, creationTime, _param);
-  _map[unit->getID()] = unit;
+  if (id == _localPlayer)
+    _name = _localPlayerName;
+  _createStack.push_back(std::make_tuple(type, x, y, id, creationTime, _name, _param));
 }
 
 void			Game::disconnectUnit(unsigned int id)
@@ -158,6 +166,10 @@ void			Game::pollEvent()
       return ;
     }
 
+  for (std::list<unitObject>::iterator i = _createStack.begin();
+       i != _createStack.end(); i++)
+      createUnit(*i);
+  _createStack.clear();
   while (_window.pollEvent(event))
     {
       if (event.type == sf::Event::Closed ||
@@ -166,7 +178,10 @@ void			Game::pollEvent()
 
       if (event.type == sf::Event::KeyPressed ||
 	  event.type == sf::Event::KeyReleased)
+	{
+	  std::cout << event.key.code << "=" << (event.type == sf::Event::KeyPressed) << std::endl;
 	  _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
+	}
     }
   _input.process(_tick, this);
 }

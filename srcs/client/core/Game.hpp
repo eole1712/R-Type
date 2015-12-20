@@ -3,6 +3,7 @@
 
 # include <list>
 # include <SFML/Graphics.hpp>
+# include <tuple>
 # include "Client.hpp"
 # include "Time.hpp" 
 # include "Key.hpp"
@@ -16,7 +17,11 @@ public:
     Game(IGameHandler * client, sf::RenderWindow & window, int playerId, std::string);
   virtual ~Game();
 
+
 public:  
+  typedef std::tuple<Unit::typeID, int, int, unsigned int,
+		     Time::stamp, std::string, float>		unitObject;
+
   static void		sendKey(Game * param, Key::keyState & key,
 				sf::Keyboard::Key keycode, Key::event e);
   void			loop();
@@ -25,6 +30,7 @@ public:
   void			setFinish();
   void			setTimer(unsigned long time);
   bool			getFinish() const;
+  void			createUnit(unitObject newUnit);
   void			connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 				    Time::stamp creationTime, int param);
   void			disconnectUnit(unsigned int);
@@ -37,9 +43,11 @@ private:
   typedef std::map<unsigned int, Unit::AUnit *> RemoteMap;
 
 private:
+  
   IGameHandler *		_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
+  std::list<unitObject>		_createStack;
   std::string			_localPlayerName;
   int				_localPlayer;
   RemoteMap			_map;

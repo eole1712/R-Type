@@ -39,3 +39,8 @@ void APacket::setId(APacket::idSize id) {
 uint8_t APacket::sGetType(const std::string &data) {
 	return *reinterpret_cast<const APacket::packetTypeSize*>(data.substr(sizeof(APacket::idSize), sizeof(APacket::packetTypeSize)).c_str());
 }
+
+std::ostream& operator<<(std::ostream& os, APacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ".";
+	return os;
+}
