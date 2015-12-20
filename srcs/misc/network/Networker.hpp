@@ -5,6 +5,8 @@
 #include "ISocket.hpp"
 #include "NetManager.hpp"
 #include "IPacketHandler.hpp"
+#include "Lock.hpp"
+#include <mutex>
 #include <functional>
 #include <vector>
 #include <list>
@@ -20,6 +22,7 @@ public:
   void answer(APacket* pack, int id);
   void send(APacket* pack, int id);
 protected:
+  Lock _lock;
   IPacketHandler* _PacketHandler;
   ISocket* _sock;
   std::vector<std::pair<std::string, int> > _peers;

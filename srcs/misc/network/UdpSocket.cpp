@@ -153,9 +153,9 @@ void UdpSocket::setSendPort(int port)
   _addr.sin_port = htons(static_cast<unsigned short>(port));
 }
 
-size_t UdpSocket::send(std::string const& data)
+ssize_t UdpSocket::send(std::string const& data)
 {
-  size_t res;
+  ssize_t res;
 
   res = sendto(_sd, data.c_str(), data.size(), 0, reinterpret_cast<sockaddr*>(&_addr), sizeof(sockaddr_in));
 
@@ -169,13 +169,13 @@ void UdpSocket::async_send(std::string const& data, sendHandler callback)
   //_sendQueue.push_back(std::make_pair(data, callback));
 }
 
-size_t UdpSocket::receive(std::string &data)
+ssize_t UdpSocket::receive(std::string &data)
 {
   #ifdef _WIN32
   typedef int socklen_t;
   #endif
 
-  size_t ret;
+  ssize_t ret;
   unsigned char cdata[bufferSize];
   unsigned int max_size = bufferSize;
   socklen_t fromAddrLen = sizeof(_lastAddr);
