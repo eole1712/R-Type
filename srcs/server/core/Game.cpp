@@ -189,7 +189,6 @@ void        Game::shootThemAll()
 bool        Game::checkIfAlive()
 {
     int     i = 0;
-    std::list<Unit::AUnit*>::iterator it;
     Timer::time                       time = GameUtils::Game::now(_id);
     
     std::for_each(_players.begin(), _players.end(), [&i, time](Unit::Player *player) {
@@ -199,15 +198,20 @@ bool        Game::checkIfAlive()
     if (i == 0)
         return false;
     
-    
-    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
-            _map->getList((*it)->getTeam()).erase(it);
-    }
-    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
-        if (((*it)->getType() == Unit::MISSILE || (*it)->getType() == Unit::MONSTER) && (*it)->isAlive(time) == false)
-            _map->getList((*it)->getTeam()).erase(it);
-    }
+	auto it = _map->getList(Unit::ALLY).begin();
+	while (it != _map->getList(Unit::ALLY).end()) {
+		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
+			it = _map->getList((*it)->getTeam()).erase(it);
+		else
+			it++;
+	}
+	it = _map->getList(Unit::ENEMY).begin();
+	while (it != _map->getList(Unit::ENEMY).end()) {
+		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
+			it = _map->getList((*it)->getTeam()).erase(it);
+		else
+			it++;
+	}
     return true;
 }
 
