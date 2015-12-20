@@ -34,6 +34,9 @@ public:
   void            setWeapon(Missile::type);
   */
 
+
+  void		setX(int x);
+  void		setY(int y);
   void            move(dir, Time::stamp);
 
   //void		  renderUI(sf::RenderWindow & window);

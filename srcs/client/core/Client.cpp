@@ -53,18 +53,26 @@ Client::Client(int port)
       if (pack->getStatus()) {
 	std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
 	_playerId = pack->getPlayerId();
-	//	_menu->startGame();
-	std::cout << "game started" << std::endl;
+	_connected = pack->getGameId();
+
+      }
+      else if (_connected != 0) {
+	_connected = 0;
       }
       else
 	std::cout << "failed to connect" << std::endl;
+      refreshGames();
     },
 
     [this] (APacket* packet, unsigned int id) {
       ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
       if (pack == NULL)
 	return;
-
+      Unit::Player* pl;
+      if ((pl = _game->getPlayer(pack->getPlayerID()))) {
+	pl->setX(pack->getX());
+	pl->setY(pack->getY());
+      }
     },
 
     [this] (APacket* packet, unsigned int id) {

@@ -71,7 +71,17 @@ public:
     return pos(_trueX, _trueY);
   }
 
-  void                  Player::move(dir to, Time::stamp tick)
+void Player::setX(int x)
+{
+  _trueX = x;
+}
+
+
+void Player::setY(int y)
+{
+  _trueY = y;
+}
+ void                  Player::move(dir to, Time::stamp tick)
   {
     static int              tab[4][2] =
       { {0, -1}, {0, 1}, {1, 0}, {-1, 0} };
