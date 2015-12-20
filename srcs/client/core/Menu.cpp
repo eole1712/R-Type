@@ -26,7 +26,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
       _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
-	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString());
+	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString(), _time);
 	  _game->loop();
 	  _gameStart = false;
 	}
@@ -227,9 +227,10 @@ void		Menu::changeCurrentRow()
     _currentRow = static_cast<Row>(0);
 }
 
-void		Menu::startGame()
+void		Menu::startGame(unsigned long currentTime)
 {
   _gameStart = true;
+  _time = currentTime;
 }
 
 void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, std::string const&)

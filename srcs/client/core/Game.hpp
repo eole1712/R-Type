@@ -14,7 +14,7 @@ class Client;
 class Game
 {
 public:
-    Game(IGameHandler * client, sf::RenderWindow & window, int playerId, std::string);
+    Game(IGameHandler * client, sf::RenderWindow & window, int playerId, std::string, unsigned long time);
   virtual ~Game();
 
 
@@ -29,12 +29,13 @@ public:
   Unit::Player *	getPlayer(unsigned int id);
   void			setFinish();
   void			setTimer(unsigned long time);
+  Time::stamp   getTimer();
   bool			getFinish() const;
   void			createUnit(unitObject newUnit);
   void			connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 				    Time::stamp creationTime, int param);
   void			disconnectUnit(unsigned int);
-  Unit::AUnit &		operator[](unsigned int id);
+  Unit::AUnit*		operator[](unsigned int id);
 
 private:
   void			pollEvent();
@@ -53,7 +54,8 @@ private:
   RemoteMap			_map;
   bool				_finish;
   Time::stamp			_creationTime;
-  Key::Bind<Game *>		_input;  
+  Key::Bind<Game *>		_input;
+  Lock              _lock;
 };
 
 #endif /* !GAME_H_ */

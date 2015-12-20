@@ -157,9 +157,11 @@ void        Game::checkMouvements(Timer &t)
             unit->getHit(*it);
         }
     }
-    
-    t.reset(60);
-    t.start();
+    if (t.isFinished())
+    {
+        t.reset(10);
+        t.start();
+    }
 }
 
 void        Game::shootThemAll()

@@ -63,13 +63,15 @@ private:
   SoundPlayer				_soundPlayer;
   std::list<std::function<void()> >	_eventChecks;
   std::map<int, std::pair<std::string, unsigned int>> _roomsBuf;
+    
+    unsigned long         _time;
 public:
   Menu(int width, int height, IMenuHandler *client);
   ~Menu();
 
   void				initMainView();
     void				addGame(unsigned int id, std::string const&, unsigned int, std::string const &);
-  void				startGame();
+  void				startGame(unsigned long time);
 
 private:
   void				initColors();

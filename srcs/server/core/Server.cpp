@@ -164,6 +164,7 @@ void Server::startGame(IGame* game) {
         
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
+            refreshTimer(game->getID());
 			for (auto& user : v) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;
@@ -208,5 +209,4 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 
     for (auto& user : _games[unit->getGameID()]->getUsers())
         _netServer->send(pack, user->getClientID());
-    refreshTimer(unit->getGameID());
 }
