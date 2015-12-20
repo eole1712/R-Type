@@ -129,7 +129,7 @@ void Networker::send(APacket *pack, int id)
 //REMOVE WHEN NO DEBUG
   APacket* packdebug;
    std::cout << "[SENDING :] ";
-    packdebug = _packHandlers[APacket::sGetType(_buffer)](_buffer);
+    packdebug = _packHandlers[APacket::sGetType(pack->getData())](pack->getData());
     delete packdebug;
 //!REMOVE WHEN NO DEBUG
 
