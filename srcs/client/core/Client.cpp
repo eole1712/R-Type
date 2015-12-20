@@ -120,7 +120,7 @@ Client::Client(int port)
       std::cout << "timer update" << std::endl;
     }
   };
-  _menu = new Menu(720, 480, this);
+  _menu = new Menu(1600, 800, this);
   _game = nullptr;
 }
 
