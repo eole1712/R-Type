@@ -188,7 +188,6 @@ void        Game::shootThemAll()
 bool        Game::checkIfAlive()
 {
     int     i = 0;
-    std::list<Unit::AUnit*>::iterator it;
     
     std::for_each(_players.begin(), _players.end(), [&i](Unit::Player *player) {
         if (player->isAlive())
@@ -197,14 +196,14 @@ bool        Game::checkIfAlive()
     if (i == 0)
         return false;
     
-	auto it = _map->getList(UNIT::ALLY).begin();
+	auto it = _map->getList(Unit::ALLY).begin();
 	while (it != _map->getList(Unit::ALLY).end()) {
 		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
 			it = _map->getList((*it)->getTeam()).erase(it);
 		else
 			it++;
 	}
-	it = _map->getList(UNIT::ENEMY).begin();
+	it = _map->getList(Unit::ENEMY).begin();
 	while (it != _map->getList(Unit::ENEMY).end()) {
 		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
 			it = _map->getList((*it)->getTeam()).erase(it);
