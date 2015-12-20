@@ -200,8 +200,8 @@ void        Game::start()
     _t.start();
     for (auto& player : _players)
     {
-        _players->setX(30);
-        _players->setY(_id * (GameUtils::HEIGHT / _players->size()));
+        player->setX(30);
+        player->setY(_id * (GameUtils::Map::HEIGHT / _players.size()));
         _owl->sendUnit(player, Unit::PLAYERTYPE);
     }
 }
