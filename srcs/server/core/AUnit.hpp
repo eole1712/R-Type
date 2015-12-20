@@ -46,26 +46,26 @@ namespace Unit {
     AUnit &operator=(AUnit const &);
     
   public:
-    virtual bool    isAlive() const;
+    virtual bool    isAlive(Timer::time) const;
     virtual void    getHit(AUnit*) = 0;
     
   public:
-    virtual int     getX() const;
-    virtual int     getY() const;
+    virtual int     getX(Timer::time) const;
+    virtual int     getY(Timer::time) const;
       
   public:
     virtual int   getStartX() const;
     virtual int   getStartY() const;
       
   public:
-    virtual pos     move() const = 0;
+    virtual pos     move(Timer::time) const = 0;
     
   public:
     virtual boxType getHitBox() const;
     virtual void    setHitBox(boxType);
     
   public:
-    virtual bool    isHitting(AUnit*) const;
+    virtual bool    isHitting(AUnit*, Timer::time) const;
     
   public:
     virtual type    getType() const = 0;

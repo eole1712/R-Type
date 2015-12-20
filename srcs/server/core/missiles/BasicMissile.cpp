@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <string>
 #include "AMissile.hpp"
 #include "BasicMissile.hpp"
@@ -29,7 +30,7 @@ namespace Unit {
   namespace Missile {
 
       BasicMissile::BasicMissile(AUnit *origin, unsigned int id, Timer::time time)
-    : AMissile(std::make_pair(2, 2), 5, origin, id, time)
+    : AMissile(std::make_pair(33 * 2.5, 36 * 2.5), 5, origin, id, time)
     {
     }
 
@@ -47,12 +48,12 @@ namespace Unit {
       return BASIC;
     }
 
-    Unit::pos            BasicMissile::move() const
+      Unit::pos            BasicMissile::move(Timer::time time) const
     {
-      uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
-      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
-
-      return p;
+        long diff = static_cast<long>(time - _creationTime) / 10;
+        
+        pos p = std::make_pair(_x + diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
+        return p;
     }
 
     double    BasicMissile::getTime() const

@@ -19,7 +19,7 @@ namespace Unit
             return (Unit::MISSILE);
         }
 
-        pos      ABonus::move() const
+        pos      ABonus::move(Timer::time) const
         {
 	  // TODO : déplacement linéaire vers la gauche en fonction du temps
             return std::make_pair(_x, _y);

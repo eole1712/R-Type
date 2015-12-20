@@ -105,8 +105,6 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
       std::cerr << "receive error" << std::endl;
       return;
     }
-    std::cout << "[RECEIVING :] ";
-    pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     for (auto elem : _peers) {
       if (elem.second == port && elem.first == addr)
       {
@@ -115,6 +113,8 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
      }
      ++id;
    }
+    std::cout << "[RECEIVING FROM :"<< id <<"] ";
+    pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
    if (!found)
     _peers.push_back(std::make_pair(addr, port));
   l.unlock();
@@ -134,7 +134,7 @@ void Networker::send(APacket *pack, int id)
 {
 //REMOVE WHEN NO DEBUG
   APacket* packdebug;
-   std::cout << "[SENDING :] ";
+   std::cout << "[SENDING TO : "<< id <<"] ";
     packdebug = _packHandlers[APacket::sGetType(pack->getData())](pack->getData());
     delete packdebug;
 //!REMOVE WHEN NO DEBUG

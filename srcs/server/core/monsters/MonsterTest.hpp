@@ -20,7 +20,7 @@ namespace Unit
       virtual Unit::typeID    getTypeID() const;
       
       virtual Missile::AMissile*	shoot();
-      virtual pos     move() const;
+      virtual pos     move(Timer::time) const;
       virtual void    getHit(AUnit*);
     };
     

@@ -27,7 +27,7 @@ namespace Unit
             virtual Unit::typeID        getTypeID() const = 0;
 
             virtual Missile::AMissile*  shoot();
-            virtual pos                 move() const = 0;
+            virtual pos                 move(Timer::time) const = 0;
 
         protected:
             Missile::type     _weapon;

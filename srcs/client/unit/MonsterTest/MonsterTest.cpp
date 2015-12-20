@@ -32,13 +32,12 @@ namespace Unit
   MonsterTest::~MonsterTest()
   {}
   
-  pos            MonsterTest::move(Time::stamp) const
+  pos            MonsterTest::move(Time::stamp time) const
   {
-    //long diff = static_cast<long>(tick - _creationTime) / 10;
-    
-    //pos p = std::make_pair(_x + diff, _y + diff % 50);
-    pos p = std::make_pair(_x, _y);
-    return p;
+      uintmax_t diff = time - _creationTime;
+      pos p = std::make_pair(_x - (diff / 10000), _y);
+      
+      return p;
   }
   
   void	MonsterTest::render(Time::stamp tick, sf::RenderWindow & window)

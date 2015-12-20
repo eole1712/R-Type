@@ -18,7 +18,7 @@ namespace Unit
     
   }
   
-  pos         FactoryUnit::move() const
+  pos         FactoryUnit::move(Timer::time) const
   {
     return std::make_pair(0, 0);
   }

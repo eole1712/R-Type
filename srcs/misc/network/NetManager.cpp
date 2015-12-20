@@ -40,13 +40,13 @@ void NetManager::addSendCall(int sd, std::string msg, ISocket::sendHandler& hand
 {
   std::lock_guard<Mutex> locker(_mutex);
 
-  _sendings[sd].push_back(std::make_tuple(msg, handler, addr, port));
+  _sendings[sd].push_front(std::make_tuple(msg, handler, addr, port));
 }
 
 void NetManager::addReceiveCall(int sd, std::string &buffer, ISocket::receiveHandler &handler)
 {
   std::lock_guard<Mutex> locker(_mutex);
-  _reiceivings[sd].push_back(std::make_pair(std::reference_wrapper<std::string>(buffer), handler));
+  _reiceivings[sd].push_front(std::make_pair(std::reference_wrapper<std::string>(buffer), handler));
 }
 
 void NetManager::addSocket(int sd, ISocket * sock)
@@ -82,14 +82,14 @@ void NetManager::setFds<NetManager::sendList>(int& maxFd, fd_set& set)
   std::lock_guard<Mutex> locker(_mutex);
 
   for (auto& elem : _sendings)
+  {
+    if (!elem.second.empty())
     {
-      if (!elem.second.empty())
-	{
-	  FD_SET(elem.first, &set);
-	  if (elem.first > maxFd)
-	    maxFd = elem.first;
-	}
-    };
+     FD_SET(elem.first, &set);
+     if (elem.first > maxFd)
+       maxFd = elem.first;
+   }
+ };
 }
 
 template <>
@@ -98,14 +98,14 @@ void NetManager::setFds<NetManager::receiveList>(int& maxFd, fd_set& set)
   std::lock_guard<Mutex> locker(_mutex);
 
   for (auto& elem : _reiceivings)
+  {
+    if (!elem.second.empty())
     {
-      if (!elem.second.empty())
-	{
-	  FD_SET(elem.first, &set);
-	  if (elem.first > maxFd)
-	    maxFd = elem.first;
-	}
-    };
+     FD_SET(elem.first, &set);
+     if (elem.first > maxFd)
+       maxFd = elem.first;
+   }
+ };
 }
 
 template <>
@@ -122,9 +122,9 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
 	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
 	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
 	  ret = _sockets[elem.first]->send(std::get<0>(elem.second.back()));
-	  locker.unlock();
+	  //locker.unlock();
 	  std::get<1>(elem.second.back())(_ret, ret);
-	  locker.lock();
+	  //locker.lock();
 	  elem.second.pop_back();
 	}
       }
@@ -132,9 +132,9 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
 	{
 	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
 	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
-	  locker.unlock();
+	  //locker.unlock();
 	  std::get<1>(elem.second.back())(ISocket::UndefFD, ret);
-	  locker.lock();
+	  //locker.lock();
 	  _sockets.erase(elem.first);
 	}
     }

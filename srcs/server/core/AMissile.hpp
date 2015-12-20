@@ -26,7 +26,7 @@ namespace Unit {
       virtual Missile::type   getMissileType() const = 0;
 
     public:
-      virtual pos             move() const = 0;
+      virtual pos             move(Timer::time) const = 0;
 
     public:
       virtual Unit::type      getType() const;
