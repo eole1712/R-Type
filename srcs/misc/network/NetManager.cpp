@@ -120,7 +120,7 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
 
 	if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
 	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
-	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
+	  _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
 	  ret = _sockets[elem.first]->send(std::get<0>(elem.second.back()));
 	  //locker.unlock();
 	  std::get<1>(elem.second.back())(_ret, ret);
@@ -131,7 +131,7 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
       else
 	{
 	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
-	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
+	  _sockets[elem.first]->setSendPort(std::get<3>(elem.second.back()));
 	  //locker.unlock();
 	  std::get<1>(elem.second.back())(ISocket::UndefFD, ret);
 	  //locker.lock();
