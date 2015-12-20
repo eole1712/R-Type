@@ -2,7 +2,7 @@
 #include "Player.hpp"
 
 User::User(std::string const &name, unsigned int clientID)
-: _clientID(clientID), _name(name), _gameID(0), _player(nullptr), _score(0)
+  : _clientID(clientID), _name(name), _gameID(0), _player(nullptr), _ready(false), _needRefresh(false), _score(0)
 {
 }
 
