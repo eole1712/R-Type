@@ -18,6 +18,8 @@ const std::map<Unit::Missile::type, std::string> Unit::Missile::Factory::LIBSLIS
   {
 #if (defined __APPLE__)
       Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.dylib"
+#elif (defined _WIN32)
+	  Unit::Missile::BASIC, "../libs/server/ServerBasicMissile.dll"
 #else
       Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.so"
 #endif

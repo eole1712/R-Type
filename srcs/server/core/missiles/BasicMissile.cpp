@@ -8,11 +8,17 @@
 
 extern "C"
 {
-    Unit::Missile::AMissile*	NewMissile(Unit::AUnit* origin, unsigned int id, Timer::time time)
+#if (defined _WIN32)
+	__declspec(dllexport)      Unit::Missile::AMissile*  NewMissile(Unit::AUnit* origin, unsigned int id, Timer::time time);
+#endif
+    Unit::Missile::AMissile*  NewMissile(Unit::AUnit* origin, unsigned int id, Timer::time time)
   {
     return (new Unit::Missile::BasicMissile(origin, id, time));
   }
 
+#if (defined _WIN32)
+  __declspec(dllexport)     void  DeleteMissile(Unit::Missile::AMissile* missile);
+#endif
   void	DeleteMissile(Unit::Missile::AMissile* missile)
   {
     delete missile;
@@ -69,10 +75,10 @@ namespace Unit {
     {
       return new BasicMissile(unit, id, time);
     }
-      
+
     Unit::typeID        BasicMissile::getTypeID() const
     {
-        return Unit::BASICMISSILE;
+      return Unit::BASICMISSILE;
     }
   }
 

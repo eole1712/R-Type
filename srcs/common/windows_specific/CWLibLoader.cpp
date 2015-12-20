@@ -10,7 +10,9 @@ CWLibLoader::CWLibLoader(std::string libName, std::string creatorName, std::stri
     }
   if ((this->_externalCreator = GetProcAddress(this->_libHandle, TEXT(creatorName.c_str()))) == NULL)
     {
-      std::cerr << GetLastError() << std::endl;
+		int lol = GetLastError();
+      std::cerr << lol << std::endl;
+	  std::cout << lol << std::endl;
       exit(EXIT_FAILURE);
     }
   if ((this->_externalDestructor = GetProcAddress(this->_libHandle,
