@@ -16,8 +16,8 @@ public:
 	ClientGameConnectPacket(std::string const& data);
 	virtual ~ClientGameConnectPacket();
 
-	uint32_t getRoomId();
-	std::string getRoomName();
+	uint32_t getRoomId() const;
+	std::string getRoomName() const;
 
 	void	setRoomId(uint32_t id);
 	void	setRoomName(std::string const& name);

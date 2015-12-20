@@ -11,7 +11,7 @@ ServerTimerRefreshPacket::ServerTimerRefreshPacket(std::string const& data) : AP
 
 ServerTimerRefreshPacket::~ServerTimerRefreshPacket() {};
 
-uint64_t	ServerTimerRefreshPacket::getCurrentTimer() {
+uint64_t	ServerTimerRefreshPacket::getCurrentTimer() const{
     return *reinterpret_cast<const uint64_t*>(_data.substr(kHeaderSize, sizeof(uint64_t)).c_str());
 }
 

@@ -11,7 +11,7 @@ ServerPingPacket::ServerPingPacket(std::string const& data) : APacket(data) {
 
 ServerPingPacket::~ServerPingPacket() {};
 
-bool	ServerPingPacket::getStatus() {
+bool	ServerPingPacket::getStatus() const{
     return *reinterpret_cast<const bool*>(_data.substr(kHeaderSize, sizeof(bool)).c_str());
 }
 

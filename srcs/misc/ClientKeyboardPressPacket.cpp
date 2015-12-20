@@ -27,12 +27,12 @@ void ClientKeyboardPressPacket::setKey(ClientKeyboardPressPacket::keyEvent event
   _data.replace(kHeaderSize, sizeof(keyEvent), reinterpret_cast<const char*>(&event), sizeof(keyEvent));
 }
 
-ClientKeyboardPressPacket::keyEvent ClientKeyboardPressPacket::getKey()
+ClientKeyboardPressPacket::keyEvent ClientKeyboardPressPacket::getKey() const
 {
   return *reinterpret_cast<const keyEvent*>(_data.substr(kHeaderSize, sizeof(keyEvent)).c_str());
 }
 
-std::pair<unsigned int, bool>      ClientKeyboardPressPacket::getStatus()
+std::pair<unsigned int, bool>      ClientKeyboardPressPacket::getStatus() const
 {
     std::pair<unsigned int, bool>  pair;
     

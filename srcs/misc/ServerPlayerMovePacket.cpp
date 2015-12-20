@@ -11,15 +11,15 @@ ServerPlayerMovePacket::ServerPlayerMovePacket(std::string const& data) : APacke
 
 ServerPlayerMovePacket::~ServerPlayerMovePacket() {};
 
-uint32_t	ServerPlayerMovePacket::getPlayerID() {
+uint32_t	ServerPlayerMovePacket::getPlayerID() const{
 	return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize, sizeof(uint32_t)).c_str());
 }
 
-uint32_t	ServerPlayerMovePacket::getX() {
+uint32_t	ServerPlayerMovePacket::getX() const{
     return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint32_t), sizeof(uint32_t)).c_str());
 }
 
-uint32_t	ServerPlayerMovePacket::getY() {
+uint32_t	ServerPlayerMovePacket::getY() const{
     return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + (2 * sizeof(uint32_t)), sizeof(uint32_t)).c_str());
 }
 

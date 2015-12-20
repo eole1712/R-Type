@@ -11,19 +11,19 @@ ServerGameInfoPacket::ServerGameInfoPacket(std::string const& data) : APacket(da
 
 ServerGameInfoPacket::~ServerGameInfoPacket() {};
 
-uint32_t	ServerGameInfoPacket::getRoomId() {
+uint32_t	ServerGameInfoPacket::getRoomId() const{
 	return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize, sizeof(uint32_t)).c_str());
 }
 
-uint8_t ServerGameInfoPacket::getRoomSlots() {
+uint8_t ServerGameInfoPacket::getRoomSlots() const{
 	return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(uint32_t), sizeof(uint8_t)).c_str());
 }
 
-uint8_t ServerGameInfoPacket::getRoomReady() {
+uint8_t ServerGameInfoPacket::getRoomReady() const{
     return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), sizeof(uint8_t)).c_str());
 }
 
-std::string ServerGameInfoPacket::getRoomName() {
+std::string ServerGameInfoPacket::getRoomName() const{
 	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t), kRoomNameSize).c_str()));
 }
 

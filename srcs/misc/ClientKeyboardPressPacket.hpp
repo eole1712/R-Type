@@ -23,8 +23,8 @@ public:
     ClientKeyboardPressPacket(std::string const& data);
     virtual ~ClientKeyboardPressPacket();
     void setKey(keyEvent);
-    keyEvent getKey();
-    std::pair<unsigned int, bool>   getStatus();
+    keyEvent getKey() const;
+    std::pair<unsigned int, bool>   getStatus() const;
     
 };
 

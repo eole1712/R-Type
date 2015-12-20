@@ -16,7 +16,7 @@ public:
 	ClientConnexionPacket(std::string const& data);
 	virtual ~ClientConnexionPacket();
 
-	std::string getClientName();
+	std::string getClientName() const;
 
 	void setClientName(std::string const& name);
 };

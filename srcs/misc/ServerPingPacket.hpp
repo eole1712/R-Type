@@ -14,7 +14,7 @@ public:
 	ServerPingPacket(std::string const& data);
 	virtual ~ServerPingPacket();
 
-    bool getStatus();
+    bool getStatus() const;
 
     void        setStatus(bool);
 };

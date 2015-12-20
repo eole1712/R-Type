@@ -11,11 +11,11 @@ ClientGameConnectPacket::ClientGameConnectPacket(std::string const& data) : APac
 
 ClientGameConnectPacket::~ClientGameConnectPacket() {};
 
-uint32_t	ClientGameConnectPacket::getRoomId() {
+uint32_t	ClientGameConnectPacket::getRoomId() const{
 	return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize, sizeof(uint32_t)).c_str());
 }
 
-std::string ClientGameConnectPacket::getRoomName() {
+std::string ClientGameConnectPacket::getRoomName() const{
 	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t), kRoomNameSize).c_str()));
 }
 
