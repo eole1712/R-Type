@@ -19,62 +19,62 @@ std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::
 std::vector<std::function<APacket*(std::string const&) > > const Networker::_packHandlers = {
   [] (std::string const& data) {
     ServerConnexionPacket* pack = new ServerConnexionPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerGameInfoPacket* pack = new ServerGameInfoPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerGameConnectPacket* pack = new ServerGameConnectPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerPlayerMovePacket* pack = new ServerPlayerMovePacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerPingPacket* pack = new ServerPingPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitSpawnPacket* pack = new ServerUnitSpawnPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitDiePacket* pack = new ServerUnitDiePacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerTimerRefreshPacket* pack = new ServerTimerRefreshPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientConnexionPacket* pack = new ClientConnexionPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientGameInfoPacket* pack = new ClientGameInfoPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientGameConnectPacket* pack = new ClientGameConnectPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientKeyboardPressPacket* pack = new ClientKeyboardPressPacket(data);
-    std::cout << pack << std::endl;
+    std::cout << *pack << std::endl;
     return pack;
   }
 };

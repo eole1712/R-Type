@@ -54,6 +54,10 @@ namespace Unit {
     virtual int     getY() const;
       
   public:
+    virtual int   getStartX() const;
+    virtual int   getStartY() const;
+      
+  public:
     virtual pos     move() const = 0;
     
   public:
