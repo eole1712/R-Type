@@ -103,7 +103,7 @@ Unit::Player*		Game::getLocalPlayer()
 
 Unit::Player *		Game::getPlayer(unsigned int id)
 {
-  return dynamic_cast<Unit::@Player *>(_map.find(id)->second);
+  return dynamic_cast<Unit::Player *>(_map.find(id)->second);
 }
 
 void			Game::loop()
