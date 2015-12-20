@@ -5,7 +5,7 @@
 namespace Unit
 {
   FactoryUnit::FactoryUnit()
-  : AUnit(0, ALLY, 0, 0, std::make_pair(0, 0), 0, 0)
+  : AUnit(0, ALLY, 0, 0, std::make_pair(0, 0), 0, 0, 0)
   {
   }
   

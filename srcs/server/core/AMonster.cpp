@@ -11,8 +11,8 @@ namespace Unit
   {
 
     AMonster::AMonster(unsigned int hp, int x, int y,
-                       Unit::boxType hitBox, Missile::type weapon, unsigned int id, unsigned int gameID)
-    : AUnit(hp, Unit::ENEMY, x, y, hitBox, id, gameID), _weapon(weapon), _time(0)
+                       Unit::boxType hitBox, Missile::type weapon, unsigned int id, unsigned int gameID, Timer::time time)
+      : AUnit(hp, Unit::ENEMY, x, y, hitBox, id, gameID, time), _weapon(weapon), _time(0)
     {}
 
     AMonster::~AMonster()
@@ -28,8 +28,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
 
-      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-                                                                            GameUtils::Game::getNewID(_gameID));
+        Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
 
       _time.reset(m->getTime());
 

@@ -39,7 +39,7 @@ namespace Unit {
   class AUnit {
     
   public:
-    AUnit(unsigned int hp, team, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID);
+      AUnit(unsigned int hp, team, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID, Timer::time);
     virtual ~AUnit();
   private:
     AUnit(AUnit const &);

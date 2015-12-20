@@ -16,7 +16,7 @@ namespace Unit
         class ABonus : public AUnit
         {
         public:
-            ABonus(int x, int y, Unit::boxType hitbox, unsigned int id, unsigned int gameID);
+            ABonus(int x, int y, Unit::boxType hitbox, unsigned int id, unsigned int gameID, Timer::time);
             virtual ~ABonus();
 
         public:

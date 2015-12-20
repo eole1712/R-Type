@@ -50,7 +50,7 @@ namespace Unit
     }
 
     Unit::Missile::AMissile*	Factory::createMissile(Unit::Missile::type type, Unit::AUnit* origin,
-						       unsigned int id)
+                                                       unsigned int id, Timer::time time)
     {
         fptrNewMissile			ptr;
         Unit::Missile::AMissile*	newMissile;
@@ -61,7 +61,7 @@ namespace Unit
             if ((*it).first == type)
             {
                 ptr = reinterpret_cast<fptrNewMissile>((*it).second->getExternalCreator());
-		newMissile = ptr(origin, id);
+		newMissile = ptr(origin, id, time);
                 return (newMissile);
             }
         }
