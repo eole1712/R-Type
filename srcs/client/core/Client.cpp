@@ -79,6 +79,11 @@ Client::Client(int port)
       ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
       if (pack == NULL)
 	return;
+      std::cout << "pinged by server" << std::endl;
+      ServerPingPacket ans;
+
+      ans.setStatus(false);
+      _nc->sendPacket(&ans);
     },
 
     [this] (APacket* packet, unsigned int id) {
