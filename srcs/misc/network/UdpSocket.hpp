@@ -84,7 +84,7 @@ public:
    * \param data à envoyer
    * \return taille de la donnée écrite, ou -1 en cas d'erreur
    */
-  size_t send(std::string const& data);
+  ssize_t send(std::string const& data);
 
   /*!
    * \brief envoie des données contenues dans un buffer dès qu'il lui es possinble d'"écrire sur le réseau"
@@ -97,7 +97,7 @@ public:
    * \brief reçoit des données, et stocke les infos sur l'envoyeur dans _lastAddr
    * \param buffer pour stocker les données reçues
    */
-  size_t receive(std::string& data);
+  ssize_t receive(std::string& data);
 
   /*!
    * \brief fonction receive appleant le callback à la réception d'un packet

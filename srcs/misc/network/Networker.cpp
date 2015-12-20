@@ -84,7 +84,7 @@ Networker::Networker(int port)
 {
 
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
     _packHandlers[APacket::sGetType(_buffer)](_buffer);
     _asyncRec(_sock, _buffer, _handle);
   };
@@ -96,11 +96,15 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
 {
   _PacketHandler = handler;
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, size_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
     std::unique_lock<Lock> l(_lock);
     APacket* pack;
     bool found = false;
     unsigned int id = 0;
+    if (sizeRec <= 0) {
+      std::cerr << "receive error" << std::endl;
+      return;
+    }
     std::cout << "[RECEIVING :] ";
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     for (auto elem : _peers) {
