@@ -103,6 +103,8 @@ Unit::Player*		Game::getLocalPlayer()
 
 Unit::Player *		Game::getPlayer(unsigned int id)
 {
+  std::lock_guard<Lock> l(_lock);
+
   return dynamic_cast<Unit::Player *>(_map.find(id)->second);
 }
 
@@ -121,20 +123,21 @@ void			Game::loop()
 void			Game::setTimer(unsigned long time)
 {
   std::lock_guard<Lock>   l(_lock);
-    
+
   _creationTime = Time::getTimeStamp() - time;
 }
 
 Time::stamp     Game::getTimer()
 {
-    std::lock_guard<Lock> l(_lock);
-    
-    return _creationTime;
+  std::lock_guard<Lock> l(_lock);
+
+  return _creationTime;
 }
 
 void			Game::createUnit(unitObject newUnit)
 {
   Unit::AUnit *		unit;
+  std::lock_guard<Lock> l(_lock);
 
   if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
     unit = new Unit::Player(std::get<1>(newUnit), std::get<2>(newUnit), std::get<3>(newUnit),
@@ -143,7 +146,7 @@ void			Game::createUnit(unitObject newUnit)
     unit = Unit::Factory::getInstance()->createUnit(std::get<0>(newUnit), std::get<1>(newUnit),
 						    std::get<2>(newUnit), std::get<3>(newUnit),
 						    std::get<4>(newUnit), std::get<6>(newUnit));
-    _map[unit->getID()] = unit;
+  _map[unit->getID()] = unit;
 }
 
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
@@ -160,7 +163,7 @@ void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 void			Game::disconnectUnit(unsigned int id)
 {
   RemoteMap::iterator	i = _map.find(id);
-  
+
   if (i != _map.end())
     _map.erase(i);
 }
@@ -195,11 +198,15 @@ void			Game::pollEvent()
 void			Game::render()
 {
   Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
+
+  std::lock_guard<Lock> l(_lock);
   for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
     i->second->render(currentFrameTime, _window);
 }
 
 Unit::AUnit*		Game::operator[](unsigned int id)
 {
-    return (_map.find(id)->second);
+  std::lock_guard<Lock> l(_lock);
+
+  return (_map.find(id)->second);
 }

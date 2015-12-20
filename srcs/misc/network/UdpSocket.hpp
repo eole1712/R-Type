@@ -90,9 +90,11 @@ public:
    * \brief envoie des données contenues dans un buffer dès qu'il lui es possinble d'"écrire sur le réseau"
    * \param data à envoyer
    * \param callback pour gérer la réponse de l'envoi
+   * \param address to send
+   * \param port to send
    */
 
-  void async_send(std::string const& data, sendHandler callback);
+  void async_send(std::string const& data, sendHandler callback, std::string addr, int port);
   /*!
    * \brief reçoit des données, et stocke les infos sur l'envoyeur dans _lastAddr
    * \param buffer pour stocker les données reçues

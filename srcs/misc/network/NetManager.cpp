@@ -36,11 +36,11 @@ void NetManager::loopStart()
   getInstance()->loop();
 }
 
-void NetManager::addSendCall(int sd, std::string msg, ISocket::sendHandler& handler)
+void NetManager::addSendCall(int sd, std::string msg, ISocket::sendHandler& handler, std::string addr, int port)
 {
   std::lock_guard<Mutex> locker(_mutex);
 
-  _sendings[sd].push_back(std::make_pair(msg, handler));
+  _sendings[sd].push_back(std::make_tuple(msg, handler, addr, port));
 }
 
 void NetManager::addReceiveCall(int sd, std::string &buffer, ISocket::receiveHandler &handler)
@@ -119,19 +119,22 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
       if (_sockets.find(elem.first) != _sockets.end()) {
 
 	if (FD_ISSET(elem.first, &set) && !elem.second.empty()) {
-	  ret = _sockets[elem.first]->send(elem.second.back().first);
+	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
+	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
+	  ret = _sockets[elem.first]->send(std::get<0>(elem.second.back()));
 	  locker.unlock();
-	  elem.second.back().second(_ret, ret);
+	  std::get<1>(elem.second.back())(_ret, ret);
 	  locker.lock();
 	  elem.second.pop_back();
 	}
       }
       else
 	{
+	  _sockets[elem.first]->setAddr(std::get<2>(elem.second.back()));
+	  _sockets[elem.first]->setPort(std::get<3>(elem.second.back()));
 	  locker.unlock();
-	  elem.second.back().second(ISocket::UndefFD, ret);
+	  std::get<1>(elem.second.back())(ISocket::UndefFD, ret);
 	  locker.lock();
-	  elem.second.pop_back();
 	  _sockets.erase(elem.first);
 	}
     }

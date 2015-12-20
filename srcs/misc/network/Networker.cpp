@@ -38,11 +38,6 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
     return pack;
   },
   [] (std::string const& data) {
-    ServerPingPacket* pack = new ServerPingPacket(data);
-    std::cout << *pack << std::endl;
-    return pack;
-  },
-  [] (std::string const& data) {
     ServerUnitSpawnPacket* pack = new ServerUnitSpawnPacket(data);
     std::cout << *pack << std::endl;
     return pack;
@@ -54,6 +49,11 @@ std::vector<std::function<APacket*(std::string const&) > > const Networker::_pac
   },
   [] (std::string const& data) {
     ServerTimerRefreshPacket* pack = new ServerTimerRefreshPacket(data);
+    std::cout << *pack << std::endl;
+    return pack;
+  },
+    [] (std::string const& data) {
+    ServerPingPacket* pack = new ServerPingPacket(data);
     std::cout << *pack << std::endl;
     return pack;
   },
@@ -144,13 +144,13 @@ void Networker::send(APacket *pack, int id)
 
   if (_peers.size() <= id)
     return;
-  _sock->setSendPort(_peers[id].second);
-  _sock->setAddr(_peers[id].first);
+  // _sock->setSendPort(_peers[id].second);
+  // _sock->setAddr(_peers[id].first);
 
   _sock->async_send(data, [dataSize] (ISocket::returnCode ret, size_t written) {
     if (written != dataSize || ret != ISocket::Sucess)
       std::cerr << "Error while writing ==> written : " << written << "expected : " << dataSize << " ret : " << ret << std::endl;
-  });
+  }, _peers[id].first, _peers[id].second);
 }
 
 APacket* Networker::getLastPacket()
