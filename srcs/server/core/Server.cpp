@@ -208,4 +208,5 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 
     for (auto& user : _games[unit->getGameID()]->getUsers())
         _netServer->send(pack, user->getClientID());
+    refreshTimer(unit->getGameID());
 }
