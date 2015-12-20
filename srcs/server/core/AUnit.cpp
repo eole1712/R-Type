@@ -74,4 +74,14 @@ namespace Unit {
             return true;
         return false;
     }
+    
+    int         AUnit::getStartX() const
+    {
+        return _x;
+    }
+
+    int         AUnit::getStartY() const
+    {
+        return _y;
+    }
 }
