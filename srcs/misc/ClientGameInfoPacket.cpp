@@ -10,3 +10,8 @@ ClientGameInfoPacket::ClientGameInfoPacket(std::string const& data) : APacket(da
 }
 
 ClientGameInfoPacket::~ClientGameInfoPacket() {};
+
+std::ostream& operator<<(std::ostream& os, ClientGameInfoPacket const& packet) {
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ".";
+	return os;
+}

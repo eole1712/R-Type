@@ -16,11 +16,13 @@ public:
 	ServerConnexionPacket(std::string const& data);
 	virtual ~ServerConnexionPacket();
 
-	bool getStatus();
-	std::string getServerString();
+	bool getStatus() const;
+	std::string getServerString() const;
 
 	void setStatus(bool status);
 	void setServerString(std::string const& str);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerConnexionPacket const& packet);
 
 #endif /* !SERVERCONNEXIONPACKET_H_ */

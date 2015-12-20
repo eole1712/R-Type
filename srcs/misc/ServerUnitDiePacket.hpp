@@ -14,9 +14,11 @@ public:
 	ServerUnitDiePacket(std::string const& data);
 	virtual ~ServerUnitDiePacket();
 
-    uint32_t getUnitID();
+    uint32_t getUnitID() const;
 
     void        setUnitID(uint32_t);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerUnitDiePacket const& packet);
 
 #endif /* !SERVERUNITDIEPACKET_H_ */

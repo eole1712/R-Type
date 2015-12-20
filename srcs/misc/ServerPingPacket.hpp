@@ -14,9 +14,11 @@ public:
 	ServerPingPacket(std::string const& data);
 	virtual ~ServerPingPacket();
 
-    bool getStatus();
+    bool getStatus() const;
 
     void        setStatus(bool);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerPingPacket const& packet);
 
 #endif /* !SERVERPINGPACKET_H_ */

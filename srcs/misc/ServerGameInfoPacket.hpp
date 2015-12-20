@@ -16,15 +16,17 @@ public:
 	ServerGameInfoPacket(std::string const& data);
 	virtual ~ServerGameInfoPacket();
 
-	uint32_t getRoomId();
-	uint8_t getRoomSlots();
-    uint8_t getRoomReady();
-	std::string getRoomName();
+	uint32_t getRoomId() const;
+	uint8_t getRoomSlots() const;
+    uint8_t getRoomReady() const;
+	std::string getRoomName() const;
 
 	void setRoomId(uint32_t id);
 	void setRoomSlots(uint8_t nb);
     void setRoomReady(uint8_t nb);
 	void setRoomName(std::string const& name);
 };
+
+std::ostream& operator<<(std::ostream& os, ServerGameInfoPacket const& packet);
 
 #endif /* !SERVERGAMEINFOPACKET_H_ */
