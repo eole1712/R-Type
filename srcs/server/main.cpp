@@ -13,8 +13,13 @@ int main(int , const char **) {
     // insert code here...
     std::cout << "Hello, World!\n";
 
-    Server      server;
-    
-    server.start();
+    try {
+      Server      server;
+
+      server.start();
+    }
+    catch (std::exception const& e) {
+      std::cerr << e.what() << std::endl;
+    }
     return 0;
 }
