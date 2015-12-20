@@ -5,7 +5,7 @@ namespace Unit {
   namespace Missile {
 
       AMissile::AMissile(boxType hitBox, unsigned int damage, AUnit *unit, unsigned int id, Timer::time time)
-    : AUnit(1, unit->getTeam(), unit->getX(time), unit->getY(time), hitBox, id, unit->getGameID(), time), _damage(damage), _origin(unit)
+    : AUnit(1, unit->getTeam(), unit->getStartX(), unit->getStartY(), hitBox, id, unit->getGameID(), time), _damage(damage), _origin(unit)
     {
     }
 

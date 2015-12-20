@@ -28,7 +28,8 @@ namespace Unit {
 
     Player::~Player()
     {
-        _user->endGame(_score);
+        if (_user)
+            _user->endGame(_score);
     }
 
     Missile::AMissile*          Player::shoot(Timer::time time)
