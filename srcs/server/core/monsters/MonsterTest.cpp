@@ -52,7 +52,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
 
-      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), time);
+      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
 
       _time.reset(m->getTime() * 1000);
       return m;

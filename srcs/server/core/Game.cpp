@@ -174,6 +174,7 @@ void        Game::shootThemAll()
             Unit::AUnit* m = player->shoot(time);
             if (m)
             {
+                m->setID(GameUtils::Game::getNewID(_id));
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
@@ -183,7 +184,10 @@ void        Game::shootThemAll()
         if (unit->getType() == Unit::MONSTER) {
             Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot(time);
             if (m)
+            {
+                m->setID(GameUtils::Game::getNewID(_id));
                 _map->addUnit(m);
+            }
         }
     });
 }

@@ -79,6 +79,7 @@ namespace Unit {
     
   public:
     virtual unsigned int  getID() const;
+    virtual void setID(unsigned int);
     virtual unsigned int  getGameID() const;
     virtual typeID        getTypeID() const = 0;
     

@@ -37,7 +37,7 @@ namespace Unit {
             return NULL;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-                                                                            GameUtils::Game::getNewID(_gameID), time);
+                                                                            0, time);
 
         _time.reset(m->getTime() * 1000);
 
