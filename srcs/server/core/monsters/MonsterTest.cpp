@@ -11,11 +11,17 @@
 
 extern "C"
 {
+#if (defined _WIN32)
+  __declspec(dllexport)     Unit::Monster::AMonster*  NewMonster(int x, int y, unsigned int id, unsigned int gameID);
+#endif
   Unit::Monster::AMonster*	NewMonster(int x, int y, unsigned int id, unsigned int gameID)
   {
     return (new Unit::Monster::MonsterTest(x, y, id, gameID));
   }
-
+  
+#if (defined _WIN32)
+  __declspec(dllexport)     void  DeleteMonster(Unit::Monster::AMonster* monster);
+#endif
   void	DeleteMonster(Unit::Monster::AMonster* monster)
   {
     delete monster;
@@ -46,7 +52,7 @@ namespace Unit
         return NULL;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
-									    GameUtils::Game::getNewID(_gameID));
+       GameUtils::Game::getNewID(_gameID));
 
       _time.reset(m->getTime() * 1000);
       return m;
@@ -65,10 +71,10 @@ namespace Unit
       if (this->_hp > 0)
         this->_hp -= 1;
     }
-      
+
     Unit::typeID  MonsterTest::getTypeID() const
     {
-          return Unit::MONSTERTEST;
+      return Unit::MONSTERTEST;
     }
 
   }

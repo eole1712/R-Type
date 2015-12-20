@@ -4,11 +4,17 @@
 
 extern "C"
 {
+#if (defined _WIN32)
+	__declspec(dllexport) Unit::BasicMissile *		NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param);
+#endif
   Unit::BasicMissile *		NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
-      return (new Unit::BasicMissile(x, y, id, creationTime, param));
+    return (new Unit::BasicMissile(x, y, id, creationTime, param));
   }
 
+#if (defined _WIN32)
+  __declspec(dllexport)   void				DeleteUnit(Unit::BasicMissile * monster);
+#endif
   void				DeleteUnit(Unit::BasicMissile * monster)
   {
     delete monster;
@@ -18,8 +24,8 @@ extern "C"
 namespace Unit
 {
   BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param)
-    : AUnit(x, y, id, creationTime, param),
-      _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
+  : AUnit(x, y, id, creationTime, param),
+  _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
     _mySprite.scale(2.5, 2.5);
   }

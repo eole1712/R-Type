@@ -19,6 +19,8 @@ const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
   {
 #if (defined __APPLE__)
       Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.dylib"
+#elif (defined _WIN32)
+	  Unit::Monster::MONSTERTEST, "..\\libs\\server\\ServerMonsterTest.dll"
 #else
       Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so"
 #endif

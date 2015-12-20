@@ -7,11 +7,17 @@
 
 extern "C"
 {
-  Unit::Missile::AMissile*	NewMissile(Unit::AUnit* origin, unsigned int id)
+#if (defined _WIN32)
+	__declspec(dllexport)   Unit::Missile::AMissile*		NewMissile(Unit::AUnit* origin, unsigned int id);
+#endif
+  Unit::Missile::AMissile*		NewMissile(Unit::AUnit* origin, unsigned int id)
   {
     return (new Unit::Missile::BasicMissile(origin, id));
   }
 
+#if (defined _WIN32)
+  __declspec(dllexport)     void  DeleteMissile(Unit::Missile::AMissile* missile);
+#endif
   void	DeleteMissile(Unit::Missile::AMissile* missile)
   {
     delete missile;
@@ -43,7 +49,7 @@ namespace Unit {
 
     Unit::pos            BasicMissile::move() const
     {
-        uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
+      uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
       pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
 
       return p;
@@ -68,10 +74,10 @@ namespace Unit {
     {
       return new BasicMissile(unit, id);
     }
-      
+
     Unit::typeID        BasicMissile::getTypeID() const
     {
-        return Unit::BASICMISSILE;
+      return Unit::BASICMISSILE;
     }
   }
 

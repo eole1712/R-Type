@@ -3,11 +3,17 @@
 
 extern "C"
 {
+#if (defined _WIN32)
+	__declspec(dllexport)   Unit::MonsterTest *			NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param);
+#endif
   Unit::MonsterTest *			NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
     return (new Unit::MonsterTest(x, y, id, creationTime, param));
   }
 
+#if (defined _WIN32)
+  __declspec(dllexport)   void		DeleteUnit(Unit::MonsterTest * monster);
+#endif
   void					DeleteUnit(Unit::MonsterTest * monster)
   {
     delete monster;
