@@ -29,7 +29,7 @@ public:
   virtual ~ISocket() {};
   virtual bool setPort(int port) = 0;
   virtual void setAddr(std::string addr) = 0;
-  virtual void async_send(std::string const& data, sendHandler callback) = 0;
+  virtual void async_send(std::string const& data, sendHandler callback, std::string addr, int port) = 0;
   virtual ssize_t send(std::string const& data) = 0;
   virtual void async_receive(std::string& buffer, receiveHandler callback) = 0;
   virtual ssize_t receive(std::string& data) = 0;

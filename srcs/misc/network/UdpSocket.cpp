@@ -162,11 +162,9 @@ ssize_t UdpSocket::send(std::string const& data)
   return res;
 }
 
-void UdpSocket::async_send(std::string const& data, sendHandler callback)
+void UdpSocket::async_send(std::string const& data, sendHandler callback,  std::string addr, int port)
 {
-  _manager->addSendCall(_sd, data, callback);
-
-  //_sendQueue.push_back(std::make_pair(data, callback));
+  _manager->addSendCall(_sd, data, callback, addr, port);
 }
 
 ssize_t UdpSocket::receive(std::string &data)

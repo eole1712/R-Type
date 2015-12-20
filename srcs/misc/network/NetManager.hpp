@@ -13,13 +13,14 @@
 
 #include "../Lock.hpp"
 #include "ISocket.hpp"
+#include <tuple>
 
 class NetManager
 {
 private:
-  typedef std::list<std::pair<std::string, ISocket::sendHandler > > sendList;
+  typedef std::list<std::tuple<std::string, ISocket::sendHandler, std::string, int> > sendList;
 
-  typedef std::list<std::pair<std::string&, ISocket::receiveHandler > > receiveList;
+  typedef std::list<std::pair<std::string&, ISocket::receiveHandler> > receiveList;
 
   typedef Lock Mutex;
 public:
@@ -28,7 +29,7 @@ public:
   static NetManager* getInstance();
   static void loopStart();
   void loop();
-  void addSendCall(int sd, std::string, ISocket::sendHandler&);
+  void addSendCall(int sd, std::string, ISocket::sendHandler&, std::string addr, int port);
   void addReceiveCall(int sd, std::string&, ISocket::receiveHandler&);
   void addSocket(int sd, ISocket*);
   bool find(int sd);

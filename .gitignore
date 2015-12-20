@@ -25,6 +25,7 @@
 *.LOCAL.*
 *.REMOTE.*
 *.BASE.*
+*.orig
 
 # Executables
 *.exe

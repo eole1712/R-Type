@@ -32,7 +32,7 @@ namespace Unit
   
   MonsterTest::~MonsterTest()
   {}
-  
+
   pos            MonsterTest::move(Time::stamp tick) const
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;

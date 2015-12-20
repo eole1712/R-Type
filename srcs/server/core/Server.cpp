@@ -20,36 +20,39 @@ Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
 	_packetHandlerFuncs = {
-		[this] (APacket* packet, unsigned int id) {
-			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
-			if (pack == NULL)
-				return;
-			ServerConnexionPacket ret;
-			std::cout << "Client connect with id : " << id << std::endl;
-			if (_users.find(id) != _users.end())
-			{
-				ret.setServerString("Not Welcome to R-Type Server");
-				ret.setStatus(false);
-			}
-			else {
-			  _users[id] = new User(pack->getClientName(), id);
-			  ret.setServerString("Welcome to R-Type Server");
-			  ret.setStatus(true);
-			}
-			_netServer->send(&ret, id);
-		},
-		[this] (APacket* packet, unsigned int id) {
-			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
-			if (pack == NULL)
-				return;
-			if (_users.find(id) == _users.end())
-				return;
-			for (auto& game : _games) {
-                ServerGameInfoPacket ret;
-                ret.setRoomId(game.second->getID());
-				ret.setRoomSlots(4 - game.second->getNbPlayers());
-                int nb = 0;
-                for (auto& user : game.second->getUsers())
+	  [this] (APacket* packet, unsigned int id) {
+	    std::cout << "ping received" << std::endl;
+	  },
+	  [this] (APacket* packet, unsigned int id) {
+	    ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
+	    if (pack == NULL)
+	      return;
+	    ServerConnexionPacket ret;
+	    std::cout << "Client connect with id : " << id << std::endl;
+	    if (_users.find(id) != _users.end())
+	      {
+		ret.setServerString("Not Welcome to R-Type Server");
+		ret.setStatus(false);
+	      }
+	    else {
+	      _users[id] = new User(pack->getClientName(), id);
+	      ret.setServerString("Welcome to R-Type Server");
+	      ret.setStatus(true);
+	    }
+	    _netServer->send(&ret, id);
+	  },
+	  [this] (APacket* packet, unsigned int id) {
+	    ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
+	    if (pack == NULL)
+	      return;
+	    if (_users.find(id) == _users.end())
+	      return;
+	    for (auto& game : _games) {
+	      ServerGameInfoPacket ret;
+	      ret.setRoomId(game.second->getID());
+	      ret.setRoomSlots(4 - game.second->getNbPlayers());
+	      int nb = 0;
+	      for (auto& user : game.second->getUsers())
                 {
                     if (user->isReady())
                         nb++;
@@ -195,7 +198,7 @@ void Server::startGame(IGame* game) {
 }
 
 void	Server::handlePacket(APacket* packet, unsigned int id) {
-	_packetHandlerFuncs[packet->getType() - 8](packet, id);
+	_packetHandlerFuncs[packet->getType() - 7](packet, id);
 }
 
 void    Server::refreshTimer(unsigned int idGame)

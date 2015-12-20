@@ -75,17 +75,6 @@ Client::Client(int port)
       }
     },
     [this] (APacket* packet, unsigned int id) {
-      ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
-      if (pack == NULL)
-	return;
-      std::cout << "pinged by server" << std::endl;
-      ServerPingPacket ans;
-
-      ans.setStatus(false);
-      _nc->sendPacket(&ans);
-    },
-
-    [this] (APacket* packet, unsigned int id) {
       ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
       if (pack == NULL)
 	return;
@@ -107,6 +96,7 @@ Client::Client(int port)
 
     [this] (APacket* packet, unsigned int id) {
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
+      std::cout << "timer" << std::endl;
       if (pack == NULL)
 	return;
       if (_game == nullptr) {
@@ -121,6 +111,17 @@ Client::Client(int port)
 	}
       }
       std::cout << "timer update" << std::endl;
+    },
+
+    [this] (APacket* packet, unsigned int id) {
+      ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
+      if (pack == NULL)
+	return;
+      std::cout << "pinged by server" << std::endl;
+      ServerPingPacket ans;
+
+      ans.setStatus(false);
+      _nc->sendPacket(&ans);
     }
   };
   _menu = new Menu(1200, 800, this);
@@ -179,7 +180,7 @@ void Client::createGame(const std::string &name)
 
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
-  if (pack->getType() == 5)
+  if (pack->getType() == APacket::SERVERUNITSPAWN)
     std::cerr << "handling unitspawn" << std::endl;
   _packetHandlerFuncs[pack->getType()](pack, id);
 }
