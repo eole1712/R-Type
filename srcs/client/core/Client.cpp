@@ -114,7 +114,7 @@ Client::Client(int port)
       if (pack == NULL)
 	return;
       if (_game == nullptr)
-        _menu->startGame();
+        _menu->startGame(pack->getCurrentTimer());
       else
         _game->setTimer(pack->getCurrentTimer());
       std::cout << "timer update" << std::endl;
