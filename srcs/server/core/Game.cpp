@@ -130,12 +130,13 @@ std::vector<User*> const&     Game::getUsers() const
 void        Game::checkMouvements(Timer &t)
 {
     std::list<Unit::AUnit*>::iterator it;
+    Timer::time                       time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [&t, this](Unit::Player *player)
+    std::for_each(_players.begin(), _players.end(), [&t, this, time](Unit::Player *player)
                   {
                       if (t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
-                      Unit::AUnit *unit = _map->checkInterractions(player);
+                      Unit::AUnit *unit = _map->checkInterractions(player, time);
                       if (unit) {
                           (player)->getHit(unit);
                           unit->getHit(player);
@@ -143,7 +144,7 @@ void        Game::checkMouvements(Timer &t)
                   });
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        Unit::AUnit *unit = _map->checkInterractions(*it);
+        Unit::AUnit *unit = _map->checkInterractions(*it, time);
         if (unit) {
             (*it)->getHit(unit);
             unit->getHit(*it);
@@ -151,7 +152,7 @@ void        Game::checkMouvements(Timer &t)
     }
     
     for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
-        Unit::AUnit *unit = _map->checkInterractions(*it);
+        Unit::AUnit *unit = _map->checkInterractions(*it, time);
         if (unit) {
             (*it)->getHit(unit);
             unit->getHit(*it);
@@ -189,9 +190,10 @@ bool        Game::checkIfAlive()
 {
     int     i = 0;
     std::list<Unit::AUnit*>::iterator it;
+    Timer::time                       time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [&i](Unit::Player *player) {
-        if (player->isAlive())
+    std::for_each(_players.begin(), _players.end(), [&i, time](Unit::Player *player) {
+        if (player->isAlive(time))
             i++;
     });
     if (i == 0)
@@ -199,11 +201,11 @@ bool        Game::checkIfAlive()
     
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive() == false)
+        if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
             _map->getList((*it)->getTeam()).erase(it);
     }
     for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
-        if (((*it)->getType() == Unit::MISSILE || (*it)->getType() == Unit::MONSTER) && (*it)->isAlive() == false)
+        if (((*it)->getType() == Unit::MISSILE || (*it)->getType() == Unit::MONSTER) && (*it)->isAlive(time) == false)
             _map->getList((*it)->getTeam()).erase(it);
     }
     return true;

@@ -54,7 +54,7 @@ public:
     void            setMoving(Unit::dir dir, bool isMoving);
     void            setShooting(bool isShooting);
 public:
-    pos             move() const;
+    pos             move(Timer::time) const;
     bool            move(dir, IMap*);
 
 public:

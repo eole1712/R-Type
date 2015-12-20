@@ -89,7 +89,7 @@ namespace Unit {
         return _color;
     }
 
-    pos                         Player::move() const
+    pos                         Player::move(Timer::time) const
     {
       return std::make_pair(_x, _y);
     }

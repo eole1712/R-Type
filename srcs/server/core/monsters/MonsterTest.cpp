@@ -29,7 +29,7 @@ namespace Unit
   {
 
       MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair(5, 5), Missile::BASIC, id, gameID, time)
+    : AMonster(1, x, y, std::make_pair((33 * 2.5), (36 * 2.5)), Missile::BASIC, id, gameID, time)
     {}
 
     MonsterTest::~MonsterTest()
@@ -51,10 +51,11 @@ namespace Unit
       return m;
     }
 
-    Unit::pos            MonsterTest::move() const
+      Unit::pos            MonsterTest::move(Timer::time time) const
     {
-      uintmax_t diff = GameUtils::Game::now(_gameID) - _creationTime;
-      pos p = std::make_pair(_x + diff / 10000, _y + diff / 10000);
+      uintmax_t diff = time - _creationTime;
+
+      pos p = std::make_pair(_x - (diff / 10000), _y);
 
       return p;
     }

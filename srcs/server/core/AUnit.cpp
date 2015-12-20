@@ -14,9 +14,9 @@ namespace Unit {
     {
     }
     
-    bool    AUnit::isAlive() const
+    bool    AUnit::isAlive(Timer::time time) const
     {
-        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(), getY()) == false)
+        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(time), getY(time)) == false)
             return (false);
         return (_hp > 0);
     }
@@ -56,22 +56,22 @@ namespace Unit {
         return _creationTime;
     }
     
-    int    AUnit::getX() const
+    int    AUnit::getX(Timer::time time) const
     {
-        return move().first;
+        return move(time).first;
     }
     
-    int    AUnit::getY() const
+    int    AUnit::getY(Timer::time time) const
     {
-        return move().second;
+        return move(time).second;
     }
     
-    bool        AUnit::isHitting(AUnit *unit) const
+    bool        AUnit::isHitting(AUnit *unit, Timer::time time) const
     {
-        if ((((getX() + _hitBox.first) > (unit->getX() - unit->getHitBox().first))
-             || ((getX() - _hitBox.first) < (unit->getX() + unit->getHitBox().first)))
-            && (((getY() + _hitBox.second) > (unit->getY() - unit->getHitBox().second))
-                || ((getY() - _hitBox.second) < (unit->getY() + unit->getHitBox().second))))
+        if ((((getX(time) + _hitBox.first) > (unit->getX(time) - unit->getHitBox().first))
+             || ((getX(time) - _hitBox.first) < (unit->getX(time) + unit->getHitBox().first)))
+            && (((getY(time) + _hitBox.second) > (unit->getY(time) - unit->getHitBox().second))
+                || ((getY(time) - _hitBox.second) < (unit->getY(time) + unit->getHitBox().second))))
             return true;
         return false;
     }

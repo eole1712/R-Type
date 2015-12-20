@@ -13,7 +13,7 @@ namespace Unit {
       ~FactoryUnit();
   public:
       void  getHit(AUnit*);
-      pos   move() const;
+      pos   move(Timer::time) const;
       type  getType() const;
   };
 }

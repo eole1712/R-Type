@@ -12,7 +12,7 @@ public:
     
     virtual void				addUnit(Unit::AUnit*) = 0;
     virtual void                removeUnit(Unit::AUnit *) = 0;
-    virtual Unit::AUnit*			checkInterractions(Unit::AUnit*) const = 0;
+    virtual Unit::AUnit*		checkInterractions(Unit::AUnit*, Timer::time) const = 0;
 };
 
 #endif /* !IMAP_H_ */

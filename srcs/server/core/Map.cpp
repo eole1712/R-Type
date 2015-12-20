@@ -41,13 +41,13 @@ void            Map::removeUnit(Unit::AUnit* unit)
         _enemies.remove(unit);
 }
 
-Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit) const
+Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit, Timer::time time) const
 {
   Unit::team	team = unit->getTeam();
   auto&	list = ((team != Unit::ALLY) ? (this->_allies) : (this->_enemies));
 
   for (auto& other : list)
-    if (unit->isHitting(other))
+    if (unit->isHitting(other, time))
       return (other);
   return (nullptr);
 }

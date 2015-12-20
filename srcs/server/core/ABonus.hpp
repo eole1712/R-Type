@@ -23,7 +23,7 @@ namespace Unit
             virtual Unit::type      getType() const;
             virtual Bonus::type     getBonusType() const = 0;
             virtual Unit::typeID    getTypeID() const = 0;
-            virtual pos             move() const;
+            virtual pos             move(Timer::time) const;
         };
 
     }

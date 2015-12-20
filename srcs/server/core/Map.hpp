@@ -15,7 +15,7 @@ public:
   
   virtual void                        addUnit(Unit::AUnit*);
   virtual void                        removeUnit(Unit::AUnit *);
-  virtual Unit::AUnit*				checkInterractions(Unit::AUnit*) const;
+  virtual Unit::AUnit*				checkInterractions(Unit::AUnit*, Timer::time) const;
   
 private:
   std::list<Unit::AUnit*>	_allies;

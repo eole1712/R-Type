@@ -173,14 +173,14 @@ void Server::startGame(IGame* game) {
                 refreshTimer(gameID);
                 refresh++;
             }
-            
+            Timer::time                       time = GameUtils::Game::now(gameID);
             //refreshPlayersPosition
 			for (auto& user : v) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;
 					packet.setPlayerID(user->getPlayer()->getID());
-					packet.setX(user->getPlayer()->getX());
-					packet.setY(user->getPlayer()->getY());
+					packet.setX(user->getPlayer()->getX(time));
+					packet.setY(user->getPlayer()->getY(time));
 					for (auto& aUser : v) {
 						_netServer->send(&packet, aUser->getClientID());
 					}

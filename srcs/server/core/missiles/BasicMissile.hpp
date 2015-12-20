@@ -15,7 +15,7 @@ namespace Unit {
     public:
       virtual bool                isKillable() const;
       virtual Missile::type       getMissileType() const;
-      virtual pos                 move() const;
+      virtual pos                 move(Timer::time) const;
       
     public:
       virtual double              getTime() const;
