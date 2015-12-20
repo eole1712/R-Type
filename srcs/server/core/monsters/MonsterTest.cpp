@@ -1,3 +1,4 @@
+#include <cmath>
 #include <utility>
 #include "AUnit.hpp"
 #include "AMissile.hpp"
@@ -35,7 +36,7 @@ namespace Unit
   {
 
       MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair((33 * 2.5), (36 * 2.5)), Missile::BASIC, id, gameID, time)
+    : AMonster(1, x, y, std::make_pair((33 * 1.8), (36 * 1.8)), Missile::BASIC, id, gameID, time)
     {}
 
     MonsterTest::~MonsterTest()
@@ -46,12 +47,12 @@ namespace Unit
       return (Monster::MONSTERTEST);
     }
 
-    Missile::AMissile*	MonsterTest::shoot()
+      Missile::AMissile*	MonsterTest::shoot(Timer::time time)
     {
       if (!_time.isFinished())
         return NULL;
 
-      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
+      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
 
       _time.reset(m->getTime() * 1000);
       return m;
@@ -61,8 +62,7 @@ namespace Unit
     {
       uintmax_t diff = time - _creationTime;
 
-      pos p = std::make_pair(_x - (diff / 10000), _y);
-
+      pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
       return p;
     }
 

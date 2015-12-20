@@ -1,4 +1,4 @@
-#include <string>
+ #include <string>
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -167,21 +167,27 @@ void        Game::checkMouvements(Timer &t)
 
 void        Game::shootThemAll()
 {
-    std::for_each(_players.begin(), _players.end(), [this](Unit::Player *player) {
+    Timer::time                       time = GameUtils::Game::now(_id);
+    
+    std::for_each(_players.begin(), _players.end(), [this, time](Unit::Player *player) {
         if (player->isShooting()) {
-            Unit::AUnit* m = player->shoot();
+            Unit::AUnit* m = player->shoot(time);
             if (m)
             {
+                m->setID(GameUtils::Game::getNewID(_id));
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
         }
     });
-    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this](Unit::AUnit* unit){
+    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this, time](Unit::AUnit* unit){
         if (unit->getType() == Unit::MONSTER) {
-            Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot();
+            Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot(time);
             if (m)
+            {
+                m->setID(GameUtils::Game::getNewID(_id));
                 _map->addUnit(m);
+            }
         }
     });
 }

@@ -11,8 +11,8 @@ namespace Unit {
     _trueX(x), _trueY(y),
       _lastVerticalMove(0), _anim(std::string("../resources/sprites/ship.fly.247x47x3.png"), 3)//, _shooting(false), _weapon(Missile::BASIC),
   {
-    static sf::Color colors[4] =
-      { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
+//    static sf::Color colors[4] =
+//      { { 0, 0, 255, 0}, {187, 11, 11, 0}, {243, 214, 23, 0}, {20, 148, 5, 0} };
 
     _anim.pause();
     /*

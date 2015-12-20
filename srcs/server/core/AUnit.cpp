@@ -85,4 +85,9 @@ namespace Unit {
     {
         return _y;
     }
+    
+    void         AUnit::setID(unsigned int id)
+    {
+        _id = id;
+    }
 }
