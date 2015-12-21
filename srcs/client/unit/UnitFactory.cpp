@@ -17,13 +17,16 @@
 const std::map<Unit::typeID, std::string> Unit::Factory::LIBSLIST = {
 #if (defined __APPLE__)
   { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.dylib" },
-  { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.dylib" }
+  { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.dylib" },
+  { Unit::BIGHUNTER, "../libs/client/libClientBigHunter.dylib" }
 #elif (defined _WIN32)
 { Unit::MONSTERTEST, "..\\libs\\client\\ClientMonsterTest.dll" },
-{ Unit::BASICMISSILE, "..\\libs\\client\\ClientBasicMissile.dll" }
+{ Unit::BASICMISSILE, "..\\libs\\client\\ClientBasicMissile.dll" },
+{ Unit::BIGHUNTER, "..\\libs\\client\\ClientBigHunter.dll" }
 #else
 { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.so" },
-{ Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.so" }
+{ Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.so" },
+{ Unit::BIGHUNTER, "../libs/client/libClientBigHunter.so" }
 #endif
 };
 
@@ -66,6 +69,22 @@ Unit::AUnit*	Factory::createUnit(Unit::typeID type, int x, int y,
 	}
     }
   return (NULL);
+}
+
+void		Factory::deleteUnit(AUnit * unit)
+{
+  fptrDeleteUnit	ptr;
+
+  for(std::list<std::pair<Unit::typeID, ILibLoader*> >::iterator it = this->_libs.begin();
+      it != this->_libs.end(); ++it)
+    {
+      if ((*it).first == unit->getType())
+	{
+	  ptr = reinterpret_cast<fptrDeleteUnit>((*it).second->getExternalDestructor());
+	  ptr(unit);
+	  return ;
+	}
+    }
 }
 
 bool	Factory::addUnitType(Unit::typeID type, std::string libName)

@@ -16,67 +16,69 @@
 #include <iostream>
 #include <algorithm>
 
+#define DEBUG 1
+
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 std::vector<std::function<APacket*(std::string const&) > > const Networker::_packHandlers = {
   [] (std::string const& data) {
     ServerConnexionPacket* pack = new ServerConnexionPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerGameInfoPacket* pack = new ServerGameInfoPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerGameConnectPacket* pack = new ServerGameConnectPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerPlayerMovePacket* pack = new ServerPlayerMovePacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitSpawnPacket* pack = new ServerUnitSpawnPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitDiePacket* pack = new ServerUnitDiePacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ServerTimerRefreshPacket* pack = new ServerTimerRefreshPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
     [] (std::string const& data) {
     ServerPingPacket* pack = new ServerPingPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientConnexionPacket* pack = new ClientConnexionPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientGameInfoPacket* pack = new ClientGameInfoPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientGameConnectPacket* pack = new ClientGameConnectPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   },
   [] (std::string const& data) {
     ClientKeyboardPressPacket* pack = new ClientKeyboardPressPacket(data);
-    std::cout << *pack << std::endl;
+    if (DEBUG) std::cout << *pack << std::endl;
     return pack;
   }
 };
@@ -86,7 +88,7 @@ Networker::Networker(int port)
 {
 
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode, ssize_t, std::string, int) {
     _packHandlers[APacket::sGetType(_buffer)](_buffer);
     _asyncRec(_sock, _buffer, _handle);
   };
@@ -98,7 +100,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
 {
   _PacketHandler = handler;
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode, ssize_t sizeRec, std::string addr, int port) {
     std::unique_lock<Lock> l(_lock);
     APacket* pack;
     bool found = false;
@@ -117,7 +119,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
      }
      ++id;
    }
-    std::cout << "[RECEIVING FROM :"<< id <<"] ";
+   if (DEBUG) std::cout << "[RECEIVING FROM :"<< id <<"] ";
     pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
     if (!found) {
       std::cout << "New peer ! : " << addr << ":" << port << std::endl;
@@ -138,17 +140,20 @@ Networker::~Networker()
 
 void Networker::send(APacket *pack, int id)
 {
+
 //REMOVE WHEN NO DEBUG
+  if (DEBUG) {
   APacket* packdebug;
    std::cout << "[SENDING TO : "<< id <<"] ";
     packdebug = _packHandlers[APacket::sGetType(pack->getData())](pack->getData());
     delete packdebug;
+  }
 //!REMOVE WHEN NO DEBUG
     std::lock_guard<Lock> l(_lock);
     std::string data = pack->getData();
     unsigned long dataSize = data.size();
 
-  if (_peers.size() <= id)
+  if (_peers.size() <= unsigned(id))
     return;
 
   _sock->async_send(data, [dataSize] (ISocket::returnCode ret, size_t written) {

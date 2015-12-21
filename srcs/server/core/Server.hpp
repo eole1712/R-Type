@@ -20,16 +20,23 @@ public:
 
 	virtual void handlePacket(APacket* packet, unsigned int id);
     virtual void start();
-
+    
 private:
     void startGame(IGame*);
     void refreshTimer(unsigned int idGame);
-
+    void sendToUser(APacket*, int);
+    void sendToGame(APacket*, int);
+    void sendToAll(APacket*);
+    void sendRoomStatus();
+    void sendRoomStatus(int);
+    bool userExists(int) const;
+    IGame* createGame(std::string const&);
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     virtual void        killUnit(unsigned int id, unsigned int gameID);
   virtual void		disconnectPlayer(unsigned int id);
 
+    
 private:
   std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
 private:

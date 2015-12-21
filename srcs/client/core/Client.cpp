@@ -16,7 +16,7 @@
 #include <sstream>
 
 Client::Client(int port)
-  : _connected(0)
+: _connected(0)
 {
     _nm = new NetManager;
     _nc = new NetClient(port, _nm, this);
@@ -35,10 +35,9 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
-            _rooms[pack->getRoomName()] = pack->getRoomId();
-            _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName());
+            _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
 			std::lock_guard<Lock> l(_lock);
 
@@ -54,10 +53,10 @@ Client::Client(int port)
             }
             else
                 std::cout << "failed to connect" << std::endl;
-			refreshGames();
+			//refreshGames();
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
             if (pack == NULL)
                 return;
@@ -67,7 +66,7 @@ Client::Client(int port)
                 pl->setY(pack->getY());
             }
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
             if (pack == NULL)
                 return;
@@ -79,7 +78,7 @@ Client::Client(int port)
             }
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
             if (pack == nullptr)
                 return;
@@ -89,7 +88,7 @@ Client::Client(int port)
 
         [this] (APacket* packet, unsigned int id) {
             ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
-	    if (pack == nullptr)
+            if (pack == nullptr)
                 return;
 	    _nc->setTimeout(id);
 	    if (_game == nullptr) {
@@ -105,12 +104,12 @@ Client::Client(int port)
         },
 
         [this] (APacket* packet, unsigned int id) {
-	  ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
-	  if (pack == NULL)
-	    return;
-	  std::cout << "pinged by server" << std::endl;
-	  if (pack->getStatus()) {
-	    ServerPingPacket ans;
+            ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
+            if (pack == NULL)
+                return;
+            std::cout << "pinged by server" << std::endl;
+			if (pack->getStatus()) {
+				ServerPingPacket ans;
 
 	    ans.setStatus(false);
 	    _nc->sendPacket(&ans);
@@ -163,12 +162,12 @@ void Client::refreshGames()
     _nc->sendPacket(&pack);
 }
 
-void Client::selectGame(const std::string &name)
+void Client::selectGame(const std::string &name, int id)
 {
     ClientGameConnectPacket pack;
 
     pack.setRoomName(name);
-    pack.setRoomId(_rooms[name]);
+    pack.setRoomId(id);
     _nc->sendPacket(&pack);
 }
 

@@ -24,7 +24,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _gameList(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
-      _eventChecks.push_back([this] () {
+  _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
 	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString(), _time);
@@ -40,7 +40,8 @@ Menu::Menu(int width, int height, IMenuHandler* client):
 			      std::get<1>(room.second),
 			      std::get<2>(room.second),
 			      std::get<0>(room.second),
-			      (std::get<0>(room.second) == ((std::string) _gameName.getEditable().getString())));
+			      (std::get<0>(room.second) == ((std::string) _gameName.getEditable().getString())),
+            std::get<3>(room.second));
 	  }
 	_roomsBuf.clear();
       });
@@ -56,9 +57,9 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  //_soundPlayer.play();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
+  //_soundPlayer.pause();
   while (_window.isOpen())
     {
       for (auto& elem : _eventChecks) {
@@ -105,8 +106,8 @@ void		Menu::eventHandler()
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick(event);
 	  if (_gameList.getList().size() != 0)
-	    if (_gameList.clickHandler(_window, event) == true)
-	      _client->selectGame(_gameList.getCurrentItem());
+	    if (_gameList.clickHandler(event) == true)
+	      _client->selectGame(_gameList.getCurrentItem(), _gameList.getCurrentItemId());
 	  break;
 	case sf::Event::TextEntered:
 	  editionHandler(event);
@@ -152,7 +153,7 @@ void		Menu::handleMouseClick(sf::Event& event)
        _client->createGame((std::string) _gameName.getEditable().getString());
      }
    else
-     _gameList.scrollHandler(_window, event);
+     _gameList.scrollHandler(event);
 }
 
 void		Menu::handleMouseMoved(sf::Event& event)
@@ -205,7 +206,7 @@ void		Menu::editionHandler(sf::Event const& event)
 
 void		Menu::drawFields()
 {
-  for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
+  for (unsigned int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
     {
       _menuFields[i].getClickableBtn().setColor(_fieldsColor);
       if (i == _currentRow)
@@ -215,9 +216,11 @@ void		Menu::drawFields()
   _window.draw(_createButton.getClickableBtn());
   _window.draw(_refreshButton.getClickableBtn());
   _window.draw(_connectButton.getClickableBtn());
-  if (_isConnected && _client->getRoomConnected() != 0)
+  int currentId = _client->getRoomConnected();
+  auto it = _gameList.getList().find(currentId);
+  if (_isConnected && currentId != 0 && it != _gameList.getList().end())
     {
-      if (_isReady == true)
+      if (it->second.isReady())
 	_readyButton.getClickableBtn().setColor(sf::Color(0, 255, 0));
       else
 	_readyButton.getClickableBtn().setColor(sf::Color(255, 0, 0));
@@ -252,9 +255,9 @@ void		Menu::startGame(unsigned long currentTime)
   _time = currentTime;
 }
 
-void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, unsigned int playerReady, std::string const&)
+void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, unsigned int playerReady, std::string const&, bool isReady)
 {
-  _roomsBuf[id] = std::make_tuple(gameName, playerNumber, playerReady);
+  _roomsBuf[id] = std::make_tuple(gameName, playerNumber, playerReady, isReady);
 }
 
 void		Menu::setConnected()

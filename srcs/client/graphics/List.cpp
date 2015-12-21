@@ -11,7 +11,7 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 }
 
 void			List::addItem(int id, std::string const& gameName,
-				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select)
+				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select, bool isReady)
 {
   std::string		playerNumberToString;
   std::string		playerReadyToString;
@@ -25,11 +25,13 @@ void			List::addItem(int id, std::string const& gameName,
       exist->second.setName(gameName);
       exist->second.setPlayerNumber(playerNumber);
       exist->second.setDaySentence(daySentence);
+      exist->second.setReady(isReady);
+      exist->second.setPlayerReady(playerReady);
       return ;
     }
   
   GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, playerReadyToString, daySentence,
-			     _font, _color, _highlightColor);
+			     _font, _color, _highlightColor, isReady);
   _list[id] = gameListItem;
   if (_list.size() == 1)
     {
@@ -70,7 +72,7 @@ void			List::slide(bool up)
     }
 }
 
-bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
+bool			List::clickHandler(sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
@@ -78,7 +80,6 @@ bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
-      std::cout << (*it).second.getIsSelected() << std::endl;
       i--;
       if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
 	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
@@ -101,7 +102,7 @@ bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   return false;
 }
 
-void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
+void			List::mouseMovedHandler(sf::RenderWindow & window, sf::Event& event)
 {
   int			i = 5;
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
@@ -125,7 +126,7 @@ void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
     }
 }
 
-void			List::scrollHandler(sf::RenderWindow& window, sf::Event& event)
+void			List::scrollHandler(sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   
@@ -158,7 +159,6 @@ void			List::render(sf::RenderWindow& window)
 
 void			List::clean()
 {
-  std::cout << "clean" << std::endl;
   _posX = _originPosX;
   _posY = _originPosY;
   _list.clear();
@@ -175,6 +175,14 @@ std::string		List::getCurrentItem() const
   if (_selected == _list.end())
     return std::string("");
   return (std::string)(*_selected).second.getName().getString();
+}
+
+int			List::getCurrentItemId() const
+{
+
+  if (_selected == _list.end())
+    return 0;
+  return (*_selected).first;
 }
 
 void			List::setFont(sf::Font const& listFont)

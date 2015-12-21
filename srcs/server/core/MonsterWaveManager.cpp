@@ -23,25 +23,56 @@ namespace Monster {
     {
         Wave*   wave = new Wave(gameID);
         
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 3; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, i * (GameUtils::Map::HEIGHT / 3));
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < 2; i++) {
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, relativePos(i, j + 1, 100, 700));
             }
             wave->addWaitingTime(1000);
-            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, GameUtils::Map::HEIGHT / 2);
-            wave->addWaitingTime(1000);
+        }
+        return wave;
+    }
+    
+    Wave*     WaveManager::TriangleWave(unsigned int gameID)
+    {
+        Wave*   wave = new Wave(gameID);
+
+        for (int j = 0; j < 3; j++) {
+
+            for (int i = 0; i < (j + 1); i++) {
+                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
+            }
+            wave->addWaitingTime(500);
+        }
+        return wave;
+    }
+    
+    Wave*     WaveManager::TriangleEmptyWave(unsigned int gameID)
+    {
+        Wave*   wave = new Wave(gameID);
+        
+        for (int j = 0; j < 3; j++) {
+            
+            for (int i = 0; i < (j + 1); i++) {
+                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
+            }
+            wave->addWaitingTime(500);
         }
         return wave;
     }
     
     void        WaveManager::execConfig()
     {
-        static int t[] = {1};
+        static int t[] = {1, 1};
         
         if (GameUtils::Game::now(_gameID) > (10000 * t[0]))
         {
-            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            addWave(Monster::WaveManager::TriangleWave(_gameID));
             t[0]++;
+        }
+        if (GameUtils::Game::now(_gameID) > (6000 * t[1]))
+        {
+            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            t[1]++;
         }
     }
     
@@ -69,7 +100,7 @@ namespace Monster {
             while ((*it)->isFinished() && (unit = (*it)->getNextMonster()))
             {
                 this->_map->addUnit(unit);
-                _owl->sendUnit(unit, Unit::MONSTERTEST);
+                _owl->sendUnit(unit, unit->getTypeID());
                 std::cout << "Ajout de monstre" << std::endl;
             }
             if ((*it)->isEmpty())

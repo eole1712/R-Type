@@ -52,13 +52,13 @@ namespace Unit {
     {
         long diff = static_cast<long>(time - _creationTime) / 10;
         
-        pos p = std::make_pair(_x + (diff * 3 * (_team == Unit::ALLY ? 1 : -1)), _y);
+        pos p = std::make_pair(_x + (diff * 5 * (_team == Unit::ALLY ? 1 : -1)), _y);
         return p;
     }
 
     double    BasicMissile::getTime() const
     {
-        return (1.0 / (_origin->getType() == PLAYER ? 5 : 1));
+        return (1.0 / (_origin->getType() == PLAYER ? 5 : 0.2));
     }
 
     std::string     BasicMissile::getClassName() const

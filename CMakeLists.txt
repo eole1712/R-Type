@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.1)
 
 project(R-Type)
 
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  # Update if necessary
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+endif()
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
 
@@ -187,6 +192,8 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif()
 endif(APPLE)
 
+######## SERVER ## MONSTER TEST ####
+
 if (UNIX)
 add_library(ServerMonsterTest SHARED
 	srcs/common/linux_specific/CULibLoader.cpp
@@ -228,6 +235,51 @@ set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELE
 set_target_properties(ServerMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
 endif (WIN32)
 
+######## SERVER ## BIG HUNTER ####
+
+if (UNIX)
+add_library(ServerBigHunter SHARED
+srcs/common/linux_specific/CULibLoader.cpp
+srcs/server/core/monsters/BigHunter.cpp
+srcs/server/core/AUnit.cpp
+srcs/server/core/AMissile.cpp
+srcs/server/core/MissileFactory.cpp
+srcs/server/core/AMonster.cpp
+srcs/misc/Lock.cpp
+srcs/server/core/GameUtils.cpp
+srcs/server/misc/Timer.cpp)
+endif (UNIX)
+
+if (WIN32)
+add_library(ServerBigHunter SHARED
+srcs/common/windows_specific/CWLibLoader.cpp
+srcs/server/core/monsters/BigHunter.cpp
+srcs/server/core/AUnit.cpp
+srcs/server/core/AMissile.cpp
+srcs/misc/Lock.cpp
+srcs/server/core/MissileFactory.cpp
+srcs/server/core/AMonster.cpp
+srcs/server/core/GameUtils.cpp
+srcs/server/misc/Timer.cpp)
+endif (WIN32)
+
+target_include_directories(ServerBigHunter PRIVATE ${server_includes_directories})
+target_compile_features(ServerBigHunter PRIVATE cxx_range_for)
+if (UNIX)
+target_link_libraries(ServerBigHunter -lpthread)
+target_link_libraries(ServerBigHunter -ldl)
+set_target_properties(ServerBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
+
+######## SERVER ## BASIC MISSILE ####
+
 add_library(ServerBasicMissile SHARED
 	srcs/server/core/missiles/BasicMissile.cpp
 	srcs/server/core/AUnit.cpp
@@ -252,6 +304,8 @@ set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_REL
 set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
 endif (WIN32)
 
+######## CLIENT ## MONSTER TEST ####
+
 add_library(ClientMonsterTest SHARED
 	srcs/client/unit/MonsterTest/MonsterTest.cpp
 	srcs/client/unit/AUnit.cpp
@@ -271,10 +325,34 @@ set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELE
 set_target_properties(ClientMonsterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
 endif (WIN32)
 
+######## CLIENT ## BIG HUNTER ####
+
+add_library(ClientBigHunter SHARED
+srcs/client/unit/BigHunter/BigHunter.cpp
+srcs/client/unit/AUnit.cpp
+srcs/client/graphics/Animation.cpp
+srcs/client/misc/Time.cpp
+)
+target_include_directories(ClientBigHunter PRIVATE ${client_includes_directories})
+target_compile_features(ClientBigHunter PRIVATE cxx_range_for)
+if (UNIX)
+set_target_properties(ClientBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBigHunter PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
+
+######## CLIENT ## BASIC MISSILE ####
+
 add_library(ClientBasicMissile SHARED
 	srcs/client/unit/BasicMissile/BasicMissile.cpp
 	srcs/client/unit/AUnit.cpp
 	srcs/client/graphics/Animation.cpp
+	srcs/client/sound/SoundPlayer.cpp
 	srcs/client/misc/Time.cpp
 	)
 target_include_directories(ClientBasicMissile PRIVATE ${client_includes_directories})
@@ -290,6 +368,8 @@ set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_REL
 set_target_properties(ClientBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
 endif (WIN32)
 
+#######################################
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
@@ -303,6 +383,7 @@ if(SFML_FOUND)
   target_link_libraries(RType_client ${SFML_LIBRARIES})
   target_link_libraries(ClientMonsterTest ${SFML_LIBRARIES})
   target_link_libraries(ClientBasicMissile ${SFML_LIBRARIES})
+  target_link_libraries(ClientBigHunter ${SFML_LIBRARIES})
 endif()
 
 FILE(GLOB_RECURSE all_files *.*pp)

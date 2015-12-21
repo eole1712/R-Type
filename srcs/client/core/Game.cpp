@@ -4,9 +4,9 @@
 #include "MonsterTest.hpp"
 
 Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, std::string name, unsigned long time)
-: _client(client),_window(window), _tick(Time::getTimeStamp()), _createStack(),
-_localPlayerName(name), _localPlayer(localPlayer),
-_map{}, _finish(false), _creationTime(Time::getTimeStamp() - time),
+  : _client(client),_window(window), _tick(Time::getTimeStamp()), _createStack(), _deleteStack(),
+    _localPlayerName(name), _localPlayer(localPlayer),
+    _map{}, _finish(false), _creationTime(Time::getTimeStamp() - time),
 /*_input({
  {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
 	{ param->setFinish(); }},
@@ -30,7 +30,7 @@ _map{}, _finish(false), _creationTime(Time::getTimeStamp() - time),
  })*/
 
 _input({
-    {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+    {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp, Key::keyState &, Game * param)
         {
             param->setFinish();
         }},
@@ -140,25 +140,49 @@ Time::stamp     Game::getTimer()
     return _creationTime;
 }
 
-void			Game::createUnit(unitObject newUnit)
+void			Game::createUnit()
 {
     Unit::AUnit *		unit;
-//    std::lock_guard<Lock> l(_lock);
+    unitObject			newUnit;
     
-    if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
+    std::unique_lock<Lock>  l(_lock);
+    for (std::list<unitObject>::iterator i = _createStack.begin();
+         i != _createStack.end(); i++)
+    {
+      newUnit = *i;
+      if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
         unit = new Unit::Player(std::get<1>(newUnit), std::get<2>(newUnit), std::get<3>(newUnit),
                                 std::get<4>(newUnit), std::get<5>(newUnit), std::get<6>(newUnit));
-    else
+      else
         unit = Unit::Factory::getInstance()->createUnit(std::get<0>(newUnit), std::get<1>(newUnit),
                                                         std::get<2>(newUnit), std::get<3>(newUnit),
                                                         std::get<4>(newUnit), std::get<6>(newUnit));
-    _map[unit->getID()] = unit;
+      _map[unit->getID()] = unit;
+    }
+    _createStack.clear();
+    l.unlock();
+
+}
+
+void			Game::deleteUnit()
+{
+    std::unique_lock<Lock>  l(_lock);
+    for (std::list<Unit::AUnit*>::iterator i = _deleteStack.begin();
+         i != _deleteStack.end(); i++)
+    {
+      if ((*i)->getType() == Unit::PLAYERTYPE)
+	delete (*i);
+      else
+        Unit::Factory::getInstance()->deleteUnit(*i);
+    }
+    _deleteStack.clear();
+    l.unlock();
 }
 
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
                                   Time::stamp creationTime, int param)
 {
-    float			_param = float(param) / 1000;
+    float		_param = float(param) / 1000;
     std::string		_name = std::string("");
     
     if (id == _localPlayer)
@@ -172,9 +196,13 @@ void			Game::disconnectUnit(unsigned int id)
     RemoteMap::iterator	i = _map.find(id);
     
     if (i != _map.end())
+      {
+	_deleteStack.push_back(i->second);
         _map.erase(i);
+      }
     else {
-        for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++) {
+      for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++)
+	{
             if (std::get<3>((*it)) == id)
             {
                 _createStack.erase(it);
@@ -194,13 +222,8 @@ void			Game::pollEvent()
         return ;
     }
     
-    std::unique_lock<Lock>  l(_lock);
-    for (std::list<unitObject>::iterator i = _createStack.begin();
-         i != _createStack.end(); i++)
-        createUnit(*i);
-    _createStack.clear();
-    l.unlock();
-    
+    deleteUnit();
+    createUnit();
     while (_window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed ||

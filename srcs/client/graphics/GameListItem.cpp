@@ -1,8 +1,8 @@
 #include "GameListItem.hpp"
 
 
-GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string& playerReady, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
-  : _posX(posX), _posY(posY), _gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _playerReady(playerReady, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false)
+GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string& playerReady, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor, bool isReady)
+  : _posX(posX), _posY(posY), _gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _playerReady(playerReady, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false), _isReady(isReady)
 {
   std::cout << "player ready : " << playerReady<< std::endl;
   _gameName.setPosition(posX, posY);
@@ -123,7 +123,7 @@ void		GameListItem::setColor(const sf::Color& color)
 {
   _gameName.setColor(color);
   _playerNumber.setColor(color);
-  _gameName.setColor(color);
+  _playerReady.setColor(color);
 }
 
 unsigned int	GameListItem::getPosX() const
@@ -146,4 +146,12 @@ void		GameListItem::setPosY(const unsigned int y)
 {
   _posY = y;
   updatePosition();
+}
+
+bool GameListItem::isReady() const{
+  return _isReady;
+}
+
+void GameListItem::setReady(bool isReady) {
+  _isReady = isReady;
 }

@@ -34,7 +34,7 @@ void NetClient::connect(std::string const& addr, int port, std::string const& na
   std::cout << "sending to : " << locAddr << ":" << port << std::endl;
   pack = new ClientConnexionPacket();
   pack->setClientName(name);
-  sendPacket(pack);
+  send(pack, id);
 }
 
 void NetClient::setServer(int id)

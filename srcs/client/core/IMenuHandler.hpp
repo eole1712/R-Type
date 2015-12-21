@@ -6,7 +6,7 @@
 class IMenuHandler
 {
   public:
-  virtual void selectGame(std::string const& name) = 0;
+  virtual void selectGame(std::string const& name, int id) = 0;
   virtual void connect(std::string const& ip, std::string const& name) = 0;
   virtual void refreshGames() = 0;
   virtual void createGame(std::string const& name) = 0;
