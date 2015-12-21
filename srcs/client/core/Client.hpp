@@ -24,7 +24,7 @@ public:
   Client(int port = 6524);
   virtual ~Client();
   void handlePacket(APacket*, unsigned int id);
-  void selectGame(std::string const& name);
+  void selectGame(std::string const& name, int id);
   void connect(std::string const& ip, std::string const& name);
   void refreshGames();
   void setGame(Game*);
@@ -39,7 +39,6 @@ protected:
   std::vector<unitObject> _toCreate;
   std::vector<std::function<void(APacket*, unsigned int)> > _packetHandlerFuncs;
   //std::list<Unit::AUnit*> _units;
-  std::map<std::string, uint32_t> _rooms;
   uint32_t _connected;
   Menu* _menu;
   int _playerId;
