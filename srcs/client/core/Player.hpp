@@ -8,14 +8,6 @@
 
 #include "Animation.hpp"
 
-namespace Missile {
-
-enum	type {
-  BASIC
-};
-
-}
-
 namespace Unit {
 
 class Player : public AUnit {
@@ -25,21 +17,16 @@ public:
   virtual ~Player();
 
 public:
+
   std::string     getName() const;
   color           getColor() const;
-
   /*
   void		  getHit(AUnit *);
-  Missile::type   getWeapon() const;
-  void            setWeapon(Missile::type);
   */
-
-
   void		setX(int x);
   void		setY(int y);
-  void            move(dir, Time::stamp);
+  void		move(dir, Time::stamp);
 
-  //void		  renderUI(sf::RenderWindow & window);
   virtual void	  render(Time::stamp tick, sf::RenderWindow & window);
   virtual pos     move(Time::stamp tick) const;
 
@@ -51,10 +38,6 @@ private:
 
   int		_lastVerticalMove;
   Animation	_anim;
-  sf::Shader	_colorShader;
-    //  bool		_shooting;
-    //  Time::stamp	_shootTime;
-    //  Missile::type _weapon;
  };
 }
 
