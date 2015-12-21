@@ -27,7 +27,7 @@ private:
     
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
-    virtual void        killUnit(Unit::AUnit *unit);
+    virtual void        killUnit(unsigned int id, unsigned int gameID);
 
     
 private:

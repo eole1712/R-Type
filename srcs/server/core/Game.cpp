@@ -1,4 +1,4 @@
- #include <string>
+#include <string>
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -201,18 +201,25 @@ bool        Game::checkIfAlive()
     int                                 i = 0;
     Timer::time                         time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [&i, time](Unit::Player *player) {
-        if (player->isAlive(time))
-            i++;
+    std::for_each(_players.begin(), _players.end(), [&i, time, this](Unit::Player *player) {
+        if (player->isAlive()) {
+            if (player->healthCheck(time) == false) {
+                player->setAlive(false);
+                _owl->killUnit(player->getID(), _id);
+            }
+            else {
+                i++;
+            }
+        }
     });
     if (i == 0)
         return false;
     
 	auto it = _map->getList(Unit::ALLY).begin();
 	while (it != _map->getList(Unit::ALLY).end()) {
-		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
+		if ((*it)->getType() == Unit::MISSILE && (*it)->healthCheck(time) == false)
         {
-            _owl->killUnit(*it);
+            _owl->killUnit((*it)->getID(), _id);
             it = _map->getList((*it)->getTeam()).erase(it);
         }
         else
@@ -220,9 +227,9 @@ bool        Game::checkIfAlive()
 	}
 	it = _map->getList(Unit::ENEMY).begin();
 	while (it != _map->getList(Unit::ENEMY).end()) {
-		if ((*it)->isAlive(time) == false)
+		if ((*it)->healthCheck(time) == false)
         {
-            _owl->killUnit(*it);
+            _owl->killUnit((*it)->getID(), _id);
 			it = _map->getList((*it)->getTeam()).erase(it);
         }
 		else

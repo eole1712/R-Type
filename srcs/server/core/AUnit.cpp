@@ -6,7 +6,7 @@
 namespace Unit {
     
     AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID, Timer::time time)
-    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
+    : _hp(hp), _alive(true), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
     {
     }
     
@@ -14,17 +14,30 @@ namespace Unit {
     {
     }
     
-    bool    AUnit::isAlive(Timer::time time) const
+    bool    AUnit::healthCheck(Timer::time time)
     {
         //DEBUG: player invincible
 //        if (getType() == PLAYER)
 //            return true;
-        
+        if (!_alive)
+            return false;
         if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isInBox(getX(time), getY(time), _hitBox.first) == false)
             return false;
-        else if (GameUtils::Map::isInBas(getY(time), _hitBox.second) == false)
+        if (GameUtils::Map::isInBas(getY(time), _hitBox.second) == false)
             return false;
-        return (_hp > 0);
+        if (_hp == 0)
+            return false;
+        return true;
+    }
+    
+    bool    AUnit::isAlive() const
+    {
+        return _alive;
+    }
+    
+    void    AUnit::setAlive(bool status)
+    {
+        _alive = status;
     }
     
     boxType     AUnit::getHitBox() const

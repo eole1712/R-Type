@@ -226,12 +226,12 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
         _netServer->send(&pack, user->getClientID());
 }
 
-void        Server::killUnit(Unit::AUnit *unit)
+void        Server::killUnit(unsigned int id, unsigned int gameID)
 {
     ServerUnitDiePacket    pack;
     
-    pack.setUnitID(unit->getID());
+    pack.setUnitID(id);
     
-    for (auto& user : _games[unit->getGameID()]->getUsers())
+    for (auto& user : _games[gameID]->getUsers())
         _netServer->send(&pack, user->getClientID());
 }

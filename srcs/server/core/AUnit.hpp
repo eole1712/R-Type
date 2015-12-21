@@ -57,7 +57,9 @@ namespace Unit {
         AUnit &operator=(AUnit const &);
         
     public:
-        virtual bool    isAlive(Timer::time) const;
+        virtual bool    healthCheck(Timer::time);
+        virtual bool    isAlive() const;
+        virtual void    setAlive(bool);
         virtual void    getHit(AUnit*) = 0;
         
     public:
@@ -96,6 +98,7 @@ namespace Unit {
         
     protected:
         unsigned int                            _hp;
+        bool                                    _alive;
         team                                    _team;
         
     protected:
