@@ -11,22 +11,26 @@ private:
   unsigned int		_posY;
   sf::Text		_gameName;
   sf::Text		_playerNumber;
+  sf::Text		_playerReady;
   sf::Text		_daySentence;
   sf::Font		_font;
   sf::Color		_color;
   sf::Color		_highlightColor;
   bool			_isHighlighted;
   bool			_isSelected;
+  bool      _isReady;
 
 public:
   GameListItem(){};
-  GameListItem(unsigned int, unsigned int, std::string const&, std::string&, std::string const&, sf::Font&, sf::Color&, sf::Color& highlightColor);
+  GameListItem(unsigned int, unsigned int, std::string const&, std::string&, std::string&, std::string const&, sf::Font&, sf::Color&, sf::Color& highlightColor, bool isReady);
   ~GameListItem(){};
 
   sf::Text		getName() const;
   void			setName(const std::string&);
   sf::Text		getPlayerNumber() const;
   void			setPlayerNumber(const unsigned int);
+  sf::Text		getPlayerReady() const;
+  void			setPlayerReady(const unsigned int);
   sf::Text		getDaySentence() const;
   void			setDaySentence(const std::string&);
   bool			getIsSelected() const;

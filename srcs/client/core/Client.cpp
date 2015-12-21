@@ -43,7 +43,7 @@ Client::Client(int port)
                 return;
             std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
             _rooms[pack->getRoomName()] = pack->getRoomId();
-            _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomName());
+            _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName());
         },
         [this] (APacket* packet, unsigned int id) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);

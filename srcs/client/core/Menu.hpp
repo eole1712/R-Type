@@ -45,6 +45,7 @@ private:
   sf::Color				_startColor;
   unsigned int				_currentGameNumber;
   bool					_isConnected;
+  bool					_isReady;
   Font					_fieldsFont;
   Font					_loginFont;
   ClickableBtn				_menuFields[MAX_NUMBER_OF_FIELDS];
@@ -55,14 +56,14 @@ private:
   ClickableBtn				_createButton;
   ClickableBtn				_connectButton;
   ClickableBtn				_refreshButton;
-  ClickableBtn				_startButton;
+  ClickableBtn				_readyButton;
   List					_gameList;
   Row					_currentRow;
   Game *				_game;
   bool					_gameStart;
   SoundPlayer				_soundPlayer;
   std::list<std::function<void()> >	_eventChecks;
-  std::map<int, std::pair<std::string, unsigned int>> _roomsBuf;
+  std::map<int, std::tuple<std::string, unsigned int, unsigned int> > _roomsBuf;
     
     unsigned long         _time;
 public:
@@ -70,7 +71,7 @@ public:
   ~Menu();
 
   void				initMainView();
-    void				addGame(unsigned int id, std::string const&, unsigned int, std::string const &, bool);
+  void				addGame(unsigned int id, std::string const&, unsigned int, unsigned int, std::string const &, bool);
   void				startGame(unsigned long time);
 
 private:

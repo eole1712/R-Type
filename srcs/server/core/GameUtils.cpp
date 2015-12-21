@@ -1,6 +1,7 @@
 #include <map>
 #include "Lock.hpp"
 #include "GameUtils.hpp"
+#include <iostream>
 #include <mutex>
 
 namespace GameUtils {
@@ -46,7 +47,7 @@ namespace GameUtils {
         
         bool            isInBas(int y1, unsigned int y2)
         {
-            if (y1 + y2 > HEIGHT)
+            if ((y1 + y2) > HEIGHT)
                 return false;
             return true;
         }
@@ -60,8 +61,10 @@ namespace GameUtils {
         
         bool            isInBox(int x, int y, unsigned int x1)
         {
-            if (x < 0 || y < 0 || (x + x1) > WIDTH)
+            if (x < -100 || y < (0 - static_cast<int>(x1)) || (x + x1) > (WIDTH + 100))
+            {
                 return false;
+            }
             return true;
         }
     }

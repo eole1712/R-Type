@@ -25,10 +25,10 @@ namespace Monster {
         
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 50, i * (GameUtils::Map::HEIGHT / 3));
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, i * (GameUtils::Map::HEIGHT / 3));
             }
             wave->addWaitingTime(1000);
-            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 50, GameUtils::Map::HEIGHT / 2);
+            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, GameUtils::Map::HEIGHT / 2);
             wave->addWaitingTime(1000);
         }
         return wave;

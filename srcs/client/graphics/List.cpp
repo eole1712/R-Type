@@ -11,25 +11,25 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 }
 
 void			List::addItem(int id, std::string const& gameName,
-				      unsigned int playerNumber, std::string const& daySentence, bool select)
+				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select, bool isReady)
 {
   std::string		playerNumberToString;
+  std::string		playerReadyToString;
   std::map<int, GameListItem>::iterator exist;
 
   
   playerNumberToString = std::to_string(playerNumber);
+  playerReadyToString = std::to_string(playerReady);
   if ((exist = _list.find(id)) != _list.end())
     {
       exist->second.setName(gameName);
       exist->second.setPlayerNumber(playerNumber);
       exist->second.setDaySentence(daySentence);
-      std::cout << "Update game " << gameName << std::endl; 
       return ;
     }
   
-  std::cout << "game name = " << gameName << std::endl;
-  GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, daySentence,
-			     _font, _color, _highlightColor);
+  GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, playerReadyToString, daySentence,
+			     _font, _color, _highlightColor, isReady);
   _list[id] = gameListItem;
   if (_list.size() == 1)
     {
@@ -70,7 +70,7 @@ void			List::slide(bool up)
     }
 }
 
-void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
+bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
@@ -78,20 +78,27 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
+      std::cout << (*it).second.getIsSelected() << std::endl;
       i--;
       if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
 	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
 	{
-	  if (_selected != _list.end()) {
-	    _selected->second.setIsSelected(false);
-	    _selected->second.setColor(_color);
-	  }
-	  (*it).second.setIsSelected(true);
-	  (*it).second.setColor(sf::Color(255, 255, 102));
-	  _selected = it;
+	  if ((*it).second.getIsSelected() == false)
+	    {
+	      if (_selected != _list.end())
+		{
+		  _selected->second.setIsSelected(false);
+		  _selected->second.setColor(_color);
+		}
+	      (*it).second.setIsSelected(true);
+	      (*it).second.setColor(sf::Color(255, 255, 102));
+	      _selected = it;
+	    }
+	  else
+	    return true;	  
 	}
-      (*it).second.eventHandler(window, event);
     }
+  return false;
 }
 
 void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
@@ -139,6 +146,7 @@ void			List::render(sf::RenderWindow& window)
       (*it).second.setPosY(_posY + 30 * i);
       window.draw((*it).second.getName());
       window.draw((*it).second.getPlayerNumber());
+      window.draw((*it).second.getPlayerReady());
       i++;
     }
   if (_list.size() >= 6)
