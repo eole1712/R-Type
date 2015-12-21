@@ -7,8 +7,8 @@
 class GameListItem
 {
 private:
-  unsigned int		_posX;
-  unsigned int		_posY;
+  int			_posX;
+  int			_posY;
   sf::Text		_gameName;
   sf::Text		_playerNumber;
   sf::Text		_playerReady;

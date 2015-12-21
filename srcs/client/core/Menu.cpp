@@ -107,7 +107,7 @@ void		Menu::eventHandler()
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick(event);
 	  if (_gameList.getList().size() != 0)
-	    if (_gameList.clickHandler(_window, event) == true)
+	    if (_gameList.clickHandler(event) == true)
 	      _client->selectGame(_gameList.getCurrentItem());
 	  break;
 	case sf::Event::TextEntered:
@@ -154,7 +154,7 @@ void		Menu::handleMouseClick(sf::Event& event)
        _client->createGame((std::string) _gameName.getEditable().getString());
      }
    else
-     _gameList.scrollHandler(_window, event);
+     _gameList.scrollHandler(event);
 }
 
 void		Menu::handleMouseMoved(sf::Event& event)
@@ -207,7 +207,7 @@ void		Menu::editionHandler(sf::Event const& event)
 
 void		Menu::drawFields()
 {
-  for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
+  for (unsigned int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
     {
       _menuFields[i].getClickableBtn().setColor(_fieldsColor);
       if (i == _currentRow)

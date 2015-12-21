@@ -19,7 +19,7 @@ namespace Unit
     
   private:
     Animation	_mySprite;
-    SoundPlayer	_mySound;
+    // SoundPlayer	_mySound;
   };
 }
 

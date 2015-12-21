@@ -109,7 +109,7 @@ void NetManager::setFds<NetManager::receiveList>(int& maxFd, fd_set& set)
 }
 
 template <>
-void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeout)
+void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int)
 {
   size_t ret = 0;
   std::unique_lock<Mutex> locker(_mutex);
@@ -141,7 +141,7 @@ void NetManager::doAction<NetManager::sendList>(fd_set& set, unsigned int timeou
 }
 
 template <>
-void NetManager::doAction<NetManager::receiveList>(fd_set& set, unsigned int timeout)
+void NetManager::doAction<NetManager::receiveList>(fd_set& set, unsigned int)
 {
   size_t ret = 0;
   std::unique_lock<Mutex> locker(_mutex);

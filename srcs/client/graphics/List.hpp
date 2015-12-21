@@ -33,9 +33,9 @@ public:
   void					setPosY(unsigned int y);
   void					addItem(int, std::string const&, unsigned int, unsigned int, std::string const&, bool, bool);
   void					slide(bool up);
-  bool					clickHandler(sf::RenderWindow&, sf::Event&);
-  void					mouseMovedHandler(sf::RenderWindow&, sf::Event&);
-  void					scrollHandler(sf::RenderWindow&, sf::Event&);
+  bool					clickHandler(sf::Event&);
+  void					mouseMovedHandler(sf::RenderWindow &, sf::Event&);
+  void					scrollHandler(sf::Event&);
   void					render(sf::RenderWindow&);
 
   void					refresh();
