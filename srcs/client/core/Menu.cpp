@@ -139,6 +139,7 @@ void		Menu::handleMouseClick(sf::Event& event)
      }
    else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
+       _gameList.clean();
        _client->createGame((std::string) _gameName.getEditable().getString());
      }
    else

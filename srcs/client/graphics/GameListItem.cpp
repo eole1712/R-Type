@@ -114,6 +114,7 @@ unsigned int	GameListItem::getPosX() const
 void		GameListItem::setPosX(const unsigned int x)
 {
   _posX = x;
+  updatePosition();
 }
 
 unsigned int	GameListItem::getPosY() const
@@ -124,4 +125,5 @@ unsigned int	GameListItem::getPosY() const
 void		GameListItem::setPosY(const unsigned int y)
 {
   _posY = y;
+  updatePosition();
 }
