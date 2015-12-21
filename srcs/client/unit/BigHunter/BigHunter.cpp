@@ -25,7 +25,7 @@ namespace Unit
 {
   BigHunter::BigHunter(int x, int y, unsigned int id, Time::stamp creationTime, float param)
     : AUnit(x, y, id, creationTime, param),
-      _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
+      _mySprite(std::string("../resources/sprites/dickbutt.fly.33x22x8.png"), 8)
   {
     _mySprite.scale(1.8f, 1.8f);
   }
@@ -37,7 +37,7 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x - diff, static_cast<int>(_y + std::sin((diff % 2600) / 100.0) * 100.0));
+    pos p = std::make_pair(_x - diff, _y);
     return p;
   }
   

@@ -36,7 +36,7 @@ namespace Unit
   {
 
       BigHunter::BigHunter(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair(59, 65), Missile::BASIC, id, gameID, time)
+    : AMonster(1, x, y, std::make_pair(59, 40), Missile::BASIC, id, gameID, time)
     {}
 
     BigHunter::~BigHunter()
@@ -44,7 +44,7 @@ namespace Unit
 
     Monster::type	BigHunter::getMonsterType() const
     {
-      return (Monster::MONSTERTEST);
+      return (Monster::BIGHUNTER);
     }
 
       Missile::AMissile*	BigHunter::shoot(Timer::time time)
@@ -74,7 +74,7 @@ namespace Unit
 
     Unit::typeID  BigHunter::getTypeID() const
     {
-      return Unit::MONSTERTEST;
+      return Unit::BIGHUNTER;
     }
 
   }
