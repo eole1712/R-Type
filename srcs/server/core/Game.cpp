@@ -119,9 +119,12 @@ void                Game::removePlayer(Unit::color color)
             player = pl;
     }
 
-    player->getUser()->endGame(player->getScore());
-    std::remove(_users.begin(), _users.end(), player->getUser());
-    player->setUser(nullptr);
+    if (player->getUser())
+    {
+        player->getUser()->endGame(player->getScore());
+        std::remove(_users.begin(), _users.end(), player->getUser());
+        player->setUser(nullptr);
+    }
 }
 
 std::vector<User*> const&     Game::getUsers() const
@@ -158,7 +161,7 @@ void        Game::checkMouvements()
 //        Unit::AUnit *unit = _map->checkInterractions(*it, time);
 //        if (unit) {
 //            (*it)->getHit(unit);
-//            unit->getHit(*it);
+//            uniit->getHit(*it);
 //        }
 //    }
     if (_t.isFinished())

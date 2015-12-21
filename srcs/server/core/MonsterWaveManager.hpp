@@ -29,6 +29,7 @@ namespace Monster {
     public:
         static Wave*       ClassicWave(unsigned int gameID);
         static Wave*       TriangleWave(unsigned int gameID);
+        static Wave*       TriangleEmptyWave(unsigned int gameID);
         
     public:
         void        addWave(Wave*);
