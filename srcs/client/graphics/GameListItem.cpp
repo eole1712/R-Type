@@ -151,3 +151,7 @@ void		GameListItem::setPosY(const unsigned int y)
 bool GameListItem::isReady() const{
   return _isReady;
 }
+
+void GameListItem::setReady(bool isReady) {
+  _isReady = isReady;
+}

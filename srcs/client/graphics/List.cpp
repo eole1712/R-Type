@@ -25,6 +25,8 @@ void			List::addItem(int id, std::string const& gameName,
       exist->second.setName(gameName);
       exist->second.setPlayerNumber(playerNumber);
       exist->second.setDaySentence(daySentence);
+      exist->second.setReady(isReady);
+      exist->second.setPlayerReady(playerReady);
       return ;
     }
   
