@@ -72,7 +72,7 @@ Server::Server() {
 		  std::cout << "pack is well formated" << std::endl;
 		  if (_users.find(id) == _users.end())
 		    return;
-            
+
           //Recherche ou création de la game
           IGame* game;
 		  auto it  = _games.find(pack->getRoomId());
@@ -99,7 +99,7 @@ Server::Server() {
 		  		return;
 		  }
 		  if (!game->addPlayer(_users[id])) {
-		  	std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl; 
+		  	std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl;
 		    ret.setStatus(false);
 		  	ret.setGameId(0);
 		  	ret.setPlayerId(0);
@@ -159,19 +159,20 @@ void	Server::start() {
 	};
         std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
-    t.join();
+	_netManager->stop();
+	t.join();
 }
 
-void Server::startGame(IGame* game) {    
+void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
         static unsigned int     refresh = 1;
         unsigned int            gameID = game->getID();
-        
+
         //Boucle du jeu principale.
         game->start();
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
-            
+
             //refreshTimer(game->getID());
             if (GameUtils::Game::now(gameID) > (refresh * 1000))
             {
@@ -205,7 +206,7 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 void    Server::refreshTimer(unsigned int idGame)
 {
     ServerTimerRefreshPacket   pack;
-    
+
     pack.setCurrentTimer(GameUtils::Game::now(idGame));
     for (auto& user : _games[idGame]->getUsers())
         _netServer->send(&pack, user->getClientID());
@@ -214,7 +215,7 @@ void    Server::refreshTimer(unsigned int idGame)
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 {
     ServerUnitSpawnPacket    pack;
-    
+
     pack.setTimer(unit->getCreationTime());
     pack.setX(unit->getStartX());
     pack.setY(unit->getStartY());
@@ -229,9 +230,9 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 void        Server::killUnit(unsigned int id, unsigned int gameID)
 {
     ServerUnitDiePacket    pack;
-    
+
     pack.setUnitID(id);
-    
+
     for (auto& user : _games[gameID]->getUsers())
         _netServer->send(&pack, user->getClientID());
 }

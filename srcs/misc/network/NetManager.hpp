@@ -34,6 +34,7 @@ public:
   void addSocket(int sd, ISocket*);
   bool find(int sd);
   void deleteSocket(int sd);
+  void stop();
 private:
   template <typename T>
   void setFds(int& maxFd, fd_set& set)
@@ -53,6 +54,7 @@ protected:
   std::map<int, sendList>	_sendings;
   std::map<int, receiveList>	_reiceivings;
   Mutex				_mutex;
+  bool				_finish;
 };
 
 #endif /* !NETMANAGER_H_ */
