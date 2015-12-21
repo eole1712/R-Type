@@ -123,7 +123,7 @@ void		GameListItem::setColor(const sf::Color& color)
 {
   _gameName.setColor(color);
   _playerNumber.setColor(color);
-  _gameName.setColor(color);
+  _playerReady.setColor(color);
 }
 
 unsigned int	GameListItem::getPosX() const
