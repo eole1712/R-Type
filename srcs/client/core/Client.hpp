@@ -8,6 +8,7 @@
 #include "Game.hpp"
 #include "IGameHandler.hpp"
 #include "IMenuHandler.hpp"
+#include "Lock.hpp"
 
 #include <vector>
 #include <tuple>
@@ -30,6 +31,7 @@ public:
   void createGame(std::string const& name);
   void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
+  uint32_t getRoomConnected();
   virtual IGameHandler* getGameHandler();
 protected:
   NetManager* _nm;
@@ -42,7 +44,7 @@ protected:
   Menu* _menu;
   int _playerId;
   Game* _game;
-
+  Lock _lock;
 };
 
 #endif /* !CLIENT_H_ */
