@@ -11,6 +11,7 @@ class IMenuHandler
   virtual void refreshGames() = 0;
   virtual void createGame(std::string const& name) = 0;
   virtual void sendKey(ClientKeyboardPressPacket::keyEvent) = 0;
+  virtual uint32_t getRoomConnected() = 0;
   virtual IGameHandler *getGameHandler() = 0;
 };
 
