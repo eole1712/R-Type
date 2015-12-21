@@ -14,7 +14,7 @@
 #include "ClientKeyboardPressPacket.hpp"
 #include <iostream>
 
-#define DEBUG 1
+#define DEBUG 0
 
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 

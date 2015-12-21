@@ -14,7 +14,7 @@ namespace GameUtils {
     }
     
     namespace Map {
-//        bool             isIn(int x, int y);
+        bool            isIn(int x, int y, unsigned int x1);
         bool            isInBas(int y1, unsigned int y2);
         bool            isInBox(int x, int y, unsigned int x1);
         
