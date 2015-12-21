@@ -48,4 +48,9 @@ namespace Unit
     _mySprite.setPosition(static_cast<float>(p.first), static_cast<float>(p.second));
     window.draw(_mySprite.getFrame());
   }
+    
+    Unit::typeID    BigHunter::getType() const
+    {
+        return BIGHUNTER;
+    }
 }

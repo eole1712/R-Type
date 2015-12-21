@@ -14,6 +14,7 @@ namespace Unit
     
     virtual pos	move(Time::stamp) const;
     virtual void	render(Time::stamp tick, sf::RenderWindow & window);
+    virtual typeID		getType() const;
     
   private:
     Animation	_mySprite;
