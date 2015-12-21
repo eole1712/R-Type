@@ -13,8 +13,9 @@ namespace Unit
     BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param);
     virtual ~BasicMissile();
     
-    virtual pos	move(Time::stamp) const;
+    virtual pos		move(Time::stamp) const;
     virtual void	render(Time::stamp tick, sf::RenderWindow & window);
+    virtual typeID	getType() const;
     
   private:
     Animation	_mySprite;

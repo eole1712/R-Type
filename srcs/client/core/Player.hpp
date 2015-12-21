@@ -28,7 +28,8 @@ public:
 
   virtual void	  render(Time::stamp tick, sf::RenderWindow & window);
   virtual pos     move(Time::stamp tick) const;
-
+  virtual typeID  getType() const;
+  
 private:
   color         _color;
   std::string   _name;

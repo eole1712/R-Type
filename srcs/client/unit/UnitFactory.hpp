@@ -25,6 +25,7 @@ public:
 
   Unit::AUnit*		createUnit(Unit::typeID, int x, int y,
 				   unsigned int id, Time::stamp creationTime, float param);
+  void			deleteUnit(AUnit * unit);
 
   bool			addUnitType(Unit::typeID, std::string libName);
   bool			removeUnitType(Unit::typeID);
