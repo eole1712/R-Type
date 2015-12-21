@@ -122,7 +122,7 @@ void                Game::removePlayer(Unit::color color)
     if (player->getUser())
     {
         player->getUser()->endGame(player->getScore());
-        std::remove(_users.begin(), _users.end(), player->getUser());
+        _users.erase(std::remove(_users.begin(), _users.end(), player->getUser()), _users.end());
         player->setUser(nullptr);
     }
 }
