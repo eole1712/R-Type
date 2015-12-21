@@ -159,7 +159,6 @@ void	Server::start() {
 	};
         std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
-	_netManager->stop();
 	t.join();
 }
 
