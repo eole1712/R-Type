@@ -20,7 +20,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _createButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "Create", _fieldsFont, _startColor, 21),
   _connectButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(static_cast<unsigned int>(width / 1.15), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Refresh", _fieldsFont, _startColor, 21),
-  _startButton(static_cast<unsigned int>(width / 2.3), height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
+  _readyButton(static_cast<unsigned int>(width / 2.3), height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "READY", _fieldsFont, _startColor, 30),
   _gameList(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
@@ -105,7 +105,7 @@ void		Menu::eventHandler()
 	case sf::Event::MouseButtonReleased:
 	  this->handleMouseClick(event);
 	  if (_gameList.getList().size() != 0)
-	    if ((_isReady = _gameList.clickHandler(_window, event)) == true)
+	    if (_gameList.clickHandler(_window, event) == true)
 	      _client->selectGame(_gameList.getCurrentItem());
 	  break;
 	case sf::Event::TextEntered:

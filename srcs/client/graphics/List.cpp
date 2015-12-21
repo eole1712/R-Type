@@ -14,21 +14,21 @@ void			List::addItem(int id, std::string const& gameName,
 				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select)
 {
   std::string		playerNumberToString;
+  std::string		playerReadyToString;
   std::map<int, GameListItem>::iterator exist;
 
   
   playerNumberToString = std::to_string(playerNumber);
+  playerReadyToString = std::to_string(playerReady);
   if ((exist = _list.find(id)) != _list.end())
     {
       exist->second.setName(gameName);
       exist->second.setPlayerNumber(playerNumber);
       exist->second.setDaySentence(daySentence);
-      std::cout << "Update game " << gameName << std::endl; 
       return ;
     }
   
-  std::cout << "game name = " << gameName << std::endl;
-  GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, daySentence,
+  GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, playerReadyToString, daySentence,
 			     _font, _color, _highlightColor);
   _list[id] = gameListItem;
   if (_list.size() == 1)
@@ -146,6 +146,7 @@ void			List::render(sf::RenderWindow& window)
       (*it).second.setPosY(_posY + 30 * i);
       window.draw((*it).second.getName());
       window.draw((*it).second.getPlayerNumber());
+      window.draw((*it).second.getPlayerReady());
       i++;
     }
   if (_list.size() >= 6)
