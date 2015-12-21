@@ -72,7 +72,7 @@ namespace Unit {
     
     bool        AUnit::isHitting(AUnit *unit, Timer::time time) const
     {
-        if ((max(getX(time), unit->getX(time)) < min(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first)) && (max(getY(time), unit->getY(time)) < min(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
+        if ((getMax(getX(time), unit->getX(time)) < getMin(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first)) && (getMax(getY(time), unit->getY(time)) < getMin(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
             return true;
         return false;
     }

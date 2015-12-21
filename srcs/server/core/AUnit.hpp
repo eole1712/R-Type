@@ -36,12 +36,12 @@ namespace Unit {
     typedef std::pair<unsigned int, unsigned int> boxType;
     typedef std::pair<int, int> pos;
     
-    constexpr int max(int a, int b)
+    constexpr int getMax(int a, int b)
     {
         return a > b ? a : b;
     }
     
-    constexpr int min(int a, int b)
+    constexpr int getMin(int a, int b)
     {
         return a < b ? a : b;
     }
