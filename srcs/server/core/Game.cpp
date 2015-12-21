@@ -249,7 +249,10 @@ void        Game::start()
     {
         player->setX(30);
         player->setY(player->getID() * (GameUtils::Map::HEIGHT / (_players.size() + 1)));
-        _owl->sendUnit(player, Unit::PLAYERTYPE);
+        if (!player->getUser())
+            player->setAlive(false);
+        else
+            _owl->sendUnit(player, Unit::PLAYERTYPE);
     }
 }
 
