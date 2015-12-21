@@ -2,7 +2,7 @@
  
 List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::Color const& listColor, sf::Color const& highlightColor)
   : _posX(posX), _posY(posY), _originPosX(posX), _originPosY(posY), _list{}, _iterator(_list.begin()), _font(listFont),
-  _color(listColor), _highlightColor(highlightColor), _currentIndex(0),
+  _color(listColor), _highlightColor(highlightColor),
     _scrollBtn{
       ClickableBtn((posX) * 1.5, (posY), "/\\", _font, _color, 21),
       ClickableBtn((posX) * 1.5, (posY) * 1.6, "\\/", _font, _color, 21)
@@ -14,9 +14,17 @@ void			List::addItem(int id, std::string const& gameName,
 				      unsigned int playerNumber, std::string const& daySentence, bool select)
 {
   std::string		playerNumberToString;
-
+  std::map<int, GameListItem>::iterator exist;
+  
   playerNumberToString = std::to_string(playerNumber);
-  GameListItem	gameListItem(_posX, _posY + (30 * _currentIndex), gameName,
+  if ((exist = _list.find(id)) != _list.end())
+    {
+      exist->second.setName(gameName);
+      exist->second.setPlayerNumber(playerNumber);
+      exist->second.setDaySentence(daySentence);
+      return ;
+    }
+  GameListItem	gameListItem(_posX, _posY + 30 *_list.size(), gameName,
 			     playerNumberToString, daySentence, _font, _color, _highlightColor);
   _list[id] = gameListItem;
   if (_list.size() == 1)
@@ -24,12 +32,11 @@ void			List::addItem(int id, std::string const& gameName,
   else if (select)
     {
       _iterator->second.setIsSelected(false);
-      _iterator->second.setColor(_color);
+      // _iterator->second.setColor(_color);
       _iterator = _list.find(id);
       _iterator->second.setIsSelected(true);
       _iterator->second.setColor(sf::Color(255, 255, 102));
     }
-  _currentIndex += 1;
 }
 
 void			List::slide(bool up)
@@ -63,10 +70,10 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
       it != _list.end() && i > 0; it++)
     {
       i--;
-      if (event.mouseMove.x >= (*it).getPosX() &&
-	  event.mouseMove.x <= (*it).getPosX() + 140 &&
-	  event.mouseMove.y >= (*it).getPosY() &&
-	  event.mouseMove.y <= (*it).getPosY() + 21)
+      if (event.mouseMove.x >= (*it).second.getPosX() &&
+	  event.mouseMove.x <= (*it).second.getPosX() + 140 &&
+	  event.mouseMove.y >= (*it).second.getPosY() &&
+	  event.mouseMove.y <= (*it).second.getPosY() + 21)
 	/*
       if (sf::Mouse::getPosition(window).x >= (*it).getPosX() &&
 	  sf::Mouse::getPosition(window).x <= (*it).getPosX() + 140 &&
@@ -141,7 +148,6 @@ void			List::clean()
 {
   _posX = _originPosX;
   _posY = _originPosY;
-  _currentIndex = 0;
   _list.clear();
   _iterator = _list.end();
 }

@@ -128,6 +128,7 @@ void		Menu::handleMouseClick(sf::Event& event)
    else if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
        _client->connect(_host.getEditable().getString(), _login.getEditable().getString());
+       _gameList.clean();
        _client->refreshGames();
        _isConnected = true;
      }

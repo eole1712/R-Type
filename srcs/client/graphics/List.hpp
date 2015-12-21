@@ -18,7 +18,6 @@ private:
   sf::Font				_font;
   sf::Color				_color;
   sf::Color				_highlightColor;
-  unsigned int				_currentIndex;
   ClickableBtn				_scrollBtn[2];
   
 public:
