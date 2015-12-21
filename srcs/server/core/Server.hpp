@@ -29,7 +29,8 @@ private:
     void sendToAll(APacket*);
     void sendRoomStatus();
     void sendRoomStatus(int);
-
+    bool userExists(int) const;
+    IGame* createGame(std::string const&);
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     virtual void        killUnit(unsigned int id, unsigned int gameID);

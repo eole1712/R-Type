@@ -29,10 +29,9 @@ Server::Server() {
 			if (pack == NULL)
 				return;
 			ServerConnexionPacket ret;
-			std::cout << "Client connect with id : " << id << std::endl;
-			if (_users.find(id) != _users.end())
+			if (userExists(id))
 			{
-				ret.setServerString("Not Welcome to R-Type Server");
+				ret.setServerString("Not Welcome to R-Type Server (User Already exists).");
 				ret.setStatus(false);
 			}
 			else {
@@ -40,36 +39,24 @@ Server::Server() {
 				ret.setServerString("Welcome to R-Type Server");
 				ret.setStatus(true);
 			}
-			_netServer->send(&ret, id);
+			sendToUser(&ret, id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
-			if (pack == NULL)
-				return;
-			if (_users.find(id) == _users.end())
+			if (!userExists(id) || pack == NULL)
 				return;
 			sendRoomStatus(id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
-			static unsigned int gameID = 1;
-			std::cout << "in ClientGameConnect ! " << std::endl;
-			if (pack == NULL)
-				return;
-			std::cout << "pack is well formated" << std::endl;
-			if (_users.find(id) == _users.end())
+			if (!userExists(id) || pack == NULL)
 				return;
 
           //Recherche ou création de la game
 			IGame* game;
 			auto it  = _games.find(pack->getRoomId());
 			if ((it) == _games.end())
-			{
-				std::cout << "creating game" << std::endl;
-				_games[gameID] = new Game(gameID, pack->getRoomName(), this);
-				game = _games[gameID];
-				++gameID;
-			}
+				game = createGame(pack->getRoomName());
 			else
 				game = (*it).second;
 			ServerGameConnectPacket ret;
@@ -282,4 +269,17 @@ void Server::sendRoomStatus(int userId) {
 		ret.setUserReady(_users.find(userId)->second->isReady());
 		sendToUser(&ret, userId);
 	}
+}
+
+bool Server::userExists(int userId) const {
+	return (_users.find(userId) != _users.end());
+}
+
+IGame*	Server::createGame(std::string const& gameName) {
+	static unsigned int gameID = 1;
+	Game* ret;
+
+	ret = new Game(gameID++, gameName, this);
+	_games[gameID] = ret;
+	return ret;
 }
