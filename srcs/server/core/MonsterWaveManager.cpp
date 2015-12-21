@@ -46,6 +46,20 @@ namespace Monster {
         return wave;
     }
     
+    Wave*     WaveManager::TriangleEmptyWave(unsigned int gameID)
+    {
+        Wave*   wave = new Wave(gameID);
+        
+        for (int j = 0; j < 3; j++) {
+            
+            for (int i = 0; i < (j + 1); i++) {
+                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
+            }
+            wave->addWaitingTime(500);
+        }
+        return wave;
+    }
+    
     void        WaveManager::execConfig()
     {
         static int t[] = {1, 1};
