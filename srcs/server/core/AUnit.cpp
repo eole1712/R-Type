@@ -17,11 +17,13 @@ namespace Unit {
     bool    AUnit::isAlive(Timer::time time) const
     {
         //DEBUG: player invincible
-        if (getType() == PLAYER)
-            return true;
-
-        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(time), getY(time)) == false)
-            return (false);
+//        if (getType() == PLAYER)
+//            return true;
+        
+        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isInBox(getX(time), getY(time), _hitBox.first) == false)
+            return false;
+        else if (GameUtils::Map::isInBas(getY(time), _hitBox.second) == false)
+            return false;
         return (_hp > 0);
     }
     

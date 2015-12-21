@@ -25,7 +25,6 @@ public:
   */
   void		setX(int x);
   void		setY(int y);
-  void		move(dir, Time::stamp);
 
   virtual void	  render(Time::stamp tick, sf::RenderWindow & window);
   virtual pos     move(Time::stamp tick) const;

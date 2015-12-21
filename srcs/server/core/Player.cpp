@@ -15,7 +15,7 @@ namespace Unit {
     const Missile::type         Player::DEFAULTMISSILE = Missile::BASIC;
     const unsigned int          Player::STARTX = 10;
     const unsigned int          Player::STARTY = GameUtils::Map::HEIGHT / 2;
-    const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
+    const boxType               Player::DEFAULTHITBOX = std::make_pair(85, 47);
 
     Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
     : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID, GameUtils::Game::now(gameID)), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
@@ -103,7 +103,7 @@ namespace Unit {
             {-5, 0}
         };
         
-        if (GameUtils::Map::isInBox(_x + tab[to][0], _y + tab[to][1], _hitBox.first, _hitBox.second) == false)
+        if (GameUtils::Map::isInBox(_x + tab[to][0], _y + tab[to][1], _hitBox.first))
             return false;
         _x += tab[to][0];
         _y += tab[to][1];
