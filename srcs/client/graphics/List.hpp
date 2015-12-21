@@ -31,7 +31,7 @@ public:
   void					setPosX(unsigned int x);
   unsigned int				getPosY() const;
   void					setPosY(unsigned int y);
-  void					addItem(int, std::string const&, unsigned int, unsigned int, std::string const&, bool);
+  void					addItem(int, std::string const&, unsigned int, unsigned int, std::string const&, bool, bool);
   void					slide(bool up);
   bool					clickHandler(sf::RenderWindow&, sf::Event&);
   void					mouseMovedHandler(sf::RenderWindow&, sf::Event&);

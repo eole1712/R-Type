@@ -217,9 +217,10 @@ void		Menu::drawFields()
   _window.draw(_refreshButton.getClickableBtn());
   _window.draw(_connectButton.getClickableBtn());
   int currentId = _client->getRoomConnected();
-  if (_isConnected && currentId != 0)
+  auto it = _gameList.getList().find(currentId);
+  if (_isConnected && currentId != 0 && it != _gameList.getList().end())
     {
-      if (_gameList.getList()[currentId].isReady())
+      if (it->second.isReady())
 	_readyButton.getClickableBtn().setColor(sf::Color(0, 255, 0));
       else
 	_readyButton.getClickableBtn().setColor(sf::Color(255, 0, 0));

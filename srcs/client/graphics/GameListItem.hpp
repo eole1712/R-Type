@@ -44,6 +44,7 @@ public:
   void			handleMouseMoved(sf::RenderWindow&);
   void			handleMouseClick(sf::RenderWindow&);
   void			updatePosition();
+  bool      isReady() const;
 };
 
 #endif /* !GAMELISTITEM_HPP_ */

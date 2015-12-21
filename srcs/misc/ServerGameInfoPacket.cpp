@@ -56,7 +56,7 @@ void ServerGameInfoPacket::setRoomReady(uint8_t nb) {
 void ServerGameInfoPacket::setUserReady(bool ready) {
 	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t),
                   sizeof(bool),
-                  reinterpret_cast<const char*>(&nb),
+                  reinterpret_cast<const char*>(&ready),
                   sizeof(bool));
 }
 

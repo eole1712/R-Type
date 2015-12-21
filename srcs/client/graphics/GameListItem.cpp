@@ -1,7 +1,7 @@
 #include "GameListItem.hpp"
 
 
-GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string& playerReady, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor)
+GameListItem::GameListItem(unsigned int posX, unsigned int posY, std::string const& gameName, std::string& playerNumber, std::string& playerReady, std::string const& daySentence, sf::Font& fieldsFont, sf::Color &color, sf::Color& highlightColor, bool isReady)
   : _posX(posX), _posY(posY), _gameName(gameName, fieldsFont, 21), _playerNumber(playerNumber, fieldsFont, 21), _playerReady(playerReady, fieldsFont, 21), _daySentence(daySentence, fieldsFont, 21), _font(fieldsFont), _color(color), _highlightColor(highlightColor), _isHighlighted(false), _isSelected(false), _isReady(isReady)
 {
   std::cout << "player ready : " << playerReady<< std::endl;
@@ -148,6 +148,6 @@ void		GameListItem::setPosY(const unsigned int y)
   updatePosition();
 }
 
-bool GameListItem::isReady() {
+bool GameListItem::isReady() const{
   return _isReady;
 }

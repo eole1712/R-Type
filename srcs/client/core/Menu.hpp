@@ -63,7 +63,7 @@ private:
   bool					_gameStart;
   SoundPlayer				_soundPlayer;
   std::list<std::function<void()> >	_eventChecks;
-  std::map<int, std::tuple<std::string, unsigned int, unsigned int> > _roomsBuf;
+  std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;
     
     unsigned long         _time;
 public:
