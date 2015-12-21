@@ -63,13 +63,17 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
       it != _list.end() && i > 0; it++)
     {
       i--;
-      /*
+      if (event.mouseMove.x >= (*it).getPosX() &&
+	  event.mouseMove.x <= (*it).getPosX() + 140 &&
+	  event.mouseMove.y >= (*it).getPosY() &&
+	  event.mouseMove.y <= (*it).getPosY() + 21)
+	/*
       if (sf::Mouse::getPosition(window).x >= (*it).getPosX() &&
 	  sf::Mouse::getPosition(window).x <= (*it).getPosX() + 140 &&
 	  sf::Mouse::getPosition(window).y >= (*it).getPosY() &&
 	  sf::Mouse::getPosition(window).y <= (*it).getPosY() + 21)*/
-      if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
-	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
+	/*if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
+	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))*/
 	{
 	  _iterator->second.setIsSelected(false);
 	  _iterator->second.setColor(_color);

@@ -51,7 +51,7 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  _soundPlayer.play();
+  //_soundPlayer.play();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
   while (_window.isOpen())
