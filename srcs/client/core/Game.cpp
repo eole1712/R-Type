@@ -105,8 +105,13 @@ Unit::Player*		Game::getLocalPlayer()
 Unit::Player *		Game::getPlayer(unsigned int id)
 {
   std::lock_guard<Lock> l(_lock);
-
-  return dynamic_cast<Unit::Player *>(_map.find(id)->second);
+  
+    RemoteMap::iterator it = _map.find(id);
+    if (it != _map.end())
+    {
+        return dynamic_cast<Unit::Player *>((*it).second);
+    }
+    return nullptr;
 }
 
 void			Game::loop()
