@@ -24,7 +24,12 @@ public:
 private:
     void startGame(IGame*);
     void refreshTimer(unsigned int idGame);
-    
+    void sendToUser(APacket*, int);
+    void sendToGame(APacket*, int);
+    void sendToAll(APacket*);
+    void sendRoomStatus();
+    void sendRoomStatus(int);
+
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     virtual void        killUnit(unsigned int id, unsigned int gameID);
