@@ -96,6 +96,7 @@ bool	Game::addPlayer(User* user)
         if (player->getUser() == nullptr)
         {
             player->setUser(user);
+            _users.push_back(user);
             user->startGame(_id, player);
             return true;
         }
@@ -141,21 +142,21 @@ void        Game::checkMouvements()
                   {
                       if (_t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
-                      Unit::AUnit *unit = _map->checkInterractions(player, time);
-                      if (unit) {
-                          
-                          (player)->getHit(unit);
-                          unit->getHit(player);
-                      }
+//                      Unit::AUnit *unit = _map->checkInterractions(player, time);
+//                      if (unit) {
+//                          
+//                          (player)->getHit(unit);
+//                          unit->getHit(player);
+//                      }
                   });
     
-    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        Unit::AUnit *unit = _map->checkInterractions(*it, time);
-        if (unit) {
-            (*it)->getHit(unit);
-            unit->getHit(*it);
-        }
-    }
+//    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
+//        Unit::AUnit *unit = _map->checkInterractions(*it, time);
+//        if (unit) {
+//            (*it)->getHit(unit);
+//            unit->getHit(*it);
+//        }
+//    }
     
 //    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
 //        Unit::AUnit *unit = _map->checkInterractions(*it, time);

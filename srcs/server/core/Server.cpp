@@ -234,9 +234,11 @@ void Server::sendToAll(APacket* packet) {
 void Server::sendRoomStatus() {
 	for (auto& game : _games) {
 		ServerGameInfoPacket ret;
+        
 		ret.setRoomId(game.second->getID());
 		ret.setRoomSlots(game.second->getNbPlayers());
-		int nb = 0;
+		
+        int nb = 0;
 		for (auto& user : game.second->getUsers())
 		{
 			if (user->isReady())
@@ -246,7 +248,8 @@ void Server::sendRoomStatus() {
 		ret.setRoomName(game.second->getName());
 
 		for (auto& user : _users) {
-			ret.setUserReady(user.second->isReady());
+            if (user.second->getGameID() == game.second->getID()) ret.setUserReady(user.second->isReady());
+            else ret.setUserReady(false);
 			sendToUser(&ret, user.second->getClientID());
 		}
 	}
