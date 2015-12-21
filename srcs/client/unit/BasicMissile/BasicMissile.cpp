@@ -35,7 +35,7 @@ namespace Unit
   
   Unit::pos            BasicMissile::move(Time::stamp tick) const
   {
-    pos p = std::make_pair(_x + (tick * 3 * _param), _y);
+    pos p = std::make_pair(static_cast<int>(_x + (tick * 3 * _param)), _y);
     
     return p;
   }
@@ -48,7 +48,7 @@ namespace Unit
     //_mySprite.setRotation();
     if (tick > 1000)
       _mySprite.setFrameIndex(1u);
-    _mySprite.setPosition(p.first, p.second);
+    _mySprite.setPosition(static_cast<float>(p.first), static_cast<float>(p.second));
     window.draw(_mySprite.getFrame());
   }
 }

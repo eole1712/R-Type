@@ -9,19 +9,19 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _isReady(false),
   _fieldsFont("../resources/menu/fonts/BebasNeue Bold.ttf"),
   _loginFont("../resources/menu/fonts/BebasNeue Book.ttf"),
-  _menuFields{ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Login", _fieldsFont, _fieldsColor, 21),
-    ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Create", _fieldsFont, _fieldsColor, 21),
-    ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Host", _fieldsFont, _fieldsColor, 21),
-    ClickableBtn(width / 5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, "Games", _fieldsFont, _fieldsColor, 21)},
-  _login(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1, "Player", _loginFont, _loginColor, 16, 24),
-  _gameName(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "GameName", _loginFont, _loginColor, 20, 24),
-  _host(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Host", _loginFont, _loginColor, 20, 24),
-  _loginSizeErr(width / 2, height / (MAX_NUMBER_OF_FIELDS + 1) * 1.15, "16 chars max", _fieldsFont, _loginSizeErrColor, 16),
-  _createButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6, "Create", _fieldsFont, _startColor, 21),
-  _connectButton(width / 1.3, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Connect", _fieldsFont, _startColor, 21),
-  _refreshButton(width / 1.15, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1, "Refresh", _fieldsFont, _startColor, 21),
-  _readyButton(width / 2.3, height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "READY", _fieldsFont, _startColor, 30),
-  _gameList(width / 2.5, height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6, _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
+  _menuFields{ClickableBtn(width / 5, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1), "Login", _fieldsFont, _fieldsColor, 21),
+    ClickableBtn(width / 5, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "Create", _fieldsFont, _fieldsColor, 21),
+    ClickableBtn(width / 5, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Host", _fieldsFont, _fieldsColor, 21),
+    ClickableBtn(width / 5, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), "Games", _fieldsFont, _fieldsColor, 21)},
+  _login(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.1), "Player", _loginFont, _loginColor, 16, 24),
+  _gameName(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "GameName", _loginFont, _loginColor, 20, 24),
+  _host(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Host", _loginFont, _loginColor, 20, 24),
+  _loginSizeErr(width / 2, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 1) * 1.15), "16 chars max", _fieldsFont, _loginSizeErrColor, 16),
+  _createButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "Create", _fieldsFont, _startColor, 21),
+  _connectButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Connect", _fieldsFont, _startColor, 21),
+  _refreshButton(static_cast<unsigned int>(width / 1.15), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Refresh", _fieldsFont, _startColor, 21),
+  _startButton(static_cast<unsigned int>(width / 2.3), height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "START", _fieldsFont, _startColor, 30),
+  _gameList(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
       _eventChecks.push_back([this] () {
@@ -85,8 +85,8 @@ void		Menu::eventHandler()
       if (event.type == sf::Event::MouseMoved||
 	  event.type == sf::Event::MouseButtonReleased)
 	{
-	  event.mouseMove.x = sf::Mouse::getPosition(_window).x * _scale[0];
-	  event.mouseMove.y = sf::Mouse::getPosition(_window).y * _scale[1];
+	  event.mouseMove.x = static_cast<int>(sf::Mouse::getPosition(_window).x * _scale[0]);
+	  event.mouseMove.y = static_cast<int>(sf::Mouse::getPosition(_window).y * _scale[1]);
 	}
       switch (event.type)
 	{
@@ -127,7 +127,7 @@ void		Menu::eventHandler()
 
 void		Menu::handleMouseClick(sf::Event& event)
 {
-   sf::Vector2f	mousePosition(event.mouseMove.x, event.mouseMove.y);
+   sf::Vector2f	mousePosition(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
 
    if (_readyButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
      {
@@ -157,7 +157,7 @@ void		Menu::handleMouseClick(sf::Event& event)
 
 void		Menu::handleMouseMoved(sf::Event& event)
 {
-  sf::Vector2f	mousePosition(event.mouseMove.x, event.mouseMove.y);
+  sf::Vector2f	mousePosition(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
 
   if (_connectButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _connectButton.getClickableBtn().setColor(_highlightColor);

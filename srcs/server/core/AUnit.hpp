@@ -36,12 +36,12 @@ namespace Unit {
     typedef std::pair<unsigned int, unsigned int> boxType;
     typedef std::pair<int, int> pos;
     
-    constexpr int max(int a, int b)
+    constexpr int getMax(int a, int b)
     {
         return a > b ? a : b;
     }
     
-    constexpr int min(int a, int b)
+    constexpr int getMin(int a, int b)
     {
         return a < b ? a : b;
     }
@@ -57,7 +57,9 @@ namespace Unit {
         AUnit &operator=(AUnit const &);
         
     public:
-        virtual bool    isAlive(Timer::time) const;
+        virtual bool    healthCheck(Timer::time);
+        virtual bool    isAlive() const;
+        virtual void    setAlive(bool);
         virtual void    getHit(AUnit*) = 0;
         
     public:
@@ -96,6 +98,7 @@ namespace Unit {
         
     protected:
         unsigned int                            _hp;
+        bool                                    _alive;
         team                                    _team;
         
     protected:

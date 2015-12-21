@@ -36,7 +36,7 @@ namespace Unit
   {
 
       MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair((33 * 1.8), (36 * 1.8)), Missile::BASIC, id, gameID, time)
+    : AMonster(1, x, y, std::make_pair(59, 65), Missile::BASIC, id, gameID, time)
     {}
 
     MonsterTest::~MonsterTest()
@@ -50,20 +50,19 @@ namespace Unit
       Missile::AMissile*	MonsterTest::shoot(Timer::time time)
     {
       if (!_time.isFinished())
-        return NULL;
+        return nullptr;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
 
-      _time.reset(m->getTime() * 1000);
+      _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
       return m;
-        return nullptr;
     }
 
       Unit::pos            MonsterTest::move(Timer::time time) const
     {
-      uintmax_t diff = (time - _creationTime) / 10;
+      int diff = static_cast<int>((time - _creationTime) / 10);
 
-      pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
+      pos p = std::make_pair(_x - diff, static_cast<int>(_y + std::sin((diff % 2600) / 100.0) * 100.0));
       return p;
     }
 

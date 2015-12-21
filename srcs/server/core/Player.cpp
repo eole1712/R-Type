@@ -15,7 +15,7 @@ namespace Unit {
     const Missile::type         Player::DEFAULTMISSILE = Missile::BASIC;
     const unsigned int          Player::STARTX = 10;
     const unsigned int          Player::STARTY = GameUtils::Map::HEIGHT / 2;
-    const boxType               Player::DEFAULTHITBOX = std::make_pair(10, 10);
+    const boxType               Player::DEFAULTHITBOX = std::make_pair(85, 47);
 
     Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
     : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID, GameUtils::Game::now(gameID)), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
@@ -35,12 +35,12 @@ namespace Unit {
     Missile::AMissile*          Player::shoot(Timer::time time)
     {
         if (!_time.isFinished())
-            return NULL;
+            return nullptr;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
                                                                             0, time);
 
-        _time.reset(m->getTime() * 1000);
+        _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
 
         return m;
     }
@@ -102,8 +102,8 @@ namespace Unit {
             {5, 0},
             {-5, 0}
         };
-
-        if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == GameUtils::Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == GameUtils::Map::HEIGHT))
+        
+        if (GameUtils::Map::isInBox(_x + tab[to][0], _y + tab[to][1], _hitBox.first) == false)
             return false;
         _x += tab[to][0];
         _y += tab[to][1];

@@ -44,9 +44,23 @@ namespace GameUtils {
     
     namespace Map {
         
-        bool            isIn(int x, int y)
+        bool            isInBas(int y1, unsigned int y2)
         {
-            if (x < 0 || y < 0 || x > WIDTH || y > HEIGHT)
+            if (y1 + y2 > HEIGHT)
+                return false;
+            return true;
+        }
+        
+//        bool            isIn(int x, int y)
+//        {
+//            if (x < 0 || y < 0 || x > WIDTH || y > HEIGHT)
+//                return false;
+//            return true;
+//        }
+        
+        bool            isInBox(int x, int y, unsigned int x1)
+        {
+            if (x < 0 || y < 0 || (x + x1) > WIDTH)
                 return false;
             return true;
         }

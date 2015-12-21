@@ -59,26 +59,10 @@ void Player::setY(int y)
 {
   _trueY = y;
 }
- void                  Player::move(dir to, Time::stamp tick)
-  {
-    static int              tab[4][2] =
-      { {0, -1}, {0, 1}, {1, 0}, {-1, 0} };
-
-    if (to == UP)
-      _lastVerticalMove = 1;
-    else if (to == DOWN)
-      _lastVerticalMove = 2;
-
-    if (tick != 0)
-      {
-	_trueX += tab[to][0] * (100 / tick);
-        _trueY += tab[to][1] * (100 / tick);
-      }
-  }
-
+    
   void			Player::render(Time::stamp , sf::RenderWindow & window)
   {
-    _anim.setPosition(_trueX, _trueY);
+    _anim.setPosition(static_cast<float>(_trueX), static_cast<float>(_trueY));
     window.draw(_anim.getFrame());
     _lastVerticalMove = 0;
   }

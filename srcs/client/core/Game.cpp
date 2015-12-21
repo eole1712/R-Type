@@ -105,8 +105,13 @@ Unit::Player*		Game::getLocalPlayer()
 Unit::Player *		Game::getPlayer(unsigned int id)
 {
   std::lock_guard<Lock> l(_lock);
-
-  return dynamic_cast<Unit::Player *>(_map.find(id)->second);
+  
+    RemoteMap::iterator it = _map.find(id);
+    if (it != _map.end())
+    {
+        return dynamic_cast<Unit::Player *>((*it).second);
+    }
+    return nullptr;
 }
 
 void			Game::loop()
@@ -163,10 +168,11 @@ void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 
 void			Game::disconnectUnit(unsigned int id)
 {
-  RemoteMap::iterator	i = _map.find(id);
+    std::lock_guard<Lock>   l(_lock);
+    RemoteMap::iterator	i = _map.find(id);
 
-  if (i != _map.end())
-    _map.erase(i);
+    if (i != _map.end())
+        _map.erase(i);
 }
 
 void			Game::pollEvent()

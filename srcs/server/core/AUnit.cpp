@@ -6,7 +6,7 @@
 namespace Unit {
     
     AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID, Timer::time time)
-    : _hp(hp), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
+    : _hp(hp), _alive(true), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
     {
     }
     
@@ -14,15 +14,30 @@ namespace Unit {
     {
     }
     
-    bool    AUnit::isAlive(Timer::time time) const
+    bool    AUnit::healthCheck(Timer::time time)
     {
         //DEBUG: player invincible
-        if (getType() == PLAYER)
-            return true;
-
-        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(time), getY(time)) == false)
-            return (false);
-        return (_hp > 0);
+//        if (getType() == PLAYER)
+//            return true;
+        if (!_alive)
+            return false;
+        if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isInBox(getX(time), getY(time), _hitBox.first) == false)
+            return false;
+        if (GameUtils::Map::isInBas(getY(time), _hitBox.second) == false)
+            return false;
+        if (_hp == 0)
+            return false;
+        return true;
+    }
+    
+    bool    AUnit::isAlive() const
+    {
+        return _alive;
+    }
+    
+    void    AUnit::setAlive(bool status)
+    {
+        _alive = status;
     }
     
     boxType     AUnit::getHitBox() const
@@ -72,7 +87,7 @@ namespace Unit {
     
     bool        AUnit::isHitting(AUnit *unit, Timer::time time) const
     {
-        if ((max(getX(time), unit->getX(time)) < min(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first)) && (max(getY(time), unit->getY(time)) < min(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
+        if ((getMax(getX(time), unit->getX(time)) < getMin(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first)) && (getMax(getY(time), unit->getY(time)) < getMin(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
             return true;
         return false;
     }
