@@ -25,16 +25,16 @@ namespace Monster {
         
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 200, i * (GameUtils::Map::HEIGHT / 3));
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 50, i * (GameUtils::Map::HEIGHT / 3));
             }
             wave->addWaitingTime(1000);
-            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 200, GameUtils::Map::HEIGHT / 2);
+            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 50, GameUtils::Map::HEIGHT / 2);
             wave->addWaitingTime(1000);
         }
         return wave;
     }
     
-    void        WaveManager::execConfig(Timer &time)
+    void        WaveManager::execConfig()
     {
         static int t[] = {1};
         
@@ -69,7 +69,7 @@ namespace Monster {
             while ((*it)->isFinished() && (unit = (*it)->getNextMonster()))
             {
                 this->_map->addUnit(unit);
-                _owl->sendUnit(unit, Unit::BASICMISSILE);
+                _owl->sendUnit(unit, Unit::MONSTERTEST);
                 std::cout << "Ajout de monstre" << std::endl;
             }
             if ((*it)->isEmpty())

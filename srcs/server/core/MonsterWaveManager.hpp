@@ -22,7 +22,7 @@ namespace Monster {
         void        addWave(Wave*);
         void        removeWave(Wave*);
         void        nextAction();
-        void        execConfig(Timer &time);
+        void        execConfig();
         
     private:
         IMap*               _map;

@@ -49,19 +49,19 @@ namespace Unit
 
       Missile::AMissile*	MonsterTest::shoot(Timer::time time)
     {
-//      if (!_time.isFinished())
-//        return NULL;
-//
-//      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
-//
-//      _time.reset(m->getTime() * 1000);
-//      return m;
+      if (!_time.isFinished())
+        return NULL;
+
+      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
+
+      _time.reset(m->getTime() * 1000);
+      return m;
         return nullptr;
     }
 
       Unit::pos            MonsterTest::move(Timer::time time) const
     {
-      uintmax_t diff = time - _creationTime;
+      uintmax_t diff = (time - _creationTime) / 10;
 
       pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
       return p;

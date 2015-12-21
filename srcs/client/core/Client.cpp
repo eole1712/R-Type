@@ -79,11 +79,9 @@ Client::Client(int port)
       if (pack == NULL)
 	return;
       if (_game) {
-	std::cerr << "unit added to exist game" << std::endl;
 	_game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
       }
       else {
-	std::cerr << "unit added to non exist game" << std::endl;
 	_toCreate.push_back(std::make_tuple(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam()));
       }
     },
@@ -96,7 +94,6 @@ Client::Client(int port)
 
     [this] (APacket* packet, unsigned int id) {
       ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
-      std::cout << "timer" << std::endl;
       if (pack == NULL)
 	return;
       if (_game == nullptr) {
@@ -105,12 +102,10 @@ Client::Client(int port)
       else {
         _game->setTimer(pack->getCurrentTimer());
 	while (!_toCreate.empty()) {
-	  std::cerr << "unit recreated" << std::endl;
 	  _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), std::get<5>(_toCreate.back()));
 	  _toCreate.pop_back();
 	}
       }
-      std::cout << "timer update" << std::endl;
     },
 
     [this] (APacket* packet, unsigned int id) {

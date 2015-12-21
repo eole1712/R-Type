@@ -38,7 +38,7 @@ public:
     virtual bool        isStarted() const;
 
 protected:
-    virtual void        checkMouvements(Timer &);
+    virtual void        checkMouvements();
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
 

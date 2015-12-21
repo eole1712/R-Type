@@ -129,17 +129,18 @@ std::vector<User*> const&     Game::getUsers() const
     return _users;
 }
 
-void        Game::checkMouvements(Timer &t)
+void        Game::checkMouvements()
 {
     std::list<Unit::AUnit*>::iterator it;
     Timer::time                       time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [&t, this, time](Unit::Player *player)
+    std::for_each(_players.begin(), _players.end(), [this, time](Unit::Player *player)
                   {
-                      if (t.isFinished())
+                      if (_t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
                       Unit::AUnit *unit = _map->checkInterractions(player, time);
                       if (unit) {
+                          
                           (player)->getHit(unit);
                           unit->getHit(player);
                       }
@@ -160,10 +161,10 @@ void        Game::checkMouvements(Timer &t)
 //            unit->getHit(*it);
 //        }
 //    }
-    if (t.isFinished())
+    if (_t.isFinished())
     {
-        t.reset(10);
-        t.start();
+        _t.reset(10);
+        _t.start();
     }
 }
 
@@ -189,6 +190,7 @@ void        Game::shootThemAll()
             {
                 m->setID(GameUtils::Game::getNewID(_id));
                 _map->addUnit(m);
+                _owl->sendUnit(m, m->getTypeID());
             }
         }
     });
@@ -202,6 +204,8 @@ bool        Game::checkIfAlive()
     std::for_each(_players.begin(), _players.end(), [&i, time](Unit::Player *player) {
         if (player->isAlive(time))
             i++;
+        else
+            std::cout << "I'm dead and I dont know why?" << std::endl;
     });
     if (i == 0)
         return false;
@@ -247,14 +251,18 @@ bool        Game::end()
 bool        Game::nextAction()
 {
     if (checkIfAlive() == false)
+    {
         std::cout << "Should end" << std::endl;
-    _waveManager.execConfig(_t);
-    checkMouvements(_t);
+        return end();
+    }
+    _waveManager.execConfig();
+    checkMouvements();
     shootThemAll();
     _waveManager.nextAction();
     if (checkIfAlive() == false)
     {
         std::cout << "Should end" << std::endl;
+        return end();
     }
     return true;
 }
