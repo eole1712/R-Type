@@ -166,8 +166,6 @@ void			Game::createUnit()
 
 void			Game::deleteUnit()
 {
-    Unit::AUnit *		unit;
-
     std::unique_lock<Lock>  l(_lock);
     for (std::list<Unit::AUnit*>::iterator i = _deleteStack.begin();
          i != _deleteStack.end(); i++)
