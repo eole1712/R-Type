@@ -31,7 +31,8 @@ public:
   void			setTimer(unsigned long time);
   Time::stamp   getTimer();
   bool			getFinish() const;
-  void			createUnit(unitObject newUnit);
+  void			createUnit();
+  void			deleteUnit();
   void			connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 				    Time::stamp creationTime, int param);
   void			disconnectUnit(unsigned int);
@@ -49,6 +50,7 @@ private:
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
   std::list<unitObject>		_createStack;
+  std::list<Unit::AUnit*>	_deleteStack;
   std::string			_localPlayerName;
   int				_localPlayer;
   RemoteMap			_map;
