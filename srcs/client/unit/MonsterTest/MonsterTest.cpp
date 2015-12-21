@@ -27,7 +27,7 @@ namespace Unit
     : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
-    _mySprite.scale(1.8, 1.8);
+    _mySprite.scale(1.8f, 1.8f);
   }
   
   MonsterTest::~MonsterTest()
@@ -37,7 +37,7 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
+    pos p = std::make_pair(_x - diff, static_cast<int>(_y + std::sin((diff % 2600) / 100.0) * 100.0));
     return p;
   }
   
@@ -45,7 +45,7 @@ namespace Unit
   {
     pos p = move(tick);
     
-    _mySprite.setPosition(p.first, p.second);
+    _mySprite.setPosition(static_cast<float>(p.first), static_cast<float>(p.second));
     window.draw(_mySprite.getFrame());
   }
 }

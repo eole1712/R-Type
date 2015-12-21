@@ -62,7 +62,7 @@ void Player::setY(int y)
     
   void			Player::render(Time::stamp , sf::RenderWindow & window)
   {
-    _anim.setPosition(_trueX, _trueY);
+    _anim.setPosition(static_cast<float>(_trueX), static_cast<float>(_trueY));
     window.draw(_anim.getFrame());
     _lastVerticalMove = 0;
   }

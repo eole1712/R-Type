@@ -30,7 +30,7 @@ namespace Unit
 
         Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
 
-      _time.reset(m->getTime());
+      _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
 
       return m;
     }

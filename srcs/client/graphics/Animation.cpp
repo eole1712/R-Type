@@ -40,13 +40,13 @@ Animation::state	Animation::getState() const
 
 void			Animation::setFrameIndex(unsigned int idx)
 {
-  setTextureRect(sf::IntRect(_frameWidth * (idx % _frame), 0, _frameWidth, _frameHeight));
+  setTextureRect(sf::IntRect(static_cast<int>(_frameWidth * (idx % _frame)), 0, _frameWidth, _frameHeight));
   _index = idx % _frame;
 }
 
 void			Animation::setFrameIndex(float idx)
 {
-  setTextureRect(sf::IntRect(_frameWidth * idx, 0, _frameWidth, _frameHeight));
+  setTextureRect(sf::IntRect(static_cast<int>(_frameWidth * idx), 0, _frameWidth, _frameHeight));
 }
 
 unsigned int		Animation::getFrameIndex() const
@@ -58,7 +58,7 @@ sf::Sprite const &	Animation::getFrame()
 {
   if (_state == PLAY)
     {
-      _index = ((Time::getTimeStamp() - _initTime) / _speed);
+      _index = static_cast<unsigned int>((Time::getTimeStamp() - _initTime) / _speed);
       _index %=  _frame;
        setTextureRect(sf::IntRect(_frameWidth * _index, 0, _frameWidth,_frameHeight));
     }

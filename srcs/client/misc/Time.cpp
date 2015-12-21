@@ -3,5 +3,5 @@
 
 Time::stamp Time::getTimeStamp()
 {
-  return std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1);
+  return static_cast<Time::stamp>(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
 }

@@ -79,7 +79,7 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             if (_game) {
-                _game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam());
+                _game->connectUnit(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), static_cast<Time::stamp>(pack->getTimer()), pack->getParam());
             }
             else {
                 _toCreate.push_back(std::make_tuple(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam()));
@@ -99,12 +99,12 @@ Client::Client(int port)
             if (pack == nullptr)
                 return;
             if (_game == nullptr) {
-                _menu->startGame(pack->getCurrentTimer());
+                _menu->startGame(static_cast<Time::stamp>(pack->getCurrentTimer()));
             }
             else {
-                _game->setTimer(pack->getCurrentTimer());
+                _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
                 while (!_toCreate.empty()) {
-                    _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), std::get<5>(_toCreate.back()));
+                    _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), static_cast<int>(std::get<5>(_toCreate.back())));
                     _toCreate.pop_back();
                 }
             }
