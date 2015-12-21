@@ -15,6 +15,7 @@ void			List::addItem(int id, std::string const& gameName,
 {
   std::string		playerNumberToString;
   std::map<int, GameListItem>::iterator exist;
+
   
   playerNumberToString = std::to_string(playerNumber);
   if ((exist = _list.find(id)) != _list.end())
@@ -22,20 +23,28 @@ void			List::addItem(int id, std::string const& gameName,
       exist->second.setName(gameName);
       exist->second.setPlayerNumber(playerNumber);
       exist->second.setDaySentence(daySentence);
+      std::cout << "Update game " << gameName << std::endl; 
       return ;
     }
-  GameListItem	gameListItem(_posX, _posY + 30 *_list.size(), gameName,
-			     playerNumberToString, daySentence, _font, _color, _highlightColor);
+  
+  std::cout << "game name = " << gameName << std::endl;
+  GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, daySentence,
+			     _font, _color, _highlightColor);
   _list[id] = gameListItem;
   if (_list.size() == 1)
-    _iterator = _list.begin();
+    {
+      _iterator = _list.begin();
+      _selected = _iterator;
+    }
   else if (select)
     {
-      _iterator->second.setIsSelected(false);
-      // _iterator->second.setColor(_color);
-      _iterator = _list.find(id);
-      _iterator->second.setIsSelected(true);
-      _iterator->second.setColor(sf::Color(255, 255, 102));
+      if (_selected != _list.end()) {
+	_selected->second.setIsSelected(false);
+	_selected->second.setColor(_color);
+      }
+      _selected = _list.find(id);
+      _selected->second.setIsSelected(true);
+      _selected->second.setColor(sf::Color(255, 255, 102));
     }
 }
 
@@ -70,22 +79,16 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
       it != _list.end() && i > 0; it++)
     {
       i--;
-      if (event.mouseMove.x >= (*it).second.getPosX() &&
-	  event.mouseMove.x <= (*it).second.getPosX() + 140 &&
-	  event.mouseMove.y >= (*it).second.getPosY() &&
-	  event.mouseMove.y <= (*it).second.getPosY() + 21)
-	/*
-      if (sf::Mouse::getPosition(window).x >= (*it).getPosX() &&
-	  sf::Mouse::getPosition(window).x <= (*it).getPosX() + 140 &&
-	  sf::Mouse::getPosition(window).y >= (*it).getPosY() &&
-	  sf::Mouse::getPosition(window).y <= (*it).getPosY() + 21)*/
-	/*if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
-	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))*/
+      if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
+	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
 	{
-	  _iterator->second.setIsSelected(false);
-	  _iterator->second.setColor(_color);
+	  if (_selected != _list.end()) {
+	    _selected->second.setIsSelected(false);
+	    _selected->second.setColor(_color);
+	  }
 	  (*it).second.setIsSelected(true);
 	  (*it).second.setColor(sf::Color(255, 255, 102));
+	  _selected = it;
 	}
       (*it).second.eventHandler(window, event);
     }
@@ -127,15 +130,16 @@ void			List::scrollHandler(sf::RenderWindow& window, sf::Event& event)
 
 void			List::render(sf::RenderWindow& window)
 {
-  int		i = 5;
+  int		i = 0;
   std::string	test;
-  
+
   for (std::map<int, GameListItem>::iterator it = _iterator;
-       it != _list.end() && i > 0; it++)
+       it != _list.end() && i < 5; it++)
     {
-      i--;
+      (*it).second.setPosY(_posY + 30 * i);
       window.draw((*it).second.getName());
       window.draw((*it).second.getPlayerNumber());
+      i++;
     }
   if (_list.size() >= 6)
     {
@@ -146,6 +150,7 @@ void			List::render(sf::RenderWindow& window)
 
 void			List::clean()
 {
+  std::cout << "clean" << std::endl;
   _posX = _originPosX;
   _posY = _originPosY;
   _list.clear();
@@ -159,9 +164,9 @@ std::map<int, GameListItem>const&	List::getList() const
 
 std::string		List::getCurrentItem() const
 {
-  if (_iterator == _list.end())
+  if (_selected == _list.end())
     return std::string("");
-  return (std::string)(*_iterator).second.getName().getString();
+  return (std::string)(*_selected).second.getName().getString();
 }
 
 void			List::setFont(sf::Font const& listFont)

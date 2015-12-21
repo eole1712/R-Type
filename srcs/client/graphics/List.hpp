@@ -15,6 +15,7 @@ private:
   unsigned int				_originPosY;
   std::map<int, GameListItem>		_list;
   std::map<int, GameListItem>::iterator	_iterator;
+  std::map<int, GameListItem>::iterator	_selected;
   sf::Font				_font;
   sf::Color				_color;
   sf::Color				_highlightColor;
