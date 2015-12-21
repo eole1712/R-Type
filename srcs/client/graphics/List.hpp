@@ -31,9 +31,9 @@ public:
   void					setPosX(unsigned int x);
   unsigned int				getPosY() const;
   void					setPosY(unsigned int y);
-  void					addItem(int, std::string const&, unsigned int, std::string const&, bool);
+  void					addItem(int, std::string const&, unsigned int, unsigned int, std::string const&, bool);
   void					slide(bool up);
-  void					clickHandler(sf::RenderWindow&, sf::Event&);
+  bool					clickHandler(sf::RenderWindow&, sf::Event&);
   void					mouseMovedHandler(sf::RenderWindow&, sf::Event&);
   void					scrollHandler(sf::RenderWindow&, sf::Event&);
   void					render(sf::RenderWindow&);

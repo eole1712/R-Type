@@ -11,7 +11,7 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 }
 
 void			List::addItem(int id, std::string const& gameName,
-				      unsigned int playerNumber, std::string const& daySentence, bool select)
+				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select)
 {
   std::string		playerNumberToString;
   std::map<int, GameListItem>::iterator exist;
@@ -70,7 +70,7 @@ void			List::slide(bool up)
     }
 }
 
-void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
+bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
@@ -78,20 +78,27 @@ void			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
+      std::cout << (*it).second.getIsSelected() << std::endl;
       i--;
       if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
 	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
 	{
-	  if (_selected != _list.end()) {
-	    _selected->second.setIsSelected(false);
-	    _selected->second.setColor(_color);
-	  }
-	  (*it).second.setIsSelected(true);
-	  (*it).second.setColor(sf::Color(255, 255, 102));
-	  _selected = it;
+	  if ((*it).second.getIsSelected() == false)
+	    {
+	      if (_selected != _list.end())
+		{
+		  _selected->second.setIsSelected(false);
+		  _selected->second.setColor(_color);
+		}
+	      (*it).second.setIsSelected(true);
+	      (*it).second.setColor(sf::Color(255, 255, 102));
+	      _selected = it;
+	    }
+	  else
+	    return true;	  
 	}
-      (*it).second.eventHandler(window, event);
     }
+  return false;
 }
 
 void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
