@@ -158,7 +158,7 @@ void			Game::createUnit(unitObject newUnit)
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
                                   Time::stamp creationTime, int param)
 {
-    float			_param = float(param) / 1000;
+    float		_param = float(param) / 1000;
     std::string		_name = std::string("");
     
     if (id == _localPlayer)
@@ -172,7 +172,13 @@ void			Game::disconnectUnit(unsigned int id)
     RemoteMap::iterator	i = _map.find(id);
     
     if (i != _map.end())
+      {
+	if (i->second->getType() == Unit::PLAYERTYPE)
+	  delete i->second;
+	else
+	  Unit::Factory::getInstance()->deleteUnit(i->second);
         _map.erase(i);
+      }
     else {
         for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++) {
             if (std::get<3>((*it)) == id)

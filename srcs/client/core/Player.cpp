@@ -66,4 +66,9 @@ void Player::setY(int y)
     window.draw(_anim.getFrame());
     _lastVerticalMove = 0;
   }
+
+  typeID		Player::getType() const
+  {
+    return PLAYERTYPE;
+  }
 }

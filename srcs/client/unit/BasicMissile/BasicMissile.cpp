@@ -52,4 +52,9 @@ namespace Unit
     _mySprite.setPosition(static_cast<float>(p.first), static_cast<float>(p.second));
     window.draw(_mySprite.getFrame());
   }
+
+  typeID	BasicMissile::getType() const
+  {
+    return BASICMISSILE;
+  }
 }
