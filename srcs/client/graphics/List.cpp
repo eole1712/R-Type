@@ -11,7 +11,7 @@ List::List(unsigned int posX, unsigned int posY, sf::Font const& listFont, sf::C
 }
 
 void			List::addItem(int id, std::string const& gameName,
-				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select)
+				      unsigned int playerNumber, unsigned int playerReady, std::string const& daySentence, bool select, bool isReady)
 {
   std::string		playerNumberToString;
   std::string		playerReadyToString;
@@ -29,7 +29,7 @@ void			List::addItem(int id, std::string const& gameName,
     }
   
   GameListItem	gameListItem(_posX, _posY, gameName, playerNumberToString, playerReadyToString, daySentence,
-			     _font, _color, _highlightColor);
+			     _font, _color, _highlightColor, isReady);
   _list[id] = gameListItem;
   if (_list.size() == 1)
     {

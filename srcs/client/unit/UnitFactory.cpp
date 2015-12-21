@@ -71,6 +71,22 @@ Unit::AUnit*	Factory::createUnit(Unit::typeID type, int x, int y,
   return (NULL);
 }
 
+void		Factory::deleteUnit(AUnit * unit)
+{
+  fptrDeleteUnit	ptr;
+
+  for(std::list<std::pair<Unit::typeID, ILibLoader*> >::iterator it = this->_libs.begin();
+      it != this->_libs.end(); ++it)
+    {
+      if ((*it).first == unit->getType())
+	{
+	  ptr = reinterpret_cast<fptrDeleteUnit>((*it).second->getExternalDestructor());
+	  ptr(unit);
+	  return ;
+	}
+    }
+}
+
 bool	Factory::addUnitType(Unit::typeID type, std::string libName)
 {
   ILibLoader*	libLoader;

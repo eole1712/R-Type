@@ -1,30 +1,40 @@
+#include <map>
+#include <string>
 #include "SoundPlayer.hpp"
 
-SoundPlayer::SoundPlayer(std::string const& fileName)
-  : _soundFileName(fileName), _music()
+static unsigned int nbSound = 0;
+
+SoundPlayer::SoundPlayer(std::string const& fileName, bool loop, float volume)
+  : sf::Music()
 {
-  if (!_music.openFromFile(_soundFileName))
-    std::cout << "error loading music file" << std::endl;
-  //_sound.setBuffer(_soundBuffer);
+  if (nbSound > 5)
+    return ;
+  /*
+  static std::map<std::string, sf::InputSoundFile>		cacheFile;
+  std::map<std::string, sf::Music>::const_iterator	cacheIndex;
+
+  if ((cacheIndex = cacheFile.find(fileName)) != cacheFile.end())
+    this = cacheIndex->second;
+  else if (!openFromFile(fileName))
+    std::cout << "Error loading music file \"" << fileName << "\"" << std::endl;
+  else
+    {
+      std::cout << "cached :" << fileName << std::end;
+      cacheFile[fileName] = this;
+    }
+  */
+  if (!openFromFile(fileName))
+    std::cout << "Error loading music file \"" << fileName << "\"" << std::endl;
+  setVolume(volume);
+  setLoop(loop);
+  play();
+  nbSound++;
 }
 
-void		SoundPlayer::play()
+SoundPlayer::~SoundPlayer()
 {
-  _music.setPosition(0, 1, 10); // change its 3D position
+  nbSound--;
+}
+
+  //_music.setPosition(0, 1, 10);
   //_music.setPitch(2);           // increase the pitch
-  _music.setVolume(50);         // reduce the volume
-  _music.setLoop(true);
-  _music.play();
-}
-
-void		SoundPlayer::pause()
-{
-  _music.pause();
-}
-
-void		SoundPlayer::setSound(std::string const& fileName)
-{
-  if (!_music.openFromFile(fileName))
-    std::cout << "error loading music file" << std::endl;
-  //  _sound.setBuffer(_soundBuffer);
-}

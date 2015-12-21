@@ -347,6 +347,7 @@ add_library(ClientBasicMissile SHARED
 	srcs/client/unit/BasicMissile/BasicMissile.cpp
 	srcs/client/unit/AUnit.cpp
 	srcs/client/graphics/Animation.cpp
+	srcs/client/sound/SoundPlayer.cpp
 	srcs/client/misc/Time.cpp
 	)
 target_include_directories(ClientBasicMissile PRIVATE ${client_includes_directories})

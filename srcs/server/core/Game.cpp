@@ -254,7 +254,8 @@ bool        Game::end()
 {
     std::vector<User*> users = getUsers();
     std::for_each(_players.begin(), _players.end(), [](Unit::Player *player){
-        player->getUser()->endGame(player->getScore());
+        if (player->getUser())
+			player->getUser()->endGame(player->getScore());
     });
     return false;
 }

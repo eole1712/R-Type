@@ -49,7 +49,8 @@ namespace Unit {
 
     virtual pos			move(Time::stamp tick) const;
     virtual void		render(Time::stamp tick, sf::RenderWindow & window) = 0;
-
+    virtual typeID		getType() const = 0;
+  
   protected:
     int                                     _x;
     int                                     _y;
