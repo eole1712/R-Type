@@ -146,14 +146,14 @@ void        Game::checkMouvements()
                       }
                   });
     
-//    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-//        Unit::AUnit *unit = _map->checkInterractions(*it, time);
-//        if (unit) {
-//            (*it)->getHit(unit);
-//            unit->getHit(*it);
-//        }
-//    }
-//    
+    for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
+        Unit::AUnit *unit = _map->checkInterractions(*it, time);
+        if (unit) {
+            (*it)->getHit(unit);
+            unit->getHit(*it);
+        }
+    }
+    
 //    for (it = _map->getList(Unit::ENEMY).begin(); it != _map->getList(Unit::ENEMY).end(); it++) {
 //        Unit::AUnit *unit = _map->checkInterractions(*it, time);
 //        if (unit) {
@@ -204,8 +204,6 @@ bool        Game::checkIfAlive()
     std::for_each(_players.begin(), _players.end(), [&i, time](Unit::Player *player) {
         if (player->isAlive(time))
             i++;
-        else
-            std::cout << "I'm dead and I dont know why?" << std::endl;
     });
     if (i == 0)
         return false;
@@ -213,14 +211,20 @@ bool        Game::checkIfAlive()
 	auto it = _map->getList(Unit::ALLY).begin();
 	while (it != _map->getList(Unit::ALLY).end()) {
 		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
-			it = _map->getList((*it)->getTeam()).erase(it);
-		else
+        {
+            _owl->killUnit(*it);
+            it = _map->getList((*it)->getTeam()).erase(it);
+        }
+        else
 			it++;
 	}
 	it = _map->getList(Unit::ENEMY).begin();
 	while (it != _map->getList(Unit::ENEMY).end()) {
-		if ((*it)->getType() == Unit::MISSILE && (*it)->isAlive(time) == false)
+		if ((*it)->isAlive(time) == false)
+        {
+            _owl->killUnit(*it);
 			it = _map->getList((*it)->getTeam()).erase(it);
+        }
 		else
 			it++;
 	}
@@ -252,7 +256,6 @@ bool        Game::nextAction()
 {
     if (checkIfAlive() == false)
     {
-        std::cout << "Should end" << std::endl;
         return end();
     }
     _waveManager.execConfig();
@@ -261,7 +264,6 @@ bool        Game::nextAction()
     _waveManager.nextAction();
     if (checkIfAlive() == false)
     {
-        std::cout << "Should end" << std::endl;
         return end();
     }
     return true;

@@ -58,7 +58,7 @@ namespace Unit {
 
     double    BasicMissile::getTime() const
     {
-      return 1.0;
+        return (1.0 / (_origin->getType() == PLAYER ? 5 : 1));
     }
 
     std::string     BasicMissile::getClassName() const
