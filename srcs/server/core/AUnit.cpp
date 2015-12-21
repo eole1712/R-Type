@@ -16,6 +16,10 @@ namespace Unit {
     
     bool    AUnit::isAlive(Timer::time time) const
     {
+        //DEBUG: player invincible
+        if (getType() == PLAYER)
+            return true;
+
         if ((getType() == MONSTER || getType() == MISSILE) && GameUtils::Map::isIn(getX(time), getY(time)) == false)
             return (false);
         return (_hp > 0);

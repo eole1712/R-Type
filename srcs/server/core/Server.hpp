@@ -26,8 +26,9 @@ private:
     void refreshTimer(unsigned int idGame);
     
 public:
-    void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
-    
+    virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
+    virtual void        killUnit(Unit::AUnit *unit);
+
     
 private:
   std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;

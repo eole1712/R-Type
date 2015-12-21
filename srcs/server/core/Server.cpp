@@ -5,6 +5,7 @@
 #include "ServerGameConnectPacket.hpp"
 #include "ServerGameInfoPacket.hpp"
 #include "ServerUnitSpawnPacket.hpp"
+#include "ServerUnitDiePacket.hpp"
 #include "ServerTimerRefreshPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 #include "ServerPlayerMovePacket.hpp"
@@ -221,6 +222,16 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
     pack.setUnitID(unit->getID());
     pack.setParam(unit->getTeam() == Unit::ALLY ? 1000 : -1000);
 
+    for (auto& user : _games[unit->getGameID()]->getUsers())
+        _netServer->send(&pack, user->getClientID());
+}
+
+void        Server::killUnit(Unit::AUnit *unit)
+{
+    ServerUnitDiePacket    pack;
+    
+    pack.setUnitID(unit->getID());
+    
     for (auto& user : _games[unit->getGameID()]->getUsers())
         _netServer->send(&pack, user->getClientID());
 }
