@@ -23,8 +23,13 @@ uint8_t ServerGameInfoPacket::getRoomReady() const{
     return *reinterpret_cast<const uint8_t*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t), sizeof(uint8_t)).c_str());
 }
 
+bool	ServerGameInfoPacket::getUserReady() const{
+    return *reinterpret_cast<const bool*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t), sizeof(bool)).c_str());
+}
+
+
 std::string ServerGameInfoPacket::getRoomName() const{
-	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t), kRoomNameSize).c_str()));
+	return std::string(reinterpret_cast<const char*>(_data.substr(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(bool), kRoomNameSize).c_str()));
 }
 
 void ServerGameInfoPacket::setRoomId(uint32_t id) {
@@ -48,15 +53,21 @@ void ServerGameInfoPacket::setRoomReady(uint8_t nb) {
                   sizeof(uint8_t));
 }
 
+void ServerGameInfoPacket::setUserReady(bool ready) {
+	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t),
+                  sizeof(bool),
+                  reinterpret_cast<const char*>(&nb),
+                  sizeof(bool));
+}
 
 void ServerGameInfoPacket::setRoomName(std::string const& name) {
-	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t),
+	_data.replace(kHeaderSize + sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(bool),
 		kRoomNameSize,
 		name.c_str(),
 		name.size());
 }
 
 std::ostream& operator<<(std::ostream& os, ServerGameInfoPacket const& packet) {
-	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", ROOMID : " << packet.getRoomId() << ", ROOMSLOTS : " << (int)packet.getRoomSlots() << ", ROOMREADY : " << (int)packet.getRoomReady() << ", ROOMNAME : " << packet.getRoomName() << ".";
+	os << "ID : " << (int)packet.getId() << ", TYPE : " << (int)packet.getType() << ", ROOMID : " << packet.getRoomId() << ", ROOMSLOTS : " << (int)packet.getRoomSlots() << ", ROOMREADY : " << (int)packet.getRoomReady() << ", USEREADY : " << packet.getUserReady() << ", ROOMNAME : " << packet.getRoomName() << ".";
 	return os;
 }

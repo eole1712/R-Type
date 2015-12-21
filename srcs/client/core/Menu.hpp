@@ -70,7 +70,7 @@ public:
   ~Menu();
 
   void				initMainView();
-    void				addGame(unsigned int id, std::string const&, unsigned int, std::string const &);
+    void				addGame(unsigned int id, std::string const&, unsigned int, std::string const &, bool);
   void				startGame(unsigned long time);
 
 private:

@@ -51,7 +51,7 @@ Server::Server() {
 	    for (auto& game : _games) {
 	      ServerGameInfoPacket ret;
 	      ret.setRoomId(game.second->getID());
-	      ret.setRoomSlots(4 - game.second->getNbPlayers());
+	      ret.setRoomSlots(game.second->getNbPlayers());
 	      int nb = 0;
 	      for (auto& user : game.second->getUsers())
                 {
@@ -59,6 +59,7 @@ Server::Server() {
                         nb++;
                 }
                 ret.setRoomReady(nb);
+                ret.setUserReady(_users.find(id)->isReady());
 				ret.setRoomName(game.second->getName());
 				_netServer->send(&ret, id);
 			}
@@ -94,6 +95,7 @@ Server::Server() {
 		  	ret.setStatus(false);
 		  	ret.setGameId(0);
 		  	ret.setPlayerId(0);
+		  	user->setReady(false);
 		  	_netServer->send(&ret, id);
 		  	if (currentGameID == game->getID())
 		  		return;
