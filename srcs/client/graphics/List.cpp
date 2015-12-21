@@ -78,7 +78,6 @@ bool			List::clickHandler(sf::Event& event)
   for(std::map<int, GameListItem>::iterator it = _iterator;
       it != _list.end() && i > 0; it++)
     {
-      std::cout << (*it).second.getIsSelected() << std::endl;
       i--;
       if ((*it).second.getName().getGlobalBounds().contains(mousePosition) ||
 	  (*it).second.getPlayerNumber().getGlobalBounds().contains(mousePosition))
@@ -158,7 +157,6 @@ void			List::render(sf::RenderWindow& window)
 
 void			List::clean()
 {
-  std::cout << "clean" << std::endl;
   _posX = _originPosX;
   _posY = _originPosY;
   _list.clear();
