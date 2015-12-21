@@ -3,6 +3,7 @@
 
 # include "AUnit.hpp"
 # include "Animation.hpp"
+# include "SoundPlayer.hpp"
 
 namespace Unit
 {
@@ -17,6 +18,7 @@ namespace Unit
     
   private:
     Animation	_mySprite;
+    SoundPlayer	_mySound;
   };
 }
 

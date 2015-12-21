@@ -4,21 +4,13 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-class SoundPlayer
+class SoundPlayer : public sf::Music
 {
 private:
-  std::string		_soundFileName;
-  sf::SoundBuffer	_soundBuffer;
-  sf::Music		_music;
   
 public:
-  SoundPlayer(std::string const&);
-  SoundPlayer(){};
-  ~SoundPlayer(){};
-
-  void			play();
-  void			pause();
-  void			setSound(std::string const&);
+  SoundPlayer(std::string const&, bool loop = false, float volume = 50);
+  virtual ~SoundPlayer();
 };
 
 #endif /* !SOUNDPLAYER_HPP_ */
