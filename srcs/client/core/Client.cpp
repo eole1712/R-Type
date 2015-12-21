@@ -61,7 +61,7 @@ Client::Client(int port)
             }
             else
                 std::cout << "failed to connect" << std::endl;
-			refreshGames();
+			//refreshGames();
         },
 
         [this] (APacket* packet, unsigned int id) {

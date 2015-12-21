@@ -48,21 +48,7 @@ Server::Server() {
 				return;
 			if (_users.find(id) == _users.end())
 				return;
-			for (auto& game : _games) {
-				ServerGameInfoPacket ret;
-				ret.setRoomId(game.second->getID());
-				ret.setRoomSlots(game.second->getNbPlayers());
-				int nb = 0;
-				for (auto& user : game.second->getUsers())
-				{
-					if (user->isReady())
-						nb++;
-				}
-				ret.setRoomReady(nb);
-				ret.setUserReady(_users.find(id)->second->isReady());
-				ret.setRoomName(game.second->getName());
-				_netServer->send(&ret, id);
-			}
+			sendRoomStatus(id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
@@ -96,9 +82,12 @@ Server::Server() {
 				ret.setGameId(0);
 				ret.setPlayerId(0);
 				user->setReady(false);
-				_netServer->send(&ret, id);
+				sendToUser(&ret, id);
 				if (currentGameID == game->getID())
+				{
+					sendRoomStatus();
 					return;
+				}	
 			}
 			if (!game->addPlayer(_users[id])) {
 				std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl; 
@@ -111,7 +100,8 @@ Server::Server() {
 				ret.setGameId(game->getID());
 				ret.setPlayerId(_users[id]->getPlayer()->getID());
 			}
-			_netServer->send(&ret, id);
+			sendToUser(&ret, id);
+			sendRoomStatus();
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
@@ -129,22 +119,7 @@ Server::Server() {
 				if (key.first == 4 && key.second == 1)
 				{
 					user->setReady(!user->isReady());
-					ServerGameInfoPacket ret;
-					ret.setRoomId(game->getID());
-					ret.setRoomSlots(game->getNbPlayers());
-					ret.setRoomName(game->getName());
-					int nb = 0;
-					for (auto& user : game->getUsers())
-					{
-						if (user->isReady())
-							nb++;
-					}
-					ret.setRoomReady(nb);
-					for (auto& user : game->getUsers())
-					{
-						ret.setUserReady(user->isReady());
-						_netServer->send(&ret, user->getClientID());
-					}
+					sendRoomStatus();
 				}
 				
 				bool shouldStart = true;
@@ -178,7 +153,6 @@ void	Server::start() {
 	std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
 		_netManager->loop();
 	};
-	std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 	t.join();
 }
@@ -207,15 +181,13 @@ void Server::startGame(IGame* game) {
 					packet.setPlayerID(user->getPlayer()->getID());
 					packet.setX(user->getPlayer()->getX(time));
 					packet.setY(user->getPlayer()->getY(time));
-					for (auto& aUser : v) {
-						_netServer->send(&packet, aUser->getClientID());
-					}
+
+					sendToGame(&packet, gameID);
 					user->setRefresh(false);
 				}
 			}
 		}
 	};
-	std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
 
@@ -225,11 +197,10 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 
 void    Server::refreshTimer(unsigned int idGame)
 {
-    ServerTimerRefreshPacket   pack;
+	ServerTimerRefreshPacket   pack;
 
-    pack.setCurrentTimer(GameUtils::Game::now(idGame));
-    for (auto& user : _games[idGame]->getUsers())
-        _netServer->send(&pack, user->getClientID());
+	pack.setCurrentTimer(GameUtils::Game::now(idGame));
+	sendToGame(&pack, idGame);
 }
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
@@ -243,8 +214,7 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 	pack.setUnitID(unit->getID());
 	pack.setParam(unit->getTeam() == Unit::ALLY ? 1000 : -1000);
 
-	for (auto& user : _games[unit->getGameID()]->getUsers())
-		_netServer->send(&pack, user->getClientID());
+	sendToGame(&pack, unit->getGameID());
 }
 
 void        Server::killUnit(unsigned int id, unsigned int gameID)
@@ -253,7 +223,63 @@ void        Server::killUnit(unsigned int id, unsigned int gameID)
 
 	pack.setUnitID(id);
 
-	for (auto& user : _games[gameID]->getUsers())
-		_netServer->send(&pack, user->getClientID());
+	sendToGame(&pack, gameID);
 }
 
+void Server::sendToUser(APacket* packet, int userId) {
+	_netServer->send(packet, userId);
+}
+
+void Server::sendToGame(APacket* packet, int gameId) {
+	for(auto& user : _games[gameId]->getUsers())
+	{
+		sendToUser(packet, user->getClientID());
+	}
+}
+
+void Server::sendToAll(APacket* packet) {
+	for(auto& user : _users)
+	{
+		sendToUser(packet, user.second->getClientID());
+	}
+}
+
+void Server::sendRoomStatus() {
+	for (auto& game : _games) {
+		ServerGameInfoPacket ret;
+		ret.setRoomId(game.second->getID());
+		ret.setRoomSlots(game.second->getNbPlayers());
+		int nb = 0;
+		for (auto& user : game.second->getUsers())
+		{
+			if (user->isReady())
+				nb++;
+		}
+		ret.setRoomReady(nb);
+		ret.setRoomName(game.second->getName());
+
+		for (auto& user : _users) {
+			ret.setUserReady(user.second->isReady());
+			sendToUser(&ret, user.second->getClientID());
+		}
+	}
+}
+
+void Server::sendRoomStatus(int userId) {
+	for (auto& game : _games) {
+		ServerGameInfoPacket ret;
+		ret.setRoomId(game.second->getID());
+		ret.setRoomSlots(game.second->getNbPlayers());
+		int nb = 0;
+		for (auto& user : game.second->getUsers())
+		{
+			if (user->isReady())
+				nb++;
+		}
+		ret.setRoomReady(nb);
+		ret.setRoomName(game.second->getName());
+
+		ret.setUserReady(_users.find(userId)->second->isReady());
+		sendToUser(&ret, userId);
+	}
+}

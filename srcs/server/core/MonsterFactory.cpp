@@ -24,7 +24,16 @@ const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
 #else
       Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so"
 #endif
-  }
+  },
+    {
+#if (defined __APPLE__)
+        Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.dylib"
+#elif (defined _WIN32)
+        Unit::Monster::BIGHUNTER, "..\\libs\\server\\ServerBigHunter.dll"
+#else
+        Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so"
+#endif
+    }
 };
 
 namespace Monster {
