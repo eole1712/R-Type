@@ -1,3 +1,4 @@
+#include "GameUtils.hpp"
 #include "MonsterWave.hpp"
 #include "MonsterFactory.hpp"
 
@@ -17,6 +18,7 @@ namespace Monster {
     if (_started)
       return false;
     _list.push_back(Label(type, x, y, _time));
+    _time = 0;
     return true;
   }
   
@@ -47,7 +49,7 @@ namespace Monster {
       return nullptr;
     
     Label    label = _list.front();
-    Unit::AUnit*  monster = Monster::Factory::getInstance()->createMonster(label.getType(), label.getX(), label.getY(), _gameID);
+    Unit::AUnit*  monster = Monster::Factory::getInstance()->createMonster(label.getType(), label.getX(), label.getY(), _gameID, GameUtils::Game::now(_gameID));
     
     _list.pop_front();
     reset(_list.empty() ? 0 : _list.front().getTime());

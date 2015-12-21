@@ -56,11 +56,12 @@ namespace Unit
 
       _time.reset(m->getTime() * 1000);
       return m;
+        return nullptr;
     }
 
       Unit::pos            MonsterTest::move(Timer::time time) const
     {
-      uintmax_t diff = time - _creationTime;
+      uintmax_t diff = (time - _creationTime) / 10;
 
       pos p = std::make_pair(_x - diff, _y + std::sin((diff % 2600) / 100.0) * 100.0);
       return p;

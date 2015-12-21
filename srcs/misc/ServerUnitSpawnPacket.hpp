@@ -19,14 +19,14 @@ public:
     uint32_t getY() const;
     uint32_t getUnitType() const;
     uint32_t getUnitID() const;
-    float    getParam() const;
+    int      getParam() const;
 
     void        setTimer(uint64_t);
     void        setX(uint32_t);
     void        setY(uint32_t);
     void        setUnitType(uint32_t);
     void        setUnitID(uint32_t);
-    void        setParam(float);
+    void        setParam(int);
 };
 
 std::ostream& operator<<(std::ostream& os, ServerUnitSpawnPacket const& packet);

@@ -52,7 +52,7 @@ namespace Unit {
     {
         long diff = static_cast<long>(time - _creationTime) / 10;
         
-        pos p = std::make_pair(_x + diff * 3, _y);
+        pos p = std::make_pair(_x + (diff * 3 * (_team == Unit::ALLY ? 1 : -1)), _y);
         return p;
     }
 

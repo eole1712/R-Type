@@ -6,8 +6,7 @@
 # include <list>
 # include "AMonster.hpp"
 
-typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y,
-							  unsigned int id, unsigned int gameID);
+typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y, unsigned int id, unsigned int gameID, Timer::time time);
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
 
 class ILibLoader;
@@ -23,7 +22,7 @@ public:
   ~Factory();
 
   Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
-					      unsigned int gameID);
+                                          unsigned int gameID, Timer::time time);
 
   bool				addMonsterType(Unit::Monster::type, std::string libName);
   bool				removeMonsterType(Unit::Monster::type);

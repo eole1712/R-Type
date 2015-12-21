@@ -31,8 +31,8 @@ uint32_t	ServerUnitSpawnPacket::getUnitID() const{
     return *reinterpret_cast<const uint32_t*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (3 * sizeof(uint32_t)), sizeof(uint32_t)).c_str());
 }
 
-float       ServerUnitSpawnPacket::getParam() const{
-    return *reinterpret_cast<const float*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (4 * sizeof(uint32_t)), sizeof(float)).c_str());
+int       ServerUnitSpawnPacket::getParam() const{
+    return *reinterpret_cast<const int*>(_data.substr(kHeaderSize + sizeof(uint64_t) + (4 * sizeof(uint32_t)), sizeof(int)).c_str());
 }
 
 void ServerUnitSpawnPacket::setTimer(uint64_t id) {
@@ -70,11 +70,11 @@ void ServerUnitSpawnPacket::setUnitID(uint32_t id) {
                   sizeof(uint32_t));
 }
 
-void ServerUnitSpawnPacket::setParam(float id) {
+void ServerUnitSpawnPacket::setParam(int id) {
     _data.replace(kHeaderSize + sizeof(uint64_t) + (4 * sizeof(uint32_t)),
-                  sizeof(float),
+                  sizeof(int),
                   reinterpret_cast<const char*>(&id),
-                  sizeof(float));
+                  sizeof(int));
 }
 
 std::ostream& operator<<(std::ostream& os, ServerUnitSpawnPacket const& packet) {

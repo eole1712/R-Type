@@ -219,7 +219,7 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
     pack.setY(unit->getStartY());
     pack.setUnitType(unitType);
     pack.setUnitID(unit->getID());
-    pack.setParam(0);
+    pack.setParam(unit->getTeam() == Unit::ALLY ? 1000 : -1000);
 
     for (auto& user : _games[unit->getGameID()]->getUsers())
         _netServer->send(&pack, user->getClientID());
