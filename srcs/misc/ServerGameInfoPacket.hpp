@@ -19,11 +19,13 @@ public:
 	uint32_t getRoomId() const;
 	uint8_t getRoomSlots() const;
     uint8_t getRoomReady() const;
+    bool getUserReady() const;
 	std::string getRoomName() const;
 
 	void setRoomId(uint32_t id);
 	void setRoomSlots(uint8_t nb);
     void setRoomReady(uint8_t nb);
+    void setUserReady(bool ready);
 	void setRoomName(std::string const& name);
 };
 

@@ -18,10 +18,11 @@ private:
   sf::Color		_highlightColor;
   bool			_isHighlighted;
   bool			_isSelected;
+  bool      _isReady;
 
 public:
   GameListItem(){};
-  GameListItem(unsigned int, unsigned int, std::string const&, std::string&, std::string&, std::string const&, sf::Font&, sf::Color&, sf::Color& highlightColor);
+  GameListItem(unsigned int, unsigned int, std::string const&, std::string&, std::string&, std::string const&, sf::Font&, sf::Color&, sf::Color& highlightColor, bool isReady);
   ~GameListItem(){};
 
   sf::Text		getName() const;
@@ -43,6 +44,7 @@ public:
   void			handleMouseMoved(sf::RenderWindow&);
   void			handleMouseClick(sf::RenderWindow&);
   void			updatePosition();
+  bool      isReady() const;
 };
 
 #endif /* !GAMELISTITEM_HPP_ */

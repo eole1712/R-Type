@@ -40,7 +40,8 @@ Menu::Menu(int width, int height, IMenuHandler* client):
 			      std::get<1>(room.second),
 			      std::get<2>(room.second),
 			      std::get<0>(room.second),
-			      (std::get<0>(room.second) == ((std::string) _gameName.getEditable().getString())));
+			      (std::get<0>(room.second) == ((std::string) _gameName.getEditable().getString())),
+            std::get<3>(room.second));
 	  }
 	_roomsBuf.clear();
       });
@@ -216,9 +217,11 @@ void		Menu::drawFields()
   _window.draw(_createButton.getClickableBtn());
   _window.draw(_refreshButton.getClickableBtn());
   _window.draw(_connectButton.getClickableBtn());
-  if (_isConnected && _client->getRoomConnected() != 0)
+  int currentId = _client->getRoomConnected();
+  auto it = _gameList.getList().find(currentId);
+  if (_isConnected && currentId != 0 && it != _gameList.getList().end())
     {
-      if (_isReady == true)
+      if (it->second.isReady())
 	_readyButton.getClickableBtn().setColor(sf::Color(0, 255, 0));
       else
 	_readyButton.getClickableBtn().setColor(sf::Color(255, 0, 0));
@@ -253,9 +256,9 @@ void		Menu::startGame(unsigned long currentTime)
   _time = currentTime;
 }
 
-void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, unsigned int playerReady, std::string const&)
+void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int playerNumber, unsigned int playerReady, std::string const&, bool isReady)
 {
-  _roomsBuf[id] = std::make_tuple(gameName, playerNumber, playerReady);
+  _roomsBuf[id] = std::make_tuple(gameName, playerNumber, playerReady, isReady);
 }
 
 void		Menu::setConnected()
