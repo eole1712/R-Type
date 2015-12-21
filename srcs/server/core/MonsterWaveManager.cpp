@@ -2,11 +2,12 @@
 #include <iostream>
 #include "MonsterWaveManager.hpp"
 #include "GameUtils.hpp"
+#include "UnitType.hpp"
 
 namespace Monster {
     
-    WaveManager::WaveManager(IMap *map, unsigned int gameID)
-    : _map(map), _list(), _gameID(gameID)
+    WaveManager::WaveManager(IMap *map, unsigned int gameID, IGameUnitSender* owl)
+    : _map(map), _list(), _gameID(gameID), _owl(owl)
     {
     }
     
@@ -24,10 +25,10 @@ namespace Monster {
         
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, i * (GameUtils::Map::HEIGHT / 3));
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 200, i * (GameUtils::Map::HEIGHT / 3));
             }
             wave->addWaitingTime(1000);
-            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 1, GameUtils::Map::HEIGHT / 2);
+            wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH - 200, GameUtils::Map::HEIGHT / 2);
             wave->addWaitingTime(1000);
         }
         return wave;
@@ -68,6 +69,7 @@ namespace Monster {
             while ((*it)->isFinished() && (unit = (*it)->getNextMonster()))
             {
                 this->_map->addUnit(unit);
+                _owl->sendUnit(unit, Unit::BASICMISSILE);
                 std::cout << "Ajout de monstre" << std::endl;
             }
             if ((*it)->isEmpty())

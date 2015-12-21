@@ -5,13 +5,14 @@
 
 #include "MonsterWave.hpp"
 #include "IMap.hpp"
+#include "IGameUnitSender.hpp"
 
 namespace Monster {
     
     class WaveManager
     {
     public:
-        WaveManager(IMap *map, unsigned int gameID);
+        WaveManager(IMap *map, unsigned int gameID, IGameUnitSender *);
         virtual ~WaveManager();
         
     public:
@@ -27,6 +28,7 @@ namespace Monster {
         IMap*               _map;
         std::list<Wave*>    _list;
         unsigned int        _gameID;
+        IGameUnitSender*    _owl;
     };
 }
 
