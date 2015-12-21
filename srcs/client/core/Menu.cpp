@@ -57,10 +57,9 @@ void		Menu::initMainView()
 {
   Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
 
-  //_soundPlayer.play();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
-  _soundPlayer.pause();
+  //_soundPlayer.pause();
   while (_window.isOpen())
     {
       for (auto& elem : _eventChecks) {
@@ -108,7 +107,7 @@ void		Menu::eventHandler()
 	  this->handleMouseClick(event);
 	  if (_gameList.getList().size() != 0)
 	    if (_gameList.clickHandler(event) == true)
-	      _client->selectGame(_gameList.getCurrentItem());
+	      _client->selectGame(_gameList.getCurrentItem(), _gameList.getCurrentItemId());
 	  break;
 	case sf::Event::TextEntered:
 	  editionHandler(event);

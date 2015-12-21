@@ -30,7 +30,7 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, st
  })*/
 
 _input({
-    {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
+    {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp, Key::keyState &, Game * param)
         {
             param->setFinish();
         }},

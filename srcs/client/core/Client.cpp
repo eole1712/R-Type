@@ -42,7 +42,6 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
-            _rooms[pack->getRoomName()] = pack->getRoomId();
             _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
         [this] (APacket* packet, unsigned int) {
@@ -160,12 +159,12 @@ void Client::refreshGames()
     _nc->sendPacket(&pack);
 }
 
-void Client::selectGame(const std::string &name)
+void Client::selectGame(const std::string &name, int id)
 {
     ClientGameConnectPacket pack;
 
     pack.setRoomName(name);
-    pack.setRoomId(_rooms[name]);
+    pack.setRoomId(id);
     _nc->sendPacket(&pack);
 }
 

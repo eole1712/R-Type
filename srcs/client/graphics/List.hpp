@@ -43,6 +43,7 @@ public:
 
   std::map<int, GameListItem>const&		getList() const;
   std::string				getCurrentItem() const;
+  int					getCurrentItemId() const;
 
   void					setFont(sf::Font const&);
 };

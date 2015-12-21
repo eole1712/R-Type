@@ -175,6 +175,14 @@ std::string		List::getCurrentItem() const
   return (std::string)(*_selected).second.getName().getString();
 }
 
+int			List::getCurrentItemId() const
+{
+
+  if (_selected == _list.end())
+    return 0;
+  return (*_selected).first;
+}
+
 void			List::setFont(sf::Font const& listFont)
 {
   _font = listFont;
