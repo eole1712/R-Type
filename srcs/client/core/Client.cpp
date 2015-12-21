@@ -21,7 +21,7 @@ Client::Client(int port)
     _nm = new NetManager;
     _nc = new NetClient(port, _nm, this);
     _packetHandlerFuncs = {
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerConnexionPacket* pack = dynamic_cast<ServerConnexionPacket*>(packet);
             if (pack == NULL)
                 return;
@@ -37,7 +37,7 @@ Client::Client(int port)
                 //	//end Debug feature
             }
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;
@@ -45,7 +45,7 @@ Client::Client(int port)
             _rooms[pack->getRoomName()] = pack->getRoomId();
             _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
 			std::lock_guard<Lock> l(_lock);
 
@@ -64,7 +64,7 @@ Client::Client(int port)
 			//refreshGames();
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
             if (pack == NULL)
                 return;
@@ -74,7 +74,7 @@ Client::Client(int port)
                 pl->setY(pack->getY());
             }
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerUnitSpawnPacket* pack = dynamic_cast<ServerUnitSpawnPacket*>(packet);
             if (pack == NULL)
                 return;
@@ -86,7 +86,7 @@ Client::Client(int port)
             }
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
             if (pack == nullptr)
                 return;
@@ -94,7 +94,7 @@ Client::Client(int port)
                 _game->disconnectUnit(pack->getUnitID());
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
             if (pack == nullptr)
                 return;
@@ -110,7 +110,7 @@ Client::Client(int port)
             }
         },
 
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
             if (pack == NULL)
                 return;

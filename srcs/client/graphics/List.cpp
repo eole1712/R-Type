@@ -70,7 +70,7 @@ void			List::slide(bool up)
     }
 }
 
-bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
+bool			List::clickHandler(sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   int			i = 5;
@@ -101,7 +101,7 @@ bool			List::clickHandler(sf::RenderWindow& window, sf::Event& event)
   return false;
 }
 
-void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
+void			List::mouseMovedHandler(sf::RenderWindow & window, sf::Event& event)
 {
   int			i = 5;
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
@@ -125,7 +125,7 @@ void			List::mouseMovedHandler(sf::RenderWindow& window, sf::Event& event)
     }
 }
 
-void			List::scrollHandler(sf::RenderWindow& window, sf::Event& event)
+void			List::scrollHandler(sf::Event& event)
 {
   sf::Vector2f		mousePosition(event.mouseMove.x, event.mouseMove.y);
   

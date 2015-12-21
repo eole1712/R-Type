@@ -52,7 +52,7 @@ private:
   std::list<unitObject>		_createStack;
   std::list<Unit::AUnit*>	_deleteStack;
   std::string			_localPlayerName;
-  int				_localPlayer;
+  unsigned int			_localPlayer;
   RemoteMap			_map;
   bool				_finish;
   Time::stamp			_creationTime;

@@ -86,7 +86,7 @@ Networker::Networker(int port)
 {
 
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode, ssize_t, std::string, int) {
     _packHandlers[APacket::sGetType(_buffer)](_buffer);
     _asyncRec(_sock, _buffer, _handle);
   };
@@ -98,7 +98,7 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
 {
   _PacketHandler = handler;
   _buffer.resize(APacket::kMaxPacketSize);
-  _handle = [this] (ISocket::returnCode ret, ssize_t sizeRec, std::string addr, int port) {
+  _handle = [this] (ISocket::returnCode, ssize_t sizeRec, std::string addr, int port) {
     std::unique_lock<Lock> l(_lock);
     APacket* pack;
     bool found = false;
@@ -147,7 +147,7 @@ void Networker::send(APacket *pack, int id)
   std::string data = pack->getData();
   unsigned long dataSize = data.size();
 
-  if (_peers.size() <= id)
+  if (_peers.size() <= unsigned(id))
     return;
   // _sock->setSendPort(_peers[id].second);
   // _sock->setAddr(_peers[id].first);
