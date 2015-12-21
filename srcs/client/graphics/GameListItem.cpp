@@ -53,8 +53,6 @@ void			GameListItem::handleMouseClick(sf::RenderWindow& window)
 
 void			GameListItem::updatePosition()
 {
-  sf::Vector2f		newPosition(_posX, _posY);
-
   _gameName.setPosition(sf::Vector2f(_posX, _posY));
   _playerNumber.setPosition(sf::Vector2f(_posX + 120, _posY));
 }
