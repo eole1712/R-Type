@@ -1,6 +1,6 @@
 #include <cmath>
 #include <iostream>
-#include "MonsterTest.hpp"
+#include "BigHunter.hpp"
 
 extern "C"
 {
@@ -9,13 +9,13 @@ extern "C"
 #endif
   Unit::AUnit *			NewUnit(int x, int y, unsigned int id, Time::stamp creationTime, float param)
   {
-    return (new Unit::MonsterTest(x, y, id, creationTime, param));
+    return (new Unit::BigHunter(x, y, id, creationTime, param));
   }
 
 #if (defined _WIN32)
   __declspec(dllexport)   void		DeleteUnit(Unit::MonsterTest * monster);
 #endif
-  void					DeleteUnit(Unit::AUnit * monster)
+  void					DeleteUnit(Unit::MonsterTest * monster)
   {
     delete monster;
   }
@@ -23,17 +23,17 @@ extern "C"
 
 namespace Unit
 {
-  MonsterTest::MonsterTest(int x, int y, unsigned int id, Time::stamp creationTime, float param)
+  BigHunter::BigHunter(int x, int y, unsigned int id, Time::stamp creationTime, float param)
     : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../resources/sprites/red ship2.fly.33x36x8.png"), 8)
   {
     _mySprite.scale(1.8f, 1.8f);
   }
   
-  MonsterTest::~MonsterTest()
+  BigHunter::~BigHunter()
   {}
 
-  pos            MonsterTest::move(Time::stamp tick) const
+  pos            BigHunter::move(Time::stamp tick) const
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
@@ -41,7 +41,7 @@ namespace Unit
     return p;
   }
   
-  void	MonsterTest::render(Time::stamp tick, sf::RenderWindow & window)
+  void	BigHunter::render(Time::stamp tick, sf::RenderWindow & window)
   {
     pos p = move(tick);
     

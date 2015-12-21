@@ -6,7 +6,8 @@ namespace Unit {
     enum typeID {
         PLAYERTYPE = 0,
         MONSTERTEST,
-        BASICMISSILE
+        BASICMISSILE,
+        BIGHUNTER
     };
 }
 
