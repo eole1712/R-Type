@@ -50,5 +50,12 @@ namespace GameUtils {
                 return false;
             return true;
         }
+        
+        bool            isInBox(int x, int y, unsigned int x1, unsigned int y1)
+        {
+            if (x < 0 || y < 0 || (x + x1) > WIDTH || (y + y1) > HEIGHT)
+                return false;
+            return true;
+        }
     }
 }

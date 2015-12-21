@@ -102,8 +102,8 @@ namespace Unit {
             {5, 0},
             {-5, 0}
         };
-
-        if ((tab[to][0] == -1 && !_x) || (tab[to][0] == 1 && _x == GameUtils::Map::WIDTH) || (tab[to][1] == -1 && !_y) || (tab[to][1] == 1 && _y == GameUtils::Map::HEIGHT))
+        
+        if (GameUtils::Map::isInBox(_x + tab[to][0], _y + tab[to][1], _hitBox.first, _hitBox.second) == false)
             return false;
         _x += tab[to][0];
         _y += tab[to][1];

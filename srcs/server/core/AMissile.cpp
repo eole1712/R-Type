@@ -25,7 +25,7 @@ namespace Unit {
 
     Unit::type      AMissile::getType() const
     {
-      return MISSILE;
+        return MISSILE;
     }
   }
 }
