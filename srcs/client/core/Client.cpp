@@ -16,7 +16,7 @@
 #include <sstream>
 
 Client::Client(int port)
-: _connected(0)
+  : _connected(0)
 {
     _nm = new NetManager;
     _nc = new NetClient(port, _nm, this);
@@ -27,15 +27,8 @@ Client::Client(int port)
                 return;
             if (pack->getStatus()) {
                 std::cout << "Connected ! : dayPhrase : " << pack->getServerString() << std::endl;
-
-                //	//Debug feature
-                //	std::cout << "Test feature : sending create room packet with room + this addr" << std::endl;
-                //	//ClientGameConnectPacket* ansPack = new ClientGameConnectPacket; #useless
-                //	std::stringstream name;
-                //	name << "room" << reinterpret_cast<unsigned long>(this);
-                //	this->createGame(name.str());
-                //	//end Debug feature
-            }
+		_nc->setServer(id);
+	    }
         },
         [this] (APacket* packet, unsigned int id) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
@@ -96,9 +89,10 @@ Client::Client(int port)
 
         [this] (APacket* packet, unsigned int id) {
             ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
-            if (pack == nullptr)
+	    if (pack == nullptr)
                 return;
-            if (_game == nullptr) {
+	    _nc->setTimeout(id);
+	    if (_game == nullptr) {
                 _menu->startGame(static_cast<Time::stamp>(pack->getCurrentTimer()));
             }
             else {
@@ -111,16 +105,17 @@ Client::Client(int port)
         },
 
         [this] (APacket* packet, unsigned int id) {
-            ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
-            if (pack == NULL)
-                return;
-            std::cout << "pinged by server" << std::endl;
-			if (pack->getStatus()) {
-				ServerPingPacket ans;
+	  ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
+	  if (pack == NULL)
+	    return;
+	  std::cout << "pinged by server" << std::endl;
+	  if (pack->getStatus()) {
+	    ServerPingPacket ans;
 
-				ans.setStatus(false);
-				_nc->sendPacket(&ans);
-			}
+	    ans.setStatus(false);
+	    _nc->sendPacket(&ans);
+	  }
+	  _nc->setTimeout(id);
         }
     };
     _menu = new Menu(1200, 800, this);
@@ -140,8 +135,16 @@ void Client::start()
     };
     std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
     Thread<std::nullptr_t> t(fptr, nullptr);
+    #ifndef NO_PING
+    Thread<std::nullptr_t> ping(std::bind(&Networker::pingFunction, _nc, std::placeholders::_1), nullptr);
+    #endif
     std::cout << "main view init" << std::endl;
     _menu->initMainView();
+    std::cout << "finished" << std::endl;
+    #ifndef NO_PING
+    _nc->stopPing();
+    ping.join();
+    #endif
     _nm->stop();
     t.join();
     std::cout << "Game finished" << std::endl;
@@ -195,6 +198,11 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
     ClientKeyboardPressPacket packet(e);
 
     _nc->sendPacket(&packet);
+}
+
+void Client::disconnectPlayer(unsigned int id)
+{
+  std::cout << "server with id : " << id << "hung up" << std::endl;;
 }
 
 uint32_t Client::getRoomConnected()

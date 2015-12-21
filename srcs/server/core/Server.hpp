@@ -20,16 +20,16 @@ public:
 
 	virtual void handlePacket(APacket* packet, unsigned int id);
     virtual void start();
-    
+
 private:
     void startGame(IGame*);
     void refreshTimer(unsigned int idGame);
-    
+
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     virtual void        killUnit(unsigned int id, unsigned int gameID);
+  virtual void		disconnectPlayer(unsigned int id);
 
-    
 private:
   std::vector<std::function<void(APacket* packet, unsigned int id) > > _packetHandlerFuncs;
 private:

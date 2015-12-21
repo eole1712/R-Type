@@ -9,20 +9,29 @@
 #include "ServerTimerRefreshPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 #include "ServerPlayerMovePacket.hpp"
+#include "ServerPingPacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
 #include "GameUtils.hpp"
 #include "MonsterFactory.hpp"
 #include "MissileFactory.hpp"
 
-
-
 Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
 	_packetHandlerFuncs = {
 	  [this] (APacket* packet, unsigned int id) {
+	    ServerPingPacket * pack = dynamic_cast<ServerPingPacket*>(packet);
+	    if (pack == NULL)
+	      return;
 	    std::cout << "ping received" << std::endl;
+	    if (pack->getStatus()) {
+	      ServerPingPacket ans;
+
+	      ans.setStatus(false);
+	      _netServer->send(&ans, id);
+	    }
+	    _netServer->setTimeout(id);
 	  },
 	  [this] (APacket* packet, unsigned int id) {
 	    ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
@@ -112,36 +121,37 @@ Server::Server() {
 		  _netServer->send(&ret, id);
 		},
 		[this] (APacket* packet, unsigned int id) {
-			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
-			if (pack == NULL)
-				return;
-			if (_users.find(id) == _users.end())
-				return;
-            User* user = _users[id];
-			std::pair<unsigned int, bool> key = pack->getStatus();
-            if (!user->isInGame())
-                return;
-            if (!(_games[user->getGameID()]->isStarted()))
-            {
-                IGame* game = _games[user->getGameID()];
-    			if (key.first == 4 && key.second == 1)
-					user->setReady(!user->isReady());
-				bool shouldStart = true;
-				for (auto& aUser : game->getUsers())
-				{
-					if (!aUser->isReady())
-					shouldStart = false;
-				}
-				if (shouldStart)
-                {
-                    refreshTimer(game->getID());
-					startGame(game);
-                }
+		  ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
+		  if (pack == NULL)
+		    return;
+		  if (_users.find(id) == _users.end())
+		    return;
+		  User* user = _users[id];
+		  _netServer->setTimeout(id);
+		  std::pair<unsigned int, bool> key = pack->getStatus();
+		  if (!user->isInGame())
+		    return;
+		  if (!(_games[user->getGameID()]->isStarted()))
+		    {
+		      IGame* game = _games[user->getGameID()];
+		      if (key.first == 4 && key.second == 1)
+			user->setReady(!user->isReady());
+		      bool shouldStart = true;
+		      for (auto& aUser : game->getUsers())
+			{
+			  if (!aUser->isReady())
+			    shouldStart = false;
 			}
-			else if (key.first < 4)
-                user->getPlayer()->setMoving(static_cast<Unit::dir>(key.first), key.second);
-			else
-				user->getPlayer()->setShooting(key.second);
+		      if (shouldStart)
+			{
+			  refreshTimer(game->getID());
+			  startGame(game);
+			}
+		    }
+		  else if (key.first < 4)
+		    user->getPlayer()->setMoving(static_cast<Unit::dir>(key.first), key.second);
+		  else
+		    user->getPlayer()->setShooting(key.second);
 		}
 	};
 }
@@ -159,7 +169,10 @@ void	Server::start() {
 	};
         std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
-	_netManager->stop();
+	#ifndef NO_PING
+	Thread<std::nullptr_t> ping(std::bind(&Networker::pingFunction, _netServer, std::placeholders::_1), nullptr);
+	ping.join();
+	#endif
 	t.join();
 }
 
@@ -235,4 +248,9 @@ void        Server::killUnit(unsigned int id, unsigned int gameID)
 
     for (auto& user : _games[gameID]->getUsers())
         _netServer->send(&pack, user->getClientID());
+}
+
+void Server::disconnectPlayer(unsigned int id)
+{
+  std::cout << "player with id : " << id << "hung up" << std::endl;
 }

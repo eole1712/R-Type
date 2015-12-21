@@ -15,6 +15,9 @@ public:
    * \brief calls the parent send with id 0
    */
   void sendPacket(APacket*);
+  void setServer(int id);
+private:
+  int _current;
 };
 
 
