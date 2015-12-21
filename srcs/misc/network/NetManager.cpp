@@ -12,7 +12,7 @@
 NetManager* NetManager::_ptr = nullptr;
 
 NetManager::NetManager()
-:_ret(ISocket::Sucess), _timeout(0)
+  :_ret(ISocket::Sucess), _timeout(0), _finish(false)
 {
 
 }
@@ -166,6 +166,11 @@ void NetManager::doAction<NetManager::receiveList>(fd_set& set, unsigned int tim
  }
 }
 
+void NetManager::stop()
+{
+  _finish = true;
+}
+
 void NetManager::loop()
 {
   int maxFd = 0;
@@ -175,7 +180,7 @@ void NetManager::loop()
 
   //int timeout = 0;
 
-  while (_ret == ISocket::Sucess) {
+  while (_ret == ISocket::Sucess && !_finish) {
 
     tVal.tv_sec = 0;
     tVal.tv_usec = 10000 + _timeout;
@@ -197,7 +202,6 @@ void NetManager::loop()
 #endif
        _ret = ISocket::Fail;
       #endif
-      //timeout = _timeout - tVal.tv_usec;
      doAction<sendList>(writeFds, 0);
      doAction<receiveList>(readFds, 0);
    }
