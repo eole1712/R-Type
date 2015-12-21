@@ -36,8 +36,7 @@ Client::Client(int port)
                 //	this->createGame(name.str());
                 //	//end Debug feature
             }
-        },
-        
+        },        
         [this] (APacket* packet, unsigned int id) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
@@ -48,20 +47,21 @@ Client::Client(int port)
         },
         [this] (APacket* packet, unsigned int id) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
-            if (pack == NULL)
+			std::lock_guard<Lock> l(_lock);
+			
+			if (pack == NULL)
                 return;
-            if (pack->getStatus()) {
+			if (pack->getStatus()) {
                 std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
                 _playerId = pack->getPlayerId();
-                _connected = pack->getGameId();
-                
+                _connected = pack->getGameId();                
             }
             else if (_connected != 0) {
                 _connected = 0;
             }
             else
                 std::cout << "failed to connect" << std::endl;
-            refreshGames();
+			refreshGames();
         },
         
         [this] (APacket* packet, unsigned int id) {
@@ -115,10 +115,12 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             std::cout << "pinged by server" << std::endl;
-            ServerPingPacket ans;
-            
-            ans.setStatus(false);
-            _nc->sendPacket(&ans);
+			if (pack->getStatus()) {
+				ServerPingPacket ans;
+
+				ans.setStatus(false);
+				_nc->sendPacket(&ans);
+			}
         }
     };
     _menu = new Menu(1200, 800, this);
@@ -192,6 +194,12 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
     ClientKeyboardPressPacket packet(e);
     
     _nc->sendPacket(&packet);
+}
+
+uint32_t Client::getRoomConnected()
+{
+	std::lock_guard<Lock> l(_lock);
+	return _connected;
 }
 
 IGameHandler* Client::getGameHandler()
