@@ -24,7 +24,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _gameList(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
   _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
 {
-      _eventChecks.push_back([this] () {
+  _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
 	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString(), _time);
@@ -60,6 +60,7 @@ void		Menu::initMainView()
   //_soundPlayer.play();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
+  _soundPlayer.pause();
   while (_window.isOpen())
     {
       for (auto& elem : _eventChecks) {

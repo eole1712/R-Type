@@ -8,6 +8,7 @@ int	main(int ac, char **av)
     Client cl(port);
 
     cl.start();
+    std::cout << "finish" << std::endl;
   }
   catch (std::exception const&e) {
     std::cerr << e.what() << std::endl;

@@ -24,8 +24,9 @@ extern "C"
 namespace Unit
 {
   BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param)
-  : AUnit(x, y, id, creationTime, param),
-  _mySprite(std::string("../resources/sprites/main fire.lvl1.20x14x2.png"))
+    : AUnit(x, y, id, creationTime, param),
+    _mySprite(std::string("../resources/sprites/main fire.lvl1.20x14x2.png")),
+    _mySound("../resources/sound/LaserShot.ogg")
   {
     _mySprite.pause();
   }

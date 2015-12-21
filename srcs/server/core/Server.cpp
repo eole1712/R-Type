@@ -183,7 +183,7 @@ void	Server::start() {
 	t.join();
 }
 
-void Server::startGame(IGame* game) {    
+void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
 		static unsigned int     refresh = 1;
 		unsigned int            gameID = game->getID();
@@ -225,11 +225,11 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 
 void    Server::refreshTimer(unsigned int idGame)
 {
-	ServerTimerRefreshPacket   pack;
+    ServerTimerRefreshPacket   pack;
 
-	pack.setCurrentTimer(GameUtils::Game::now(idGame));
-	for (auto& user : _games[idGame]->getUsers())
-		_netServer->send(&pack, user->getClientID());
+    pack.setCurrentTimer(GameUtils::Game::now(idGame));
+    for (auto& user : _games[idGame]->getUsers())
+        _netServer->send(&pack, user->getClientID());
 }
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
@@ -256,3 +256,4 @@ void        Server::killUnit(unsigned int id, unsigned int gameID)
 	for (auto& user : _games[gameID]->getUsers())
 		_netServer->send(&pack, user->getClientID());
 }
+

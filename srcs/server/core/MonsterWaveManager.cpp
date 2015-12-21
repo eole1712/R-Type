@@ -34,13 +34,27 @@ namespace Monster {
         return wave;
     }
     
+    Wave*     WaveManager::TriangleWave(unsigned int gameID)
+    {
+        Wave*   wave = new Wave(gameID);
+
+        for (int j = 0; j < 5; j++) {
+
+            for (int i = 0; i < (j + 1); i++) {
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
+            }
+            wave->addWaitingTime(500);
+        }
+        return wave;
+    }
+    
     void        WaveManager::execConfig()
     {
         static int t[] = {1};
         
-        if (GameUtils::Game::now(_gameID) > (10000 * t[0]))
+        if (GameUtils::Game::now(_gameID) > (8000 * t[0]))
         {
-            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            addWave(Monster::WaveManager::TriangleWave(_gameID));
             t[0]++;
         }
     }
