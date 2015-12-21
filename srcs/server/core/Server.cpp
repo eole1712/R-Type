@@ -279,7 +279,7 @@ IGame*	Server::createGame(std::string const& gameName) {
 	static unsigned int gameID = 1;
 	Game* ret;
 
-	ret = new Game(gameID++, gameName, this);
-	_games[gameID] = ret;
+	ret = new Game(gameID, gameName, this);
+	_games[gameID++] = ret;
 	return ret;
 }
