@@ -50,13 +50,12 @@ namespace Unit
       Missile::AMissile*	MonsterTest::shoot(Timer::time time)
     {
       if (!_time.isFinished())
-        return NULL;
+        return nullptr;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
 
       _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
       return m;
-        return nullptr;
     }
 
       Unit::pos            MonsterTest::move(Timer::time time) const

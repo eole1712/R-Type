@@ -35,7 +35,7 @@ namespace Unit {
     Missile::AMissile*          Player::shoot(Timer::time time)
     {
         if (!_time.isFinished())
-            return NULL;
+            return nullptr;
 
       Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this,
                                                                             0, time);
