@@ -103,7 +103,7 @@ namespace Unit {
             {-5, 0}
         };
         
-        if (GameUtils::Map::isInBox(_x + tab[to][0], _y + tab[to][1], _hitBox.first) == false)
+        if (GameUtils::Map::isIn(_x + tab[to][0], _y + tab[to][1], _hitBox.first) == false)
             return false;
         _x += tab[to][0];
         _y += tab[to][1];
