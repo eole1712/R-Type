@@ -93,7 +93,7 @@ namespace Unit {
       return std::make_pair(_x, _y);
     }
 
-    bool                        Player::move(dir to, IMap *map)
+    bool                        Player::move(dir to, IMap *)
     {
         static const int        tab[4][2] =
         {

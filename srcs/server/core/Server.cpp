@@ -86,7 +86,7 @@ Server::Server() {
 			_netServer->setTimeout(id);
 			if (user->isInGame())
 			{
-				int currentGameID = user->getGameID();
+				unsigned int currentGameID = user->getGameID();
 				for (auto& aUser : _games[currentGameID]->getUsers())
 				{
 					aUser->setReady(false);					
