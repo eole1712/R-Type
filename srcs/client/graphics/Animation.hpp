@@ -9,7 +9,7 @@ class Animation : public sf::Sprite
 {
 public:
   Animation(std::string const & image, unsigned int frame = 2,
-	    float speed = 100, Time::stamp initTime = Time::getTimeStamp());
+	    float speed = 100, bool loop = true, Time::stamp initTime = Time::getTimeStamp());
   virtual ~Animation();
 
 
@@ -25,6 +25,8 @@ private:
   state			_state;
   unsigned int		_index;
   sf::Texture		_texture;
+  bool			_loop;
+  bool			_end;
 
 public:
 
@@ -38,6 +40,7 @@ public:
   unsigned int		getFrameWidth() const;
   unsigned int	        getFrameHeight() const;
   unsigned int		getFrameIndex() const;
+  bool			finish() const;
   sf::Sprite const &	getFrame();
 };
 

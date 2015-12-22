@@ -3,8 +3,8 @@
 #include "Animation.hpp"
 
 
-Animation::Animation(std::string const & image, unsigned int frame, float speed, Time::stamp initTime)
-  : _initTime(initTime), _frame(frame), _speed(speed), _state(PLAY), _index(0)
+Animation::Animation(std::string const & image, unsigned int frame, float speed, bool loop, Time::stamp initTime)
+  : _initTime(initTime), _frame(frame), _speed(speed), _state(PLAY), _index(0), _loop(loop), _end(false)
 {
   _texture.loadFromFile(image.c_str());
   _texture.setRepeated(true);
@@ -63,15 +63,27 @@ unsigned int		Animation::getFrameIndex() const
 
 sf::Sprite const &	Animation::getFrame()
 {
-  if (_state == PLAY)
+  if (!_end && _state == PLAY)
     {
       _index = static_cast<unsigned int>((Time::getTimeStamp() - _initTime) / _speed);
-      _index %=  _frame;
+
+      if (!_loop && _index >= _frame)
+	{
+	  _state = PAUSE;
+	  _end = true;
+	  setTextureRect(sf::IntRect(0, 0, 0, 0));
+	  return *this;
+	}
+      _index %= _frame;
        setTextureRect(sf::IntRect(_frameWidth * _index, 0, _frameWidth,_frameHeight));
     }
   return *this;
 }
 
+bool			Animation::finish() const
+{
+  return !_loop && _end;
+}
 
 unsigned int		Animation::getFrameWidth() const
 {

@@ -19,9 +19,6 @@ public:
 
 
 public:  
-  typedef std::tuple<Unit::typeID, int, int, unsigned int,
-		     Time::stamp, std::string, float>		unitObject;
-
   static void		sendKey(Game * param, Key::keyState & key,
 				sf::Keyboard::Key keycode, Key::event e);
   void			loop();
@@ -42,15 +39,24 @@ private:
   void			pollEvent();
   void			render();
 
-  typedef std::map<unsigned int, Unit::AUnit *> RemoteMap;
+  typedef std::map<unsigned int, Unit::AUnit *>			RemoteMap;
+  typedef std::pair<Unit::AUnit*, bool>				unitDeleteItem;
+  typedef std::tuple<Unit::typeID, int, int, unsigned int,
+		     Time::stamp, std::string, float>		unitCreateItem;
+
+  typedef struct {
+    Animation   *anim;
+    SoundPlayer *sound;
+  }		explosion;
 
 private:
   
   IGameHandler *		_client;
   sf::RenderWindow &		_window;
   Time::stamp			_tick;
-  std::list<unitObject>		_createStack;
-  std::list<Unit::AUnit*>	_deleteStack;
+  std::list<explosion>		_explosion;
+  std::list<unitCreateItem>	_createStack;
+  std::list<unitDeleteItem>	_deleteStack;
   std::string			_localPlayerName;
   unsigned int			_localPlayer;
   RemoteMap			_map;
