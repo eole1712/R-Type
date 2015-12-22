@@ -4,6 +4,7 @@
 # include "AUnit.hpp"
 # include "AMissile.hpp"
 # include "Timer.hpp"
+# include "IDCreator.hpp"
 
 namespace Unit
 {
@@ -13,7 +14,8 @@ namespace Unit
 
         enum type {
             MONSTERTEST,
-            BIGHUNTER
+            BIGHUNTER,
+	    DRBOOM
         };
 
         class AMonster : public AUnit

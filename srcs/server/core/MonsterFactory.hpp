@@ -5,6 +5,7 @@
 # include <map>
 # include <list>
 # include "AMonster.hpp"
+# include "IDCreator.hpp"
 
 typedef Unit::Monster::AMonster*	(*fptrNewMonster)(int x, int y, unsigned int id, unsigned int gameID, Timer::time time);
 typedef void				(*fptrDeleteMonster)(Unit::Monster::AMonster*);
@@ -22,7 +23,7 @@ public:
   ~Factory();
 
   Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
-                                          unsigned int gameID, Timer::time time);
+                                          unsigned int gameID, Timer::time time, IDCreator*);
 
   bool				addMonsterType(Unit::Monster::type, std::string libName);
   bool				removeMonsterType(Unit::Monster::type);

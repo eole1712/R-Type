@@ -34,7 +34,7 @@ namespace Monster {
     public:
         void        addWave(Wave*);
         void        removeWave(Wave*);
-        void        nextAction(Timer::time);
+        void        nextAction(Timer::time, IDCreator *idc);
         void        execConfig(Timer::time);
         
     private:
