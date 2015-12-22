@@ -9,6 +9,8 @@ namespace Monster {
     WaveManager::WaveManager(IMap *map, unsigned int gameID, IGameUnitSender* owl)
     : _map(map), _list(), _gameID(gameID), _owl(owl)
     {
+        _t[0] = 1;
+        _t[1] = 1;
     }
     
     WaveManager::~WaveManager()
@@ -62,17 +64,15 @@ namespace Monster {
     
     void        WaveManager::execConfig(Timer::time time)
     {
-        static int t[] = {1, 1};
-        
-        if (time > (10000 * t[0]))
+        if (time > (10000 * _t[0]))
         {
             addWave(Monster::WaveManager::TriangleWave(_gameID));
-            t[0]++;
+            _t[0]++;
         }
-        if (time > (6000 * t[1]))
+        if (time > (6000 * _t[1]))
         {
             addWave(Monster::WaveManager::ClassicWave(_gameID));
-            t[1]++;
+            _t[1]++;
         }
     }
     

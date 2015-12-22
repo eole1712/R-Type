@@ -219,7 +219,7 @@ void Server::startGame(IGame* game) {
 				}
 			}
 		}
-        refreshTimer(gameID, true);
+        refreshTimer(gameID, 0);
         
         std::lock_guard<Lock>       l(_lockEnd);
         _games.erase(gameID);

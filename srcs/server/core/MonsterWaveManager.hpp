@@ -42,6 +42,9 @@ namespace Monster {
         std::list<Wave*>    _list;
         unsigned int        _gameID;
         IGameUnitSender*    _owl;
+        
+    private:
+        unsigned int        _t[2];
     };
 }
 

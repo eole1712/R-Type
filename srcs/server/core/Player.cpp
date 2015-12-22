@@ -95,7 +95,7 @@ namespace Unit {
 
     bool                        Player::move(dir to, IMap *map)
     {
-        static int              tab[4][2] =
+        static const int        tab[4][2] =
         {
             {0, -5},
             {0, 5},
