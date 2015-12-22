@@ -47,8 +47,8 @@ Client::Client(int port)
                 std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
                 _playerId = pack->getPlayerId();
                 _connected = pack->getGameId();
-            }
-            else if (_connected != 0) {
+			}
+			else if (_connected != 0) {
                 _connected = 0;
             }
             else
@@ -97,8 +97,10 @@ Client::Client(int port)
             else {
                 if (_game->getTimer() > 0 && pack->getCurrentTimer() == 0)
                 {
-                    _game->setFinish();
-                    return ;
+		  _connected = 0;
+		  _game->setFinish();
+		  _game = nullptr;
+		  return ;
                 }
                 _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
                 while (!_toCreate.empty()) {
@@ -206,6 +208,12 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
 
 void Client::disconnectPlayer(unsigned int id)
 {
+  _connected = 0;
+  if (_game) {
+    _game->setFinish();
+    _game = nullptr;
+  }
+
   std::cout << "server with id : " << id << "hung up" << std::endl;;
 }
 

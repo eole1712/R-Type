@@ -64,7 +64,7 @@ private:
   SoundPlayer				_soundPlayer;
   std::list<std::function<void()> >	_eventChecks;
   std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;
-    
+
     unsigned long         _time;
 public:
   Menu(int width, int height, IMenuHandler *client);
@@ -89,6 +89,7 @@ private:
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
   void				setConnected();
+  void				reset();
 };
 
 #endif /* !MENU_HPP */
