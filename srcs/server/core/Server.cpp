@@ -89,7 +89,7 @@ Server::Server() {
 				int currentGameID = user->getGameID();
 				for (auto& aUser : _games[currentGameID]->getUsers())
 				{
-					aUser.second->setReady(false);					
+					aUser->setReady(false);					
 				}
 				_games[currentGameID]->removePlayer(user->getPlayer()->getColor());
 				ret.setStatus(false);
