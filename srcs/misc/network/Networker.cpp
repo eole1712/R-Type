@@ -17,69 +17,91 @@
 #include <algorithm>
 #include <thread>
 
-#define DEBUG 0
-
 std::function<void(ISocket*, std::string&, ISocket::receiveHandler)> Networker::_asyncRec = std::bind(&ISocket::async_receive, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 std::vector<std::function<APacket*(std::string const&) > > const Networker::_packHandlers = {
   [] (std::string const& data) {
     ServerConnexionPacket* pack = new ServerConnexionPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerGameInfoPacket* pack = new ServerGameInfoPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerGameConnectPacket* pack = new ServerGameConnectPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerPlayerMovePacket* pack = new ServerPlayerMovePacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitSpawnPacket* pack = new ServerUnitSpawnPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerUnitDiePacket* pack = new ServerUnitDiePacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ServerTimerRefreshPacket* pack = new ServerTimerRefreshPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
-    [] (std::string const& data) {
+  [] (std::string const& data) {
     ServerPingPacket* pack = new ServerPingPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ClientConnexionPacket* pack = new ClientConnexionPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ClientGameInfoPacket* pack = new ClientGameInfoPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ClientGameConnectPacket* pack = new ClientGameConnectPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   },
   [] (std::string const& data) {
     ClientKeyboardPressPacket* pack = new ClientKeyboardPressPacket(data);
-    if (DEBUG) std::cout << *pack << std::endl;
+    #ifdef DEBUG_NETWORK
+    std::cout << *pack << std::endl;
+     #endif
     return pack;
   }
 };
@@ -97,7 +119,7 @@ Networker::Networker(int port)
 }
 
 Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
-  : _sock(new UdpSocket(port, "", manager)), _finished(false)
+: _sock(new UdpSocket(port, "", manager)), _finished(false)
 {
   _PacketHandler = handler;
   _buffer.resize(APacket::kMaxPacketSize);
@@ -112,24 +134,26 @@ Networker::Networker(int port, NetManager* manager, IPacketHandler* handler)
       return;
     }
     for (auto elem : _peers) {
-            if (std::get<peerInd::port>(elem.second) == port &&
-	  inet_addr(std::get<peerInd::addr>(elem.second).c_str()) == inet_addr(addr.c_str())) {
+      if (std::get<peerInd::port>(elem.second) == port &&
+       inet_addr(std::get<peerInd::addr>(elem.second).c_str()) == inet_addr(addr.c_str())) {
        found = true;
-       id = elem.first;
-       break;
-     }
-     ++id;
+     id = elem.first;
+     break;
    }
-   if (DEBUG) std::cout << "[RECEIVING FROM :"<< id <<"] ";
-    pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
-    if (!found) {
-      std::cout << "New peer ! : " << addr << ":" << port << std::endl;
-      _peers[id] = std::make_tuple(addr, port, getCurTime());
-    }
-  l.unlock();
-  _PacketHandler->handlePacket(pack, id);
-  delete pack;
-  _asyncRec(_sock, _buffer, _handle);
+   ++id;
+ }
+ #ifdef DEBUG_NETWORK
+  std::cout << "[RECEIVING FROM :"<< id <<"] ";
+ #endif
+ pack = _packHandlers[APacket::sGetType(_buffer)](_buffer);
+ if (!found) {
+  std::cout << "New peer ! : " << addr << ":" << port << std::endl;
+  _peers[id] = std::make_tuple(addr, port, getCurTime());
+}
+l.unlock();
+_PacketHandler->handlePacket(pack, id);
+delete pack;
+_asyncRec(_sock, _buffer, _handle);
 };
 _asyncRec(_sock, _buffer, _handle);
 }
@@ -143,16 +167,16 @@ void Networker::send(APacket *pack, int id)
 {
 
 //REMOVE WHEN NO DEBUG
-  if (DEBUG) {
-  APacket* packdebug;
-   std::cout << "[SENDING TO : "<< id <<"] ";
+  #ifdef DEBUG_NETWORK 
+    APacket* packdebug;
+    std::cout << "[SENDING TO : "<< id <<"] ";
     packdebug = _packHandlers[APacket::sGetType(pack->getData())](pack->getData());
     delete packdebug;
-  }
+  #endif
 //!REMOVE WHEN NO DEBUG
-    std::lock_guard<Lock> l(_lock);
-    std::string data = pack->getData();
-    unsigned long dataSize = data.size();
+  std::lock_guard<Lock> l(_lock);
+  std::string data = pack->getData();
+  unsigned long dataSize = data.size();
 
   if (_peers.size() <= unsigned(id))
     return;
@@ -192,7 +216,7 @@ void Networker::send(APacket *pack, int id)
 
 uint64_t Networker::getCurTime()
 {
-    return  std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+  return  std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 void Networker::setTimeout(int id)
@@ -217,24 +241,24 @@ void Networker::pingFunction(std::nullptr_t)
     for (auto& peer : _peers) {
       diff = getCurTime() - std::get<peerInd::time>(peer.second);
       if (diff > 1000000) {
-	std::cout << "Timeout !" << std::endl;
-	ServerPingPacket pack;
-	pack.setStatus(true);
-	l.unlock();
-	send(&pack, peer.first);
-	l.lock();
-      }
-      if (diff > 8000000) {
-	_toErase.push_back(peer.first);
-      }
-    }
-    for (auto& elem : _toErase)
-      if (_peers.find(elem) != _peers.end()) {
-	_peers.erase(elem);
-	_PacketHandler->disconnectPlayer(elem);
-      }
-    _toErase.clear();
-    l.unlock();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-  }
+       std::cout << "Timeout !" << std::endl;
+       ServerPingPacket pack;
+       pack.setStatus(true);
+       l.unlock();
+       send(&pack, peer.first);
+       l.lock();
+     }
+     if (diff > 8000000) {
+       _toErase.push_back(peer.first);
+     }
+   }
+   for (auto& elem : _toErase)
+    if (_peers.find(elem) != _peers.end()) {
+     _peers.erase(elem);
+     _PacketHandler->disconnectPlayer(elem);
+   }
+   _toErase.clear();
+   l.unlock();
+   std::this_thread::sleep_for(std::chrono::seconds(1));
+ }
 }

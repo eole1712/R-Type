@@ -68,86 +68,95 @@ Game::~Game()
 void			Game::sendKey(Game * param, Key::keyState & key,
                               sf::Keyboard::Key keycode, Key::event e)
 {
-    static std::map<std::pair<sf::Keyboard::Key, Key::event>,
-    ClientKeyboardPressPacket::keyEvent>	netAssoc =
+  static std::map<std::pair<sf::Keyboard::Key, Key::event>,
+		  ClientKeyboardPressPacket::keyEvent>	netAssoc =
     {
-        {{sf::Keyboard::Up, Key::PRESS}, ClientKeyboardPressPacket::UpPress},
-        {{sf::Keyboard::Up, Key::RELEASE}, ClientKeyboardPressPacket::UpRealease},
-        {{sf::Keyboard::Down, Key::PRESS}, ClientKeyboardPressPacket::DownPress},
-        {{sf::Keyboard::Down, Key::RELEASE}, ClientKeyboardPressPacket::DownRealease},
-        {{sf::Keyboard::Right, Key::PRESS}, ClientKeyboardPressPacket::RightPress},
-        {{sf::Keyboard::Right, Key::RELEASE}, ClientKeyboardPressPacket::RightRealease},
-        {{sf::Keyboard::Left, Key::PRESS}, ClientKeyboardPressPacket::LeftPress},
-        {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease},
-        {{sf::Keyboard::Space, Key::PRESS}, ClientKeyboardPressPacket::SpacePress},
-        {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease},
+      {{sf::Keyboard::Up, Key::PRESS}, ClientKeyboardPressPacket::UpPress},
+      {{sf::Keyboard::Up, Key::RELEASE}, ClientKeyboardPressPacket::UpRealease},
+      {{sf::Keyboard::Down, Key::PRESS}, ClientKeyboardPressPacket::DownPress},
+      {{sf::Keyboard::Down, Key::RELEASE}, ClientKeyboardPressPacket::DownRealease},
+      {{sf::Keyboard::Right, Key::PRESS}, ClientKeyboardPressPacket::RightPress},
+      {{sf::Keyboard::Right, Key::RELEASE}, ClientKeyboardPressPacket::RightRealease},
+      {{sf::Keyboard::Left, Key::PRESS}, ClientKeyboardPressPacket::LeftPress},
+      {{sf::Keyboard::Left, Key::RELEASE}, ClientKeyboardPressPacket::LeftRealease},
+      {{sf::Keyboard::Space, Key::PRESS}, ClientKeyboardPressPacket::SpacePress},
+      {{sf::Keyboard::Space, Key::RELEASE}, ClientKeyboardPressPacket::SpaceRelease},
     };
-    
-    param->_client->sendKey(netAssoc[std::pair<sf::Keyboard::Key, Key::event>(keycode, e)]);
-    key[keycode] = Key::UNKNOWN;
+  
+  param->_client->sendKey(netAssoc[std::pair<sf::Keyboard::Key, Key::event>(keycode, e)]);
+  key[keycode] = Key::UNKNOWN;
 }
 
 bool			Game::getFinish() const
 {
-    return _finish;
+  return _finish;
 }
 
 void			Game::setFinish()
 {
-    _finish = true;
+  _finish = true;
 }
 
 Unit::Player*		Game::getLocalPlayer()
 {
-    return getPlayer(_localPlayer);
+  return getPlayer(_localPlayer);
 }
 
 Unit::Player *		Game::getPlayer(unsigned int id)
 {
-    std::lock_guard<Lock> l(_lock);
-    
-    RemoteMap::iterator it = _map.find(id);
-    if (it != _map.end())
+  std::lock_guard<Lock> l(_lock);
+  
+  RemoteMap::iterator it = _map.find(id);
+  if (it != _map.end())
     {
-        return dynamic_cast<Unit::Player *>((*it).second);
+      return dynamic_cast<Unit::Player *>((*it).second);
     }
-    return nullptr;
+  return nullptr;
 }
 
 void			Game::loop()
 {
-    while (!_finish)
+  while (!_finish)
     {
-        pollEvent();
-        _tick = Time::getTimeStamp();
-        _window.clear();
-        render();
-        _window.display();
+      pollEvent();
+      _tick = Time::getTimeStamp();
+      _window.clear();
+      render();
+      _window.display();
+    }
+  deleteUnit();
+  std::unique_lock<Lock>  l(_lock);
+  for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
+    {
+      if (i->second->getType() == Unit::PLAYERTYPE)
+	delete i->second;
+      else
+	Unit::Factory::getInstance()->deleteUnit(i->second);
     }
 }
 
 void			Game::setTimer(unsigned long time)
 {
-    std::lock_guard<Lock>   l(_lock);
-    
-    _creationTime = Time::getTimeStamp() - time;
+  std::lock_guard<Lock>   l(_lock);
+  
+  _creationTime = Time::getTimeStamp() - time;
 }
 
 Time::stamp     Game::getTimer()
 {
-    std::lock_guard<Lock> l(_lock);
-    
-    return _creationTime;
+  std::lock_guard<Lock> l(_lock);
+  
+  return _creationTime;
 }
 
 void			Game::createUnit()
 {
-    Unit::AUnit *		unit;
-    unitObject			newUnit;
-    
-    std::unique_lock<Lock>  l(_lock);
-    for (std::list<unitObject>::iterator i = _createStack.begin();
-         i != _createStack.end(); i++)
+  Unit::AUnit *		unit;
+  unitObject			newUnit;
+  
+  std::unique_lock<Lock>  l(_lock);
+  for (std::list<unitObject>::iterator i = _createStack.begin();
+       i != _createStack.end(); i++)
     {
       newUnit = *i;
       if (std::get<0>(newUnit) == Unit::PLAYERTYPE)
@@ -159,100 +168,100 @@ void			Game::createUnit()
                                                         std::get<4>(newUnit), std::get<6>(newUnit));
       _map[unit->getID()] = unit;
     }
-    _createStack.clear();
-    l.unlock();
-
+  _createStack.clear();
+  l.unlock();
+  
 }
 
 void			Game::deleteUnit()
 {
-    std::unique_lock<Lock>  l(_lock);
-    for (std::list<Unit::AUnit*>::iterator i = _deleteStack.begin();
+  std::unique_lock<Lock>  l(_lock);
+  for (std::list<Unit::AUnit*>::iterator i = _deleteStack.begin();
          i != _deleteStack.end(); i++)
     {
       if ((*i)->getType() == Unit::PLAYERTYPE)
 	delete (*i);
       else
-        Unit::Factory::getInstance()->deleteUnit(*i);
+	Unit::Factory::getInstance()->deleteUnit(*i);
     }
-    _deleteStack.clear();
-    l.unlock();
+  _deleteStack.clear();
+  l.unlock();
 }
 
 void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
                                   Time::stamp creationTime, int param)
 {
-    float		_param = float(param) / 1000;
-    std::string		_name = std::string("");
-    
-    if (id == _localPlayer)
-        _name = _localPlayerName;
-    _createStack.push_back(std::make_tuple(type, x, y, id, creationTime, _name, _param));
+  float		_param = float(param) / 1000;
+  std::string		_name = std::string("");
+  
+  if (id == _localPlayer)
+    _name = _localPlayerName;
+  _createStack.push_back(std::make_tuple(type, x, y, id, creationTime, _name, _param));
 }
 
 void			Game::disconnectUnit(unsigned int id)
 {
-    std::lock_guard<Lock>   l(_lock);
-    RemoteMap::iterator	i = _map.find(id);
+  std::lock_guard<Lock>   l(_lock);
+  RemoteMap::iterator	i = _map.find(id);
     
-    if (i != _map.end())
-      {
-	_deleteStack.push_back(i->second);
-        _map.erase(i);
-      }
-    else {
-      for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++)
-	{
-            if (std::get<3>((*it)) == id)
-            {
-                _createStack.erase(it);
-                return;
-            }
-        }
+  if (i != _map.end())
+    {
+      _deleteStack.push_back(i->second);
+      _map.erase(i);
     }
+  else {
+    for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++)
+      {
+	if (std::get<3>((*it)) == id)
+	  {
+	    _createStack.erase(it);
+	    return;
+	  }
+      }
+  }
 }
 
 void			Game::pollEvent()
 {
-    sf::Event event;
-    
-    if (!_window.isOpen())
+  sf::Event event;
+  
+  if (!_window.isOpen())
     {
-        _finish = true;
-        return ;
+      _finish = true;
+      return ;
     }
-    
-    deleteUnit();
-    createUnit();
-    while (_window.pollEvent(event))
+  
+  deleteUnit();
+  createUnit();
+  while (_window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed ||
-            (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
-            _window.close();
-        
-        if (event.type == sf::Event::KeyPressed ||
-            event.type == sf::Event::KeyReleased)
-            _input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
+      if (event.type == sf::Event::Closed ||
+	  (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+	_window.close();
+      
+      if (event.type == sf::Event::KeyPressed ||
+	  event.type == sf::Event::KeyReleased)
+	_input[event.key.code] = (event.type == sf::Event::KeyPressed) ? Key::PRESS : Key::RELEASE;
     }
-    _input.process(_tick, this);
+  _input.process(_tick, this);
 }
 
 void			Game::render()
 {
-    Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
+  Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
     
-    std::lock_guard<Lock> l(_lock);
-    
-    _background.setFrameIndex(float(_tick / 10 % _background.getFrameWidth())
-                              / _background.getFrameWidth());
-    _window.draw(_background);
-    for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
-        i->second->render(currentFrameTime, _window);
+  std::lock_guard<Lock> l(_lock);
+  
+  _background.setFrameIndex(float(_tick / 10 % _background.getFrameWidth())
+			    / _background.getFrameWidth());
+  _window.draw(_background);
+  for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
+    i->second->render(currentFrameTime, _window);
 }
 
 Unit::AUnit*		Game::operator[](unsigned int id)
 {
-    std::lock_guard<Lock> l(_lock);
-    
-    return (_map.find(id)->second);
+  std::lock_guard<Lock> l(_lock);
+  
+  return (_map.find(id)->second);
 }
