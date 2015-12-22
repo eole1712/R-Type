@@ -54,7 +54,7 @@ _input({
         { Game::sendKey(param, keys, sf::Keyboard::Space, Key::PRESS); }},
     {{sf::Keyboard::Space, Key::RELEASE}, [] (Time::stamp, Key::keyState & keys, Game * param)
         { Game::sendKey(param, keys, sf::Keyboard::Space, Key::RELEASE); }},
-}), _background("../resources/textures/star.png", 1)
+      }), _background("../resources/textures/star.png", 1), _soundPlayer("../resources/sound/R-Type.ogg")
 {
     client->setGame(this);
     _background.setState(Animation::PAUSE);
