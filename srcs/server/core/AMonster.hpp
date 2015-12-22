@@ -4,6 +4,7 @@
 # include "AUnit.hpp"
 # include "AMissile.hpp"
 # include "Timer.hpp"
+# include "IDCreator.hpp"
 
 namespace Unit
 {

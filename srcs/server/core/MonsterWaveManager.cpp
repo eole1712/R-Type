@@ -90,14 +90,14 @@ namespace Monster {
         }
     }
     
-    void    WaveManager::nextAction(Timer::time time)
+    void    WaveManager::nextAction(Timer::time time, IDCreator *idc)
     {
         std::list<Wave*>::iterator it = _list.begin();
         
         while (it != _list.end())
         {
             Unit::AUnit*    unit;
-            while ((*it)->isFinished() && (unit = (*it)->getNextMonster(time)))
+            while ((*it)->isFinished() && (unit = (*it)->getNextMonster(time, idc)))
             {
                 this->_map->addUnit(unit);
                 _owl->sendUnit(unit, unit->getTypeID());

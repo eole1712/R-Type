@@ -183,7 +183,7 @@ void        Game::shootThemAll()
             Unit::AUnit* m = player->shoot(_now);
             if (m)
             {
-                m->setID(GameUtils::Game::getNewID(_id));
+                m->setID(_idc.getNewID());
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
@@ -194,7 +194,7 @@ void        Game::shootThemAll()
             Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot(_now);
             if (m)
             {
-                m->setID(GameUtils::Game::getNewID(_id));
+                m->setID(_idc.getNewID());
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
@@ -284,7 +284,7 @@ bool        Game::nextAction()
     _waveManager.execConfig(_now);
     checkMouvements();
     shootThemAll();
-    _waveManager.nextAction(_now);
+    _waveManager.nextAction(_now, &_idc);
     if (checkIfAlive() == false)
         return end();
     tryToRefresh();

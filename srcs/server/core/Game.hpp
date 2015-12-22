@@ -9,6 +9,7 @@
 # include "MonsterFactory.hpp"
 # include "MonsterWaveManager.hpp"
 # include "IGameUnitSender.hpp"
+# include "IDCreator.hpp"
 
 
 class IMap;
@@ -58,6 +59,7 @@ private:
     Timer               _time;
     Timer::time         _now;
     unsigned int        _refresh;
+    IDCreator           _idc;
 };
 
 #endif /* !GAME_H_ */

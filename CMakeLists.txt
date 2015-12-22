@@ -38,6 +38,7 @@ set(server_sources
 	srcs/server/core/FactoryUnit.cpp
 	srcs/server/core/Game.cpp
 	srcs/server/core/GameUtils.cpp
+	srcs/server/core/IDCreator.cpp
 	srcs/server/core/Map.cpp
 	srcs/server/core/MissileFactory.cpp
 	srcs/server/core/MonsterFactory.cpp
