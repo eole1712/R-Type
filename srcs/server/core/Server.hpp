@@ -34,6 +34,7 @@ private:
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
     virtual void        killUnit(unsigned int id, unsigned int gameID);
+  virtual void		disconnectPlayer(unsigned int id);
 
     
 private:

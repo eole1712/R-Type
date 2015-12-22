@@ -9,6 +9,7 @@
 #include "ServerTimerRefreshPacket.hpp"
 #include "ClientKeyboardPressPacket.hpp"
 #include "ServerPlayerMovePacket.hpp"
+#include "ServerPingPacket.hpp"
 #include "Thread.hpp"
 #include "Server.hpp"
 #include "GameUtils.hpp"
@@ -22,7 +23,17 @@ Server::Server() {
 	_netServer = new NetServer(kPort, _netManager, this);
 	_packetHandlerFuncs = {
 		[this] (APacket* packet, unsigned int id) {
-			std::cout << "ping received" << std::endl;
+		ServerPingPacket * pack = dynamic_cast<ServerPingPacket*>(packet);
+	    if (pack == NULL)
+	      return;
+	    std::cout << "ping received" << std::endl;
+	    if (pack->getStatus()) {
+	      ServerPingPacket ans;
+
+	      ans.setStatus(false);
+	      _netServer->send(&ans, id);
+	    }
+	    _netServer->setTimeout(id);
 		},
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
@@ -61,6 +72,7 @@ Server::Server() {
 				game = (*it).second;
 			ServerGameConnectPacket ret;
 			User* user = _users[id];
+			_netServer->setTimeout(id);
 			if (user->isInGame())
 			{
 				int currentGameID = user->getGameID();
@@ -74,10 +86,10 @@ Server::Server() {
 				{
 					sendRoomStatus();
 					return;
-				}	
+				}
 			}
 			if (!game->addPlayer(_users[id])) {
-				std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl; 
+				std::cerr << "Game [" << game->getID() << "] cowardly refused to add player" << std::endl;
 				ret.setStatus(false);
 				ret.setGameId(0);
 				ret.setPlayerId(0);
@@ -108,7 +120,7 @@ Server::Server() {
 					user->setReady(!user->isReady());
 					sendRoomStatus();
 				}
-				
+
 				bool shouldStart = true;
 				for (auto& aUser : game->getUsers())
 				{
@@ -140,7 +152,12 @@ void	Server::start() {
 	std::function<void(std::nullptr_t)> fptr = [this] (std::nullptr_t) {
 		_netManager->loop();
 	};
+        std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
+	#ifndef NO_PING
+	Thread<std::nullptr_t> ping(std::bind(&Networker::pingFunction, _netServer, std::placeholders::_1), nullptr);
+	ping.join();
+	#endif
 	t.join();
 }
 
@@ -175,6 +192,7 @@ void Server::startGame(IGame* game) {
 			}
 		}
 	};
+        std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
 
@@ -285,4 +303,9 @@ IGame*	Server::createGame(std::string const& gameName) {
 	ret = new Game(gameID, gameName, this);
 	_games[gameID++] = ret;
 	return ret;
+}
+
+void Server::disconnectPlayer(unsigned int id)
+{
+  std::cout << "player with id :" << id << "hung up" << std::endl;
 }

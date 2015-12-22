@@ -31,6 +31,7 @@ public:
   void createGame(std::string const& name);
   void sendKey(ClientKeyboardPressPacket::keyEvent);
   void start();
+  void disconnectPlayer(unsigned int id);
   uint32_t getRoomConnected();
   virtual IGameHandler* getGameHandler();
 protected:
