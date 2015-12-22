@@ -253,7 +253,7 @@ srcs/server/misc/Timer.cpp)
 endif (UNIX)
 
 if (WIN32)
-add_library(Server SHARED
+add_library(ServerDrBoom SHARED
 srcs/common/windows_specific/CWLibLoader.cpp
 srcs/server/core/monsters/DrBoom.cpp
 srcs/server/core/AUnit.cpp

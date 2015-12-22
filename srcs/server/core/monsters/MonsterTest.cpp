@@ -36,7 +36,7 @@ namespace Unit
   {
 
       MonsterTest::MonsterTest(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair(59, 65), Missile::BASIC, id, gameID, time)
+    : AMonster(1, x, y, std::make_pair(59, 65), Missile::WAVE, id, gameID, time)
     {}
 
     MonsterTest::~MonsterTest()
