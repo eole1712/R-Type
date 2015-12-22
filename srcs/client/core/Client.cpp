@@ -95,6 +95,11 @@ Client::Client(int port)
                 _menu->startGame(static_cast<Time::stamp>(pack->getCurrentTimer()));
             }
             else {
+                if (_game->getTimer() > 0 && pack->getCurrentTimer() == 0)
+                {
+                    _game.setFinish();
+                    return ;
+                }
                 _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
                 while (!_toCreate.empty()) {
                     _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), static_cast<int>(std::get<5>(_toCreate.back())));
