@@ -210,13 +210,10 @@ void Networker::stopPing()
 void Networker::pingFunction(std::nullptr_t)
 {
   uint64_t diff;
-  //struct timeval t;
 
   while (!_finished) {
     std::unique_lock<Lock> l(_lock);
 
-    // t.tv_sec = 1;
-    // t.tv_usec = 0;
     for (auto& peer : _peers) {
       diff = getCurTime() - std::get<peerInd::time>(peer.second);
       if (diff > 1000000) {
@@ -228,20 +225,16 @@ void Networker::pingFunction(std::nullptr_t)
 	l.lock();
       }
       if (diff > 8000000) {
-	std::cout << "MUST EXIT ! id : " << peer.first << std::endl;
 	_toErase.push_back(peer.first);
       }
-      std::cout << "différence : " << diff << std::endl;
     }
     for (auto& elem : _toErase)
       if (_peers.find(elem) != _peers.end()) {
 	_peers.erase(elem);
-	std::cout << "erasing elem : " <<  elem << std::endl;
 	_PacketHandler->disconnectPlayer(elem);
       }
     _toErase.clear();
     l.unlock();
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    //select(0, NULL, NULL, NULL, &t);
   }
 }
