@@ -7,7 +7,8 @@ namespace Unit {
         PLAYERTYPE = 0,
         MONSTERTEST,
         BASICMISSILE,
-        BIGHUNTER
+        BIGHUNTER,
+        WAVEMISSILE
     };
 }
 
