@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <thread>
 
 #define DEBUG 0
 
@@ -209,13 +210,13 @@ void Networker::stopPing()
 void Networker::pingFunction(std::nullptr_t)
 {
   uint64_t diff;
-  struct timeval t;
+  //struct timeval t;
 
   while (!_finished) {
     std::unique_lock<Lock> l(_lock);
 
-    t.tv_sec = 1;
-    t.tv_usec = 0;
+    // t.tv_sec = 1;
+    // t.tv_usec = 0;
     for (auto& peer : _peers) {
       diff = getCurTime() - std::get<peerInd::time>(peer.second);
       if (diff > 1000000) {
@@ -240,6 +241,7 @@ void Networker::pingFunction(std::nullptr_t)
       }
     _toErase.clear();
     l.unlock();
-    select(0, NULL, NULL, NULL, &t);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    //select(0, NULL, NULL, NULL, &t);
   }
 }
