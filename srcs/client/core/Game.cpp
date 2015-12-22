@@ -7,29 +7,7 @@ Game::Game(IGameHandler * client, sf::RenderWindow & window, int localPlayer, st
   : _client(client),_window(window), _tick(Time::getTimeStamp()), _createStack(), _deleteStack(),
     _localPlayerName(name), _localPlayer(localPlayer),
     _map{}, _finish(false), _creationTime(Time::getTimeStamp() - time),
-/*_input({
- {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->setFinish(); }},
- {{sf::Keyboard::Up, Key::PRESS}, [] (Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->getLocalPlayer()->move(Unit::UP, tick); }},
- {{sf::Keyboard::Down, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
- { param->getLocalPlayer()->move(Unit::DOWN, tick); }},
- {{sf::Keyboard::Right, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->getLocalPlayer()->move(Unit::RIGHT, tick); }},
- {{sf::Keyboard::Left, Key::PRESS}, [](Time::stamp tick, Key::keyState & keys, Game * param)
-	{ param->getLocalPlayer()->move(Unit::LEFT, tick); }},
- {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
-	{
- 
- keys[sf::Keyboard::Space] = Key::UNKNOWN;
-	}},
- {{sf::Keyboard::Space, Key::PRESS}, [](Time::stamp, Key::keyState & keys, Game * param)
-	{
- keys[sf::Keyboard::Space] = Key::UNKNOWN;
-	}}
- })*/
-
-_input({
+    _input({
     {{sf::Keyboard::Escape, Key::PRESS}, [] (Time::stamp, Key::keyState &, Game * param)
         {
             param->setFinish();
@@ -189,6 +167,7 @@ void			Game::deleteUnit()
 	  };
 
       	  item.anim->setPosition(pos.first, pos.second);
+	  item.anim->scale(1.4, 1.4);
       	  _explosion.push_back(item);
       	}
       if (i->first->getType() == Unit::PLAYERTYPE)
@@ -273,7 +252,7 @@ void			Game::render()
     
     std::lock_guard<Lock> l(_lock);
 
-    i += 0.001;
+    i += (float(Time::getTimeStamp() - _tick) / 10000);
     if (i > 1)
       i = 0;
     _background.setFrameIndex(i);
