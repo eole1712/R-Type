@@ -60,16 +60,16 @@ namespace Monster {
         return wave;
     }
     
-    void        WaveManager::execConfig()
+    void        WaveManager::execConfig(Timer::time time)
     {
         static int t[] = {1, 1};
         
-        if (GameUtils::Game::now(_gameID) > (10000 * t[0]))
+        if (time > (10000 * t[0]))
         {
             addWave(Monster::WaveManager::TriangleWave(_gameID));
             t[0]++;
         }
-        if (GameUtils::Game::now(_gameID) > (6000 * t[1]))
+        if (time > (6000 * t[1]))
         {
             addWave(Monster::WaveManager::ClassicWave(_gameID));
             t[1]++;
@@ -90,14 +90,14 @@ namespace Monster {
         }
     }
     
-    void    WaveManager::nextAction()
+    void    WaveManager::nextAction(Timer::time time)
     {
         std::list<Wave*>::iterator it = _list.begin();
         
         while (it != _list.end())
         {
             Unit::AUnit*    unit;
-            while ((*it)->isFinished() && (unit = (*it)->getNextMonster()))
+            while ((*it)->isFinished() && (unit = (*it)->getNextMonster(time)))
             {
                 this->_map->addUnit(unit);
                 _owl->sendUnit(unit, unit->getTypeID());

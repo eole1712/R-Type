@@ -50,7 +50,7 @@ protected:
     std::list<unsigned int>                 _disconnectedID;
     
     Lock                                    _lockEnd;
-    std::list<unsigned int>                 _endedGames;
+    Lock                                    _lockSend;
 };
 
 #endif // SERVER_H_

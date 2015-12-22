@@ -244,7 +244,9 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 
 void    Server::refreshTimer(unsigned int idGame, bool end)
 {
-	ServerTimerRefreshPacket   pack;
+    //std::lock_guard<Lock>  l(_lockSend);
+
+    ServerTimerRefreshPacket   pack;
 
     pack.setCurrentTimer(end ? 0 : GameUtils::Game::now(idGame));
 	sendToGame(&pack, idGame);
@@ -252,6 +254,7 @@ void    Server::refreshTimer(unsigned int idGame, bool end)
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 {
+    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitSpawnPacket    pack;
 
 	pack.setTimer(unit->getCreationTime());
@@ -266,6 +269,7 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 
 void        Server::killUnit(unsigned int id, unsigned int gameID)
 {
+    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitDiePacket    pack;
 
 	pack.setUnitID(id);

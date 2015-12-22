@@ -18,7 +18,7 @@ namespace Unit {
 class Player : public AUnit {
 
 public:
-    Player(color, User *user, unsigned int id, unsigned int gameID);
+    Player(color, User *user, unsigned int id, unsigned int gameID, Timer::time);
     virtual ~Player();
 
 public:
