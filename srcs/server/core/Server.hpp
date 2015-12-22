@@ -23,7 +23,7 @@ public:
     
 private:
     void startGame(IGame*);
-    void refreshTimer(unsigned int idGame, bool end = false);
+    void refreshTimer(unsigned int idGame, Timer::time);
     void sendToUser(APacket*, int);
     void sendToGame(APacket*, int);
     void sendToAll(APacket*);

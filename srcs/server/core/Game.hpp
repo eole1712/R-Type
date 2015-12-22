@@ -21,7 +21,7 @@ public:
     virtual ~Game();
 
     virtual unsigned int	getID() const;
-    virtual Timer const &   getTime() const;
+    virtual Timer::time     getTime() const;
     virtual IMap*			getMap() const;
     virtual IScoreList*		getScores() const;
     virtual Unit::Player*	getPlayer(Unit::color) const;

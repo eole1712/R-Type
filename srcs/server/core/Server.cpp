@@ -148,7 +148,7 @@ Server::Server() {
 				}
 				if (shouldStart)
 				{
-					refreshTimer(game->getID());
+					refreshTimer(game->getID(), 0);
 					startGame(game);
 				}
 			}
@@ -182,21 +182,12 @@ void	Server::start() {
 
 void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
-		unsigned int     refresh = 1;
 		unsigned int            gameID = game->getID();
 
         //Boucle du jeu principale.
 		game->start();
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
-
-            //refreshTimer(game->getID());
-			if (GameUtils::Game::now(gameID) > (refresh * 1000))
-			{
-				refreshTimer(gameID);
-				refresh++;
-			}
-			Timer::time                       time = GameUtils::Game::now(gameID);
             
             std::unique_lock<Lock>      l(_lock);
             for (unsigned int dc : _disconnectedID)
@@ -220,8 +211,8 @@ void Server::startGame(IGame* game) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;
 					packet.setPlayerID(user->getPlayer()->getID());
-					packet.setX(user->getPlayer()->getX(time));
-					packet.setY(user->getPlayer()->getY(time));
+					packet.setX(user->getPlayer()->getX(game->getTime()));
+					packet.setY(user->getPlayer()->getY(game->getTime()));
 
 					sendToGame(&packet, gameID);
 					user->setRefresh(false);
@@ -244,9 +235,7 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 
 void    Server::refreshTimer(unsigned int idGame, Timer::time time)
 {
-    //std::lock_guard<Lock>  l(_lockSend);
-
-    ServerTimerRefreshPacket   pack;
+	ServerTimerRefreshPacket   pack;
 
     pack.setCurrentTimer(time);
 	sendToGame(&pack, idGame);

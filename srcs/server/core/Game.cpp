@@ -36,9 +36,9 @@ unsigned int	Game::getID() const
     return (this->_id);
 }
 
-Timer const&          Game::getTime() const
+Timer::time          Game::getTime() const
 {
-    return _time;
+    return _now;
 }
 
 std::string     Game::getName() const
@@ -247,7 +247,7 @@ void        Game::tryToRefresh()
 {
     if (_now > (_refresh * 1000))
     {
-        _owl->refreshTimer(_id, _now);`
+        _owl->refreshTimer(_id, _now);
         _refresh++;
     }
 }
@@ -256,6 +256,7 @@ void        Game::start()
 {
     _inGame = true;
     _t.start();
+    _time.start();
     for (auto& player : _players)
     {
         player->setX(30);
