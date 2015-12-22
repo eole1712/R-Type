@@ -8,7 +8,8 @@ namespace Unit {
         MONSTERTEST,
         BASICMISSILE,
         BIGHUNTER,
-	DRBOOM
+        WAVEMISSILE,
+		DRBOOM
     };
 }
 

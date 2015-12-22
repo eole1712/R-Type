@@ -145,6 +145,7 @@ set(client_includes_directories
 	srcs/client/unit
 	srcs/client/unit/MonsterTest
 	srcs/client/unit/BasicMissile
+	srcs/client/unit/WaveMissile
 	srcs/client/misc
 	srcs/misc
 	srcs/common
@@ -252,7 +253,7 @@ srcs/server/misc/Timer.cpp)
 endif (UNIX)
 
 if (WIN32)
-add_library(Server SHARED
+add_library(ServerDrBoom SHARED
 srcs/common/windows_specific/CWLibLoader.cpp
 srcs/server/core/monsters/DrBoom.cpp
 srcs/server/core/AUnit.cpp
@@ -349,6 +350,32 @@ set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_REL
 set_target_properties(ServerBasicMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
 endif (WIN32)
 
+######## SERVER ## WAVE MISSILE ####
+
+add_library(ServerWaveMissile SHARED
+	srcs/server/core/missiles/WaveMissile.cpp
+	srcs/server/core/AUnit.cpp
+	srcs/misc/Lock.cpp
+	srcs/server/core/AMissile.cpp
+	srcs/server/core/GameUtils.cpp
+	srcs/server/misc/Timer.cpp
+	)
+
+target_include_directories(ServerWaveMissile PRIVATE ${server_includes_directories})
+target_compile_features(ServerWaveMissile PRIVATE cxx_range_for)
+if (UNIX)
+target_link_libraries(ServerWaveMissile -lpthread)
+target_link_libraries(ServerWaveMissile -ldl)
+set_target_properties(ServerWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
+
 ######## CLIENT ## MONSTER TEST ####
 
 add_library(ClientMonsterTest SHARED
@@ -415,6 +442,30 @@ endif (WIN32)
 
 #######################################
 
+######## CLIENT ## BASIC MISSILE ####
+
+add_library(ClientWaveMissile SHARED
+	srcs/client/unit/WaveMissile/WaveMissile.cpp
+	srcs/client/unit/AUnit.cpp
+	srcs/client/graphics/Animation.cpp
+	srcs/client/sound/SoundPlayer.cpp
+	srcs/client/misc/Time.cpp
+	)
+target_include_directories(ClientWaveMissile PRIVATE ${client_includes_directories})
+target_compile_features(ClientWaveMissile PRIVATE cxx_range_for)
+if (UNIX)
+set_target_properties(ClientWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientWaveMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
+
+#######################################
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
@@ -429,6 +480,7 @@ if(SFML_FOUND)
   target_link_libraries(ClientMonsterTest ${SFML_LIBRARIES})
   target_link_libraries(ClientBasicMissile ${SFML_LIBRARIES})
   target_link_libraries(ClientBigHunter ${SFML_LIBRARIES})
+  target_link_libraries(ClientWaveMissile ${SFML_LIBRARIES})
 endif()
 
 FILE(GLOB_RECURSE all_files *.*pp)
