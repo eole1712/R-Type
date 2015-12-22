@@ -182,7 +182,7 @@ void	Server::start() {
 
 void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
-		static unsigned int     refresh = 1;
+		unsigned int     refresh = 1;
 		unsigned int            gameID = game->getID();
 
         //Boucle du jeu principale.
@@ -242,11 +242,11 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 	_packetHandlerFuncs[packet->getType() - 7](packet, id);
 }
 
-void    Server::refreshTimer(unsigned int idGame, bool end)
+void    Server::refreshTimer(unsigned int idGame, Timer::time time)
 {
 	ServerTimerRefreshPacket   pack;
 
-    pack.setCurrentTimer(end ? 0 : GameUtils::Game::now(idGame));
+    pack.setCurrentTimer(time);
 	sendToGame(&pack, idGame);
 }
 
