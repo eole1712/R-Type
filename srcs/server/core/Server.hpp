@@ -23,7 +23,7 @@ public:
     
 private:
     void startGame(IGame*);
-    void refreshTimer(unsigned int idGame);
+    void refreshTimer(unsigned int idGame, bool end = false);
     void sendToUser(APacket*, int);
     void sendToGame(APacket*, int);
     void sendToAll(APacket*);
@@ -44,6 +44,13 @@ private:
 	NetServer *_netServer;
 	std::map<int, User*> _users;
 	std::map<int, IGame*> _games;
+    
+protected:
+    Lock                                    _lock;
+    std::list<unsigned int>                 _disconnectedID;
+    
+    Lock                                    _lockEnd;
+    std::list<unsigned int>                 _endedGames;
 };
 
 #endif // SERVER_H_

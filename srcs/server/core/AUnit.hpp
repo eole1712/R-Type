@@ -4,6 +4,7 @@
 #include <list>
 #include "Timer.hpp"
 #include "UnitType.hpp"
+#include "Lock.hpp"
 
 namespace Unit {
     

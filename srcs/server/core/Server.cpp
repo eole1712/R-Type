@@ -22,6 +22,7 @@ Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
 	_packetHandlerFuncs = {
+        //PACKET PING
 		[this] (APacket* packet, unsigned int id) {
 		ServerPingPacket * pack = dynamic_cast<ServerPingPacket*>(packet);
 	    if (pack == NULL)
@@ -35,6 +36,8 @@ Server::Server() {
 	    }
 	    _netServer->setTimeout(id);
 		},
+        
+        //PACKET CONNECTION CLIENT
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 			if (pack == NULL)
@@ -52,12 +55,17 @@ Server::Server() {
 			}
 			sendToUser(&ret, id);
 		},
+        
+        //PACKET CLIENT GAME INFO
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
 			if (!userExists(id) || pack == NULL)
 				return;
+            std::lock_guard<Lock>   l(_lockEnd);
 			sendRoomStatus(id);
 		},
+        
+        //PACKET GAME CONNECT PACKET
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
 			if (!userExists(id) || pack == NULL)
@@ -65,6 +73,9 @@ Server::Server() {
 
           //Recherche ou création de la game
 			IGame* game;
+            
+            std::lock_guard<Lock>   l(_lockEnd);
+            
 			auto it  = _games.find(pack->getRoomId());
 			if ((it) == _games.end())
 				game = createGame(pack->getRoomName());
@@ -102,6 +113,8 @@ Server::Server() {
 			sendToUser(&ret, id);
 			sendRoomStatus();
 		},
+        
+        //PACKET CLIENT KEYBOARD PRESS
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
 			if (pack == NULL)
@@ -112,6 +125,9 @@ Server::Server() {
 			std::pair<unsigned int, bool> key = pack->getStatus();
 			if (!user->isInGame())
 				return;
+            
+            std::lock_guard<Lock>   l(_lockEnd);
+            
 			if (!(_games[user->getGameID()]->isStarted()))
 			{
 				IGame* game = _games[user->getGameID()];
@@ -178,6 +194,24 @@ void Server::startGame(IGame* game) {
 				refresh++;
 			}
 			Timer::time                       time = GameUtils::Game::now(gameID);
+            
+            std::unique_lock<Lock>      l(_lock);
+            for (unsigned int dc : _disconnectedID)
+            {
+                std::map<int, User*>::iterator  it = _users.find(dc);
+                if (it != _users.end()) {
+                    Unit::Player *player = (*it).second->getPlayer();
+                    if (player)
+                    {
+                        player->setAlive(false);
+                        game->removePlayer(player->getColor());
+                    }
+                    delete (*it).second;
+                    _users.erase(it);
+                }
+            }
+            _disconnectedID.clear();
+            l.unlock();
             //refreshPlayersPosition
 			for (auto& user : v) {
 				if (user->needRefresh()) {
@@ -191,7 +225,12 @@ void Server::startGame(IGame* game) {
 				}
 			}
 		}
-	};
+        refreshTimer(gameID, true);
+        
+        std::lock_guard<Lock>       l(_lockEnd);
+        _games.erase(gameID);
+        delete game;
+    };
         std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
@@ -200,11 +239,11 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 	_packetHandlerFuncs[packet->getType() - 7](packet, id);
 }
 
-void    Server::refreshTimer(unsigned int idGame)
+void    Server::refreshTimer(unsigned int idGame, bool end)
 {
 	ServerTimerRefreshPacket   pack;
 
-	pack.setCurrentTimer(GameUtils::Game::now(idGame));
+    pack.setCurrentTimer(end ? 0 : GameUtils::Game::now(idGame));
 	sendToGame(&pack, idGame);
 }
 
@@ -307,5 +346,8 @@ IGame*	Server::createGame(std::string const& gameName) {
 
 void Server::disconnectPlayer(unsigned int id)
 {
-  std::cout << "player with id :" << id << "hung up" << std::endl;
+    std::lock_guard<Lock>   l(_lock);
+
+    _disconnectedID.push_back(id);
+    std::cout << "player with id :" << id << "hung up" << std::endl;
 }

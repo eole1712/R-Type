@@ -269,17 +269,11 @@ bool        Game::end()
 
 bool        Game::nextAction()
 {
-    if (checkIfAlive() == false)
-    {
-        return end();
-    }
     _waveManager.execConfig();
     checkMouvements();
     shootThemAll();
     _waveManager.nextAction();
     if (checkIfAlive() == false)
-    {
         return end();
-    }
     return true;
 }

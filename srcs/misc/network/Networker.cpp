@@ -191,7 +191,7 @@ void Networker::send(APacket *pack, int id)
 
 uint64_t Networker::getCurTime()
 {
-  return std::chrono::system_clock::now().time_since_epoch().count();
+    return  std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 void Networker::setTimeout(int id)
@@ -218,7 +218,7 @@ void Networker::pingFunction(std::nullptr_t)
     t.tv_usec = 0;
     for (auto& peer : _peers) {
       diff = getCurTime() - std::get<peerInd::time>(peer.second);
-      if (diff > 1000000000) {
+      if (diff > 1000000) {
 	std::cout << "Timeout !" << std::endl;
 	ServerPingPacket pack;
 	pack.setStatus(true);
@@ -226,7 +226,7 @@ void Networker::pingFunction(std::nullptr_t)
 	send(&pack, peer.first);
 	l.lock();
       }
-      if (diff > 5000000000) {
+      if (diff > 8000000) {
 	std::cout << "MUST EXIT ! id : " << peer.first << std::endl;
 	_toErase.push_back(peer.first);
       }
