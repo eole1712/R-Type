@@ -29,6 +29,7 @@ namespace Unit
       _mySound(new SoundPlayer("../resources/sound/LaserShot.ogg"))
   {
       _mySprite.scale(0.5f, 0.5f);
+      _mySprite.setRotation(27);
 //    _mySprite.pause();
   }
 
@@ -40,7 +41,7 @@ namespace Unit
   
   Unit::pos            DirectedMissile::move(Time::stamp tick) const
   {
-    pos p = std::make_pair(static_cast<int>(_x + (tick * 5 * _param)), _y);
+    pos p = std::make_pair(static_cast<int>(_x + (tick * 5 * _param)), _y - tick * 3);
     
     return p;
   }

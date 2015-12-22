@@ -21,7 +21,7 @@ const std::map<Unit::typeID, std::string> Unit::Factory::LIBSLIST = {
   { Unit::BIGHUNTER, "../libs/client/libClientBigHunter.dylib" },
   { Unit::WAVEMISSILE, "../libs/client/libClientWaveMissile.dylib" },
   { Unit::DRBOOM, "../libs/client/libClientDrBoom.dylib" },
-  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectMissile.dylib" }
+  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectedMissile.dylib" }
 #elif (defined _WIN32)
   { Unit::MONSTERTEST, "..\\libs\\client\\ClientMonsterTest.dll" },
   { Unit::BASICMISSILE, "..\\libs\\client\\ClientBasicMissile.dll" },
