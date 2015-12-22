@@ -25,14 +25,17 @@ namespace Unit
 {
   BasicMissile::BasicMissile(int x, int y, unsigned int id, Time::stamp creationTime, float param)
     : AUnit(x, y, id, creationTime, param),
-    _mySprite(std::string("../resources/sprites/main fire.lvl1.20x14x2.png"))
-    // _mySound("../resources/sound/LaserShot.ogg")
+      _mySprite(std::string("../resources/sprites/main fire.lvl1.20x14x2.png"), 2),
+      _mySound(new SoundPlayer("../resources/sound/LaserShot.ogg"))
   {
-    // _mySprite.pause();
+    _mySprite.pause();
   }
 
   BasicMissile::~BasicMissile()
-  {}
+  {
+    if (_mySound != NULL)
+      delete _mySound;
+  }
   
   Unit::pos            BasicMissile::move(Time::stamp tick) const
   {
@@ -46,11 +49,18 @@ namespace Unit
     long diff = static_cast<long>(tick - _creationTime) / 10;
     pos p = move(diff);
 
+    if (_mySound != NULL && _mySound->getPlayingOffset() == _mySound->getDuration())
+      {
+	std::cout << "finish" << std::endl;
+	delete _mySound;
+	_mySound = NULL;
+      }
     //_mySprite.setRotation();
-    if (tick > 1000)
-      _mySprite.setFrameIndex(1u);
+ 
     _mySprite.setPosition(static_cast<float>(p.first), static_cast<float>(p.second));
-    window.draw(_mySprite.getFrame());
+    if (diff > 15)
+      _mySprite.setFrameIndex(1u); 
+    window.draw(_mySprite);
   }
 
   typeID	BasicMissile::getType() const
