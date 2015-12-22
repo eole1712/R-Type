@@ -97,7 +97,7 @@ Client::Client(int port)
             else {
                 if (_game->getTimer() > 0 && pack->getCurrentTimer() == 0)
                 {
-                    _game.setFinish();
+                    _game->setFinish();
                     return ;
                 }
                 _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
