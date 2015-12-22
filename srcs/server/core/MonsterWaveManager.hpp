@@ -29,7 +29,7 @@ namespace Monster {
     public:
         static Wave*       ClassicWave(unsigned int gameID);
         static Wave*       TriangleWave(unsigned int gameID);
-        static Wave*       TriangleEmptyWave(unsigned int gameID);
+        static Wave*       MarineWave(unsigned int gameID);
         
     public:
         void        addWave(Wave*);
@@ -44,7 +44,7 @@ namespace Monster {
         IGameUnitSender*    _owl;
         
     private:
-        unsigned int        _t[2];
+        unsigned int        _t[3];
     };
 }
 

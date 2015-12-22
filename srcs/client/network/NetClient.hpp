@@ -15,10 +15,10 @@ public:
    * \brief calls the parent send with id 0
    */
   void sendPacket(APacket*);
-  int getCurrent();
+  unsigned int getCurrent();
   void setServer(int id);
 private:
-  int _current;
+  unsigned int _current;
 };
 
 

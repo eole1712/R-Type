@@ -47,7 +47,7 @@ void NetClient::setServer(int id)
   std::cout << "current server id : " << id << std::endl;
 }
 
-int NetClient::getCurrent()
+unsigned int NetClient::getCurrent()
 {
   return _current;
 }

@@ -36,7 +36,7 @@ namespace Unit
   {
 
       DrBoom::DrBoom(int x, int y, unsigned int id, unsigned int gameID, Timer::time time)
-    : AMonster(1, x, y, std::make_pair(59, 40), Missile::BASIC, id, gameID, time)
+      : AMonster(1, x, y, std::make_pair(78, 76), Missile::WAVE, id, gameID, time)
     {}
 
     DrBoom::~DrBoom()

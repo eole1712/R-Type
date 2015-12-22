@@ -106,7 +106,7 @@ else()
    include_directories(BEFORE ../common/linux_specific)
 endif()
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH live"${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
 if (WIN32)

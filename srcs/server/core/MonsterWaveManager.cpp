@@ -9,8 +9,8 @@ namespace Monster {
     WaveManager::WaveManager(IMap *map, unsigned int gameID, IGameUnitSender* owl)
     : _map(map), _list(), _gameID(gameID), _owl(owl)
     {
-        _t[0] = 1;
-        _t[1] = 1;
+        for (int i = 0; i < 3; i++)
+            _t[i] = 1;
     }
     
     WaveManager::~WaveManager()
@@ -48,15 +48,12 @@ namespace Monster {
         return wave;
     }
     
-    Wave*     WaveManager::TriangleEmptyWave(unsigned int gameID)
+    Wave*     WaveManager::MarineWave(unsigned int gameID)
     {
         Wave*   wave = new Wave(gameID);
         
         for (int j = 0; j < 3; j++) {
-            
-            for (int i = 0; i < (j + 1); i++) {
-                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
-            }
+            wave->addMonster(Unit::Monster::DRBOOM, GameUtils::Map::WIDTH, 800 - 76);
             wave->addWaitingTime(500);
         }
         return wave;
@@ -73,6 +70,11 @@ namespace Monster {
         {
             addWave(Monster::WaveManager::ClassicWave(_gameID));
             _t[1]++;
+        }
+        if (time > (4000 * _t[2]))
+        {
+            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            _t[2]++;
         }
     }
     

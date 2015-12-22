@@ -16,33 +16,19 @@
 #include "MonsterFactory.hpp"
 
 const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
-  {
 #if (defined __APPLE__)
-      Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.dylib"
+    { Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.dylib" },
+    { Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.dylib" },
+    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.dylib" }
 #elif (defined _WIN32)
-	  Unit::Monster::MONSTERTEST, "..\\libs\\server\\ServerMonsterTest.dll"
+    { Unit::Monster::MONSTERTEST, "..\\libs\\server\\ServerMonsterTest.dll" },
+    { Unit::Monster::BIGHUNTER, "..\\libs\\server\\ServerBigHunter.dll" },
+    { Unit::Monster::DRBOOM, "..\\libs\\server\\ServerDrBoom.dll" }
 #else
-      Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so"
+    { Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so" },
+    { Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so" },
+    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so" }
 #endif
-  },
-    {
-#if (defined __APPLE__)
-        Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.dylib"
-#elif (defined _WIN32)
-        Unit::Monster::BIGHUNTER, "..\\libs\\server\\ServerBigHunter.dll"
-#else
-        Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so"
-#endif
-    },
-  {
-  #if (defined __APPLE__)
-        Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.dylib"
-#elif (defined _WIN32)
-        Unit::Monster::DRBOOM, "..\\libs\\server\\ServerDrBoom.dll"
-#else
-        Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so"
-#endif
-    }
 };
 
 namespace Monster {
