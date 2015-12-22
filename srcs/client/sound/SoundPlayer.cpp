@@ -7,11 +7,11 @@ static unsigned int nbSound = 0;
 SoundPlayer::SoundPlayer(std::string const& fileName, bool loop, float volume)
   : sf::Music(), _finish(false)
 {
-  if (nbSound > 10)
-    {
-      std::cout << "max sound" << std::endl;
-      return ;
-    }
+//  if (nbSound > 10)
+//    {
+////      std::cout << "max sound" << std::endl;
+//      return ;
+//    }
   /*
   static std::map<std::string, sf::InputSoundFile>		cacheFile;
   std::map<std::string, sf::Music>::const_iterator	cacheIndex;
