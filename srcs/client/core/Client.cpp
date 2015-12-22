@@ -30,7 +30,7 @@ Client::Client(int port)
 		_nc->setServer(id);
 	    }
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;
@@ -83,7 +83,7 @@ Client::Client(int port)
             if (pack == nullptr)
                 return;
             if (_game != nullptr)
-                _game->disconnectUnit(pack->getUnitID());
+	      _game->disconnectUnit(pack->getUnitID(), true);
         },
 
         [this] (APacket* packet, unsigned int id) {

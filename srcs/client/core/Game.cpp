@@ -152,10 +152,10 @@ Time::stamp     Game::getTimer()
 void			Game::createUnit()
 {
   Unit::AUnit *		unit;
-  unitObject			newUnit;
+  unitCreateItem	newUnit;
   
   std::unique_lock<Lock>  l(_lock);
-  for (std::list<unitObject>::iterator i = _createStack.begin();
+  for (std::list<unitCreateItem>::iterator i = _createStack.begin();
        i != _createStack.end(); i++)
     {
       newUnit = *i;
@@ -176,13 +176,25 @@ void			Game::createUnit()
 void			Game::deleteUnit()
 {
   std::unique_lock<Lock>  l(_lock);
-  for (std::list<Unit::AUnit*>::iterator i = _deleteStack.begin();
+  for (std::list<unitDeleteItem>::iterator i = _deleteStack.begin();
          i != _deleteStack.end(); i++)
     {
-      if ((*i)->getType() == Unit::PLAYERTYPE)
-	delete (*i);
+      if ((*i).second)
+      	{
+      	  Unit::pos	pos = (*i).first->move(Time::getTimeStamp() - _creationTime);
+      	  explosion	item = 
+	  {
+	    new Animation("../resources/sprites/explosion.0.33x33x6.png", 6, 80, false),
+	    new SoundPlayer("../resources/sound/explose.ogg", false, 30)
+	  };
+
+      	  item.anim->setPosition(pos.first, pos.second);
+      	  _explosion.push_back(item);
+      	}
+      if (i->first->getType() == Unit::PLAYERTYPE)
+	delete ((*i).first);
       else
-	Unit::Factory::getInstance()->deleteUnit(*i);
+	Unit::Factory::getInstance()->deleteUnit(i->first);
     }
   _deleteStack.clear();
   l.unlock();
@@ -199,18 +211,18 @@ void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
   _createStack.push_back(std::make_tuple(type, x, y, id, creationTime, _name, _param));
 }
 
-void			Game::disconnectUnit(unsigned int id)
+void			Game::disconnectUnit(unsigned int id, bool explode)
 {
-  std::lock_guard<Lock>   l(_lock);
+  std::lock_guard<Lock>	l(_lock);
   RemoteMap::iterator	i = _map.find(id);
     
   if (i != _map.end())
     {
-      _deleteStack.push_back(i->second);
+      _deleteStack.push_back(std::make_pair(i->second, explode));
       _map.erase(i);
     }
   else {
-    for (std::list<unitObject>::iterator it = _createStack.begin(); it != _createStack.end(); it++)
+    for (std::list<unitCreateItem>::iterator it = _createStack.begin(); it != _createStack.end(); it++)
       {
 	if (std::get<3>((*it)) == id)
 	  {
@@ -230,7 +242,15 @@ void			Game::pollEvent()
       _finish = true;
       return ;
     }
-  
+  for (std::list<explosion>::iterator i = _explosion.begin(); i != _explosion.end(); i++)
+    {
+      if ((*i).anim->finish())
+	{
+	  delete (*i).anim;
+	  delete (*i).sound;
+	  i = _explosion.erase(i);
+	}
+    }
   deleteUnit();
   createUnit();
   while (_window.pollEvent(event))
@@ -259,7 +279,9 @@ void			Game::render()
     _background.setFrameIndex(i);
     _window.draw(_background);
     for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
-        i->second->render(currentFrameTime, _window);
+      i->second->render(currentFrameTime, _window);
+    for (std::list<explosion>::iterator i = _explosion.begin(); i != _explosion.end(); i++)
+      _window.draw((*i).anim->getFrame());
 }
 
 Unit::AUnit*		Game::operator[](unsigned int id)
