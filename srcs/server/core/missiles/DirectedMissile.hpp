@@ -7,10 +7,10 @@ namespace Unit {
   
   namespace Missile {
     
-    class WaveMissile : public AMissile{
+    class DirectedMissile : public AMissile{
     public:
-        WaveMissile(AUnit *origin, unsigned int id, Timer::time);
-      virtual ~WaveMissile();
+        DirectedMissile(AUnit *origin, unsigned int id, Timer::time);
+      virtual ~DirectedMissile();
       
     public:
       virtual bool                isKillable() const;

@@ -2,7 +2,6 @@
 #include <cmath>
 #include <string>
 
-#include "AMissile.hpp"
 #include "DirectedMissile.hpp"
 #include "GameUtils.hpp"
 #include "Map.hpp"
@@ -31,7 +30,7 @@ namespace Unit {
   namespace Missile {
 
       DirectedMissile::DirectedMissile(AUnit *origin, unsigned int id, Timer::time time)
-    : AMissile(std::make_pair(20, 14), 5, origin, id, time)
+    : AMissile(std::make_pair(17, 11), 5, origin, id, time)
     {
     }
 
@@ -53,7 +52,7 @@ namespace Unit {
     {
         long diff = static_cast<long>(time - _creationTime) / 10;
         
-        pos p = std::make_pair(_x + (diff * 5 * (_team == Unit::ALLY ? 1 : -1)), _y + std::sin((diff % 500) / 100.0) * 500.0);
+        pos p = std::make_pair(_x + (diff * 5 * (_team == Unit::ALLY ? 1 : -1)), _y - (diff * 3));
         return p;
     }
 
@@ -77,9 +76,9 @@ namespace Unit {
       return new DirectedMissile(unit, id, time);
     }
 
-    Unit::typeID        DirectedMissile::getTypeID() const
-    {
-      return Unit::DirectedMissile;
+    Unit::typeID            DirectedMissile::getTypeID() const
+      {
+      return Unit::DIRECTEDMISSILE;
     }
   }
 

@@ -17,15 +17,18 @@
 const std::map<Unit::Missile::type, std::string> Unit::Missile::Factory::LIBSLIST = {
 
 #if (defined __APPLE__)
-    { Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.dylib" },
-  { Unit::Missile::WAVE, "../libs/server/libServerWaveMissile.dylib" }
+  { Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.dylib" },
+  { Unit::Missile::WAVE, "../libs/server/libServerWaveMissile.dylib" },
+  { Unit::Missile::DIRECTED, "../libs/server/libServerDirectedMissile.dylib" }
 #elif (defined _WIN32)
   { Unit::Missile::BASIC, "../libs/server/ServerBasicMissile.dll" },
-  { Unit::Missile::WAVE, "..\\libs\\server\\ServerWaveMissile.dll" }
+  { Unit::Missile::WAVE, "..\\libs\\server\\ServerWaveMissile.dll" },
+  { Unit::Missile::DIRECTED, "..\\libs\\server\\ServerDirectedMissile.dll" }
 
 #else
   { Unit::Missile::BASIC, "../libs/server/libServerBasicMissile.so" },
   { Unit::Missile::WAVE, "../libs/server/libServerWaveMissile.so" },
+  { Unit::Missile::DIRECTED, "../libs/server/libServerDirectedMissile.so" },
 #endif
   
 };
