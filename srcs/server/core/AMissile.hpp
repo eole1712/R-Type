@@ -10,7 +10,8 @@ namespace Unit {
 
     enum type {
       BASIC,
-      WAVE
+      WAVE,
+      DIRECTED
     };
 
     class AMissile : public AUnit {

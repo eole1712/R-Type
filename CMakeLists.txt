@@ -376,6 +376,32 @@ set_target_properties(ServerWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELE
 set_target_properties(ServerWaveMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
 endif (WIN32)
 
+######## SERVER ## DIRECTED MISSILE ####
+
+add_library(ServerDirectedMissile SHARED
+	srcs/server/core/missiles/DirectedMissile.cpp
+	srcs/server/core/AUnit.cpp
+	srcs/misc/Lock.cpp
+	srcs/server/core/AMissile.cpp
+	srcs/server/core/GameUtils.cpp
+	srcs/server/misc/Timer.cpp
+	)
+
+target_include_directories(ServerDirectedMissile PRIVATE ${server_includes_directories})
+target_compile_features(ServerDirectedMissile PRIVATE cxx_range_for)
+if (UNIX)
+target_link_libraries(ServerDirectedMissile -lpthread)
+target_link_libraries(ServerDirectedMissile -ldl)
+set_target_properties(ServerDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
+
 ######## CLIENT ## MONSTER TEST ####
 
 add_library(ClientMonsterTest SHARED
@@ -488,6 +514,31 @@ endif (WIN32)
 
 #######################################
 
+######## CLIENT ## DIRECTED MISSILE ####
+
+add_library(ClientDirectedMissile SHARED
+	srcs/client/unit/DirectedMissile/DirectedMissile.cpp
+	srcs/client/unit/AUnit.cpp
+	srcs/client/graphics/Animation.cpp
+	srcs/client/sound/SoundPlayer.cpp
+	srcs/client/misc/Time.cpp
+	)
+target_include_directories(ClientDirectedMissile PRIVATE ${client_includes_directories})
+target_compile_features(ClientDirectedMissile PRIVATE cxx_range_for)
+if (UNIX)
+set_target_properties(ClientDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientDirectedMissile PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientDirectedMissile PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
+
+#######################################
+
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/" ${CMAKE_MODULE_PATH})
 
 # Detect and add SFML
@@ -504,6 +555,7 @@ if(SFML_FOUND)
   target_link_libraries(ClientBigHunter ${SFML_LIBRARIES})
   target_link_libraries(ClientWaveMissile ${SFML_LIBRARIES})
   target_link_libraries(ClientDrBoom ${SFML_LIBRARIES})
+  target_link_libraries(ClientDirectedMissile ${SFML_LIBRARIES})
 endif()
 
 FILE(GLOB_RECURSE all_files *.*pp)
