@@ -1,7 +1,9 @@
 #include "ClientConnexionPacket.hpp"
 #include "NetClient.hpp"
 
+#ifndef _WIN32
 #include <arpa/inet.h>
+#endif
 #include <iostream>
 
 NetClient::NetClient(int port, NetManager* manager, IPacketHandler* handler)
