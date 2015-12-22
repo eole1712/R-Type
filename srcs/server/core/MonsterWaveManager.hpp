@@ -34,8 +34,8 @@ namespace Monster {
     public:
         void        addWave(Wave*);
         void        removeWave(Wave*);
-        void        nextAction();
-        void        execConfig();
+        void        nextAction(Timer::time);
+        void        execConfig(Timer::time);
         
     private:
         IMap*               _map;

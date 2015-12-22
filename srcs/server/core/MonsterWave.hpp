@@ -20,7 +20,7 @@ namespace Monster {
         
     public:
         bool            start();
-        Unit::AUnit     *getNextMonster();
+        Unit::AUnit     *getNextMonster(Timer::time);
         
     public:
         bool            isEmpty() const;

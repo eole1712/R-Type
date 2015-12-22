@@ -28,7 +28,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
 
-        Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), GameUtils::Game::now(_gameID));
+        Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), time);
 
       _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
 

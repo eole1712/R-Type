@@ -25,22 +25,22 @@ namespace GameUtils {
             return tab[gameID];
         }
         
-        Timer::time             now(unsigned int gameID)
-        {
-            static Lock         lock;
-            
-            std::lock_guard<Lock> l(lock);
-            
-            static std::map<unsigned int, Timer*>   tab;
-            std::map<unsigned int, Timer*>::iterator it;
-            
-            it = tab.find(gameID);
-            if (it == tab.end())
-            {
-                tab[gameID] = new Timer(0);
-            }
-            return tab[gameID]->getElapsedTime();
-        }
+//        Timer::time             now(unsigned int gameID)
+//        {
+//            static Lock         lock;
+//            
+//            std::lock_guard<Lock> l(lock);
+//            
+//            static std::map<unsigned int, Timer*>   tab;
+//            std::map<unsigned int, Timer*>::iterator it;
+//            
+//            it = tab.find(gameID);
+//            if (it == tab.end())
+//            {
+//                tab[gameID] = new Timer(0);
+//            }
+//            return tab[gameID]->getElapsedTime();
+//        }
     }
     
     namespace Map {
