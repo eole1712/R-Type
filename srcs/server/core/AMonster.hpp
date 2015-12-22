@@ -13,7 +13,8 @@ namespace Unit
 
         enum type {
             MONSTERTEST,
-            BIGHUNTER
+            BIGHUNTER,
+	    DRBOOM
         };
 
         class AMonster : public AUnit
