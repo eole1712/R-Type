@@ -26,9 +26,16 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             if (pack->getStatus()) {
-                std::cout << "Connected ! : dayPhrase : " << pack->getServerString() << std::endl;
-		_nc->setServer(id);
+	      std::string msg = "Connected ! : dayPhrase : " + pack->getServerString();
+	      std::cout << msg << std::endl;
+	      _menu->setMessage(msg, false);
+	      _nc->setServer(id);
 	    }
+	    else {
+	      std::string msg = "Failed to connect ! Erreur : " + pack->getServerString();
+	      _menu->setMessage(msg, true);
+	    }
+
         },
         [this] (APacket* packet, unsigned int) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
@@ -39,21 +46,23 @@ Client::Client(int port)
         },
         [this] (APacket* packet, unsigned int) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
-			std::lock_guard<Lock> l(_lock);
+	    std::lock_guard<Lock> l(_lock);
 
-			if (pack == NULL)
-                return;
-			if (pack->getStatus()) {
-                std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
-                _playerId = pack->getPlayerId();
-                _connected = pack->getGameId();
-			}
-			else if (_connected != 0) {
+	    if (pack == NULL)
+	      return;
+	    if (pack->getStatus()) {
+	      std::stringstream ss;
+	      ss << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId());
+	      _menu->setMessage(ss.str(), false);
+	      _playerId = pack->getPlayerId();
+	      _connected = pack->getGameId();
+	    }
+	    else if (_connected != 0) {
                 _connected = 0;
             }
             else
-                std::cout << "failed to connect" << std::endl;
-			//refreshGames();
+	      _menu->setMessage("Failed to connect to game", true);
+	    //refreshGames();
         },
 
         [this] (APacket* packet, unsigned int) {
@@ -114,14 +123,16 @@ Client::Client(int port)
             ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
             if (pack == NULL)
                 return;
-//            std::cout << "pinged by server" << std::endl;
-			if (pack->getStatus()) {
-				ServerPingPacket ans;
+	    if (id != _nc->getCurrent())
+	      return ;
+	      //            std::cout << "pinged by server" << std::endl;
+	    if (pack->getStatus()) {
+	      ServerPingPacket ans;
 
-	    ans.setStatus(false);
-	    _nc->sendPacket(&ans);
-	  }
-	  _nc->setTimeout(id);
+	      ans.setStatus(false);
+	      _nc->sendPacket(&ans);
+	    }
+	    _nc->setTimeout(id);
         }
     };
     _menu = new Menu(1200, 800, this);
@@ -189,8 +200,6 @@ void Client::createGame(const std::string &name)
 
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
-//    if (pack->getType() == APacket::SERVERUNITSPAWN)
-//        std::cerr << "handling unitspawn" << std::endl;
     _packetHandlerFuncs[pack->getType()](pack, id);
 }
 
