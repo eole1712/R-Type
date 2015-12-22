@@ -16,7 +16,7 @@
 #include "GameUtils.hpp"
 
 Game::Game(unsigned int id, std::string name, IGameUnitSender* owl)
-: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id, owl), _t(0), _inGame(false), _owl(owl), _time(0), _now(0)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id, owl), _t(0), _inGame(false), _owl(owl), _time(0), _now(0), _refresh(1)
 {
 }
 

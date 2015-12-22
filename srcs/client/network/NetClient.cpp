@@ -47,6 +47,11 @@ void NetClient::setServer(int id)
   std::cout << "current server id : " << id << std::endl;
 }
 
+int NetClient::getCurrent()
+{
+  return _current;
+}
+
 void NetClient::sendPacket(APacket *packet)
 {
 //  std::cout << "send to : " << _current << std::endl;
