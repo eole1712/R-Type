@@ -1,7 +1,10 @@
 #include <list>
 #include <algorithm>
 #include "AUnit.hpp"
+#include "MonsterFactory.hpp"
+#include "MissileFactory.hpp"
 #include "Map.hpp"
+#include "ObjectCast.hpp"
 
 Map::Map()
 {}
@@ -33,12 +36,26 @@ void	Map::addUnit(Unit::AUnit* unit)
     this->_enemies.push_back(unit);
 }
 
-void            Map::removeUnit(Unit::AUnit* unit)
+std::list<Unit::AUnit*>::iterator            Map::removeUnit(Unit::AUnit* unit)
 {
+    std::list<Unit::AUnit*>::iterator it;
+    
     if (unit->getTeam() == Unit::ALLY)
-        _allies.remove(unit);
+    {
+        it = _allies.erase(std::remove(_allies.begin(), _allies.end(), unit), _allies.end());
+        
+        Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
+    }
     else
-        _enemies.remove(unit);
+    {
+        it = _enemies.erase(std::remove(_enemies.begin(), _enemies.end(), unit), _enemies.end());
+        
+        if (unit->getType() == Unit::MISSILE)
+            Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
+        else if (unit->getType() == Unit::MONSTER)
+            Monster::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Monster::AMonster*>(unit));
+    }
+    return it;
 }
 
 Unit::AUnit*	Map::checkInterractions(Unit::AUnit* unit, Timer::time time) const

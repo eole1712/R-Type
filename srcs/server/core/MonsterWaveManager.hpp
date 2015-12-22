@@ -27,8 +27,8 @@ namespace Monster {
         virtual ~WaveManager();
         
     public:
-        static Wave*       ClassicWave(unsigned int gameID);
-        static Wave*       TriangleWave(unsigned int gameID);
+        static Wave*       ClassicWave(unsigned int gameID, int diff);
+        static Wave*       TriangleWave(unsigned int gameID, int diff);
         static Wave*       MarineWave(unsigned int gameID);
         
     public:

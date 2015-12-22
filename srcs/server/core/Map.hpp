@@ -14,7 +14,7 @@ public:
   virtual std::list<Unit::AUnit*> &	getList(Unit::team);
   
   virtual void                        addUnit(Unit::AUnit*);
-  virtual void                        removeUnit(Unit::AUnit *);
+  virtual std::list<Unit::AUnit*>::iterator                        removeUnit(Unit::AUnit *);
   virtual Unit::AUnit*				checkInterractions(Unit::AUnit*, Timer::time) const;
   
 private:

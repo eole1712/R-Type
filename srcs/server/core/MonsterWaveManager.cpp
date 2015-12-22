@@ -21,27 +21,29 @@ namespace Monster {
             }});
     }
     
-    Wave*     WaveManager::ClassicWave(unsigned int gameID)
+    Wave*     WaveManager::ClassicWave(unsigned int gameID, int diff)
     {
         Wave*   wave = new Wave(gameID);
         
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < (2 + (diff / 2)); j++) {
             for (int i = 0; i < 2; i++) {
-                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, relativePos(i, j + 1, 100, 700));
+                wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, relativePos(i, j + 1, 60, 700));
             }
             wave->addWaitingTime(1000);
         }
         return wave;
     }
     
-    Wave*     WaveManager::TriangleWave(unsigned int gameID)
+    Wave*     WaveManager::TriangleWave(unsigned int gameID, int diff)
     {
         Wave*   wave = new Wave(gameID);
-
-        for (int j = 0; j < 3; j++) {
+        
+        if (diff > 7) diff = 7;
+        
+        for (int j = 0; j < (3 + (diff - 1)); j++) {
 
             for (int i = 0; i < (j + 1); i++) {
-                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 300, 500));
+                wave->addMonster(Unit::Monster::BIGHUNTER, GameUtils::Map::WIDTH, relativePos(i, j + 1, 325 - (25 * diff) , 475 + (25 * diff)));
             }
             wave->addWaitingTime(500);
         }
@@ -53,7 +55,7 @@ namespace Monster {
         Wave*   wave = new Wave(gameID);
         
         for (int j = 0; j < 3; j++) {
-            wave->addMonster(Unit::Monster::DRBOOM, GameUtils::Map::WIDTH, 800 - 76);
+            wave->addMonster(Unit::Monster::DRBOOM, GameUtils::Map::WIDTH, 724);
             wave->addWaitingTime(500);
         }
         return wave;
@@ -61,14 +63,14 @@ namespace Monster {
     
     void        WaveManager::execConfig(Timer::time time)
     {
-        if (time > (10000 * _t[0]))
+        if (time > (15000 * _t[0]))
         {
-            addWave(Monster::WaveManager::TriangleWave(_gameID));
+            addWave(Monster::WaveManager::TriangleWave(_gameID, _t[0]));
             _t[0]++;
         }
-        if (time > (6000 * _t[1]))
+        if (time > (8000 * _t[1]))
         {
-            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            addWave(Monster::WaveManager::ClassicWave(_gameID, _t[1]));
             _t[1]++;
         }
         if (time > (4000 * _t[2]))
