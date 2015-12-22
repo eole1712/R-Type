@@ -34,7 +34,7 @@ Client::Client(int port)
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;
-            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
+//            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
             _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
         [this] (APacket* packet, unsigned int) {
@@ -112,7 +112,7 @@ Client::Client(int port)
             ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
             if (pack == NULL)
                 return;
-            std::cout << "pinged by server" << std::endl;
+//            std::cout << "pinged by server" << std::endl;
 			if (pack->getStatus()) {
 				ServerPingPacket ans;
 
@@ -187,8 +187,8 @@ void Client::createGame(const std::string &name)
 
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
-    if (pack->getType() == APacket::SERVERUNITSPAWN)
-        std::cerr << "handling unitspawn" << std::endl;
+//    if (pack->getType() == APacket::SERVERUNITSPAWN)
+//        std::cerr << "handling unitspawn" << std::endl;
     _packetHandlerFuncs[pack->getType()](pack, id);
 }
 

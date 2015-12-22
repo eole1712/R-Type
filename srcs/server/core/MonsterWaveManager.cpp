@@ -101,7 +101,6 @@ namespace Monster {
             {
                 this->_map->addUnit(unit);
                 _owl->sendUnit(unit, unit->getTypeID());
-                std::cout << "Ajout de monstre" << std::endl;
             }
             if ((*it)->isEmpty())
                 it = _list.erase(it);

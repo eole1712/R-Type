@@ -49,6 +49,6 @@ void NetClient::setServer(int id)
 
 void NetClient::sendPacket(APacket *packet)
 {
-  std::cout << "send to : " << _current << std::endl;
+//  std::cout << "send to : " << _current << std::endl;
   send(packet, _current);
 }

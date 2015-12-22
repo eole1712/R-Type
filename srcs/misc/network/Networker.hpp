@@ -2,7 +2,7 @@
 #define NETWORKER_H_
 
 //comment to enable pings
-//#define NO_PING
+#define NO_PING
 
 #include "APacket.hpp"
 #include "ISocket.hpp"
