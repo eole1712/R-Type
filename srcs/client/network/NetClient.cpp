@@ -1,3 +1,5 @@
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #include "ClientConnexionPacket.hpp"
 #include "NetClient.hpp"
 
