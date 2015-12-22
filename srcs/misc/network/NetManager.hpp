@@ -37,12 +37,12 @@ public:
   void stop();
 private:
   template <typename T>
-  void setFds(int& maxFd, fd_set& set)
+  void setFds(int& , fd_set&)
   {
     ;
   }
   template <typename T>
-  void doAction(fd_set &set, unsigned int timeout)
+  void doAction(fd_set &, unsigned int)
   {
 
   }
