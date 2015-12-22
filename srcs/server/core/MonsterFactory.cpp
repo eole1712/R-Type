@@ -67,7 +67,7 @@ Factory::~Factory()
 		});
 }
 
-    Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y, unsigned int gameID, Timer::time time)
+    Unit::Monster::AMonster*	Factory::createMonster(Unit::Monster::type type, int x, int y, unsigned int gameID, Timer::time time, IDCreator *idc)
 {
   fptrNewMonster		ptr;
   Unit::Monster::AMonster*	newMonster;
@@ -78,7 +78,7 @@ Factory::~Factory()
       if ((*it).first == type)
 	{
 	  ptr = reinterpret_cast<fptrNewMonster>((*it).second->getExternalCreator());
-        newMonster = ptr(x, y, GameUtils::Game::getNewID(gameID), gameID, time);
+        newMonster = ptr(x, y, idc->getNewID(), gameID, time);
 	  return (newMonster);
 	}
     }

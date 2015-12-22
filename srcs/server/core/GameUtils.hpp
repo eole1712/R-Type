@@ -9,7 +9,7 @@ namespace GameUtils {
     
     namespace Game {
         
-        unsigned int     getNewID(unsigned int id);
+//        unsigned int     getNewID(unsigned int id);
 //        Timer::time      now(unsigned int id);
     }
     

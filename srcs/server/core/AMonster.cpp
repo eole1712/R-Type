@@ -3,6 +3,7 @@
 #include "AMissile.hpp"
 #include "AMonster.hpp"
 #include "MissileFactory.hpp"
+#include "IDCreator.hpp"
 
 namespace Unit
 {
@@ -28,7 +29,7 @@ namespace Unit
       if (!_time.isFinished())
         return NULL;
 
-        Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, GameUtils::Game::getNewID(_gameID), time);
+        Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
 
       _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
 
