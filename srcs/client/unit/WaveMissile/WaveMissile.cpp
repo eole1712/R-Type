@@ -39,12 +39,11 @@ namespace Unit
   
   Unit::pos            WaveMissile::move(Time::stamp tick) const
   {        
-    pos p = std::make_pair(_x + (tick * 5 * _param), _y + 50 * sin(tick/50));
+    pos p = std::make_pair(_x + (tick * 5 * _param), static_cast<int>(_y + std::sin((tick % 2600) / 100.0) * 100.0));
 
     return p;
   }
-
-  
+    
   void		WaveMissile::render(Time::stamp tick, sf::RenderWindow & window)
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
