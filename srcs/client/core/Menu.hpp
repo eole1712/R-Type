@@ -13,7 +13,7 @@
 #include "Player.hpp"
 #include "Game.hpp"
 #include "List.hpp"
-#include "Error.hpp"
+#include "Message.hpp"
 
 #define MAX_NUMBER_OF_FIELDS 4
 
@@ -32,6 +32,13 @@ private:
     SERVER
   };
 
+  typedef struct
+  {
+    unsigned int	posX;
+    unsigned int	posY;
+    Time::stamp		time;
+  }			s_star;
+  
 private:
   int					_width;
   int					_height;
@@ -52,7 +59,8 @@ private:
   Editable				_login;
   Editable				_gameName;
   Editable				_host;
-  Error					_loginSizeErr;
+  Message				_loginSizeErr;
+  Message				_serverMessage;
   ClickableBtn				_createButton;
   ClickableBtn				_connectButton;
   ClickableBtn				_refreshButton;
@@ -62,10 +70,14 @@ private:
   Game *				_game;
   bool					_gameStart;
   SoundPlayer				_soundPlayer;
+  Animation				_star;
+  s_star				_stars[15];
   std::list<std::function<void()> >	_eventChecks;
-  std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;
-    
-    unsigned long         _time;
+  std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;  
+  unsigned long				_time;
+  std::string				_message;
+  bool					_error;
+  
 public:
   Menu(int width, int height, IMenuHandler *client);
   ~Menu();
@@ -76,7 +88,7 @@ public:
 
 private:
   void				initColors();
-  void				initPlayerColorSelection();
+  void				initStars();
   void				handleMouseClick(sf::Event&);
   void				handleMouseMoved(sf::Event&);
   void				editionHandler(sf::Event const&);
@@ -85,10 +97,12 @@ private:
   void				eventHandler();
   void				drawFields();
   void				drawEditable();
-  void				drawLoginSizeErr();
+  void				drawMessage();
+  void				drawStars();
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
   void				setConnected();
+  void				setMessage(std::string const&, bool);
 };
 
 #endif /* !MENU_HPP */

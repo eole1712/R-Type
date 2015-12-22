@@ -17,12 +17,14 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _gameName(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "GameName", _loginFont, _loginColor, 20, 24),
   _host(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Host", _loginFont, _loginColor, 20, 24),
   _loginSizeErr(width / 2, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 1) * 1.15), "16 chars max", _fieldsFont, _loginSizeErrColor, 16),
+  _serverMessage(width / 20, height / 1.8, "servermessaaaaaaaaaaaaaaaaaaaaaaaaaaage", _fieldsFont, sf::Color(255, 0, 0)),
   _createButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "Create", _fieldsFont, _startColor, 21),
   _connectButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(static_cast<unsigned int>(width / 1.15), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Refresh", _fieldsFont, _startColor, 21),
   _readyButton(static_cast<unsigned int>(width / 2.3), height / (MAX_NUMBER_OF_FIELDS + 3) * 6, "READY", _fieldsFont, _startColor, 30),
   _gameList(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.6), _fieldsFont, _fieldsColor, _highlightColor), _currentRow(LOGIN),
-  _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg")
+  _game(NULL), _gameStart(false), _soundPlayer("../resources/sound/MegaMan.ogg"),
+  _star(std::string("../resources/sprites/NyanCat bonnus.stars.28x28x4.png"), 4, 300)
 {
   _eventChecks.push_back([this] () {
       if (_gameStart)
@@ -56,16 +58,17 @@ Menu::~Menu()
 void		Menu::initMainView()
 {
   //  Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
-  sf::Texture	backgroundTexture;
+  Animation	background("../resources/textures/star.png", 1);
   sf::Texture	titleTexture;
-  sf::Sprite	backgroundSprite;
   sf::Sprite	titleSprite;
 
-  if (!backgroundTexture.loadFromFile("../resources/textures/star.png"))
-    std::cout << "error loading star.png" << std::endl;
-  backgroundSprite.setTexture(backgroundTexture);
+  background.setState(Animation::PAUSE);
+  background.setFrameIndex(0.0f);
   if (!titleTexture.loadFromFile("../resources/textures/r-type-logo.png"))
     std::cout << "error loading r-type-logo.png" << std::endl;
+  titleSprite.setTexture(titleTexture);
+  titleSprite.setPosition(_width / 3, _height / 14);
+  initStars();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
   //_soundPlayer.pause();
@@ -76,15 +79,26 @@ void		Menu::initMainView()
       }
       eventHandler();
       _window.clear();
-      _window.draw(backgroundSprite);
+      _window.draw(background.getFrame());
       _window.draw(titleSprite);
-      //_window.draw(background.getFrame());
       this->drawFields();
       this->drawEditable();
-      this->drawLoginSizeErr();
+      this->drawMessage();
+      this->drawStars();
       if (_gameList.getList().size() != 0)
 	_gameList.render(_window);
       _window.display();
+    }
+}
+
+void		Menu::initStars()
+{
+  srand (time(NULL));
+  for (int i = 0; i < 15; i++)
+    {
+      _stars[i].posX = rand() % _width;
+      _stars[i].posY = rand() % _height;
+      _stars[i].time = Time::getTimeStamp() + rand() % 3000;
     }
 }
 
@@ -246,10 +260,36 @@ void		Menu::drawEditable()
   _window.draw(_host.getEditable());
 }
 
-void		Menu::drawLoginSizeErr()
+void		Menu::drawMessage()
 {
   if (_login.getMaxSize() == true)
     _loginSizeErr.render(_window);
+  if (_message != (std::string) _serverMessage.getMessage().getString())
+    {
+      _serverMessage.setMessage(sf::Text(_message, _fieldsFont, 21));
+      if (_error == true)
+	_serverMessage.setColor(sf::Color(255, 0, 0));
+      else
+	_serverMessage.setColor(sf::Color(0, 255, 0));
+    }
+  _serverMessage.render(_window);
+}
+
+void		Menu::drawStars()
+{
+  for (int i = 0; i < 15; i++)
+    {
+      if (Time::getTimeStamp() > _stars[i].time &&
+	  (Time::getTimeStamp() - _stars[i].time) > 4000)
+	{
+	  _stars[i].posX = rand() % _width;
+	  _stars[i].posY = rand() % _height;
+	  _stars[i].time = Time::getTimeStamp() + rand() % 600;
+	}
+      _star.setPosition(static_cast<float>(_stars[i].posX), static_cast<float>(_stars[i].posY));
+      _star.setTime(_stars[i].time);
+      _window.draw(_star.getFrame());
+    }
 }
 
 void		Menu::changeCurrentRow()
@@ -274,4 +314,10 @@ void		Menu::addGame(unsigned int id, std::string const& gameName, unsigned int p
 void		Menu::setConnected()
 {
   _isConnected = true;
+}
+
+void		Menu::setMessage(std::string const& newString, bool error)
+{
+  _message = newString;
+  _error = error;
 }

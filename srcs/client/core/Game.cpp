@@ -239,12 +239,15 @@ void			Game::pollEvent()
 
 void			Game::render()
 {
-    Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
+  static float		i = 0;
+  Time::stamp		currentFrameTime = Time::getTimeStamp() - getTimer();
     
     std::lock_guard<Lock> l(_lock);
-    
-    _background.setFrameIndex(float(_tick / 10 % _background.getFrameWidth())
-                              / _background.getFrameWidth());
+
+    i += 0.001;
+    if (i > 1)
+      i = 0;
+    _background.setFrameIndex(i);
     _window.draw(_background);
     for (RemoteMap::iterator i = _map.begin(); i != _map.end(); i++)
         i->second->render(currentFrameTime, _window);

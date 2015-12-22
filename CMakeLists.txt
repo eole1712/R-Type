@@ -110,7 +110,7 @@ set(client_sources
 	srcs/client/graphics/Animation.cpp 
 	srcs/client/graphics/ClickableBtn.cpp
 	srcs/client/graphics/Editable.cpp
-	srcs/client/graphics/Error.cpp
+	srcs/client/graphics/Message.cpp
 	srcs/client/graphics/GameListItem.cpp
 	srcs/client/sound/SoundPlayer.cpp
 	

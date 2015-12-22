@@ -38,6 +38,12 @@ Animation::state	Animation::getState() const
   return _state;
 }
 
+
+void			Animation::setTime(Time::stamp const & newTime)
+{
+  _initTime = newTime;
+}
+
 void			Animation::setFrameIndex(unsigned int idx)
 {
   setTextureRect(sf::IntRect(static_cast<int>(_frameWidth * (idx % _frame)), 0, _frameWidth, _frameHeight));

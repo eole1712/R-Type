@@ -32,7 +32,7 @@ public:
   void			play();
   void			setState(state s);
   state			getState() const;
-
+  void			setTime(Time::stamp const &);
   void			setFrameIndex(unsigned int idx);
   void			setFrameIndex(float idx);
   unsigned int		getFrameWidth() const;
