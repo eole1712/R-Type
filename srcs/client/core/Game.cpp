@@ -199,7 +199,7 @@ void			Game::connectUnit(Unit::typeID type, int x, int y, unsigned int id,
   _createStack.push_back(std::make_tuple(type, x, y, id, creationTime, _name, _param));
 }
 
-void			Game::disconnectUnit(unsigned int id)
+void			Game::disconnectUnit(unsigned int id, bool)
 {
   std::lock_guard<Lock>   l(_lock);
   RemoteMap::iterator	i = _map.find(id);

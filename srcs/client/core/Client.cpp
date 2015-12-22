@@ -83,7 +83,7 @@ Client::Client(int port)
             if (pack == nullptr)
                 return;
             if (_game != nullptr)
-                _game->disconnectUnit(pack->getUnitID());
+                _game->disconnectUnit(pack->getUnitID(), static_cast<bool>(pack->getExplose()));
         },
 
         [this] (APacket* packet, unsigned int id) {

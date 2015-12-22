@@ -210,7 +210,7 @@ bool        Game::checkIfAlive()
         if (player->isAlive()) {
             if (player->healthCheck(_now) == false) {
                 player->setAlive(false);
-                _owl->killUnit(player->getID(), _id);
+                _owl->killUnit(player->getID(), _id, true);
             }
             else {
                 i++;
@@ -224,7 +224,7 @@ bool        Game::checkIfAlive()
 	while (it != _map->getList(Unit::ALLY).end()) {
 		if ((*it)->getType() == Unit::MISSILE && (*it)->healthCheck(_now) == false)
         {
-            _owl->killUnit((*it)->getID(), _id);
+            _owl->killUnit((*it)->getID(), _id, false);
             it = _map->getList((*it)->getTeam()).erase(it);
         }
         else
@@ -234,7 +234,7 @@ bool        Game::checkIfAlive()
 	while (it != _map->getList(Unit::ENEMY).end()) {
 		if ((*it)->healthCheck(_now) == false)
         {
-            _owl->killUnit((*it)->getID(), _id);
+            _owl->killUnit((*it)->getID(), _id, GameUtils::Map::isInBox((*it)->getX(_now), (*it)->getY(_now), (*it)->getHitBox().first));
 			it = _map->getList((*it)->getTeam()).erase(it);
         }
 		else

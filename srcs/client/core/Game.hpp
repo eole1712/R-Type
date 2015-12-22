@@ -35,7 +35,7 @@ public:
   void			deleteUnit();
   void			connectUnit(Unit::typeID type, int x, int y, unsigned int id,
 				    Time::stamp creationTime, int param);
-  void			disconnectUnit(unsigned int);
+  void			disconnectUnit(unsigned int, bool);
   Unit::AUnit*		operator[](unsigned int id);
 
 private:

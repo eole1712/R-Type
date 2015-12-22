@@ -33,7 +33,7 @@ private:
     IGame* createGame(std::string const&);
 public:
     virtual void        sendUnit(Unit::AUnit *unit, unsigned int unitType);
-    virtual void        killUnit(unsigned int id, unsigned int gameID);
+    virtual void        killUnit(unsigned int id, unsigned int gameID, bool explose);
   virtual void		disconnectPlayer(unsigned int id);
 
     
@@ -50,7 +50,6 @@ protected:
     std::list<unsigned int>                 _disconnectedID;
     
     Lock                                    _lockEnd;
-    Lock                                    _lockSend;
 };
 
 #endif // SERVER_H_

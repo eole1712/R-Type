@@ -243,7 +243,6 @@ void    Server::refreshTimer(unsigned int idGame, Timer::time time)
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 {
-    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitSpawnPacket    pack;
 
 	pack.setTimer(unit->getCreationTime());
@@ -256,12 +255,12 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 	sendToGame(&pack, unit->getGameID());
 }
 
-void        Server::killUnit(unsigned int id, unsigned int gameID)
+void        Server::killUnit(unsigned int id, unsigned int gameID, bool explose)
 {
-    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitDiePacket    pack;
 
 	pack.setUnitID(id);
+    pack.setExplose(explose);
 
 	sendToGame(&pack, gameID);
 }
