@@ -37,7 +37,7 @@ Client::Client(int port)
 	    }
 
         },
-        [this] (APacket* packet, unsigned int id) {
+        [this] (APacket* packet, unsigned int) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;

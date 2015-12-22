@@ -29,9 +29,12 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _eventChecks.push_back([this] () {
       if (_gameStart)
 	{
+	  _soundPlayer.pause();
 	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString(), _time);
 	  _game->loop();
+	  delete _game;
 	  _gameStart = false;
+	  _soundPlayer.play();
 	  reset();
 	}
       });
@@ -58,7 +61,6 @@ Menu::~Menu()
 
 void		Menu::initMainView()
 {
-  //  Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
   Animation	background("../resources/textures/star.png", 1);
   sf::Texture	titleTexture;
   sf::Sprite	titleSprite;
@@ -72,7 +74,6 @@ void		Menu::initMainView()
   initStars();
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
-  //_soundPlayer.pause();
   while (_window.isOpen())
     {
       for (auto& elem : _eventChecks) {

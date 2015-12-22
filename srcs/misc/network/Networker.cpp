@@ -241,7 +241,7 @@ void Networker::pingFunction(std::nullptr_t)
     for (auto& peer : _peers) {
       diff = getCurTime() - std::get<peerInd::time>(peer.second);
       if (diff > 1000000) {
-       std::cout << "Timeout !" << std::endl;
+//       std::cout << "Timeout !" << std::endl;
        ServerPingPacket pack;
        pack.setStatus(true);
        l.unlock();

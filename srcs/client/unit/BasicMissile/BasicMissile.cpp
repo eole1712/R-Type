@@ -51,7 +51,7 @@ namespace Unit
 
     if (_mySound != NULL && _mySound->getPlayingOffset() == _mySound->getDuration())
       {
-	std::cout << "finish" << std::endl;
+//	std::cout << "finish" << std::endl;
 	delete _mySound;
 	_mySound = NULL;
       }

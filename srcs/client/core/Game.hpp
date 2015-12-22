@@ -60,6 +60,7 @@ private:
   Lock				_lock;
   //Lock				_lockMap;
   Animation			_background;
+  SoundPlayer			_soundPlayer;
 };
 
 #endif /* !GAME_H_ */
