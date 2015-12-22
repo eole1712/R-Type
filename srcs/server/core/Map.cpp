@@ -13,11 +13,15 @@ Map::~Map()
 {
   std::for_each(this->_allies.begin(), this->_allies.end(), [](Unit::AUnit* unit)
   {
-    delete unit;
+      if (unit->getType() == Unit::MISSILE)
+          Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
   });
   std::for_each(this->_enemies.begin(), this->_enemies.end(), [](Unit::AUnit* unit)
   {
-    delete unit;
+      if (unit->getType() == Unit::MISSILE)
+          Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
+      else if (unit->getType() == Unit::MONSTER)
+          Monster::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Monster::AMonster*>(unit));
   });
 }
 
