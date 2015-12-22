@@ -24,7 +24,8 @@ public:
 
   Unit::Monster::AMonster*	createMonster(Unit::Monster::type, int x, int y,
                                           unsigned int gameID, Timer::time time, IDCreator*);
-
+  void				deleteUnit(Unit::Monster::AMonster * unit);
+ 
   bool				addMonsterType(Unit::Monster::type, std::string libName);
   bool				removeMonsterType(Unit::Monster::type);
 

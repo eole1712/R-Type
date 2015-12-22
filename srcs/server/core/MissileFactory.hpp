@@ -30,7 +30,8 @@ public:
 
   bool				addMissileType(Unit::Missile::type, std::string libName);
   bool				removeMissileType(Unit::Missile::type);
-
+  void				deleteUnit(Unit::Missile::AMissile * unit);
+     
   static Factory*		getInstance();
   static void			destroy();
 

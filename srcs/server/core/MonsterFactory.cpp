@@ -27,7 +27,7 @@ const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
 #else
     { Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so" },
     { Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so" },
-    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so" }
+    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so" }
 #endif
 };
 
@@ -71,6 +71,23 @@ Factory::~Factory()
   return (NULL);
 }
 
+  
+  void		Factory::deleteUnit(Unit::Monster::AMonster * unit)
+  {
+    fptrDeleteMonster	ptr;
+    
+    for(std::list<std::pair<Unit::Monster::type, ILibLoader*> >::iterator it = this->_libs.begin();
+	it != this->_libs.end(); ++it)
+      {
+	if ((*it).first == unit->getMonsterType())
+	  {
+	    ptr = reinterpret_cast<fptrDeleteMonster>((*it).second->getExternalDestructor());
+	    ptr(unit);
+	    return ;
+	  }
+      }
+  }
+ 
 bool	Factory::addMonsterType(Unit::Monster::type type, std::string libName)
 {
   ILibLoader*	libLoader;

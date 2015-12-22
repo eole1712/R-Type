@@ -77,6 +77,22 @@ namespace Unit
         return (NULL);
     }
 
+      void		Factory::deleteUnit(Unit::Missile::AMissile * unit)
+      {
+	fptrDeleteMissile	ptr;
+	
+	for(std::list<std::pair<Unit::Missile::type, ILibLoader*> >::iterator it = this->_libs.begin();
+	    it != this->_libs.end(); ++it)
+	  {
+	    if ((*it).first == unit->getMissileType())
+	      {
+		ptr = reinterpret_cast<fptrDeleteMissile>((*it).second->getExternalDestructor());
+		ptr(unit);
+	    return ;
+	      }
+	  }
+      }
+
     bool	Factory::addMissileType(Unit::Missile::type type, std::string libName)
     {
         ILibLoader*	libLoader;
