@@ -6,7 +6,7 @@
 namespace Unit {
     
     AUnit::AUnit(unsigned int hp, team t, int x, int y, boxType hitBox, unsigned int id, unsigned int gameID, Timer::time time)
-    : _hp(hp), _alive(true), _team(t), _x(x), _y(y), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
+    : _hp(hp), _alive(true), _team(t), _x(x), _y(y), _tX(x), _tY(y), _t(0), _hitBox(hitBox), _id(id), _gameID(gameID), _creationTime(time)
     {
     }
     
@@ -75,19 +75,32 @@ namespace Unit {
         return _creationTime;
     }
     
-    int    AUnit::getX(Timer::time time) const
+    int    AUnit::getX(Timer::time time)
     {
-        return move(time).first;
+        if (time != _t)
+        {
+            _tX = move(time).first;
+            _tY = move(time).second;
+            _t = time;
+        }
+        return _tX;
     }
     
-    int    AUnit::getY(Timer::time time) const
+    int    AUnit::getY(Timer::time time)
     {
-        return move(time).second;
+        if (time != _t)
+        {
+            _tX = move(time).first;
+            _tY = move(time).second;
+            _t = time;
+        }
+        return _tY;
     }
     
-    bool        AUnit::isHitting(AUnit *unit, Timer::time time) const
+    bool        AUnit::isHitting(AUnit *unit, Timer::time time)
     {
-        if ((getMax(getX(time), unit->getX(time)) < getMin(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first)) && (getMax(getY(time), unit->getY(time)) < getMin(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
+        if ((getMax(getX(time), unit->getX(time)) < getMin(getX(time) + _hitBox.first, unit->getX(time) + unit->getHitBox().first))
+            && (getMax(getY(time), unit->getY(time)) < getMin(getY(time) + _hitBox.second, unit->getY(time) + unit->getHitBox().second)))
             return true;
         return false;
     }
