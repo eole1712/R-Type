@@ -55,8 +55,17 @@ Menu::~Menu()
 
 void		Menu::initMainView()
 {
-  Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
+  //  Animation background(std::string("../resources/menu/Background Menu.360x240x4.png"), 4, 300, Time::getTimeStamp());
+  sf::Texture	backgroundTexture;
+  sf::Texture	titleTexture;
+  sf::Sprite	backgroundSprite;
+  sf::Sprite	titleSprite;
 
+  if (!backgroundTexture.loadFromFile("../resources/textures/star.png"))
+    std::cout << "error loading star.png" << std::endl;
+  backgroundSprite.setTexture(backgroundTexture);
+  if (!titleTexture.loadFromFile("../resources/textures/r-type-logo.png"))
+    std::cout << "error loading r-type-logo.png" << std::endl;
   _window.setVerticalSyncEnabled(true);
   _window.setKeyRepeatEnabled(false);
   //_soundPlayer.pause();
@@ -67,7 +76,9 @@ void		Menu::initMainView()
       }
       eventHandler();
       _window.clear();
-      _window.draw(background.getFrame());
+      _window.draw(backgroundSprite);
+      _window.draw(titleSprite);
+      //_window.draw(background.getFrame());
       this->drawFields();
       this->drawEditable();
       this->drawLoginSizeErr();
