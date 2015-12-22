@@ -33,6 +33,15 @@ const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
 #else
         Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so"
 #endif
+    },
+  {
+  #if (defined __APPLE__)
+        Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.dylib"
+#elif (defined _WIN32)
+        Unit::Monster::DRBOOM, "..\\libs\\server\\ServerDrBoom.dll"
+#else
+        Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so"
+#endif
     }
 };
 
