@@ -38,7 +38,7 @@ private:
     unsigned int	posY;
     Time::stamp		time;
   }			s_star;
-  
+
 private:
   int					_width;
   int					_height;
@@ -73,11 +73,11 @@ private:
   Animation				_star;
   s_star				_stars[15];
   std::list<std::function<void()> >	_eventChecks;
-  std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;  
+  std::map<int, std::tuple<std::string, unsigned int, unsigned int, bool> > _roomsBuf;
   unsigned long				_time;
   std::string				_message;
   bool					_error;
-  
+
 public:
   Menu(int width, int height, IMenuHandler *client);
   ~Menu();
@@ -85,6 +85,7 @@ public:
   void				initMainView();
   void				addGame(unsigned int id, std::string const&, unsigned int, unsigned int, std::string const &, bool);
   void				startGame(unsigned long time);
+  void				setMessage(std::string const&, bool);
 
 private:
   void				initColors();
@@ -103,7 +104,6 @@ private:
   void				handleGameListItem(sf::Event&);
   void				setConnected();
   void				reset();
-  void				setMessage(std::string const&, bool);
 };
 
 #endif /* !MENU_HPP */
