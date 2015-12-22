@@ -63,8 +63,8 @@ namespace Unit {
         virtual void    getHit(AUnit*) = 0;
         
     public:
-        virtual int     getX(Timer::time) const;
-        virtual int     getY(Timer::time) const;
+        virtual int     getX(Timer::time);
+        virtual int     getY(Timer::time);
         
     public:
         virtual int   getStartX() const;
@@ -78,7 +78,7 @@ namespace Unit {
         virtual void    setHitBox(boxType);
         
     public:
-        virtual bool    isHitting(AUnit*, Timer::time) const;
+        virtual bool    isHitting(AUnit*, Timer::time);
         
     public:
         virtual type    getType() const = 0;
@@ -104,6 +104,11 @@ namespace Unit {
     protected:
         int                                     _x;
         int                                     _y;
+        
+    private:
+        int                                     _tX;
+        int                                     _tY;
+        Timer::time                             _t;
         
     protected:
         boxType                                 _hitBox;
