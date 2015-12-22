@@ -11,6 +11,7 @@ Animation::Animation(std::string const & image, unsigned int frame, float speed,
   setTexture(_texture);
   _frameWidth = _texture.getSize().x / frame;
   _frameHeight = _texture.getSize().y;
+  setTextureRect(sf::IntRect(0, 0, _frameWidth, _frameHeight));
 }
 
 Animation::~Animation()

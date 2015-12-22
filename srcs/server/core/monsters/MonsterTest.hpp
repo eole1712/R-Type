@@ -19,7 +19,7 @@ namespace Unit
       virtual Monster::type		getMonsterType() const;
       virtual Unit::typeID    getTypeID() const;
       
-        virtual Missile::AMissile*	shoot(Timer::time time);
+      virtual Missile::AMissile*	shoot(Timer::time time);
       virtual pos     move(Timer::time) const;
       virtual void    getHit(AUnit*);
     };

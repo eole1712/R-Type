@@ -42,14 +42,14 @@ namespace Monster {
   {
     return _list.empty();
   }
-  
-  Unit::AUnit*      Wave::getNextMonster()
+
+  Unit::AUnit*      Wave::getNextMonster(Timer::time time, IDCreator *idc)
   {
     if (_list.empty())
       return nullptr;
     
     Label    label = _list.front();
-    Unit::AUnit*  monster = Monster::Factory::getInstance()->createMonster(label.getType(), label.getX(), label.getY(), _gameID, GameUtils::Game::now(_gameID));
+    Unit::AUnit*  monster = Monster::Factory::getInstance()->createMonster(label.getType(), label.getX(), label.getY(), _gameID, time, idc);
     
     _list.pop_front();
     reset(_list.empty() ? 0 : _list.front().getTime());

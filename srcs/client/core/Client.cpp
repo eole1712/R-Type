@@ -34,7 +34,7 @@ Client::Client(int port)
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;
-            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
+//            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
             _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
         [this] (APacket* packet, unsigned int) {
@@ -47,8 +47,8 @@ Client::Client(int port)
                 std::cout << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId()) << std::endl;
                 _playerId = pack->getPlayerId();
                 _connected = pack->getGameId();
-            }
-            else if (_connected != 0) {
+			}
+			else if (_connected != 0) {
                 _connected = 0;
             }
             else
@@ -95,6 +95,13 @@ Client::Client(int port)
                 _menu->startGame(static_cast<Time::stamp>(pack->getCurrentTimer()));
             }
             else {
+                if (_game->getTimer() > 0 && pack->getCurrentTimer() == 0)
+                {
+		  _connected = 0;
+		  _game->setFinish();
+		  _game = nullptr;
+		  return ;
+                }
                 _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
                 while (!_toCreate.empty()) {
                     _game->connectUnit(std::get<0>(_toCreate.back()), std::get<1>(_toCreate.back()), std::get<2>(_toCreate.back()), std::get<3>(_toCreate.back()), std::get<4>(_toCreate.back()), static_cast<int>(std::get<5>(_toCreate.back())));
@@ -107,7 +114,7 @@ Client::Client(int port)
             ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
             if (pack == NULL)
                 return;
-            std::cout << "pinged by server" << std::endl;
+//            std::cout << "pinged by server" << std::endl;
 			if (pack->getStatus()) {
 				ServerPingPacket ans;
 
@@ -182,8 +189,8 @@ void Client::createGame(const std::string &name)
 
 void Client::handlePacket(APacket* pack, unsigned int id)
 {
-    if (pack->getType() == APacket::SERVERUNITSPAWN)
-        std::cerr << "handling unitspawn" << std::endl;
+//    if (pack->getType() == APacket::SERVERUNITSPAWN)
+//        std::cerr << "handling unitspawn" << std::endl;
     _packetHandlerFuncs[pack->getType()](pack, id);
 }
 
@@ -201,6 +208,12 @@ void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
 
 void Client::disconnectPlayer(unsigned int id)
 {
+  _connected = 0;
+  if (_game) {
+    _game->setFinish();
+    _game = nullptr;
+  }
+
   std::cout << "server with id : " << id << "hung up" << std::endl;;
 }
 

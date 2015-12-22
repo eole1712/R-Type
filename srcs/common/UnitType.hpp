@@ -2,12 +2,13 @@
 #define UnitType_hpp
 
 namespace Unit {
-    
+
     enum typeID {
         PLAYERTYPE = 0,
         MONSTERTEST,
         BASICMISSILE,
-        BIGHUNTER
+        BIGHUNTER,
+	DRBOOM
     };
 }
 

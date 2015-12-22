@@ -22,6 +22,7 @@ Server::Server() {
 	_netManager = new NetManager();
 	_netServer = new NetServer(kPort, _netManager, this);
 	_packetHandlerFuncs = {
+        //PACKET PING
 		[this] (APacket* packet, unsigned int id) {
 		ServerPingPacket * pack = dynamic_cast<ServerPingPacket*>(packet);
 	    if (pack == NULL)
@@ -35,6 +36,8 @@ Server::Server() {
 	    }
 	    _netServer->setTimeout(id);
 		},
+        
+        //PACKET CONNECTION CLIENT
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
 			if (pack == NULL)
@@ -52,12 +55,17 @@ Server::Server() {
 			}
 			sendToUser(&ret, id);
 		},
+        
+        //PACKET CLIENT GAME INFO
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
 			if (!userExists(id) || pack == NULL)
 				return;
+            std::lock_guard<Lock>   l(_lockEnd);
 			sendRoomStatus(id);
 		},
+        
+        //PACKET GAME CONNECT PACKET
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
 			if (!userExists(id) || pack == NULL)
@@ -65,6 +73,9 @@ Server::Server() {
 
           //Recherche ou création de la game
 			IGame* game;
+            
+            std::lock_guard<Lock>   l(_lockEnd);
+            
 			auto it  = _games.find(pack->getRoomId());
 			if ((it) == _games.end())
 				game = createGame(pack->getRoomName());
@@ -76,11 +87,14 @@ Server::Server() {
 			if (user->isInGame())
 			{
 				int currentGameID = user->getGameID();
+				for (auto& aUser : _games[currentGameID]->getUsers())
+				{
+					aUser->setReady(false);					
+				}
 				_games[currentGameID]->removePlayer(user->getPlayer()->getColor());
 				ret.setStatus(false);
 				ret.setGameId(0);
 				ret.setPlayerId(0);
-				user->setReady(false);
 				sendToUser(&ret, id);
 				if (currentGameID == game->getID())
 				{
@@ -102,6 +116,8 @@ Server::Server() {
 			sendToUser(&ret, id);
 			sendRoomStatus();
 		},
+        
+        //PACKET CLIENT KEYBOARD PRESS
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
 			if (pack == NULL)
@@ -112,6 +128,9 @@ Server::Server() {
 			std::pair<unsigned int, bool> key = pack->getStatus();
 			if (!user->isInGame())
 				return;
+            
+            std::lock_guard<Lock>   l(_lockEnd);
+            
 			if (!(_games[user->getGameID()]->isStarted()))
 			{
 				IGame* game = _games[user->getGameID()];
@@ -129,7 +148,7 @@ Server::Server() {
 				}
 				if (shouldStart)
 				{
-					refreshTimer(game->getID());
+					refreshTimer(game->getID(), 0);
 					startGame(game);
 				}
 			}
@@ -163,35 +182,49 @@ void	Server::start() {
 
 void Server::startGame(IGame* game) {
 	std::function<void(std::nullptr_t)> fptr = [this, game] (std::nullptr_t) {
-		static unsigned int     refresh = 1;
 		unsigned int            gameID = game->getID();
 
         //Boucle du jeu principale.
 		game->start();
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
-
-            //refreshTimer(game->getID());
-			if (GameUtils::Game::now(gameID) > (refresh * 1000))
-			{
-				refreshTimer(gameID);
-				refresh++;
-			}
-			Timer::time                       time = GameUtils::Game::now(gameID);
+            
+            std::unique_lock<Lock>      l(_lock);
+            for (unsigned int dc : _disconnectedID)
+            {
+                std::map<int, User*>::iterator  it = _users.find(dc);
+                if (it != _users.end()) {
+                    Unit::Player *player = (*it).second->getPlayer();
+                    if (player)
+                    {
+                        player->setAlive(false);
+                        game->removePlayer(player->getColor());
+                    }
+                    delete (*it).second;
+                    _users.erase(it);
+                }
+            }
+            _disconnectedID.clear();
+            l.unlock();
             //refreshPlayersPosition
 			for (auto& user : v) {
 				if (user->needRefresh()) {
 					ServerPlayerMovePacket packet;
 					packet.setPlayerID(user->getPlayer()->getID());
-					packet.setX(user->getPlayer()->getX(time));
-					packet.setY(user->getPlayer()->getY(time));
+					packet.setX(user->getPlayer()->getX(game->getTime()));
+					packet.setY(user->getPlayer()->getY(game->getTime()));
 
 					sendToGame(&packet, gameID);
 					user->setRefresh(false);
 				}
 			}
 		}
-	};
+        refreshTimer(gameID, true);
+        
+        std::lock_guard<Lock>       l(_lockEnd);
+        _games.erase(gameID);
+        delete game;
+    };
         std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
 	Thread<std::nullptr_t> t(fptr, nullptr);
 }
@@ -200,16 +233,17 @@ void	Server::handlePacket(APacket* packet, unsigned int id) {
 	_packetHandlerFuncs[packet->getType() - 7](packet, id);
 }
 
-void    Server::refreshTimer(unsigned int idGame)
+void    Server::refreshTimer(unsigned int idGame, Timer::time time)
 {
 	ServerTimerRefreshPacket   pack;
 
-	pack.setCurrentTimer(GameUtils::Game::now(idGame));
+    pack.setCurrentTimer(time);
 	sendToGame(&pack, idGame);
 }
 
 void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 {
+    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitSpawnPacket    pack;
 
 	pack.setTimer(unit->getCreationTime());
@@ -224,6 +258,7 @@ void        Server::sendUnit(Unit::AUnit *unit, unsigned int unitType)
 
 void        Server::killUnit(unsigned int id, unsigned int gameID)
 {
+    //std::unique_lock<Lock>  l(_lockSend);
 	ServerUnitDiePacket    pack;
 
 	pack.setUnitID(id);
@@ -307,5 +342,8 @@ IGame*	Server::createGame(std::string const& gameName) {
 
 void Server::disconnectPlayer(unsigned int id)
 {
-  std::cout << "player with id :" << id << "hung up" << std::endl;
+    std::lock_guard<Lock>   l(_lock);
+
+    _disconnectedID.push_back(id);
+    std::cout << "player with id :" << id << "hung up" << std::endl;
 }

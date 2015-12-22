@@ -17,8 +17,8 @@ namespace Unit {
     const unsigned int          Player::STARTY = GameUtils::Map::HEIGHT / 2;
     const boxType               Player::DEFAULTHITBOX = std::make_pair(85, 47);
 
-    Player::Player(color c, User* user, unsigned int id, unsigned int gameID)
-    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID, GameUtils::Game::now(gameID)), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
+    Player::Player(color c, User* user, unsigned int id, unsigned int gameID, Timer::time time)
+    : AUnit(DEFAULTHP, ALLY, STARTX, STARTY, DEFAULTHITBOX, id, gameID, time), _color(c), _score(0), _weapon(DEFAULTMISSILE), _time(0), _isMoving(), _isShooting(0), _user(user), _lock()
     {
         for (int i = 0; i < 4; i++)
             _isMoving[i] = false;

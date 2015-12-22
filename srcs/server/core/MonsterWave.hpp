@@ -6,6 +6,7 @@
 #include "AUnit.hpp"
 #include "AMonster.hpp"
 #include "MonsterLabel.hpp"
+#include "IDCreator.hpp"
 
 namespace Monster {
     
@@ -20,7 +21,7 @@ namespace Monster {
         
     public:
         bool            start();
-        Unit::AUnit     *getNextMonster();
+        Unit::AUnit     *getNextMonster(Timer::time, IDCreator *idc);
         
     public:
         bool            isEmpty() const;

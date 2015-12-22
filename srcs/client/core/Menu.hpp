@@ -102,6 +102,7 @@ private:
   void				changeCurrentRow();
   void				handleGameListItem(sf::Event&);
   void				setConnected();
+  void				reset();
   void				setMessage(std::string const&, bool);
 };
 

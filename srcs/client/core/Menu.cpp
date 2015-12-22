@@ -32,6 +32,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
 	  _game = new Game(_client->getGameHandler(), _window, 0, _login.getEditable().getString(), _time);
 	  _game->loop();
 	  _gameStart = false;
+	  reset();
 	}
       });
       _eventChecks.push_back([this] () {
@@ -320,4 +321,18 @@ void		Menu::setMessage(std::string const& newString, bool error)
 {
   _message = newString;
   _error = error;
+}
+
+void Menu::reset()
+{
+  std::cout << "resetting menu" << std::endl;
+  _currentGameNumber = 0;
+  _isConnected = true;
+  _isReady = false;
+  _gameStart = false;
+  _time = 0;
+  _game = NULL;
+  _gameList.clean();
+  _roomsBuf.clear();
+  _client->refreshGames();
 }

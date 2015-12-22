@@ -9,6 +9,7 @@
 # include "MonsterFactory.hpp"
 # include "MonsterWaveManager.hpp"
 # include "IGameUnitSender.hpp"
+# include "IDCreator.hpp"
 
 
 class IMap;
@@ -21,6 +22,7 @@ public:
     virtual ~Game();
 
     virtual unsigned int	getID() const;
+    virtual Timer::time     getTime() const;
     virtual IMap*			getMap() const;
     virtual IScoreList*		getScores() const;
     virtual Unit::Player*	getPlayer(Unit::color) const;
@@ -41,6 +43,7 @@ protected:
     virtual void        checkMouvements();
     virtual void        shootThemAll();
     virtual bool        checkIfAlive();
+    virtual void        tryToRefresh();
 
 private:
     std::vector<User*>  _users;
@@ -53,6 +56,10 @@ private:
     Timer               _t;
     bool                _inGame;
     IGameUnitSender*    _owl;
+    Timer               _time;
+    Timer::time         _now;
+    unsigned int        _refresh;
+    IDCreator           _idc;
 };
 
 #endif /* !GAME_H_ */

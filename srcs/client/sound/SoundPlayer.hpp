@@ -11,6 +11,10 @@ private:
 public:
   SoundPlayer(std::string const&, bool loop = false, float volume = 50);
   virtual ~SoundPlayer();
+
+  bool		finish();
+
+  bool		_finish;
 };
 
 #endif /* !SOUNDPLAYER_HPP_ */

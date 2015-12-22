@@ -16,7 +16,7 @@
 #include "GameUtils.hpp"
 
 Game::Game(unsigned int id, std::string name, IGameUnitSender* owl)
-: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id, owl), _t(0), _inGame(false), _owl(owl)
+: _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id, owl), _t(0), _inGame(false), _owl(owl), _time(0), _now(0)
 {
 }
 
@@ -34,6 +34,11 @@ Game::~Game()
 unsigned int	Game::getID() const
 {
     return (this->_id);
+}
+
+Timer::time          Game::getTime() const
+{
+    return _now;
 }
 
 std::string     Game::getName() const
@@ -104,7 +109,7 @@ bool	Game::addPlayer(User* user)
     
     if (ixPlayer < 4)
     {
-      this->_players.push_back(new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id));
+      this->_players.push_back(new Unit::Player(Unit::color(Unit::BLUE + ixPlayer), user, ixPlayer + 1, _id, _now));
       _users.push_back(user);
       return (true);
     }
@@ -136,13 +141,12 @@ std::vector<User*> const&     Game::getUsers() const
 void        Game::checkMouvements()
 {
     std::list<Unit::AUnit*>::iterator it;
-    Timer::time                       time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [this, time](Unit::Player *player)
+    std::for_each(_players.begin(), _players.end(), [this](Unit::Player *player)
                   {
                       if (_t.isFinished())
                           Unit::Player::checkMouvement(player, _map);
-                      Unit::AUnit *unit = _map->checkInterractions(player, time);
+                      Unit::AUnit *unit = _map->checkInterractions(player, _now);
                       if (unit) {
                           
                           (player)->getHit(unit);
@@ -151,7 +155,7 @@ void        Game::checkMouvements()
                   });
     
     for (it = _map->getList(Unit::ALLY).begin(); it != _map->getList(Unit::ALLY).end(); it++) {
-        Unit::AUnit *unit = _map->checkInterractions(*it, time);
+        Unit::AUnit *unit = _map->checkInterractions(*it, _now);
         if (unit) {
             (*it)->getHit(unit);
             unit->getHit(*it);
@@ -174,25 +178,23 @@ void        Game::checkMouvements()
 
 void        Game::shootThemAll()
 {
-    Timer::time                       time = GameUtils::Game::now(_id);
-    
-    std::for_each(_players.begin(), _players.end(), [this, time](Unit::Player *player) {
+    std::for_each(_players.begin(), _players.end(), [this](Unit::Player *player) {
         if (player->isShooting()) {
-            Unit::AUnit* m = player->shoot(time);
+            Unit::AUnit* m = player->shoot(_now);
             if (m)
             {
-                m->setID(GameUtils::Game::getNewID(_id));
+                m->setID(_idc.getNewID());
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
         }
     });
-    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this, time](Unit::AUnit* unit){
+    std::for_each(_map->getList(Unit::ENEMY).begin(), _map->getList(Unit::ENEMY).end(), [this](Unit::AUnit* unit){
         if (unit->getType() == Unit::MONSTER) {
-            Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot(time);
+            Unit::AUnit* m = ObjectCast::getObject<Unit::Monster::AMonster*>(unit)->shoot(_now);
             if (m)
             {
-                m->setID(GameUtils::Game::getNewID(_id));
+                m->setID(_idc.getNewID());
                 _map->addUnit(m);
                 _owl->sendUnit(m, m->getTypeID());
             }
@@ -203,11 +205,10 @@ void        Game::shootThemAll()
 bool        Game::checkIfAlive()
 {
     int                                 i = 0;
-    Timer::time                         time = GameUtils::Game::now(_id);
     
-    std::for_each(_players.begin(), _players.end(), [&i, time, this](Unit::Player *player) {
+    std::for_each(_players.begin(), _players.end(), [&i, this](Unit::Player *player) {
         if (player->isAlive()) {
-            if (player->healthCheck(time) == false) {
+            if (player->healthCheck(_now) == false) {
                 player->setAlive(false);
                 _owl->killUnit(player->getID(), _id);
             }
@@ -221,7 +222,7 @@ bool        Game::checkIfAlive()
     
 	auto it = _map->getList(Unit::ALLY).begin();
 	while (it != _map->getList(Unit::ALLY).end()) {
-		if ((*it)->getType() == Unit::MISSILE && (*it)->healthCheck(time) == false)
+		if ((*it)->getType() == Unit::MISSILE && (*it)->healthCheck(_now) == false)
         {
             _owl->killUnit((*it)->getID(), _id);
             it = _map->getList((*it)->getTeam()).erase(it);
@@ -231,7 +232,7 @@ bool        Game::checkIfAlive()
 	}
 	it = _map->getList(Unit::ENEMY).begin();
 	while (it != _map->getList(Unit::ENEMY).end()) {
-		if ((*it)->healthCheck(time) == false)
+		if ((*it)->healthCheck(_now) == false)
         {
             _owl->killUnit((*it)->getID(), _id);
 			it = _map->getList((*it)->getTeam()).erase(it);
@@ -242,10 +243,20 @@ bool        Game::checkIfAlive()
     return true;
 }
 
+void        Game::tryToRefresh()
+{
+    if (_now > (_refresh * 1000))
+    {
+        _owl->refreshTimer(_id, _now);
+        _refresh++;
+    }
+}
+
 void        Game::start()
 {
     _inGame = true;
     _t.start();
+    _time.start();
     for (auto& player : _players)
     {
         player->setX(30);
@@ -269,17 +280,13 @@ bool        Game::end()
 
 bool        Game::nextAction()
 {
-    if (checkIfAlive() == false)
-    {
-        return end();
-    }
-    _waveManager.execConfig();
+    _now = _time.getElapsedTime();
+    _waveManager.execConfig(_now);
     checkMouvements();
     shootThemAll();
-    _waveManager.nextAction();
+    _waveManager.nextAction(_now, &_idc);
     if (checkIfAlive() == false)
-    {
         return end();
-    }
+    tryToRefresh();
     return true;
 }
