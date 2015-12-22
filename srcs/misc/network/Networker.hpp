@@ -2,8 +2,8 @@
 #define NETWORKER_H_
 
 //comment to enable pings
-#define NO_PING
-#define DEBUG_NETWORK
+//#define NO_PING
+//#define DEBUG_NETWORK
 
 
 #include "APacket.hpp"
