@@ -73,7 +73,7 @@ namespace Monster {
         }
         if (time > (4000 * _t[2]))
         {
-            addWave(Monster::WaveManager::ClassicWave(_gameID));
+            addWave(Monster::WaveManager::MarineWave(_gameID));
             _t[2]++;
         }
     }

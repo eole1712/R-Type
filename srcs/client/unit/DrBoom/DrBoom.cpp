@@ -25,7 +25,7 @@ namespace Unit
 {
   DrBoom::DrBoom(int x, int y, unsigned int id, Time::stamp creationTime, float param)
     : AUnit(x, y, id, creationTime, param),
-      _mySprite(std::string("green jumper.jump.56x54x3..png"), 8)
+      _mySprite(std::string("../resources/sprites/green jumper.jump.56x54x3.png"), 3)
   {
     _mySprite.scale(1.4f, 1.4f);
   }
