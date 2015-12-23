@@ -17,7 +17,7 @@ Menu::Menu(int width, int height, IMenuHandler* client):
   _gameName(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "GameName", _loginFont, _loginColor, 20, 24),
   _host(static_cast<unsigned int>(width / 2.5), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Host", _loginFont, _loginColor, 20, 24),
   _loginSizeErr(width / 2, static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 1) * 1.15), "16 chars max", _fieldsFont, _loginSizeErrColor, 16),
-  _serverMessage(width / 20, height / 1.8, "servermessaaaaaaaaaaaaaaaaaaaaaaaaaaage", _fieldsFont, sf::Color(255, 0, 0)),
+  _serverMessage(static_cast<unsigned int>(width / 20), static_cast<unsigned int>(height / 1.8), "servermessaaaaaaaaaaaaaaaaaaaaaaaaaaage", _fieldsFont, sf::Color(255, 0, 0)),
   _createButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 1.6), "Create", _fieldsFont, _startColor, 21),
   _connectButton(static_cast<unsigned int>(width / 1.3), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Connect", _fieldsFont, _startColor, 21),
   _refreshButton(static_cast<unsigned int>(width / 1.15), static_cast<unsigned int>(height / (MAX_NUMBER_OF_FIELDS + 2) * 2.1), "Refresh", _fieldsFont, _startColor, 21),
@@ -195,6 +195,12 @@ void		Menu::handleMouseMoved(sf::Event& event)
     _refreshButton.getClickableBtn().setColor(_highlightColor);
   else if (_createButton.getClickableBtn().getGlobalBounds().contains(mousePosition))
     _createButton.getClickableBtn().setColor(_highlightColor);
+  else if (_login.getEditable().getGlobalBounds().contains(mousePosition))
+    _currentRow = LOGIN;
+  else if (_gameName.getEditable().getGlobalBounds().contains(mousePosition))
+    _currentRow = CREATE;
+  else if (_host.getEditable().getGlobalBounds().contains(mousePosition))
+    _currentRow = HOST;
   else
     {
       for (int i = 0; i < MAX_NUMBER_OF_FIELDS; i++)
