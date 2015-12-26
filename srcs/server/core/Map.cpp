@@ -43,17 +43,17 @@ void	Map::addUnit(Unit::AUnit* unit)
 std::list<Unit::AUnit*>::iterator            Map::removeUnit(Unit::AUnit* unit)
 {
     std::list<Unit::AUnit*>::iterator it;
-    
+
     if (unit->getTeam() == Unit::ALLY)
     {
         it = _allies.erase(std::remove(_allies.begin(), _allies.end(), unit), _allies.end());
-        
+
         Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
     }
     else
     {
         it = _enemies.erase(std::remove(_enemies.begin(), _enemies.end(), unit), _enemies.end());
-        
+
         if (unit->getType() == Unit::MISSILE)
             Unit::Missile::Factory::getInstance()->deleteUnit(ObjectCast::getObject<Unit::Missile::AMissile*>(unit));
         else if (unit->getType() == Unit::MONSTER)

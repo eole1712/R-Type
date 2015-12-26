@@ -142,10 +142,13 @@ void        Game::checkMouvements()
 {
     std::list<Unit::AUnit*>::iterator it;
 
+    if (!_t.isFinished())
+        return ;
     std::for_each(_players.begin(), _players.end(), [this](Unit::Player *player)
                   {
-                      if (_t.isFinished())
-                          Unit::Player::checkMouvement(player, _map);
+                      if (!player->isAlive())
+                          return ;
+                      Unit::Player::checkMouvement(player, _map);
                       Unit::AUnit *unit = _map->checkInterractions(player, _now);
                       if (unit) {
 
