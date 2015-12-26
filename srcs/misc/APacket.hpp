@@ -29,7 +29,7 @@ public:
 	  CLIENTGAMEKEY
 	};
 
-	static constexpr int kMaxPacketSize = 512;
+	static constexpr int kMaxPacketSize = 64;
 	static constexpr int kHeaderSize = sizeof(idSize) + sizeof(packetTypeSize);
     static const int kNbServerPackets = 8;
 
