@@ -11,6 +11,7 @@
 # include "IGameUnitSender.hpp"
 # include "IDCreator.hpp"
 
+//#define SHOW_PING
 
 class IMap;
 class IScoreList;
@@ -60,6 +61,10 @@ private:
     Timer::time         _now;
     unsigned int        _refresh;
     IDCreator           _idc;
+#ifdef SHOW_PING
+    int                 _k;
+    int                 _i;
+#endif /* !SHOW_PING  */
 };
 
 #endif /* !GAME_H_ */

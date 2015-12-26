@@ -97,10 +97,10 @@ namespace Unit {
     {
         static const int        tab[4][2] =
         {
-            {0, -5},
-            {0, 5},
-            {5, 0},
-            {-5, 0}
+            {0, -13},
+            {0, 13},
+            {13, 0},
+            {-13, 0}
         };
         
         if (GameUtils::Map::isIn(_x + tab[to][0], _y + tab[to][1], _hitBox.first) == false)

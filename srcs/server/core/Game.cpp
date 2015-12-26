@@ -18,6 +18,10 @@
 Game::Game(unsigned int id, std::string name, IGameUnitSender* owl)
 : _id(id), _name(name), _map(new Map()), _scores(new ScoreList()), _waveManager(_map, id, owl), _t(0), _inGame(false), _owl(owl), _time(0), _now(0), _refresh(1)
 {
+#ifdef SHOW_PING
+    _i = 0;
+    _k = 1;
+#endif
 }
 
 Game::~Game()
@@ -174,9 +178,20 @@ void        Game::checkMouvements()
 //    }
     if (_t.isFinished())
     {
-        _t.reset(10);
+        _t.reset(33);
         _t.start();
+#ifdef SHOW_PING
+        _i++;
+#endif
     }
+#ifdef SHOW_PING
+    if (_now > (_k * 1000))
+    {
+        std::cout << _i  << std::endl;
+        _i = 0;
+        _k++;
+    }
+#endif
 }
 
 void        Game::shootThemAll()

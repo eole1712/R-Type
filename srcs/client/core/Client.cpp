@@ -26,45 +26,45 @@ Client::Client(int port)
             if (pack == NULL)
                 return;
             if (pack->getStatus()) {
-	      std::string msg = "Connected ! : dayPhrase : " + pack->getServerString();
-	      std::cout << msg << std::endl;
-	      _menu->setMessage(msg, false);
-	      _nc->setServer(id);
-	    }
-	    else {
-	      std::string msg = "Failed to connect ! Erreur : " + pack->getServerString();
-	      _menu->setMessage(msg, true);
-	    }
-
+                std::string msg = "Connected ! : dayPhrase : " + pack->getServerString();
+                std::cout << msg << std::endl;
+                _menu->setMessage(msg, false);
+                _nc->setServer(id);
+            }
+            else {
+                std::string msg = "Failed to connect ! Erreur : " + pack->getServerString();
+                _menu->setMessage(msg, true);
+            }
+            
         },
         [this] (APacket* packet, unsigned int) {
             ServerGameInfoPacket* pack = dynamic_cast<ServerGameInfoPacket*>(packet);
             if (pack == NULL)
                 return;
-//            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
+            //            std::cout << "got game info from server : " << pack->getRoomName() << std::endl;
             _menu->addGame(pack->getRoomId(), pack->getRoomName(), pack->getRoomSlots(), pack->getRoomReady(), pack->getRoomName(), pack->getUserReady());
         },
         [this] (APacket* packet, unsigned int) {
             ServerGameConnectPacket* pack = dynamic_cast<ServerGameConnectPacket*>(packet);
-	    std::lock_guard<Lock> l(_lock);
-
-	    if (pack == NULL)
-	      return;
-	    if (pack->getStatus()) {
-	      std::stringstream ss;
-	      ss << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId());
-	      _menu->setMessage(ss.str(), false);
-	      _playerId = pack->getPlayerId();
-	      _connected = pack->getGameId();
-	    }
-	    else if (_connected != 0) {
+            std::lock_guard<Lock> l(_lock);
+            
+            if (pack == NULL)
+                return;
+            if (pack->getStatus()) {
+                std::stringstream ss;
+                ss << "Connecting to a game with id : " << static_cast<unsigned int>(pack->getPlayerId());
+                _menu->setMessage(ss.str(), false);
+                _playerId = pack->getPlayerId();
+                _connected = pack->getGameId();
+            }
+            else if (_connected != 0) {
                 _connected = 0;
             }
             else
-	      _menu->setMessage("Failed to connect to game", true);
-	    //refreshGames();
+                _menu->setMessage("Failed to connect to game", true);
+            //refreshGames();
         },
-
+        
         [this] (APacket* packet, unsigned int) {
             ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
             if (pack == NULL)
@@ -86,7 +86,7 @@ Client::Client(int port)
                 _toCreate.push_back(std::make_tuple(static_cast<Unit::typeID>(pack->getUnitType()), pack->getX(), pack->getY(), pack->getUnitID(), pack->getTimer(), pack->getParam()));
             }
         },
-
+        
         [this] (APacket* packet, unsigned int) {
             ServerUnitDiePacket* pack = dynamic_cast<ServerUnitDiePacket*>(packet);
             if (pack == nullptr)
@@ -94,22 +94,22 @@ Client::Client(int port)
             if (_game != nullptr)
                 _game->disconnectUnit(pack->getUnitID(), static_cast<bool>(pack->getExplose()));
         },
-
+        
         [this] (APacket* packet, unsigned int id) {
             ServerTimerRefreshPacket* pack = dynamic_cast<ServerTimerRefreshPacket*>(packet);
             if (pack == nullptr)
                 return;
-	    _nc->setTimeout(id);
-	    if (_game == nullptr) {
+            _nc->setTimeout(id);
+            if (_game == nullptr) {
                 _menu->startGame(static_cast<Time::stamp>(pack->getCurrentTimer()));
             }
             else {
                 if (_game->getTimer() > 0 && pack->getCurrentTimer() == 0)
                 {
-		  _connected = 0;
-		  _game->setFinish();
-		  _game = nullptr;
-		  return ;
+                    _connected = 0;
+                    _game->setFinish();
+                    _game = nullptr;
+                    return ;
                 }
                 _game->setTimer(static_cast<Time::stamp>(pack->getCurrentTimer()));
                 while (!_toCreate.empty()) {
@@ -118,21 +118,21 @@ Client::Client(int port)
                 }
             }
         },
-
+        
         [this] (APacket* packet, unsigned int id) {
             ServerPingPacket* pack = dynamic_cast<ServerPingPacket*>(packet);
             if (pack == NULL)
                 return;
-	    if (id != _nc->getCurrent())
-	      return ;
-	      //            std::cout << "pinged by server" << std::endl;
-	    if (pack->getStatus()) {
-	      ServerPingPacket ans;
-
-	      ans.setStatus(false);
-	      _nc->sendPacket(&ans);
-	    }
-	    _nc->setTimeout(id);
+            if (id != _nc->getCurrent())
+                return ;
+            //            std::cout << "pinged by server" << std::endl;
+            if (pack->getStatus()) {
+                ServerPingPacket ans;
+                
+                ans.setStatus(false);
+                _nc->sendPacket(&ans);
+            }
+            _nc->setTimeout(id);
         }
     };
     _menu = new Menu(1200, 800, this);
@@ -152,16 +152,16 @@ void Client::start()
     };
     std::cout << "Je suis " << __FUNCTION__ << " et je cree un thread" << std::endl;
     Thread<std::nullptr_t> t(fptr, nullptr);
-    #ifndef NO_PING
+#ifndef NO_PING
     Thread<std::nullptr_t> ping(std::bind(&Networker::pingFunction, _nc, std::placeholders::_1), nullptr);
-    #endif
+#endif
     std::cout << "main view init" << std::endl;
     _menu->initMainView();
     std::cout << "finished" << std::endl;
-    #ifndef NO_PING
+#ifndef NO_PING
     _nc->stopPing();
     ping.join();
-    #endif
+#endif
     _nm->stop();
     t.join();
     std::cout << "Game finished" << std::endl;
@@ -183,7 +183,7 @@ void Client::refreshGames()
 void Client::selectGame(const std::string &name, int id)
 {
     ClientGameConnectPacket pack;
-
+    
     pack.setRoomName(name);
     pack.setRoomId(id);
     _nc->sendPacket(&pack);
@@ -192,7 +192,7 @@ void Client::selectGame(const std::string &name, int id)
 void Client::createGame(const std::string &name)
 {
     ClientGameConnectPacket pack;
-
+    
     pack.setRoomId(0);
     pack.setRoomName(name);
     _nc->sendPacket(&pack);
@@ -211,25 +211,25 @@ void Client::setGame(Game* game)
 void Client::sendKey(ClientKeyboardPressPacket::keyEvent e)
 {
     ClientKeyboardPressPacket packet(e);
-
+    
     _nc->sendPacket(&packet);
 }
 
 void Client::disconnectPlayer(unsigned int id)
 {
-  _connected = 0;
-  if (_game) {
-    _game->setFinish();
-    _game = nullptr;
-  }
-
-  std::cout << "server with id : " << id << "hung up" << std::endl;;
+    _connected = 0;
+    if (_game) {
+        _game->setFinish();
+        _game = nullptr;
+    }
+    
+    std::cout << "server with id : " << id << "hung up" << std::endl;;
 }
 
 uint32_t Client::getRoomConnected()
 {
-	std::lock_guard<Lock> l(_lock);
-	return _connected;
+    std::lock_guard<Lock> l(_lock);
+    return _connected;
 }
 
 IGameHandler* Client::getGameHandler()
