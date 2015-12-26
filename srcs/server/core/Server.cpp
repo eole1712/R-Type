@@ -202,6 +202,7 @@ void Server::startGame(IGame* game) {
                     }
                     delete (*it).second;
                     _users.erase(it);
+                    v.clear();
                 }
             }
             _disconnectedID.clear();
