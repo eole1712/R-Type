@@ -36,7 +36,7 @@ Server::Server() {
 	    }
 	    _netServer->setTimeout(id);
 		},
-        
+
         //PACKET CONNECTION CLIENT
 		[this] (APacket* packet, unsigned int id) {
 			ClientConnexionPacket* pack = dynamic_cast<ClientConnexionPacket*>(packet);
@@ -55,7 +55,7 @@ Server::Server() {
 			}
 			sendToUser(&ret, id);
 		},
-        
+
         //PACKET CLIENT GAME INFO
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameInfoPacket* pack = dynamic_cast<ClientGameInfoPacket*>(packet);
@@ -64,7 +64,7 @@ Server::Server() {
             std::lock_guard<Lock>   l(_lockEnd);
 			sendRoomStatus(id);
 		},
-        
+
         //PACKET GAME CONNECT PACKET
 		[this] (APacket* packet, unsigned int id) {
 			ClientGameConnectPacket* pack = dynamic_cast<ClientGameConnectPacket*>(packet);
@@ -73,9 +73,9 @@ Server::Server() {
 
           //Recherche ou création de la game
 			IGame* game;
-            
+
             std::lock_guard<Lock>   l(_lockEnd);
-            
+
 			auto it  = _games.find(pack->getRoomId());
 			if ((it) == _games.end())
 				game = createGame(pack->getRoomName());
@@ -89,7 +89,7 @@ Server::Server() {
 				unsigned int currentGameID = user->getGameID();
 				for (auto& aUser : _games[currentGameID]->getUsers())
 				{
-					aUser->setReady(false);					
+					aUser->setReady(false);
 				}
 				_games[currentGameID]->removePlayer(user->getPlayer()->getColor());
 				ret.setStatus(false);
@@ -116,7 +116,7 @@ Server::Server() {
 			sendToUser(&ret, id);
 			sendRoomStatus();
 		},
-        
+
         //PACKET CLIENT KEYBOARD PRESS
 		[this] (APacket* packet, unsigned int id) {
 			ClientKeyboardPressPacket* pack = dynamic_cast<ClientKeyboardPressPacket*>(packet);
@@ -128,9 +128,9 @@ Server::Server() {
 			std::pair<unsigned int, bool> key = pack->getStatus();
 			if (!user->isInGame())
 				return;
-            
+
             std::lock_guard<Lock>   l(_lockEnd);
-            
+
 			if (!(_games[user->getGameID()]->isStarted()))
 			{
 				IGame* game = _games[user->getGameID()];
@@ -188,7 +188,7 @@ void Server::startGame(IGame* game) {
 		game->start();
 		while (game->nextAction()) {
 			std::vector<User*> v = game->getUsers();
-            
+
             std::unique_lock<Lock>      l(_lock);
             for (unsigned int dc : _disconnectedID)
             {
@@ -221,7 +221,7 @@ void Server::startGame(IGame* game) {
 			}
 		}
         refreshTimer(gameID, 0);
-        
+
         std::lock_guard<Lock>       l(_lockEnd);
         _games.erase(gameID);
         delete game;
@@ -287,10 +287,10 @@ void Server::sendToAll(APacket* packet) {
 void Server::sendRoomStatus() {
 	for (auto& game : _games) {
 		ServerGameInfoPacket ret;
-        
+
 		ret.setRoomId(game.second->getID());
 		ret.setRoomSlots(game.second->getNbPlayers());
-		
+
         int nb = 0;
 		for (auto& user : game.second->getUsers())
 		{

@@ -16,7 +16,7 @@
 #include <sstream>
 
 Client::Client(int port)
-: _connected(0)
+  : _connected(0), _menu(NULL)
 {
     _nm = new NetManager;
     _nc = new NetClient(port, _nm, this);
@@ -66,6 +66,8 @@ Client::Client(int port)
         },
         
         [this] (APacket* packet, unsigned int) {
+	    if (_game == nullptr)
+	      return ;
             ServerPlayerMovePacket* pack = dynamic_cast<ServerPlayerMovePacket*>(packet);
             if (pack == NULL)
                 return;
