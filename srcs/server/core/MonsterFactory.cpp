@@ -19,15 +19,18 @@ const std::map<Unit::Monster::type, std::string> Monster::Factory::LIBSLIST = {
 #if (defined __APPLE__)
     { Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.dylib" },
     { Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.dylib" },
-    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.dylib" }
+    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.dylib" },
+    { Unit::Monster::KAMIKAZPLANE, "../libs/server/libServerKamikazPlane.dylib" }
 #elif (defined _WIN32)
     { Unit::Monster::MONSTERTEST, "..\\libs\\server\\ServerMonsterTest.dll" },
     { Unit::Monster::BIGHUNTER, "..\\libs\\server\\ServerBigHunter.dll" },
-    { Unit::Monster::DRBOOM, "..\\libs\\server\\ServerDrBoom.dll" }
+    { Unit::Monster::DRBOOM, "..\\libs\\server\\ServerDrBoom.dll" },
+    { Unit::Monster::KAMIKAZPLANE, "..\\libs\\server\\ServerKamikazPlane.dll" }
 #else
     { Unit::Monster::MONSTERTEST, "../libs/server/libServerMonsterTest.so" },
     { Unit::Monster::BIGHUNTER, "../libs/server/libServerBigHunter.so" },
-    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so" }
+    { Unit::Monster::DRBOOM, "../libs/server/libServerDrBoom.so" },
+    { Unit::Monster::KAMIKAZPLANE, "../libs/server/libServerKamikazPlane.so" }
 #endif
 };
 

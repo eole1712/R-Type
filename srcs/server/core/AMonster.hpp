@@ -15,7 +15,8 @@ namespace Unit
         enum type {
             MONSTERTEST,
             BIGHUNTER,
-            DRBOOM
+            DRBOOM,
+	    KAMIKAZPLANE
         };
 
         class AMonster : public AUnit

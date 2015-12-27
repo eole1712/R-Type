@@ -323,6 +323,48 @@ set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../lib
 set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
 set_target_properties(ServerBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
 endif (WIN32)
+######## SERVER ## KAMIKAZ PLANE ####
+
+if (UNIX)
+add_library(ServerKamikazPlane SHARED
+srcs/common/linux_specific/CULibLoader.cpp
+srcs/server/core/monsters/KamikazPlane.cpp
+srcs/server/core/AUnit.cpp
+srcs/server/core/AMissile.cpp
+srcs/server/core/MissileFactory.cpp
+srcs/server/core/AMonster.cpp
+srcs/misc/Lock.cpp
+srcs/server/core/GameUtils.cpp
+srcs/server/misc/Timer.cpp)
+endif (UNIX)
+
+if (WIN32)
+add_library(ServerKamikazPlane SHARED
+srcs/common/windows_specific/CWLibLoader.cpp
+srcs/server/core/monsters/KamikazPlane.cpp
+srcs/server/core/AUnit.cpp
+srcs/server/core/AMissile.cpp
+srcs/misc/Lock.cpp
+srcs/server/core/MissileFactory.cpp
+srcs/server/core/AMonster.cpp
+srcs/server/core/GameUtils.cpp
+srcs/server/misc/Timer.cpp)
+endif (WIN32)
+
+target_include_directories(ServerKamikazPlane PRIVATE ${server_includes_directories})
+target_compile_features(ServerKamikazPlane PRIVATE cxx_range_for)
+if (UNIX)
+target_link_libraries(ServerKamikazPlane -lpthread)
+target_link_libraries(ServerKamikazPlane -ldl)
+set_target_properties(ServerKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ServerKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/server/)
+set_target_properties(ServerKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/server/)
+set_target_properties(ServerKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/server/)
+endif (WIN32)
 
 ######## SERVER ## BASIC MISSILE ####
 
@@ -444,6 +486,27 @@ set_target_properties(ClientBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEAS
 set_target_properties(ClientBigHunter PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
 endif (WIN32)
 
+######## CLIENT ## KAMIKAZ PLANE ####
+
+add_library(ClientKamikazPlane SHARED
+srcs/client/unit/KamikazPlane/KamikazPlane.cpp
+srcs/client/unit/AUnit.cpp
+srcs/client/graphics/Animation.cpp
+srcs/client/misc/Time.cpp
+)
+target_include_directories(ClientKamikazPlane PRIVATE ${client_includes_directories})
+target_compile_features(ClientKamikazPlane PRIVATE cxx_range_for)
+if (UNIX)
+set_target_properties(ClientKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientKamikazPlane PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif(UNIX)
+if (WIN32)
+set_target_properties(ClientKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../libs/client/)
+set_target_properties(ClientKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ../libs/client/)
+set_target_properties(ClientKamikazPlane PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ../libs/client/)
+endif (WIN32)
+
 ######## CLIENT ## DRBOOM ####
 
 add_library(ClientDrBoom SHARED
@@ -553,6 +616,7 @@ if(SFML_FOUND)
   target_link_libraries(ClientMonsterTest ${SFML_LIBRARIES})
   target_link_libraries(ClientBasicMissile ${SFML_LIBRARIES})
   target_link_libraries(ClientBigHunter ${SFML_LIBRARIES})
+  target_link_libraries(ClientKamikazPlane ${SFML_LIBRARIES})
   target_link_libraries(ClientWaveMissile ${SFML_LIBRARIES})
   target_link_libraries(ClientDrBoom ${SFML_LIBRARIES})
   target_link_libraries(ClientDirectedMissile ${SFML_LIBRARIES})

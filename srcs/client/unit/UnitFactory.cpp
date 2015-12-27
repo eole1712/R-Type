@@ -21,21 +21,24 @@ const std::map<Unit::typeID, std::string> Unit::Factory::LIBSLIST = {
   { Unit::BIGHUNTER, "../libs/client/libClientBigHunter.dylib" },
   { Unit::WAVEMISSILE, "../libs/client/libClientWaveMissile.dylib" },
   { Unit::DRBOOM, "../libs/client/libClientDrBoom.dylib" },
-  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectedMissile.dylib" }
+  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectedMissile.dylib" },
+  { Unit::KAMIKAZPLANE, "../libs/client/libClientKamikazPlane.dylib" }
 #elif (defined _WIN32)
   { Unit::MONSTERTEST, "..\\libs\\client\\ClientMonsterTest.dll" },
   { Unit::BASICMISSILE, "..\\libs\\client\\ClientBasicMissile.dll" },
   { Unit::BIGHUNTER, "..\\libs\\client\\ClientBigHunter.dll" },
   { Unit::WAVEMISSILE, "..\\libs\\client\\ClientWaveMissile.dll" },
   { Unit::DRBOOM, "..\\libs\\client\\ClientDrBoom.dll" },
-  { Unit::DIRECTEDMISSILE, "..\\libs\\client\\ClientDirectedMissile.dll" }
+  { Unit::DIRECTEDMISSILE, "..\\libs\\client\\ClientDirectedMissile.dll" },
+  { Unit::KAMIKAZPLANE, "..\\libs\\client\\ClientKamikazPlane.dll" }
 #else
   { Unit::MONSTERTEST, "../libs/client/libClientMonsterTest.so" },
   { Unit::BASICMISSILE, "../libs/client/libClientBasicMissile.so" },
   { Unit::BIGHUNTER, "../libs/client/libClientBigHunter.so" },
   { Unit::WAVEMISSILE, "../libs/client/libClientWaveMissile.so" },
   { Unit::DRBOOM, "../libs/client/libClientDrBoom.so" },
-  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectedMissile.so" }
+  { Unit::DIRECTEDMISSILE, "../libs/client/libClientDirectedMissile.so" },
+  { Unit::KAMIKAZPLANE, "../libs/client/libClientKamikazPlane.so" }
 #endif
 };
 
