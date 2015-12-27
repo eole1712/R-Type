@@ -44,25 +44,19 @@ namespace Unit
 
     Monster::type	KamikazPlane::getMonsterType() const
     {
-      return (Monster::BIGHUNTER);
+      return (Monster::KAMIKAZPLANE);
     }
 
-      Missile::AMissile*	KamikazPlane::shoot(Timer::time time)
+      Missile::AMissile*	KamikazPlane::shoot(Timer::time)
     {
-      if (!_time.isFinished())
         return nullptr;
-
-      Missile::AMissile *m = Missile::Factory::getInstance()->createMissile(_weapon, this, 0, time);
-
-      _time.reset(static_cast<uintmax_t>(m->getTime() * 1000));
-      return m;
     }
 
       Unit::pos            KamikazPlane::move(Timer::time time) const
     {
       int diff = static_cast<int>((time - _creationTime) / 10);
 
-      pos p = std::make_pair(_x - diff, _y);
+      pos p = std::make_pair(_x - (diff * 6), _y);
       return p;
     }
 

@@ -9,9 +9,9 @@ namespace Unit {
         BASICMISSILE,
         BIGHUNTER,
         WAVEMISSILE,
-	DRBOOM,
+        DRBOOM,
         DIRECTEDMISSILE,
-	KAMIKAZPLANE
+        KAMIKAZPLANE
     };
 }
 

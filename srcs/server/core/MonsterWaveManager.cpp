@@ -9,7 +9,7 @@ namespace Monster {
     WaveManager::WaveManager(IMap *map, unsigned int gameID, IGameUnitSender* owl)
     : _map(map), _list(), _gameID(gameID), _owl(owl)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
             _t[i] = 1;
     }
     
@@ -30,6 +30,18 @@ namespace Monster {
                 wave->addMonster(Unit::Monster::MONSTERTEST, GameUtils::Map::WIDTH, relativePos(i, j + 1, 60, 700));
             }
             wave->addWaitingTime(1000);
+        }
+        return wave;
+    }
+    
+    Wave*     WaveManager::KamikazeAttack(unsigned int gameID, int diff)
+    {
+        Wave*   wave = new Wave(gameID);
+        
+        if (diff > 6) diff = 6;
+        
+        for (int j = 0; j < (diff); j++) {
+            wave->addMonster(Unit::Monster::KAMIKAZPLANE, GameUtils::Map::WIDTH, relativePos(j, diff, 60, 790));
         }
         return wave;
     }
@@ -77,6 +89,11 @@ namespace Monster {
         {
             addWave(Monster::WaveManager::MarineWave(_gameID));
             _t[2]++;
+        }
+        if (time > (6000 * _t[3]))
+        {
+            addWave(Monster::WaveManager::KamikazeAttack(_gameID, _t[3]));
+            _t[3]++;
         }
     }
     

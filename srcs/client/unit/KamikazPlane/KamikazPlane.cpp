@@ -27,7 +27,6 @@ namespace Unit
     : AUnit(x, y, id, creationTime, param),
       _mySprite(std::string("../resources/sprites/kamikaz plane.png"), 3)
   {
-    _mySprite.scale(1.8f, 1.8f);
   }
   
   KamikazPlane::~KamikazPlane()
@@ -37,7 +36,7 @@ namespace Unit
   {
     long diff = static_cast<long>(tick - _creationTime) / 10;
     
-    pos p = std::make_pair(_x - diff, _y);
+    pos p = std::make_pair(_x - (diff * 6), _y);
     return p;
   }
   
