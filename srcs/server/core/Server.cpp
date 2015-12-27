@@ -27,7 +27,7 @@ Server::Server() {
 		ServerPingPacket * pack = dynamic_cast<ServerPingPacket*>(packet);
 	    if (pack == NULL)
 	      return;
-	    std::cout << "ping received" << std::endl;
+	    //std::cout << "ping received" << std::endl;
 	    if (pack->getStatus()) {
 	      ServerPingPacket ans;
 

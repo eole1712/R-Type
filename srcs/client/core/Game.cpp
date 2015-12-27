@@ -221,14 +221,17 @@ void			Game::pollEvent()
       _finish = true;
       return ;
     }
-  for (std::list<explosion>::iterator i = _explosion.begin(); i != _explosion.end(); i++)
+    std::list<explosion>::iterator i = _explosion.begin();
+    while (i != _explosion.end())
     {
-      if ((*i).anim->finish())
-	{
-	  delete (*i).anim;
-	  delete (*i).sound;
-	  i = _explosion.erase(i);
-	}
+        if ((*i).anim->finish())
+        {
+            delete (*i).anim;
+            delete (*i).sound;
+            i = _explosion.erase(i);
+        }
+        if (i != _explosion.end())
+            i++;
     }
   deleteUnit();
   createUnit();
