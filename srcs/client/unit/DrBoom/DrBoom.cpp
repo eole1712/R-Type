@@ -13,7 +13,7 @@ extern "C"
   }
 
 #if (defined _WIN32)
-  __declspec(dllexport)   void		DeleteUnit(Unit::BigHunter * monster);
+  __declspec(dllexport)  void         DeleteUnit(Unit::DrBoom * monster);
 #endif
   void					DeleteUnit(Unit::DrBoom * monster)
   {
