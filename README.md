@@ -11,12 +11,6 @@ make
 Enjoy :)
 
 
-Creators:
-Grisha Ghukasyan
-Thibault Malbranche
-Leon Stefani
-Adrien Harnay
-Jean Gamain
-Jordan Verove
+Creators: Grisha Ghukasyan / Thibault Malbranche / Leon Stefani / Adrien Harnay / Jean Gamain / Jordan Verove
 
 Contact : ghukas_g@epitech.eu
